@@ -1,0 +1,28 @@
+id: cinematica
+title: Cinemática
+summary: Posição, velocidade, aceleração.
+xp_reward: 36
+unlock_xp: 150
+tasks:
+  - id: vel
+    type: numeric
+    prompt: "Objeto anda 20 m em 4 s (MRU). Velocidade em m/s?"
+    xp: 18
+    answer: 5
+    tolerance: 0.001
+  - id: mru
+    type: numeric
+    prompt: "Parte de x0=0 com v=3 m/s. Posição em t=5 s?"
+    xp: 21
+    answer: 15
+    tolerance: 0.001
+  - id: accel
+    type: mcq
+    prompt: "Aceleração é a taxa de variação de:"
+    xp: 14
+    answer: 1
+    choices:
+      - "posição"
+      - "velocidade"
+      - "energia"
+      - "massa"

@@ -1,0 +1,34 @@
+id: simd-latency
+title: SIMD & Latência
+summary: Paralelismo de dados e tradeoffs de acurácia.
+xp_reward: 45
+unlock_xp: 2200
+animation: none
+tasks:
+  - id: simd
+    type: fill
+    prompt: "Sigla para Single Instruction Multiple Data:"
+    xp: 18
+    answers:
+      - "simd"
+      - "SIMD"
+  - id: trade
+    type: mcq
+    prompt: "Reduzir latência on-device com quantização pode:"
+    xp: 25
+    answer: 1
+    choices:
+      - "só melhorar acurácia sempre"
+      - "trocar um pouco de acurácia por velocidade/energia"
+      - "aumentar o tamanho do binário 100×"
+      - "remover a necessidade de dataset"
+  - id: neon
+    type: mcq
+    prompt: "Em Cortex-A/M com extensão vetorial ARM típica, você ouve falar de:"
+    xp: 18
+    answer: 0
+    choices:
+      - "NEON / Helium (MVE)"
+      - "somente CUDA cores"
+      - "JavaScript SIMD.js obrigatório"
+      - "FTP vector mode"

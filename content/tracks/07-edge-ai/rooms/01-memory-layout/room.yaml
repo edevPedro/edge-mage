@@ -1,0 +1,36 @@
+id: memory-layout
+title: Memory Layout
+summary: NCHW/NHWC, row-major e arena estática.
+xp_reward: 45
+unlock_xp: 2050
+animation: none
+tasks:
+  - id: rowmajor
+    type: mcq
+    prompt: "Em row-major, o índice que varia mais rápido é o:"
+    xp: 21
+    answer: 1
+    choices:
+      - "primeiro"
+      - "último"
+      - "do meio sempre"
+      - "aleatório"
+  - id: nhwc
+    type: mcq
+    prompt: "Em NHWC, o eixo que varia mais rápido tipicamente é:"
+    xp: 18
+    answer: 2
+    choices:
+      - "N (batch)"
+      - "H (altura)"
+      - "C (canal)"
+      - "sempre W"
+  - id: arena
+    type: fill
+    prompt: "No MCU, buffer pré-alocado para tensores costuma se chamar memory ___:"
+    xp: 21
+    answers:
+      - "arena"
+      - "planner"
+      - "arena estática"
+      - "static arena"

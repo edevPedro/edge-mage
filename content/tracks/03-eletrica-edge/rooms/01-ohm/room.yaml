@@ -1,0 +1,28 @@
+id: ohm
+title: Lei de Ohm
+summary: V, I, R e potência.
+xp_reward: 36
+unlock_xp: 320
+tasks:
+  - id: current
+    type: numeric
+    prompt: "V=5 V, R=1000 Ω. Corrente I em amperes?"
+    xp: 21
+    answer: 0.005
+    tolerance: "1e-5"
+  - id: power
+    type: numeric
+    prompt: "Mesmo circuito: potência P em watts?"
+    xp: 21
+    answer: 0.025
+    tolerance: "1e-4"
+  - id: ohm-law
+    type: mcq
+    prompt: "Lei de Ohm correta:"
+    xp: 14
+    answer: 1
+    choices:
+      - "V = I / R"
+      - "V = I · R"
+      - "V = I + R"
+      - "V = R / I²"

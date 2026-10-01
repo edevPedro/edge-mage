@@ -1,0 +1,48 @@
+id: flops-bandwidth
+title: FLOPs & Bandwidth
+summary: Custo de matmul, batch e gargalo memória vs compute.
+xp_reward: 48
+unlock_xp: 2000
+animation: none
+tasks:
+  - id: dense-flops
+    type: numeric
+    prompt: "B=1, M=128, N=64. FLOPs ≈ 2·B·M·N para Y=XW. Quanto?"
+    xp: 25
+    answer: 16384
+    tolerance: 0
+    hint: "2*1*128*64"
+  - id: weight-bytes
+    type: numeric
+    prompt: "W 128×64 em int8: quantos bytes de pesos?"
+    xp: 18
+    answer: 8192
+    tolerance: 0
+  - id: batch
+    type: mcq
+    prompt: "Em MCU com pouca RAM, batch típico de inferência é:"
+    xp: 18
+    answer: 0
+    choices:
+      - "1 (ou muito pequeno)"
+      - "1024 sempre"
+      - "igual ao número de classes"
+      - "irrelevante para RAM"
+  - id: bound
+    type: mcq
+    prompt: "Kernel que move muitos bytes e faz poucos FLOPs tende a ser:"
+    xp: 21
+    answer: 1
+    choices:
+      - "compute-bound"
+      - "memory-bound"
+      - "apenas I/O de rede"
+      - "independente da banda"
+  - id: roofline
+    type: fill
+    prompt: "Modelo mental que cruza FLOPs/s com bytes/s (uma palavra): ___ model"
+    xp: 16
+    answers:
+      - "roofline"
+      - "roof-line"
+      - "Roofline"

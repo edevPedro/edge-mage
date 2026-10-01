@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edge-mage"
+version = "0.1.0"
+description = "Curso TUI gamificado: matemática → Edge AI, temática Mage Academy"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "edevs" }]
+dependencies = [
+    "textual>=0.80.0",
+    "pyyaml>=6.0",
+    "markdown-it-py>=3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[project.scripts]
+edge-mage = "edge_mage.__main__:main"
+emage = "edge_mage.__main__:main"
+mage = "edge_mage.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["edge_mage*"]
+
+[tool.setuptools.package-data]
+edge_mage = ["py.typed"]

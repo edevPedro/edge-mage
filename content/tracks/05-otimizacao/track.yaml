@@ -1,0 +1,7 @@
+id: otimizacao
+title: Otimização
+summary: Derivadas, gradiente, loss/LR e batch — o motor do treinamento.
+order: 6
+unlock_xp: 1000
+icon: '∇'
+scaffold: false

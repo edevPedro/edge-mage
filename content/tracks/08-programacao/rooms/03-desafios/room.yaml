@@ -1,0 +1,33 @@
+id: desafios
+title: Desafios
+summary: Passo de gradiente e matmul 2×2 em Python puro.
+xp_reward: 54
+unlock_xp: 320
+animation: none
+tasks:
+  - id: grad-step
+    type: code
+    prompt: |
+      Implemente grad_step(x, grad, lr) = x − lr·grad.
+      Imprima grad_step(2.0, 4.0, 0.1)
+    xp: 36
+    expected_stdout: "1.6"
+    code_template: |
+      def grad_step(x, grad, lr):
+          # TODO
+          ...
+
+      print(grad_step(2.0, 4.0, 0.1))
+  - id: matmul2
+    type: code
+    prompt: |
+      matmul2(A,B) para matrizes 2×2 (listas de listas).
+      print(matmul2([[1,2],[3,4]], [[5,6],[7,8]]))
+    xp: 39
+    expected_stdout: "[[19, 22], [43, 50]]"
+    code_template: |
+      def matmul2(A, B):
+          # TODO
+          ...
+
+      print(matmul2([[1, 2], [3, 4]], [[5, 6], [7, 8]]))

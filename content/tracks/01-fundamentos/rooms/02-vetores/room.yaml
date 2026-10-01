@@ -1,0 +1,30 @@
+id: vetores
+title: Vetores 2D/3D
+summary: Soma, norma e produto escalar.
+xp_reward: 36
+unlock_xp: 40
+animation: vector
+tasks:
+  - id: norm-3-4
+    type: numeric
+    prompt: "Norma de v=(3,4)?"
+    xp: 21
+    answer: 5
+    tolerance: 0.001
+  - id: dot-prod
+    type: numeric
+    prompt: "Produto escalar de a=(1,2,3) e b=(4,-5,6)?"
+    xp: 25
+    answer: 12
+    tolerance: 0.001
+    hint: "1*4 + 2*(-5) + 3*6"
+  - id: unit
+    type: mcq
+    prompt: "Um vetor unitário tem norma:"
+    xp: 18
+    answer: 1
+    choices:
+      - "0"
+      - "1"
+      - "π"
+      - "depende da dimensão"

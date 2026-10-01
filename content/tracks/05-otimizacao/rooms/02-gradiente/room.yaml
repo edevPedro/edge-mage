@@ -1,0 +1,34 @@
+id: gradiente
+title: Gradiente
+summary: Direção de descida, update e η.
+xp_reward: 45
+unlock_xp: 1100
+animation: none
+tasks:
+  - id: update
+    type: numeric
+    prompt: "x=2, grad=4, η=0.1. Novo x após uma descida?"
+    xp: 25
+    answer: 1.6
+    tolerance: 0.001
+    hint: "x − η·grad"
+  - id: direction
+    type: mcq
+    prompt: "Gradiente aponta para:"
+    xp: 21
+    answer: 1
+    choices:
+      - "maior diminuição de f"
+      - "maior aumento de f"
+      - "sempre a origem"
+      - "o bias apenas"
+  - id: zero-grad
+    type: mcq
+    prompt: "Se ∇f(x*) = 0, x* é:"
+    xp: 18
+    answer: 1
+    choices:
+      - "sempre um mínimo global"
+      - "ponto estacionário (mín/máx/sela)"
+      - "obrigatoriamente máximo"
+      - "prova de overfitting"

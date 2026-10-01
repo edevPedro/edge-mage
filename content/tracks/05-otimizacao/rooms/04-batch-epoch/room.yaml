@@ -1,0 +1,35 @@
+id: batch-epoch
+title: Batch & Epoch
+summary: Mini-batch, epoch, forward/backward no edge.
+xp_reward: 40
+unlock_xp: 1300
+animation: none
+tasks:
+  - id: epoch
+    type: fill
+    prompt: "Nome de uma passagem completa pelo dataset de treino:"
+    xp: 18
+    answers:
+      - "epoch"
+      - "época"
+      - "epoca"
+  - id: minibatch
+    type: mcq
+    prompt: "Mini-batch SGD atualiza parâmetros usando:"
+    xp: 21
+    answer: 1
+    choices:
+      - "sempre o dataset inteiro"
+      - "a média do gradiente em B exemplos"
+      - "somente o bias"
+      - "FFT do batch"
+  - id: edge
+    type: mcq
+    prompt: "Em dispositivos edge tipicamente se prioriza:"
+    xp: 21
+    answer: 1
+    choices:
+      - "treino full-batch de GPT"
+      - "inferência eficiente (às vezes fine-tune leve)"
+      - "somente backprop na NPU"
+      - "descartar o modelo"

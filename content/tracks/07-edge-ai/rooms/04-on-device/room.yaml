@@ -1,0 +1,45 @@
+id: on-device
+title: On-Device Checklist
+summary: Orçamento, fallback de ops e golden tests.
+xp_reward: 72
+unlock_xp: 2350
+animation: none
+tasks:
+  - id: budget
+    type: mcq
+    prompt: "Antes de deploy edge, o que DEVE entrar no orçamento?"
+    xp: 25
+    answer: 1
+    choices:
+      - "só o número de likes no paper"
+      - "RAM, flash, potência e latência"
+      - "apenas a loss de treino"
+      - "a cor do enclosure"
+  - id: golden
+    type: fill
+    prompt: "Testes que comparam saída com referência conhecida: ___ tests"
+    xp: 21
+    answers:
+      - "golden"
+      - "golden tests"
+      - "gold"
+  - id: ops
+    type: mcq
+    prompt: "Ops não suportadas pelo acelerador tendem a:"
+    xp: 25
+    answer: 1
+    choices:
+      - "ficar mais rápidas magicamente"
+      - "cair em fallback CPU lento"
+      - "apagar a flash"
+      - "treinar sozinhas"
+  - id: pipeline
+    type: mcq
+    prompt: "No pipeline edge completo, o modelo de inferência é:"
+    xp: 18
+    answer: 1
+    choices:
+      - "a única etapa que importa"
+      - "o miolo entre sensor/pré e pós/ato"
+      - "substituível por printf"
+      - "sempre treinado on-device"

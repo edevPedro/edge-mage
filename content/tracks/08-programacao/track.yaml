@@ -1,0 +1,7 @@
+id: programacao
+title: Programação
+summary: Desafios curtos em Python — stdout e asserts locais reforçam a math.
+order: 2
+unlock_xp: 100
+icon: '⌘'
+scaffold: false

@@ -1,0 +1,45 @@
+id: exponenciais-logs
+title: Exponenciais & Logs
+summary: exp, ln, mudança de base — base do softmax e da CE.
+xp_reward: 40
+unlock_xp: 200
+animation: none
+tasks:
+  - id: e0
+    type: numeric
+    prompt: "e⁰ = ?"
+    xp: 14
+    answer: 1
+    tolerance: 0.001
+  - id: ln-e2
+    type: numeric
+    prompt: "ln(e²) = ? (log natural)"
+    xp: 18
+    answer: 2
+    tolerance: 0.001
+    hint: "ln eˣ = x"
+  - id: log2-8
+    type: numeric
+    prompt: "log₂(8) = ?"
+    xp: 18
+    answer: 3
+    tolerance: 0.001
+  - id: product
+    type: mcq
+    prompt: "ln(ab) é igual a:"
+    xp: 18
+    answer: 0
+    choices:
+      - "ln a + ln b"
+      - "ln a · ln b"
+      - "ln(a + b)"
+      - "a · ln b"
+  - id: why-ce
+    type: fill
+    prompt: "Na cross-entropy, a perda da classe correta usa −___ p_k:"
+    xp: 16
+    answers:
+      - "log"
+      - "ln"
+      - "logarithm"
+      - "logaritmo"

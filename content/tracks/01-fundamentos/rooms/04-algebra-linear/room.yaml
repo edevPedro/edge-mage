@@ -1,0 +1,44 @@
+id: algebra-linear
+title: Álgebra Linear Intro
+summary: Matrizes, normas L1/L2, identidade e matmul como camada.
+xp_reward: 45
+unlock_xp: 90
+animation: matrix
+tasks:
+  - id: matmul-2
+    type: numeric
+    prompt: "Se A=[[2,0],[0,3]] e x=(1,4), qual é a primeira componente de Ax?"
+    xp: 18
+    answer: 2
+    tolerance: 0.001
+  - id: matmul-2b
+    type: numeric
+    prompt: "Mesma A e x — segunda componente de Ax?"
+    xp: 18
+    answer: 12
+    tolerance: 0.001
+  - id: l1
+    type: numeric
+    prompt: "Norma L1 de v=(3,-4,1)? (soma dos |vᵢ|)"
+    xp: 18
+    answer: 8
+    tolerance: 0.001
+  - id: identity
+    type: fill
+    prompt: "Nome da matriz que satisfaz Ix = x:"
+    xp: 14
+    answers:
+      - "identidade"
+      - "identity"
+      - "matriz identidade"
+      - "I"
+  - id: layer
+    type: mcq
+    prompt: "Uma camada densa y = Wx + b é essencialmente:"
+    xp: 18
+    answer: 1
+    choices:
+      - "Só convolução 3×3"
+      - "Produto matriz-vetor + bias"
+      - "Apenas softmax"
+      - "FFT"

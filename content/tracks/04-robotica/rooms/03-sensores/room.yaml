@@ -1,0 +1,33 @@
+id: sensores
+title: Sensores
+summary: Encoder, IMU, range.
+xp_reward: 36
+unlock_xp: 700
+tasks:
+  - id: imu
+    type: fill
+    prompt: "Sigla do sensor que combina acelerômetro e giroscópio:"
+    xp: 18
+    answers:
+      - "imu"
+      - "IMU"
+  - id: encoder
+    type: mcq
+    prompt: "Encoder tipicamente mede:"
+    xp: 18
+    answer: 1
+    choices:
+      - "temperatura do die"
+      - "rotação / ticks de eixo"
+      - "corrente Wi-Fi"
+      - "perda cross-entropy"
+  - id: noise
+    type: mcq
+    prompt: "Em edge sensing, ruído e calibração:"
+    xp: 18
+    answer: 1
+    choices:
+      - "são irrelevantes se o modelo for grande"
+      - "afetam fortemente a qualidade do pipeline"
+      - "só existem em simulação"
+      - "substituem o ADC"

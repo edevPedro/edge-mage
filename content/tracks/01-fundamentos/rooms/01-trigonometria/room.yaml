@@ -1,0 +1,40 @@
+id: trigonometria
+title: Trigonometria
+summary: Circulo unitário, radianos e identidades básicas.
+xp_reward: 36
+unlock_xp: 0
+animation: unit_circle
+tasks:
+  - id: rad-90
+    type: numeric
+    prompt: "Quantos radianos equivalem a 90 graus? (use π≈3.14159 → resposta ≈1.5708)"
+    xp: 21
+    answer: 1.5708
+    tolerance: 0.01
+    relative_tolerance: 0.01
+    hint: "π/2"
+  - id: sin-pi6
+    type: numeric
+    prompt: "sin(π/6) = ?"
+    xp: 21
+    answer: 0.5
+    tolerance: 0.001
+  - id: identity
+    type: mcq
+    prompt: "Qual identidade é sempre verdadeira?"
+    xp: 18
+    answer: 0
+    choices:
+      - "sin²θ + cos²θ = 1"
+      - "sin θ + cos θ = 1"
+      - "tan θ = cos θ / sin θ"
+      - "sin θ = θ para todo θ"
+  - id: tan-name
+    type: fill
+    prompt: "tan θ = sin θ / ___  (preencha a função)"
+    xp: 14
+    answers:
+      - "cos"
+      - "cos θ"
+      - "cos(θ)"
+      - "cosine"

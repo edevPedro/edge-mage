@@ -1,0 +1,22 @@
+id: cinematica-robo
+title: Cinemática Simples
+summary: Diferencial e direta vs inversa.
+xp_reward: 36
+unlock_xp: 620
+tasks:
+  - id: vdiff
+    type: numeric
+    prompt: "vr=1.2 m/s, vl=0.8 m/s. Velocidade linear v=(vr+vl)/2?"
+    xp: 21
+    answer: 1.0
+    tolerance: 0.001
+  - id: fkik
+    type: mcq
+    prompt: "Cinemática inversa calcula:"
+    xp: 21
+    answer: 1
+    choices:
+      - "pose a partir das juntas"
+      - "juntas a partir da pose desejada"
+      - "só a corrente do motor"
+      - "FFT do encoder"

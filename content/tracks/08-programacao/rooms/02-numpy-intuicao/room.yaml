@@ -1,0 +1,28 @@
+id: numpy-intuicao
+title: Intuição de Tensores
+summary: Operações em listas como mini-tensores.
+xp_reward: 45
+unlock_xp: 180
+tasks:
+  - id: argmax
+    type: code
+    prompt: "Implemente argmax(xs) retornando o índice do maior valor. print(argmax([0.1, 0.7, 0.2]))."
+    xp: 32
+    expected_stdout: "1"
+    code_template: |
+      def argmax(xs):
+          # TODO
+          ...
+      
+      print(argmax([0.1, 0.7, 0.2]))
+  - id: scale
+    type: code
+    prompt: "scale(v, k) multiplica cada elemento. print(scale([1,2,3], 2))."
+    xp: 28
+    expected_stdout: "[2, 4, 6]"
+    code_template: |
+      def scale(v, k):
+          # TODO
+          ...
+      
+      print(scale([1, 2, 3], 2))

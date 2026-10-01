@@ -1,0 +1,23 @@
+id: divisao-tensao
+title: Divisão de Tensão
+summary: Divisor resistivo clássico.
+xp_reward: 36
+unlock_xp: 380
+tasks:
+  - id: divider
+    type: numeric
+    prompt: "Vin=3.3 V, R1=2 kΩ, R2=1 kΩ. Vout (em R2) em volts?"
+    xp: 25
+    answer: 1.1
+    tolerance: 0.01
+    hint: "3.3 * 1/(2+1)"
+  - id: formula
+    type: mcq
+    prompt: "Vout = Vin · R2 / (R1+R2) assume R2:"
+    xp: 18
+    answer: 0
+    choices:
+      - "em série com a carga infinita idealizada / para GND"
+      - "em curto com Vin"
+      - "igual a zero"
+      - "sendo indutor"

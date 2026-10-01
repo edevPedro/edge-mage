@@ -1,0 +1,40 @@
+id: matmul-flops
+title: Matmul, Camada & FLOPs
+summary: Dimensões de Y=XW e custo 2·B·M·N.
+xp_reward: 48
+unlock_xp: 1700
+animation: matrix
+tasks:
+  - id: outdim
+    type: numeric
+    prompt: "X é 1×4, W é 4×8. Quantas saídas (features) em Y=XW?"
+    xp: 18
+    answer: 8
+    tolerance: 0
+  - id: flops-num
+    type: numeric
+    prompt: "B=2, M=10, N=5. FLOPs ≈ 2·B·M·N?"
+    xp: 25
+    answer: 200
+    tolerance: 0
+  - id: flops
+    type: mcq
+    prompt: "Custo dominante de uma densa grande é tipicamente:"
+    xp: 18
+    answer: 1
+    choices:
+      - "softmax"
+      - "GEMM / matmul"
+      - "print debug"
+      - "JSON parse"
+  - id: inner
+    type: fill
+    prompt: "Em Y=XW, o eixo que precisa coincidir (tamanho interno) chama-se dimensão ___:"
+    xp: 16
+    answers:
+      - "interna"
+      - "inner"
+      - "escondida"
+      - "hidden"
+      - "de contração"
+      - "contracted"

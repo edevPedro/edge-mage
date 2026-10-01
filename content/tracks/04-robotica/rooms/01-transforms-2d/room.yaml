@@ -1,0 +1,29 @@
+id: transforms-2d
+title: Transforms 2D
+summary: Rotação e translação no plano.
+xp_reward: 36
+unlock_xp: 550
+animation: matrix
+tasks:
+  - id: rot90
+    type: numeric
+    prompt: "Rotacionar (1,0) por +90° (π/2). Qual a coordenada y resultante?"
+    xp: 25
+    answer: 1
+    tolerance: 0.01
+  - id: rot90x
+    type: numeric
+    prompt: "Mesma rotação de (1,0) por +90°. Coordenada x?"
+    xp: 21
+    answer: 0
+    tolerance: 0.01
+  - id: homog
+    type: mcq
+    prompt: "Matriz homogênea 2D típica tem tamanho:"
+    xp: 18
+    answer: 1
+    choices:
+      - "2×2"
+      - "3×3"
+      - "4×2"
+      - "1×1"

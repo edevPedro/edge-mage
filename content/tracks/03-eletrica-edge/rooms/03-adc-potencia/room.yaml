@@ -1,0 +1,29 @@
+id: adc-potencia
+title: ADC & Potência
+summary: Quantização analógica e orçamento energético.
+xp_reward: 45
+unlock_xp: 450
+tasks:
+  - id: levels
+    type: numeric
+    prompt: "ADC de 8 bits: quantos níveis distintos (2^n)?"
+    xp: 21
+    answer: 256
+    tolerance: 0
+  - id: lsb
+    type: numeric
+    prompt: "Vref=3.3 V, n=12. LSB aproximado em volts? (3.3/4096)"
+    xp: 25
+    answer: 0.0008057
+    tolerance: 5e-05
+    relative_tolerance: 0.05
+  - id: tradeoff
+    type: mcq
+    prompt: "Em edge, aumentar clock do MCU tipicamente:"
+    xp: 18
+    answer: 1
+    choices:
+      - "reduz potência sempre"
+      - "aumenta desempenho e costuma aumentar potência"
+      - "não afeta energia"
+      - "só muda a cor do LED"

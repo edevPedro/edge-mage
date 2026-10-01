@@ -1,0 +1,47 @@
+id: softmax-ce
+title: Softmax & Cross-Entropy
+summary: Probabilidades, CE e softmax estável (com código).
+xp_reward: 48
+unlock_xp: 1550
+animation: none
+tasks:
+  - id: softsum
+    type: numeric
+    prompt: "Softmax de qualquer vetor: soma das probabilidades?"
+    xp: 18
+    answer: 1
+    tolerance: 0.001
+  - id: ce
+    type: mcq
+    prompt: "Com label one-hot na classe k, CE simplifica para:"
+    xp: 21
+    answer: 0
+    choices:
+      - "−log p_k"
+      - "p_k²"
+      - "max z"
+      - "‖W‖"
+  - id: stable
+    type: fill
+    prompt: "Antes do exp no softmax estável, subtraímos o ___ dos logits:"
+    xp: 16
+    answers:
+      - "max"
+      - "máximo"
+      - "maximo"
+      - "maximum"
+  - id: softmax-code
+    type: code
+    prompt: |
+      Implemente softmax(zs) estável (subtraia max).
+      Imprima a soma de softmax([1.0, 2.0, 3.0]) arredondada a 6 casas: round(sum(...), 6)
+    xp: 36
+    expected_stdout: "1.0"
+    code_template: |
+      import math
+
+      def softmax(zs):
+          # TODO: retorne lista de probabilidades
+          ...
+
+      print(round(sum(softmax([1.0, 2.0, 3.0])), 6))

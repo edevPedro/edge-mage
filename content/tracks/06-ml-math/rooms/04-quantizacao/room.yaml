@@ -1,0 +1,46 @@
+id: quantizacao
+title: Quantização & Fixed-Point
+summary: scale, int8, Q-format e tradeoff de acurácia.
+xp_reward: 54
+unlock_xp: 1850
+animation: none
+tasks:
+  - id: bytes
+    type: numeric
+    prompt: "Tensor de 1000 float32 → int8: bytes aproximados depois? (1 byte/elem)"
+    xp: 16
+    answer: 1000
+    tolerance: 0
+  - id: ratio
+    type: numeric
+    prompt: "Redução de memória float32→int8 (fator)?"
+    xp: 18
+    answer: 4
+    tolerance: 0.001
+  - id: scale
+    type: numeric
+    prompt: "x em [−2, 2] mapeado para int8 [−128, 127]. scale ≈ (2−(−2))/(127−(−128))?"
+    xp: 25
+    answer: 0.015686
+    tolerance: 0.001
+    relative_tolerance: 0.05
+    hint: "4 / 255"
+  - id: trade
+    type: mcq
+    prompt: "Quantizar para int8 tipicamente:"
+    xp: 21
+    answer: 1
+    choices:
+      - "aumenta memória e latência"
+      - "reduz memória/latência com possível perda de acurácia"
+      - "elimina a necessidade de pesos"
+      - "só funciona em Python puro"
+  - id: qformat
+    type: fill
+    prompt: "Representar reais como inteiros com fator 2⁻ⁿ implícito: ponto ___:"
+    xp: 16
+    answers:
+      - "fixo"
+      - "fixed"
+      - "fixo (fixed-point)"
+      - "fixed-point"

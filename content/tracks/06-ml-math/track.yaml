@@ -1,0 +1,7 @@
+id: ml-math
+title: ML Math
+summary: Probabilidade, softmax/CE, matmul/FLOPs, quantização e fixed-point.
+order: 7
+unlock_xp: 1400
+icon: '◈'
+scaffold: false

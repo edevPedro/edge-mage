@@ -1,0 +1,7 @@
+id: robotica
+title: Robótica
+summary: Transforms 2D, cinemática simples e sensores — magia em movimento.
+order: 5
+unlock_xp: 750
+icon: '◎'
+scaffold: false

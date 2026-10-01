@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.data/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+*.json.bak
+# progresso local do jogador (nunca no repo)
+progress.json
+**/progress.json
+~/.edge-mage/
+.env
+.env.*
+!.env.example
