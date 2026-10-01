@@ -1,0 +1,36 @@
+id: shared-math-evidence
+title: Shared math evidence
+summary: Mago Supremo math gate — apply vectors/grad/FFT on a Systems or Edge craft.
+xp_reward: 40
+unlock_xp: 0
+boss: true
+course: systems
+shared: true
+resources:
+  - title: 3Blue1Brown — Essence of linear algebra
+    url: https://www.3blue1brown.com/topics/linear-algebra
+    kind: docs
+  - title: DSP Guide (free) — FFT chapters
+    url: https://www.dspguide.com/ch12.htm
+    kind: book
+  - title: Khan Academy — Derivatives
+    url: https://www.khanacademy.org/math/calculus-1/cs1-derivatives-definition-and-basic-rules
+    kind: docs
+tasks:
+  - id: pick-axis
+    type: mcq
+    prompt: "Shared math evidence must show application on…"
+    xp: 10
+    answer: 2
+    choices:
+      - "only a meme"
+      - "XP grind without a number"
+      - "a Systems or Edge lab (artifact fields)"
+      - "paid course receipt"
+  - id: ritual-math
+    type: ritual
+    prompt: >-
+      Fill study-log/artifacts/shared-math.md (concept, applied_to, source_cite)
+      then confirm.
+    xp: 30
+    ritual_id: shared-math

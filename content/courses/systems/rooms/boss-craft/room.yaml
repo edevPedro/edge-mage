@@ -1,23 +1,44 @@
 id: systems-boss-craft
-title: Systems boss craft (stub)
-summary: Evidence gate toward Mago Supremo — craft artifact stub.
-xp_reward: 50
+title: Systems boss craft
+summary: Verifiable LLVM craft toward Mago Supremo — artifact, not MCQ farm.
+xp_reward: 80
 unlock_xp: 0
 boss: true
 course: systems
+elite_skill: systems-craft
 resources:
-  - title: LLVM Getting Started
+  - title: LLVM LangRef
+    url: https://llvm.org/docs/LangRef.html
+    kind: docs
+  - title: Writing an LLVM Pass (New PM)
+    url: https://llvm.org/docs/WritingAnLLVMNewPMPass.html
+    kind: docs
+  - title: Getting Started with the LLVM System
     url: https://llvm.org/docs/GettingStarted.html
     kind: docs
-  - title: Arm Architecture Reference
-    url: https://developer.arm.com/documentation
-    kind: docs
 tasks:
-  - id: craft
+  - id: warm-pass
     type: mcq
-    prompt: "Stub: mark systems boss craft complete?"
-    xp: 25
-    answer: 0
+    prompt: "A New Pass Manager transform pass typically operates on…"
+    xp: 12
+    answer: 1
     choices:
-      - "Craft complete (stub)"
-      - "Not yet"
+      - "only JPEG pixels"
+      - "LLVM IR (Module / Function / Loop)"
+      - "CSS selectors"
+      - "GitHub stars"
+  - id: langref-cite
+    type: fill
+    prompt: "The canonical LLVM IR reference doc is called the ___ (one word)."
+    xp: 14
+    answers:
+      - "LangRef"
+      - "langref"
+      - "Language Reference"
+  - id: ritual-craft
+    type: ritual
+    prompt: >-
+      Fill study-log/artifacts/systems-boss-craft.md with a real opt/pass
+      evidence (ir_before, ir_after, pass_name, langref_cite) then confirm.
+    xp: 50
+    ritual_id: systems-boss-craft

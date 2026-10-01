@@ -1,22 +1,28 @@
 id: intro-asm
 title: Intro assembly (shared core)
-summary: Registers, mov, and why compilers emit asm.
-xp_reward: 24
+summary: Registers, mov, call/ret — shared foundation before AArch64 edge and LLVM asm-read.
+xp_reward: 28
 unlock_xp: 0
 shared: true
 course: fundamentals
 resources:
-  - title: ARM Compiler migration / asm overview
-    url: https://developer.arm.com/documentation
+  - title: Compiler Explorer (Godbolt)
+    url: https://godbolt.org/
+    kind: tool
+  - title: Arm — Learn the architecture · A64 overview
+    url: https://developer.arm.com/documentation/102374/0101/Overview
     kind: docs
-  - title: LLVM Language Reference (IR intuition)
+  - title: x86-64 machine-level programming (CMU excerpt PDF)
+    url: https://www.cs.cmu.edu/~fp/courses/15213-s07/lectures/machine.pdf
+    kind: docs
+  - title: LLVM LangRef (IR vs asm intuition)
     url: https://llvm.org/docs/LangRef.html
     kind: docs
 tasks:
   - id: mov-role
     type: mcq
     prompt: "In typical asm, `mov dst, src` primarily…"
-    xp: 12
+    xp: 10
     answer: 0
     choices:
       - "copies a value into a register or memory"
@@ -31,3 +37,26 @@ tasks:
       - "assembly"
       - "asm"
       - "Assembly"
+  - id: call-ret
+    type: mcq
+    prompt: "A typical function returns by…"
+    xp: 12
+    answer: 1
+    choices:
+      - "deleting the binary"
+      - "ret (or equivalent) after placing the result in the ABI return register"
+      - "only printing to stdout"
+      - "renaming the file"
+  - id: outside-godbolt
+    type: fill
+    prompt: >-
+      Outside lab: on godbolt.org compile `int add(int a,int b){return a+b;}`
+      and name the host ISA family you saw (x86_64 or aarch64).
+    xp: 14
+    answers:
+      - "x86_64"
+      - "x86-64"
+      - "amd64"
+      - "aarch64"
+      - "arm64"
+      - "AArch64"

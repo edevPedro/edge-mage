@@ -189,6 +189,13 @@ skills:
     unlock_room: simd-latency
     unlock_track: edge-ai
 
+  - id: aarch64-abi
+    name: AArch64 ABI
+    description: "AAPCS64 return regs, stack align, NEON int8 lanes — ponte Systems↔Edge."
+    glyph: "⬡"
+    unlock_room: aarch64-abi
+    unlock_track: edge-ai
+
   - id: on-device
     name: Edge Mage
     description: "Checklist on-device — competência plena de inferência embarcada."

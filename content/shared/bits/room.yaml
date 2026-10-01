@@ -1,22 +1,25 @@
 id: bits
-title: Bits & binary (shared core)
-summary: Powers of two, hex, and what a byte actually is.
-xp_reward: 20
+title: Bits & two's complement (shared core)
+summary: Powers of two, hex, signed ints — credited once across Fundamentals / Systems / Edge.
+xp_reward: 24
 unlock_xp: 0
 shared: true
 course: fundamentals
 resources:
-  - title: MDN — Number systems
-    url: https://developer.mozilla.org/en-US/docs/Glossary/Number
+  - title: CSAPP — Student site & labs (data representation)
+    url: https://csapp.cs.cmu.edu/3e/students.html
     kind: docs
-  - title: CSAPP — Data representation notes
-    url: https://csapp.cs.cmu.edu/
-    kind: book
+  - title: Wikipedia — Two's complement
+    url: https://en.wikipedia.org/wiki/Two%27s_complement
+    kind: docs
+  - title: LLVM LangRef — Integer types
+    url: https://llvm.org/docs/LangRef.html#integer-type
+    kind: docs
 tasks:
   - id: two-pow-10
     type: numeric
     prompt: "2^10 = ?"
-    xp: 10
+    xp: 8
     answer: 1024
     tolerance: 0
   - id: byte-bits
@@ -29,3 +32,20 @@ tasks:
       - "4"
       - "16"
       - "10"
+  - id: twos-neg1
+    type: fill
+    prompt: "In 8-bit two's complement, all-ones (0xFF) represents ___ (decimal)."
+    xp: 12
+    answers:
+      - "-1"
+      - "−1"
+  - id: overflow-wrap
+    type: mcq
+    prompt: "Unsigned 8-bit 255 + 1 wraps to…"
+    xp: 10
+    answer: 0
+    choices:
+      - "0"
+      - "256"
+      - "-1"
+      - "128"

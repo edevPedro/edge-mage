@@ -1,17 +1,17 @@
 id: vectors
 title: Vectors (shared core)
 summary: Magnitude, direction, and dot product — credited once across courses.
-xp_reward: 20
+xp_reward: 24
 unlock_xp: 0
 shared: true
 course: fundamentals
 resources:
+  - title: 3Blue1Brown — Essence of linear algebra
+    url: https://www.3blue1brown.com/topics/linear-algebra
+    kind: docs
   - title: Khan Academy — Vectors
     url: https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces
     kind: docs
-  - title: 3Blue1Brown — Essence of linear algebra
-    url: https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab
-    kind: video
 tasks:
   - id: mag-3-4
     type: numeric
@@ -29,3 +29,12 @@ tasks:
       - "1"
       - "equal to the product of magnitudes"
       - "undefined"
+  - id: unit-hint
+    type: fill
+    prompt: "A vector with length 1 is called a ___ vector."
+    xp: 10
+    answers:
+      - "unit"
+      - "Unit"
+      - "unitário"
+      - "unitario"

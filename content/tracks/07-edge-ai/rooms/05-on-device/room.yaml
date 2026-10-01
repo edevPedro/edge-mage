@@ -5,6 +5,7 @@ requires_skills:
 - quantizacao
 - flops-bandwidth
 - simd-latency
+- aarch64-abi
 title: On-Device Checklist
 summary: Orçamento, fallback de ops e golden tests.
 xp_reward: 72
@@ -13,12 +14,15 @@ resources:
 - title: TensorFlow Lite guide
   url: https://www.tensorflow.org/lite/guide
   kind: docs
-- title: Arm ML embedded
-  url: https://www.arm.com/markets/artificial-intelligence
+- title: Arm CMSIS-NN
+  url: https://arm-software.github.io/CMSIS_5/NN/html/index.html
   kind: docs
-- title: arXiv — Efficient DL
+- title: arXiv — A Survey of Quantization Methods for Efficient Neural Network Inference
   url: https://arxiv.org/abs/2103.13630
   kind: paper
+- title: Arm — Learn the architecture (A64)
+  url: https://developer.arm.com/documentation/102374/0101/Overview
+  kind: docs
 animation: memory_grid
 tasks:
 - id: budget

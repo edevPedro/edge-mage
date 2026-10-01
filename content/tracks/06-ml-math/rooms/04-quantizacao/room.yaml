@@ -6,7 +6,10 @@ summary: scale, int8, Q-format e tradeoff de acurácia.
 xp_reward: 54
 unlock_xp: 2050
 resources:
-- title: arXiv — Quantization survey
+- title: arXiv — Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference (Jacob et al.)
+  url: https://arxiv.org/abs/1712.05877
+  kind: paper
+- title: arXiv — A Survey of Quantization Methods for Efficient Neural Network Inference
   url: https://arxiv.org/abs/2103.13630
   kind: paper
 - title: Arm — CMSIS-NN

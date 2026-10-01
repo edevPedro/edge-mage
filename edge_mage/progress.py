@@ -23,6 +23,17 @@ from edge_mage.ranks import (
 STREAK_MANA_THRESHOLD = 3
 STREAK_MANA_MULT = 1.25
 
+# Shared-core aliases: clearing either id credits both (no Systems↔Edge farm).
+ROOM_CREDIT_ALIASES: dict[str, tuple[str, ...]] = {
+    "vectors": ("vetores",),
+    "vetores": ("vectors",),
+    "trig-waves": ("trigonometria", "ondas"),
+    "trigonometria": ("trig-waves",),
+    "ondas": ("trig-waves",),
+    "bits": ("llvm-bits",),
+    "intro-asm": ("sys-asm-read", "llvm-asm-host"),
+}
+
 
 def default_progress_path() -> Path:
     return progress_path()
@@ -140,11 +151,19 @@ class ProgressStore:
     def is_room_done(self, track_id: str, room_id: str) -> bool:
         if self.state.completed_rooms.get(self.state.room_key(track_id, room_id)):
             return True
-        # shared core: single room_id credit
-        return bool(self.state.completed_rooms_by_id.get(room_id))
+        # shared core: single room_id credit (+ aliases)
+        if self.state.completed_rooms_by_id.get(room_id):
+            return True
+        for alias in ROOM_CREDIT_ALIASES.get(room_id, ()):
+            if self.state.completed_rooms_by_id.get(alias):
+                return True
+        return False
 
     def mark_room_id(self, room_id: str) -> None:
+        """Credit room_id once + shared aliases (Systems↔Edge anti-farm)."""
         self.state.completed_rooms_by_id[room_id] = True
+        for alias in ROOM_CREDIT_ALIASES.get(room_id, ()):
+            self.state.completed_rooms_by_id[alias] = True
 
     def is_skill_unlocked(self, skill_id: str) -> bool:
         return bool(self.state.unlocked_skills.get(skill_id))
@@ -166,7 +185,7 @@ class ProgressStore:
         fund = self.course_meta(COURSE_FUNDAMENTALS)
         if fund.get("cleared") or fund.get("mago_base"):
             return True
-        # heuristic: all fundamentals tutorial rooms done by id
+        # heuristic: shared core + clearance (trig-waves recommended, not hard gate)
         needed = {"intro-asm", "bits", "vectors", "fundamentals-clear"}
         done = set(k for k, v in self.state.completed_rooms_by_id.items() if v)
         return needed.issubset(done) or bool(fund.get("cleared"))
@@ -176,7 +195,13 @@ class ProgressStore:
         return bool(sys.get("boss_craft") or self.has_ritual("systems-boss-craft"))
 
     def has_evidence(self) -> bool:
-        return bool(self.state.evidence.get("portfolio") or self.state.evidence.get("signed"))
+        """Shared math / portfolio evidence — never XP alone; separate from boss rites."""
+        return bool(
+            self.state.evidence.get("portfolio")
+            or self.state.evidence.get("signed")
+            or self.state.evidence.get("shared_math")
+            or self.has_ritual("shared-math")
+        )
 
     def unlock_skills(self, skill_ids: list[str]) -> list[str]:
         newly: list[str] = []

@@ -111,7 +111,7 @@ GLOBAL_RANKS: tuple[Rank, ...] = (
         "Supreme Mage",
         0,
         1,
-        "Systems boss craft + Edge on-device + evidência registrada.",
+        "Mago Supremo: Systems LLVM craft + Edge on-device + shared math evidence.",
     ),
 )
 

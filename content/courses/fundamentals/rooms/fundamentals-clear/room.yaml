@@ -15,7 +15,7 @@ resources:
 tasks:
   - id: ready
     type: mcq
-    prompt: "Shared rooms (vectors, bits, intro-asm) done. Claim Mago base?"
+    prompt: "Shared rooms (vectors, bits, trig-waves, intro-asm) done. Claim Mago base?"
     xp: 20
     answer: 0
     choices:

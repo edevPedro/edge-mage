@@ -1,0 +1,46 @@
+id: trig-waves
+title: Trig & waves intro (shared core)
+summary: Amplitude, period, frequency, phase — bridge to Edge sensors and Systems signals.
+xp_reward: 24
+unlock_xp: 0
+shared: true
+course: fundamentals
+resources:
+  - title: Khan Academy — Trigonometry
+    url: https://www.khanacademy.org/math/trigonometry
+    kind: docs
+  - title: The Scientist and Engineer's Guide to DSP (free book)
+    url: https://www.dspguide.com/
+    kind: book
+  - title: 3Blue1Brown — Fourier series (context)
+    url: https://www.3blue1brown.com/lessons/fourier-series
+    kind: video
+tasks:
+  - id: period-freq
+    type: mcq
+    prompt: "If a wave has period T seconds, its frequency f is…"
+    xp: 12
+    answer: 0
+    choices:
+      - "1/T"
+      - "T"
+      - "2πT"
+      - "T²"
+  - id: amp
+    type: fill
+    prompt: "Peak height from the midline of a sine wave is the ___."
+    xp: 10
+    answers:
+      - "amplitude"
+      - "Amplitude"
+      - "amplitude (A)"
+  - id: nyquist-hint
+    type: mcq
+    prompt: "To reconstruct a signal with max frequency f_max, sampling rate should be…"
+    xp: 12
+    answer: 1
+    choices:
+      - "exactly f_max"
+      - "greater than 2·f_max (Nyquist)"
+      - "f_max / 2"
+      - "irrelevant for digital sensors"

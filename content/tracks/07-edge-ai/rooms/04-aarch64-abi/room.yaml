@@ -1,0 +1,56 @@
+id: aarch64-abi
+title: AArch64 ABI on the edge
+summary: AAPCS64 return regs, stack alignment, and why NEON lanes matter for int8 kernels.
+xp_reward: 52
+unlock_xp: 2450
+requires_skills:
+  - memory-layout
+resources:
+  - title: Procedure Call Standard for the Arm 64-bit Architecture (AAPCS64)
+    url: https://github.com/ARM-software/abi-aa/releases
+    kind: docs
+  - title: Arm — Learn the architecture · A64 Overview
+    url: https://developer.arm.com/documentation/102374/0101/Overview
+    kind: docs
+  - title: Arm Neon Intrinsics Reference
+    url: https://developer.arm.com/architectures/instruction-sets/intrinsics/
+    kind: docs
+animation: memory_grid
+tasks:
+  - id: ret-reg
+    type: mcq
+    prompt: "Under AAPCS64, a 32-bit int return value is typically in…"
+    xp: 18
+    answer: 0
+    choices:
+      - "w0 / x0"
+      - "x8 only"
+      - "sp"
+      - "the FPSCR"
+  - id: stack-align
+    type: fill
+    prompt: "AAPCS64 requires the stack pointer to be ___-byte aligned at public interfaces (number)."
+    xp: 16
+    answers:
+      - "16"
+      - "16-byte"
+      - "16 bytes"
+  - id: neon-int8
+    type: mcq
+    prompt: "A 128-bit NEON register can hold how many int8 lanes?"
+    xp: 18
+    answer: 2
+    choices:
+      - "4"
+      - "8"
+      - "16"
+      - "32"
+  - id: outside-aapcs
+    type: fill
+    prompt: >-
+      Outside lab: open AAPCS64 (Arm ABI) and name the register used for the
+      indirect result location (one token, e.g. x8).
+    xp: 16
+    answers:
+      - "x8"
+      - "X8"
