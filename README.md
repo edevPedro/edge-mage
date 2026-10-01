@@ -1,235 +1,131 @@
 # Edge Mage
 
-Academia TUI (terminal) gamificada: da **trigonometria** até a matemática e o low-level de **Edge AI** — temática Mage Academy / hacker-arcane. Interface estilo **Neovim** (teclado, modos NORMAL/INSERT, `:` comandos, statusline).
+Você abre o terminal. Não o Notion.
 
-## Clone & instalação
+Academia TUI — teclado estilo **Neovim**, salão por salão — da trigonometria
+até o low-level de **Edge AI**. XP existe. Título **Edge Mage** não: esse
+só vem com ritual on-device de verdade.
+
+```text
+┌─ edge-mage ───────────────────────────────────────────── NORMAL · HISTÓRIA ─┐
+│  Sala: trigonometria                                          ✧ 3/28       │
+│                                                                              │
+│  O portal gira. Sem seno/cosseno você não atravessa.                         │
+│  j/k scroll · l abre · :daily · g r grimório                                 │
+│                                                                              │
+│      ·  braille unit circle  ·                                               │
+│                                                                              │
+│  -- NORMAL ----------------------------------------------------------------- │
+│  :continue                                                                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+[![license](https://img.shields.io/badge/license-MIT-1c1c1c?style=flat-square)](LICENSE)
+[![python](https://img.shields.io/badge/python-3.11%2B-1c1c1c?style=flat-square)](pyproject.toml)
+[![tests](https://img.shields.io/github/actions/workflow/status/edevPedro/edge-mage/test.yml?branch=main&style=flat-square&label=tests)](https://github.com/edevPedro/edge-mage/actions)
+
+*EN: terminal RPG-academy for math → on-device Edge AI. Vim keys. Earned rank.*
+
+---
+
+## O que é
+
+Curso jogável no terminal (Textual). 28+ salas + bosses. Cada sala: **História → Conceito → Desafio → Anim → Tasks**. Progresso em `~/.edge-mage/`.
+
+O loop:
+
+1. **Quiz** — MCQ/num, feedback rápido, cerimônia `+XP`
+2. **Feitiço** — código no sandbox (3s)
+3. **Ritual** — boss / artefato em `study-log/artifacts/`
+
+Mapa longo: [`content/CURRICULUM.md`](content/CURRICULUM.md) · spec do loop: [`SPEC-edge-mage-loop.md`](SPEC-edge-mage-loop.md)
+
+---
+
+## Instalar
+
+Uma linha (macOS / Linux):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/edevPedro/edge-mage/main/install.sh | bash
+```
+
+Ou clone:
 
 ```bash
 git clone https://github.com/edevPedro/edge-mage.git
 cd edge-mage
 ./install.sh
+# ou: make install
 ```
 
-Isso cria/atualiza o venv do projeto, faz `pip install -e .` e coloca wrappers em `~/.local/bin` para:
+Isso pega Python **3.11+**, sobe um venv, e linka em `~/.local/bin`:
 
-| Comando | Alias |
-|---------|--------|
-| `edge-mage` | principal |
-| `emage` | curto |
-| `mage` | curto |
+`mage` · `emage` · `edge-mage`
 
-Garanta que `~/.local/bin` esteja no PATH (zsh):
+Se o shell reclamar de PATH:
 
 ```bash
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
 ```
 
-Verificar de **qualquer** diretório:
+Checagem de qualquer pasta:
 
 ```bash
-cd /tmp && which edge-mage && edge-mage --version
+cd /tmp && mage --version && mage
 ```
 
-### Alternativas
+Dev / testes: `make install-dev` · `make test`  
+Alternativa: `USE_PIPX=1 ./install.sh`
 
-```bash
-make install
-USE_PIPX=1 ./install.sh   # ou: pipx install -e .
-```
+---
 
-### Dev local
-
-```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-edge-mage
-```
-
-Progresso local em `~/.edge-mage/progress.json` (não versionado).
-
-## Diário no GitHub (auto-commit)
-
-Na **primeira** vez que você conclui uma task (validação OK, XP ganho), o Edge Mage:
-
-1. acrescenta uma linha em [`study-log/completions.jsonl`](study-log/completions.jsonl) (`timestamp`, `track_id`, `room_id`, `task_id`, `xp_awarded`);
-2. faz `git commit` só desse arquivo (mensagem em PT, ex.: `study: concluiu fundamentos/trigonometria — Quantos radianos?`);
-3. faz `git push origin HEAD` se existir remote `origin` (sem force push).
-
-Refazer a mesma task **não** gera commit (evita spam). Se commit ou push falhar (rede, credencial, repo sujo), o app mostra aviso na TUI e continua; use `:sync` para commitar/push pendente do ledger.
-
-### Config (`~/.edge-mage/config.json`)
-
-```json
-{
-  "auto_git_commit": true,
-  "auto_git_push": true
-}
-```
-
-- `auto_git_commit`: padrão `true` quando o app detecta um repositório git (cwd, pacote instalado ou `EDGE_MAGE_REPO_ROOT`).
-- `auto_git_push`: padrão `true` quando há `origin`; desligue para só commit local.
-
-### Push / credenciais
-
-- Rode o jogo **dentro do clone** ou exporte `EDGE_MAGE_REPO_ROOT=/caminho/para/edge-mage`.
-- `git` precisa estar no `PATH`; push usa sua autenticação habitual (SSH ou `gh auth`).
-- Commits vão para a **branch atual** (em geral `main`), só com mudanças em `study-log/`.
-
-## Loop: quiz → feitiço → ritual
-
-1. **Quiz** (MCQ/num) — ensina, XP baixo, feedback rápido (cerimônia `+XP`)
-2. **Feitiço** (`code` + `code_tests`) — aplica no sandbox (3s)
-3. **Ritual** (boss / `study-log/artifacts/`) — prova fora do quiz
-
-**Edge Mage** ≠ só XP: precisa XP ≥ 2900 **e** checklist on-device (`study-log/artifacts/on-device.md`). Ver [`SPEC-edge-mage-loop.md`](SPEC-edge-mage-loop.md).
-
-| Home / comando | Efeito |
-|----------------|--------|
-| Continuar / `:continue` | próxima porta pedagógica |
-| Run de hoje / `:daily` | review + task nova (~20 min, seed por data) |
-| `M` na sala limpa | mastery 0..3 |
-| Streak ≥ 3 | mana XP ×1.25 |
-
-## UX estilo Neovim
-
-### Modos (statusline)
-
-| Modo | Quando | Comportamento |
-|------|--------|----------------|
-| **NORMAL** | padrão / após Esc | `j/k/h/l`, leader, `:` — navega sem mouse |
-| **INSERT** | `i` na task ou menu «Editar» | digitar resposta; Esc → NORMAL |
-| **COMMAND** | após `:` | linha de comando |
-| **G-** | após `g` | espera 2ª tecla (`gg`, `gp`, `gt`, `gh`, `gr`) |
-| **C-W** | após `Ctrl+w` | modo janela — próxima tecla move painéis |
-
-### Painéis (`Ctrl+w`) — salas e tasks
-
-Na sala: **História → Conceito → Desafio → Anim → Tarefas**. Na task: **Prompt → Resposta → Ações**.
+## Comandos (NORMAL)
 
 | Tecla | Ação |
 |-------|------|
-| `Ctrl+w` então `w` | ciclar painel focado |
-| `Ctrl+w` então `h` / `l` | painel anterior / próximo |
-| `Ctrl+w` então `j` / `k` | idem (layout linear) |
-| `j` / `k` no painel de texto | scroll (sem mouse) |
-| `j` / `k` em Tarefas | navegar opções |
+| `j` `k` `h` `l` / Enter | navegar |
+| `i` | INSERT (responder) |
+| `:` | command line |
+| `Ctrl+w` + `w`/`h`/`l` | painéis |
+| `g` + `p`/`r`/`t`/`h` | perfil / grimório / trilhas / home |
+| `Space` | anim on/off |
+| `M` | mastery (sala limpa) |
+| `q` | sair |
 
-A statusline mostra o painel (`· HISTÓRIA`, `· CONCEITO`, …) e o contador do grimório (`✧n/28`).
+Úteis em `:` → `:continue` · `:daily` · `:grimorio` · `:sync` · `:help`
 
-### Navegação (NORMAL)
+Run de hoje (`:daily`): review + task nova (~20 min). Streak ≥ 3 → mana XP ×1.25.
 
-| Tecla | Ação |
-|-------|------|
-| `j` / `k` | descer / subir (lista ou scroll) |
-| `h` / `Esc` | voltar (Esc em INSERT/C-W → NORMAL) |
-| `l` / `Enter` | abrir item |
-| `gg` | topo |
-| `G` | fim |
-| `Space` | toggle animação |
-| `i` | INSERT (tela de task) |
-| `q` | sair (fora de INSERT) |
-| `?` | ajuda |
+---
 
-### Leader (`g` + tecla)
+## Rank Edge Mage
 
-| Sequência | Ação |
-|-----------|------|
-| `gp` | perfil |
-| `gr` | grimório |
-| `gt` | trilhas |
-| `gh` | home |
+| Rank | O que falta |
+|------|-------------|
+| Noviço → Arquimago | XP |
+| **Edge Mage** | XP ≥ 2900 **e** ritual on-device (`study-log/artifacts/on-device.md`) |
 
-### Comandos `:`
+Sem o checklist, você fica Arquimago mesmo com XP alto. De propósito.
 
-| Comando | Efeito |
-|---------|--------|
-| `:q` / `:sair` | sair |
-| `:tracks` / `:trilhas` | trilhas |
-| `:profile` / `:perfil` | perfil |
-| `:grimorio` / `:grim` | grimório de habilidades |
-| `:home` | tela inicial |
-| `:room <id>` | abrir sala (ex.: `:room trigonometria`) |
-| `:anim [kind]` | toggle animação |
-| `:xp` | XP / rank / skills |
-| `:sync` | commit/push pendente do diário (`study-log/`) |
-| `:help` / `:ajuda` | ajuda |
+---
 
-## História · Conceito · Desafio
+## Diário no git (opcional)
 
-Cada sala carrega:
+Primeira conclusão de task → linha em `study-log/completions.jsonl` + commit/push (se tiver `origin`). Refazer não spamava. `:sync` pra pendência.
 
-| Arquivo | Aba / painel |
-|---------|----------------|
-| `story.md` | **História** — cenário; resolver a task = resolver o conflito |
-| `concept.md` | **Conceito** — editorial pedagógico (estilo LeetCode) |
-| `lesson.md` | **Desafio** — lição operacional + tasks |
+Desligar: `~/.edge-mage/config.json` → `"auto_git_push": false`.
 
-## Grimório
+---
 
-Skills definidas em [`content/grimoire/skills.yaml`](content/grimoire/skills.yaml). Completar uma sala desbloqueia 1+ habilidades (ex.: *Trigonometria Arcana*, *Gradiente Descendente*, *Quantização Int8*). Abrir com `:grimorio`, `gr`, ou o menu Home. Persistido em `progress.json` (`unlocked_skills`).
+## Contribuir
 
-## Animações TUI
+Sala nova: `content/tracks/<trilha>/rooms/<id>/` com `story.md` + `concept.md` + `lesson.md` + `room.yaml`, skill em `content/grimoire/skills.yaml`.
 
-Painel braille/ASCII (~12 fps) em **todas** as salas (kind no `room.yaml`):
-
-| Kind | Uso típico |
-|------|------------|
-| `unit_circle` / `sine_wave` / `vector` / `matrix` | Fundamentos / ondas / matmul |
-| `circuit_pulse` / `adc_ladder` | Ohm, divisor, ADC |
-| `gradient_descent` / `derivative_slope` | Otimização |
-| `softmax_bars` / `probability_bars` / `quantize_steps` | ML Math |
-| `robot_transform` / `sampling_dots` | Robótica / amostragem |
-| `memory_grid` | Edge AI layout / roofline |
-
-Controles: `Space` ou `:anim` / `:anim softmax_bars`.
-
-## Progressão (ranks)
-
-| Rank | XP mín. | Ideia |
-|------|---------|--------|
-| Noviço | 0 | Trig e primeiros passos |
-| Aprendiz | 100 | Vetores, exp/log, Python |
-| Adepto | 280 | Álgebra linear + sinais |
-| Evocador | 550 | Elétrica + robótica |
-| Mago | 1100 | Derivadas / gradiente / batch |
-| Arquimago | 1750 | Softmax, FLOPs, quantização |
-| **Edge Mage** | 2900 + ritual on-device | Checklist real — não cosmético |
-
-Mapa pedagógico: [`content/CURRICULUM.md`](content/CURRICULUM.md). Spec do loop: [`SPEC-edge-mage-loop.md`](SPEC-edge-mage-loop.md). XP total ≈ **3144+** (bosses).
-
-## Trilhas
-
-1. **Fundamentos** (0) — trig, vetores, exp/log, álgebra linear (+ code spells)
-2. **Programação** (100) — Python alinhado à math
-3. **Física & Sinais** (250) — cinemática, ondas, amostragem
-4. **Elétrica Edge** (500) — Ohm, divisor, ADC
-5. **Robótica** (800) — transforms 2D, cinemática, sensores
-6. **Otimização** (1100) — derivadas, gradiente, loss/LR, batch
-7. **ML Math** (1650) — probabilidade, softmax/CE, matmul/FLOPs, quantização
-8. **Edge AI Low-Level** (2300 + ritual Softmax Estável) — layout, banda, SIMD, on-device
-9. **Rituais (Boss)** (400+) — Codex Matricial, Softmax Estável, Quant Lab
-
-28+ salas + 3 bosses. Skills no grimório (~31).
-## Adicionar uma sala
-
-1. `content/tracks/<trilha>/rooms/<id>/`
-2. `story.md` + `concept.md` + `lesson.md` + `room.yaml` (`animation: …`)
-3. Entrada em `content/grimoire/skills.yaml`
-4. Tasks: `mcq` | `numeric` | `fill` | `code`
-
-## Testes
+Código de desafio: subprocess + timeout + denylist. Não é sandbox militar — é pra math → edge inference.
 
 ```bash
-.venv/bin/pytest -q
-# inclui navegação vim via Textual Pilot + frames de animação
+make install-dev && make test
 ```
 
-## Requisitos
-
-- Python **3.11+**
-- Terminal com cores e Unicode (braille)
-
-## Segurança
-
-Desafios de código rodam em subprocesso com timeout e bloqueio de imports/I/O perigosos. Foco: math → edge inference.
+MIT · Python 3.11+ · terminal com Unicode (braille ajuda)
