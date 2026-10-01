@@ -45,10 +45,21 @@ def test_validators_and_xp(tmp_path: Path) -> None:
     assert level_from_xp(0) == 1
     assert rank_from_xp(0).id == "novico"
     assert rank_from_xp(2900).id == "edge_mage"
-    from edge_mage.ranks import effective_rank
+    from edge_mage.ranks import effective_rank, global_rank_from_flags
 
     assert effective_rank(2900, False).id == "arquimago"
     assert effective_rank(2900, True).id == "edge_mage"
+    assert global_rank_from_flags(has_mago_base=False).id == "none"
+    assert global_rank_from_flags(has_mago_base=True).id == "mago_base"
+    assert (
+        global_rank_from_flags(
+            has_mago_base=True,
+            has_systems_boss=True,
+            has_edge_on_device=True,
+            has_evidence=True,
+        ).id
+        == "mago_supremo"
+    )
 
 
 def test_code_task() -> None:

@@ -22,7 +22,7 @@ def test_nav_mode_helpers() -> None:
 
 @pytest.mark.asyncio
 async def test_home_jk_and_enter_without_mouse() -> None:
-    app = EdgeMageApp()
+    app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:
         assert isinstance(app.screen, HomeScreen)
         assert app.nav_mode == NavMode.NORMAL
@@ -65,7 +65,7 @@ async def test_home_jk_and_enter_without_mouse() -> None:
 
 @pytest.mark.asyncio
 async def test_task_insert_escape_cycle() -> None:
-    app = EdgeMageApp()
+    app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:
         # abre fundamentos → primeira sala → primeira task via comandos internos
         fund = next(t for t in app.tracks if t.id == "fundamentos")
@@ -102,7 +102,7 @@ async def test_task_insert_escape_cycle() -> None:
 
 @pytest.mark.asyncio
 async def test_statusline_shows_mode() -> None:
-    app = EdgeMageApp()
+    app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:
         sl = app.screen.query_one(StatusLine)
         mode_w = sl.query_one("#sl-mode")
@@ -117,7 +117,7 @@ async def test_statusline_shows_mode() -> None:
 
 @pytest.mark.asyncio
 async def test_leader_gt_tracks() -> None:
-    app = EdgeMageApp()
+    app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:
         await pilot.press("g", "t")
         assert isinstance(app.screen, TracksScreen)

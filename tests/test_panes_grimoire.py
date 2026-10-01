@@ -75,7 +75,7 @@ def test_grimoire_unlock_on_room_complete(tmp_path: Path) -> None:
 
 @pytest.mark.asyncio
 async def test_ctrl_w_cycles_panes() -> None:
-    app = EdgeMageApp()
+    app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:
         fund = next(t for t in app.tracks if t.id == "fundamentos")
         room = next(r for r in fund.rooms if r.id == "trigonometria")
@@ -107,7 +107,7 @@ async def test_ctrl_w_cycles_panes() -> None:
 
 @pytest.mark.asyncio
 async def test_grimoire_screen_opens() -> None:
-    app = EdgeMageApp()
+    app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:
         await pilot.press("g", "r")
         assert isinstance(app.screen, GrimoireScreen)

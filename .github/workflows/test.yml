@@ -20,3 +20,5 @@ jobs:
         run: pip install -e ".[dev]"
       - name: Test
         run: pytest -q
+      - name: Lint resources
+        run: python scripts/lint_resources.py
