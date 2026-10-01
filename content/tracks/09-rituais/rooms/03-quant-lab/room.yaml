@@ -1,0 +1,33 @@
+id: quant-lab
+title: Quant Lab
+summary: Ritual boss — prova de competência.
+xp_reward: 80
+unlock_xp: 2000
+animation: quantize_steps
+boss: true
+elite_skill: elite-quant
+tasks:
+  - id: warm
+    type: mcq
+    prompt: "Este ritual exige código + harness. Qual a ordem correta do loop?"
+    xp: 10
+    answer: 0
+    choices:
+      - "quiz leve → feitiço (código) → selo"
+      - "só XP até Edge Mage"
+      - "pular código"
+  - id: spell
+    type: code
+    prompt: "Implemente `max_quant_error(xs, scale)` = max |x - scale*quantize_int8(x,scale)|."
+    xp: 50
+    code_template: |
+      def quantize_int8(x, scale):
+          q=int(round(x/scale))
+          return max(-128, min(127, q))
+
+      def max_quant_error(xs, scale):
+          ...
+    code_tests: |
+      e=mod.max_quant_error([0.05,0.14,-0.2], 0.1)
+      assert e < 0.06
+

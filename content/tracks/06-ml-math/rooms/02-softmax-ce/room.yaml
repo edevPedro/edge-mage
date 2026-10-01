@@ -45,3 +45,21 @@ tasks:
           ...
 
       print(round(sum(softmax([1.0, 2.0, 3.0])), 6))
+
+  - id: code-softmax-stable
+    type: code
+    prompt: "Implemente `softmax(zs)` estável (subtrai max) → lista de probs."
+    xp: 30
+    code_template: |
+      import math
+
+      def softmax(zs):
+          # TODO
+          ...
+    code_tests: |
+      import math
+      p=mod.softmax([1000.0,1000.0,1000.0])
+      assert abs(sum(p)-1)<1e-9
+      assert all(abs(x-1/3)<1e-6 for x in p)
+      p2=mod.softmax([1.0,2.0,3.0])
+      assert abs(sum(p2)-1)<1e-9 and p2[2]>p2[1]>p2[0]

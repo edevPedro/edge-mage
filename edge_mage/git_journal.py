@@ -227,12 +227,68 @@ def journal_task_completion(
     return JournalResult(ok=True, committed=True, pushed=pushed, message=msg)
 
 
+def journal_artifact(
+    ritual_id: str,
+    *,
+    repo_root: Path | None = None,
+    settings: JournalSettings | None = None,
+    run_git=_run_git,
+) -> JournalResult:
+    """Commita study-log/artifacts/<ritual>.md no diário git."""
+    root = repo_root or find_repo_root()
+    if root is None:
+        return JournalResult(
+            ok=False,
+            warning="git: repositório não encontrado",
+        )
+    cfg = settings or load_journal_settings(root)
+    if not cfg.auto_git_commit:
+        return JournalResult(ok=True, message="auto_git_commit desligado")
+
+    safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in ritual_id)
+    rel = f"study-log/artifacts/{safe}.md"
+    path = root / rel
+    if not path.is_file():
+        return JournalResult(ok=False, warning=f"artefato ausente: {rel}")
+
+    add_proc = run_git(["add", "--", rel], root)
+    if add_proc.returncode != 0:
+        return JournalResult(
+            ok=False,
+            warning=f"git add falhou: {(add_proc.stderr or add_proc.stdout).strip()}",
+        )
+
+    diff = run_git(["diff", "--cached", "--quiet", "--", rel], root)
+    if diff.returncode == 0:
+        return JournalResult(ok=True, message="artefato já commitado")
+
+    msg = f"study: ritual {ritual_id} — artifact"
+    commit_proc = run_git(["commit", "-m", msg], root)
+    if commit_proc.returncode != 0:
+        err = (commit_proc.stderr or commit_proc.stdout).strip()
+        return JournalResult(ok=False, warning=f"git commit falhou: {err}")
+
+    pushed = False
+    if cfg.auto_git_push:
+        push_proc = run_git(["push", "-u", "origin", "HEAD"], root)
+        if push_proc.returncode != 0:
+            err = (push_proc.stderr or push_proc.stdout).strip()
+            return JournalResult(
+                ok=True,
+                committed=True,
+                message=msg,
+                warning=f"git push falhou: {err} (use :sync)",
+            )
+        pushed = True
+    return JournalResult(ok=True, committed=True, pushed=pushed, message=msg)
+
+
 def sync_study_journal(
     repo_root: Path | None = None,
     settings: JournalSettings | None = None,
     run_git=_run_git,
 ) -> JournalResult:
-    """Commita alterações pendentes no ledger e faz push."""
+    """Commita ledger + artifacts pendentes e faz push."""
     root = repo_root or find_repo_root()
     if root is None:
         return JournalResult(
@@ -241,20 +297,25 @@ def sync_study_journal(
         )
     cfg = settings or load_journal_settings(root)
     ledger_rel = str(LEDGER_PATH)
+    arts = "study-log/artifacts"
     ledger_file = root / LEDGER_PATH
-    if not ledger_file.is_file():
+    arts_path = root / arts
+    if not ledger_file.is_file() and not arts_path.exists():
         return JournalResult(ok=True, message="nenhum ledger ainda")
 
-    add_proc = run_git(["add", "--", ledger_rel], root)
+    paths = [ledger_rel]
+    if arts_path.exists():
+        paths.append(arts)
+    add_proc = run_git(["add", "--", *paths], root)
     if add_proc.returncode != 0:
         return JournalResult(
             ok=False,
             warning=f"git add falhou: {(add_proc.stderr or add_proc.stdout).strip()}",
         )
 
-    diff = run_git(["diff", "--cached", "--quiet", "--", ledger_rel], root)
+    diff = run_git(["diff", "--cached", "--quiet"], root)
     if diff.returncode != 0:
-        msg = "study: sync completions.jsonl"
+        msg = "study: sync completions + artifacts"
         commit_proc = run_git(["commit", "-m", msg], root)
         if commit_proc.returncode != 0:
             err = (commit_proc.stderr or commit_proc.stdout).strip()

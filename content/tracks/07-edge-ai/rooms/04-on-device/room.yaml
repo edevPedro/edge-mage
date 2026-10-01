@@ -1,4 +1,11 @@
 id: on-device
+boss: true
+elite_skill: on-device
+
+requires_skills:
+  - quantizacao
+  - flops-bandwidth
+  - simd-latency
 title: On-Device Checklist
 summary: Orçamento, fallback de ops e golden tests.
 xp_reward: 72
@@ -43,3 +50,9 @@ tasks:
       - "o miolo entre sensor/pré e pós/ato"
       - "substituível por printf"
       - "sempre treinado on-device"
+
+  - id: ritual-checklist
+    type: ritual
+    prompt: "Preencha study-log/artifacts/on-device.md (latency_ms, ram_mb, model, device) e confirme."
+    xp: 40
+    ritual_id: on-device

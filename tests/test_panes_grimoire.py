@@ -52,6 +52,12 @@ def test_grimoire_unlock_on_room_complete(tmp_path: Path) -> None:
             ans = str(task.answer)
         elif task.type == "fill":
             ans = task.answers[0]
+        elif task.type == "code":
+            ans = (
+                "import math\n"
+                "def unit_point(theta):\n"
+                "    return (math.cos(theta), math.sin(theta))\n"
+            )
         else:
             continue
         ok, _ = validate_task(task, ans)

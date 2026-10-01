@@ -38,3 +38,20 @@ tasks:
       - "cos θ"
       - "cos(θ)"
       - "cosine"
+
+  - id: code-sin-cos
+    type: code
+    prompt: "Implemente `unit_point(theta)` → (cosθ, sinθ) com math."
+    xp: 24
+    code_template: |
+      import math
+
+      def unit_point(theta):
+          # TODO: retorne (cos, sin)
+          ...
+    code_tests: |
+      import math
+      x, y = mod.unit_point(0.0)
+      assert abs(x-1)<1e-9 and abs(y)<1e-9
+      x, y = mod.unit_point(math.pi/2)
+      assert abs(x)<1e-9 and abs(y-1)<1e-9

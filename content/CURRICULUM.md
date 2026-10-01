@@ -54,7 +54,20 @@ Edge AI Low-Level
 | 7 | ML Math | 1650 | probabilidade, softmax-ce, matmul-flops, quantizacao | Oráculo → Int8 |
 | 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, on-device | Layout → **Edge Mage** |
 
-XP total disponível ≈ **3144**. Rank **Edge Mage** em **2900 XP** (exige atravessar o núcleo Edge AI). **28 skills** no grimório (1 por sala).
+XP total disponível ≈ **3144+** (bosses). Rank **Edge Mage** = **2900 XP + ritual on-device** (artefato em `study-log/artifacts/on-device.md`). **31 skills** no grimório.
+
+Track **Edge AI** exige ritual `softmax-estavel` (boss Softmax Estável), além do unlock de XP.
+
+## Bosses / rituais (`09-rituais`)
+
+| Boss | Prova | Gate / reward |
+|------|--------|----------------|
+| Codex Matricial | `matmul2` + harness | elite-codex |
+| Softmax Estável | softmax extremos | abre Edge AI |
+| Quant Lab | erro max int8 | elite-quant |
+| On-Device | checklist latency/RAM/model/device | **Edge Mage** |
+
+Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 
 ## Conteúdo por sala
 

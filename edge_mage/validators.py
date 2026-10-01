@@ -20,36 +20,6 @@ def normalize_text(value: str) -> str:
     return s
 
 
-def check_mcq(task: Task, user_input: str) -> tuple[bool, str]:
-    raw = user_input.strip()
-    if not raw:
-        return False, "Escolha uma opção."
-
-    # Aceita índice 1-based, letra A/B/C, ou texto da opção
-    choices = task.choices
-    answer = str(task.answer).strip()
-
-    idx: int | None = None
-    if raw.isdigit():
-        idx = int(raw) - 1
-    elif len(raw) == 1 and raw.isalpha():
-        idx = ord(raw.upper()) - ord("A")
-    else:
-        for i, c in enumerate(choices):
-            if normalize_text(c) == normalize_text(raw):
-                idx = i
-                break
-
-    if idx is None or idx < 0 or idx >= len(choices):
-        return False, "Opção inválida."
-
-    # answer pode ser índice 0-based, 1-based, letra, ou texto
-    correct_idx = _resolve_mcq_answer(task)
-    if idx == correct_idx:
-        return True, "Correto."
-    return False, "Ainda não. Revise a lição e tente de novo."
-
-
 def _resolve_mcq_answer(task: Task) -> int:
     ans = task.answer
     if isinstance(ans, int):
@@ -72,6 +42,32 @@ def _resolve_mcq_answer(task: Task) -> int:
     return 0
 
 
+def check_mcq(task: Task, user_input: str) -> tuple[bool, str]:
+    raw = user_input.strip()
+    if not raw:
+        return False, "Escolha uma opção."
+
+    choices = task.choices
+    idx: int | None = None
+    if raw.isdigit():
+        idx = int(raw) - 1
+    elif len(raw) == 1 and raw.isalpha():
+        idx = ord(raw.upper()) - ord("A")
+    else:
+        for i, c in enumerate(choices):
+            if normalize_text(c) == normalize_text(raw):
+                idx = i
+                break
+
+    if idx is None or idx < 0 or idx >= len(choices):
+        return False, "Opção inválida."
+
+    correct_idx = _resolve_mcq_answer(task)
+    if idx == correct_idx:
+        return True, "Correto!"
+    return False, "Ainda não. Revise o Conceito e tente de novo."
+
+
 def check_numeric(task: Task, user_input: str) -> tuple[bool, str]:
     text = user_input.strip().replace(",", ".")
     try:
@@ -83,14 +79,16 @@ def check_numeric(task: Task, user_input: str) -> tuple[bool, str]:
     abs_tol = float(task.tolerance)
     rel_tol = float(task.relative_tolerance)
     if math.isclose(value, expected, rel_tol=rel_tol, abs_tol=abs_tol):
-        return True, "Correto."
-    return False, f"Fora da tolerância. Esperado ≈ {expected:g}."
+        return True, "Correto!"
+    from edge_mage.juice import numeric_near_miss
+
+    return False, numeric_near_miss(value, expected)
 
 
 def check_fill(task: Task, user_input: str) -> tuple[bool, str]:
     candidates = [normalize_text(a) for a in (task.answers or [str(task.answer)])]
     if normalize_text(user_input) in candidates:
-        return True, "Correto."
+        return True, "Correto!"
     return False, "Resposta não confere. Normalize espaços e acentos se preciso."
 
 
@@ -169,15 +167,22 @@ def check_code(task: Task, user_code: str) -> tuple[bool, str]:
         if task.expected_stdout.strip():
             expected = task.expected_stdout.strip()
             if out == expected or out.endswith(expected):
-                return True, "Correto."
+                return True, "Feitiço OK!"
             return False, f"Stdout esperado:\n{expected}\nObtido:\n{out}"
 
         if task.code_tests.strip():
             if out.endswith("OK") or out == "OK":
-                return True, "Testes passaram."
+                return True, "Testes passaram — feitiço selado!"
             return False, f"Saída inesperada:\n{out}"
 
         return True, "Executou sem erro."
+
+
+def check_ritual(task: Task, user_input: str) -> tuple[bool, str]:
+    from edge_mage.rituals import validate_ritual_file
+
+    rid = task.ritual_id or task.id
+    return validate_ritual_file(rid)
 
 
 def validate_task(task: Task, user_input: str) -> tuple[bool, str]:
@@ -189,4 +194,6 @@ def validate_task(task: Task, user_input: str) -> tuple[bool, str]:
         return check_fill(task, user_input)
     if task.type == "code":
         return check_code(task, user_input)
+    if task.type == "ritual":
+        return check_ritual(task, user_input)
     return False, f"Tipo desconhecido: {task.type}"

@@ -43,3 +43,20 @@ tasks:
       - "ln"
       - "logarithm"
       - "logaritmo"
+
+  - id: code-logsum
+    type: code
+    prompt: "Implemente `log_sum(a,b)` = log(exp(a)+exp(b)) de forma estável (use max)."
+    xp: 26
+    code_template: |
+      import math
+
+      def log_sum(a, b):
+          # TODO estável
+          ...
+    code_tests: |
+      import math
+      v = mod.log_sum(1.0, 1.0)
+      assert abs(v - math.log(2*math.e)) < 1e-9
+      v2 = mod.log_sum(1000.0, 1000.0)
+      assert abs(v2 - (1000+math.log(2))) < 1e-6

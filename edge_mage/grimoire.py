@@ -30,6 +30,7 @@ def load_skills(root: Path | None = None) -> list[Skill]:
                 glyph=str(item.get("glyph") or "◆"),
                 unlock_room=str(item.get("unlock_room") or ""),
                 unlock_track=str(item.get("unlock_track") or ""),
+                elite=bool(item.get("elite", False)),
             )
         )
     return skills

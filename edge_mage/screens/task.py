@@ -1,4 +1,4 @@
-"""Resolver uma task — NORMAL (browse) vs INSERT (responder)."""
+"""Resolver uma task — NORMAL/INSERT + victory juice."""
 
 from __future__ import annotations
 
@@ -17,24 +17,38 @@ class TaskScreen(MageScreen):
     list_id = "task-actions"
     pane_ids = ["prompt", "answer", "actions"]
 
-    def __init__(self, track: Track, room: Room, quest: Task) -> None:
+    def __init__(
+        self,
+        track: Track,
+        room: Room,
+        quest: Task,
+        *,
+        mastery: bool = False,
+        daily: bool = False,
+        on_success=None,
+    ) -> None:
         super().__init__()
         self.track = track
         self.room = room
         self.quest = quest
-        self.context_label = f"{track.id}/{room.id}/{quest.id}"
+        self.mastery = mastery
+        self.daily = daily
+        self.on_success = on_success
+        tag = "mastery" if mastery else ("daily" if daily else quest.id)
+        self.context_label = f"{track.id}/{room.id}/{tag}"
         self.focused_pane = "actions"
 
     def compose_body(self) -> ComposeResult:
         store = self.app.store  # type: ignore[attr-defined]
         done = store.is_task_done(self.track.id, self.room.id, self.quest.id)
+        mode = "MASTERY" if self.mastery else ("DAILY" if self.daily else self.quest.type.upper())
         with Vertical():
             yield Static(
-                f"TASK · {self.quest.type.upper()} · +{self.quest.xp} XP",
+                f"TASK · {mode} · +{self.quest.xp} XP",
                 classes="title",
             )
             yield Static(
-                "Ctrl+w painéis · i INSERT · Esc NORMAL  ·  NORMAL: j/k menu",
+                "Ctrl+w painéis · i INSERT · Esc NORMAL",
                 classes="muted",
             )
             with VerticalScroll(classes="panel", id="pane-prompt", can_focus=True):
@@ -47,15 +61,25 @@ class TaskScreen(MageScreen):
                     yield Static("\n".join(lines), classes="accent")
                 if self.quest.hint:
                     yield Static(f"Dica: {self.quest.hint}", classes="muted")
-                if done:
+                if self.quest.type == "ritual":
                     yield Static(
-                        "✓ Já concluída — pode refazer sem ganhar XP.",
+                        f"Artefato: study-log/artifacts/{self.quest.ritual_id or self.quest.id}.md",
+                        classes="accent",
+                    )
+                if done and not self.mastery and not self.daily:
+                    yield Static(
+                        "✓ Já concluída — pode refazer sem XP (use M para mastery).",
                         classes="ok",
                     )
 
             if self.quest.type == "code":
                 initial = self.quest.code_template or "# seu código aqui\n"
                 yield TextArea(initial, id="answer")
+            elif self.quest.type == "ritual":
+                yield Input(
+                    placeholder="digite ok após preencher o artefato",
+                    id="answer",
+                )
             else:
                 placeholder = {
                     "mcq": "A, B, C… ou 1, 2, 3…",
@@ -76,7 +100,6 @@ class TaskScreen(MageScreen):
         super().on_mount()
         if hasattr(self.app, "set_nav_context"):
             self.app.set_nav_context(self.context_label)  # type: ignore[attr-defined]
-        # NORMAL: nunca deixar o Input roubar o foco na abertura
         if hasattr(self.app, "enter_normal"):
             self.app.enter_normal()  # type: ignore[attr-defined]
         try:
@@ -117,7 +140,12 @@ class TaskScreen(MageScreen):
 
     def _check(self) -> None:
         status = self.query_one("#status", Static)
-        ok, msg = validate_task(self.quest, self._user_value())
+        user_val = self._user_value()
+        if self.quest.type == "ritual":
+            # qualquer input após arquivo válido
+            ok, msg = validate_task(self.quest, user_val or "ok")
+        else:
+            ok, msg = validate_task(self.quest, user_val)
         if not ok:
             status.update(f"✗ {msg}")
             status.set_class(True, "err")
@@ -125,28 +153,52 @@ class TaskScreen(MageScreen):
             return
 
         store = self.app.store  # type: ignore[attr-defined]
+
+        if self.quest.type == "ritual":
+            from edge_mage.rituals import complete_and_journal_ritual
+
+            rid = self.quest.ritual_id or self.quest.id
+            rok, rmsg = complete_and_journal_ritual(rid, store=store)
+            if not rok:
+                status.update(f"✗ {rmsg}")
+                status.set_class(True, "err")
+                return
+
         result = store.mark_task(
             self.track.id,
             self.room.id,
             self.quest.id,
             self.quest.xp,
             self.room,
+            mastery=self.mastery,
         )
-        parts = [f"✓ {msg}"]
-        if result["gained"]:
-            parts.append(f"+{result['gained']} XP")
-        parts.append(
-            f"Total {result['xp']} XP · Nv {result['level']} · {result['rank'].title}"
-        )
-        if result["leveled"]:
-            parts.append("LEVEL UP!")
-        if result["ranked_up"]:
-            parts.append(f"NOVO RANK: {result['rank'].title}")
-        status.update("  ·  ".join(parts))
-        status.set_class(True, "ok")
-        status.set_class(False, "err")
-        self.notify("  ·  ".join(parts), severity="information")
-        if result.get("first_completion"):
+
+        # daily variant: mark as done in daily_run without needing real task id
+        if self.daily and callable(self.on_success):
+            self.on_success(result)
+
+        skill_glyph = ""
+        skill_name = ""
+        newly_skills: list = []
+        if result.get("room_completed"):
+            newly_skills = self._grant_room_skills()
+            if newly_skills:
+                skill_glyph = newly_skills[0].glyph
+                skill_name = newly_skills[0].name
+            if self.room.elite_skill:
+                elite = next(
+                    (
+                        s
+                        for s in getattr(self.app, "skills", [])
+                        if s.id == self.room.elite_skill
+                    ),
+                    None,
+                )
+                if elite:
+                    skill_glyph = elite.glyph
+                    skill_name = elite.name
+
+        if result.get("first_completion") and not self.mastery and not self.daily:
             jr = journal_task_completion(
                 track_id=self.track.id,
                 room_id=self.room.id,
@@ -156,15 +208,44 @@ class TaskScreen(MageScreen):
             )
             if jr.warning:
                 self.notify(jr.warning, severity="warning")
-            elif jr.committed and jr.pushed:
-                self.notify(f"GitHub · {jr.message}", severity="information")
-            elif jr.committed:
-                self.notify(f"Commit local · {jr.message}", severity="information")
-        if result.get("room_completed"):
-            self._grant_room_skills()
-        self.refresh_statusline()
 
-    def _grant_room_skills(self) -> None:
+        status.update(f"✓ {msg}")
+        status.set_class(True, "ok")
+        status.set_class(False, "err")
+
+        from edge_mage.screens.ceremony import CeremonyScreen
+
+        title = "SALA CONCLUÍDA" if result.get("room_completed") else "ACERTO"
+        if self.mastery:
+            title = f"MASTERY {result.get('mastery', 0)}/3"
+        if result.get("ranked_up"):
+            title = "ASCENSÃO DE RANK"
+
+        ceremony = CeremonyScreen(
+            title=title,
+            gained=int(result.get("gained") or 0),
+            total_xp=int(result["xp"]),
+            into=int(result.get("into_level") or 0),
+            need=result.get("need_level"),
+            level=int(result["level"]),
+            leveled=bool(result.get("leveled")),
+            rank_title=result["rank"].title,
+            ranked_up=bool(result.get("ranked_up")),
+            skill_glyph=skill_glyph,
+            skill_name=skill_name,
+            combo=int(result.get("combo") or 0),
+            mult=float(result.get("mult") or 1.0),
+            extra_lines=(
+                [f"Mastery {result.get('mastery')}/3 — glyph shine"]
+                if self.mastery and result.get("mastery")
+                else []
+            ),
+        )
+        # sai da task e mostra cerimônia por cima da sala
+        self.app.pop_screen()
+        self.app.push_screen(ceremony)
+
+    def _grant_room_skills(self) -> list:
         from edge_mage.grimoire import skills_for_room
 
         app = self.app
@@ -173,15 +254,12 @@ class TaskScreen(MageScreen):
             skills, track_id=self.track.id, room_id=self.room.id
         )
         if not granted:
-            return
+            return []
         store = app.store  # type: ignore[attr-defined]
-        newly = store.unlock_skills([s.id for s in granted])
-        if newly:
+        newly_ids = store.unlock_skills([s.id for s in granted])
+        if newly_ids:
             store.save()
-            names = ", ".join(
-                next(s.name for s in granted if s.id == nid) for nid in newly
-            )
-            self.notify(f"Grimório · {names}", severity="information")
+        return [s for s in granted if s.id in newly_ids]
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
         oid = str(event.option.id)
@@ -193,7 +271,6 @@ class TaskScreen(MageScreen):
             self.app.pop_screen()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        # Enter no campo → verificar e voltar a NORMAL
         self._check()
         if hasattr(self.app, "enter_normal"):
             self.app.enter_normal()  # type: ignore[attr-defined]

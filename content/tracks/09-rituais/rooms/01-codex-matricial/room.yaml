@@ -1,0 +1,30 @@
+id: codex-matricial
+title: Codex Matricial
+summary: Ritual boss — prova de competência.
+xp_reward: 80
+unlock_xp: 450
+animation: matrix
+boss: true
+elite_skill: elite-codex
+tasks:
+  - id: warm
+    type: mcq
+    prompt: "Este ritual exige código + harness. Qual a ordem correta do loop?"
+    xp: 10
+    answer: 0
+    choices:
+      - "quiz leve → feitiço (código) → selo"
+      - "só XP até Edge Mage"
+      - "pular código"
+  - id: spell
+    type: code
+    prompt: "Implemente `matmul2(A,B)` 2×2 e passe o harness."
+    xp: 50
+    code_template: |
+      def matmul2(A, B):
+          # A,B: listas 2x2
+          ...
+    code_tests: |
+      C=mod.matmul2([[1,2],[3,4]],[[5,6],[7,8]])
+      assert C==[[19,22],[43,50]]
+

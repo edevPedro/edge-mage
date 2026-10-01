@@ -195,3 +195,27 @@ skills:
     glyph: "✦"
     unlock_room: on-device
     unlock_track: edge-ai
+
+  - id: elite-codex
+    name: Codex Matricial
+    description: "Ritual — matmul2 selado no harness."
+    glyph: "▣"
+    unlock_room: codex-matricial
+    unlock_track: rituais
+    elite: true
+
+  - id: elite-softmax
+    name: Softmax Ritual
+    description: "Ritual — softmax estável sob logits extremos. Abre Edge AI."
+    glyph: "σ"
+    unlock_room: softmax-estavel
+    unlock_track: rituais
+    elite: true
+
+  - id: elite-quant
+    name: Runa Quant
+    description: "Ritual — float→int8 com erro máximo reportado."
+    glyph: "ℤ"
+    unlock_room: quant-lab
+    unlock_track: rituais
+    elite: true

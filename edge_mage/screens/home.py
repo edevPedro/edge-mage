@@ -7,13 +7,14 @@ from textual.containers import Vertical
 from textual.widgets import OptionList, Static
 from textual.widgets.option_list import Option
 
+from edge_mage.curriculum import continue_label, next_open_room
 from edge_mage.ranks import xp_for_next_level
 from edge_mage.screens.base import MageScreen
 
 BANNER = r"""
 ╔══════════════════════════════════════════════════╗
 ║      E D G E   M A G E   ·   ACADEMIA             ║
-║   trig → vetores → ML math → inferência edge     ║
+║   quiz → feitiço → ritual   ·   Ctrl+w painéis   ║
 ╚══════════════════════════════════════════════════╝
 """
 
@@ -23,13 +24,13 @@ class HomeScreen(MageScreen):
     list_id = "home-menu"
 
     def action_vim_back(self) -> None:
-        # Evita pop para a tela vazia inicial do App.
         if len(self.app.screen_stack) <= 2:
             return
         self.app.pop_screen()
 
     def compose_body(self) -> ComposeResult:
         store = self.app.store  # type: ignore[attr-defined]
+        tracks = self.app.tracks  # type: ignore[attr-defined]
         profile = store.profile_summary()
         rank = profile["rank"]
         into, need = xp_for_next_level(profile["xp"])
@@ -40,28 +41,39 @@ class HomeScreen(MageScreen):
         else:
             bar_line = f"Nível {profile['level']}  [████████████████████]  CAP"
 
+        mult = float(profile.get("mult") or 1.0)
+        combo = int(profile.get("combo") or 0)
+        mana = f"  ·  mana ×{mult:.2f}" if mult > 1 else ""
+        combo_s = f"  ·  combo {combo}/4" if combo else ""
+        od = "  ·  ritual on-device ✓" if profile.get("on_device") else ""
+
         with Vertical():
             yield Static(BANNER, id="banner")
             yield Static("STATUS DO MAGO", classes="panel-title")
             yield Static(
                 f"Rank: [{rank.title}]  ·  XP: {profile['xp']}  ·  "
-                f"Streak: {profile['streak']}d",
+                f"Streak: {profile['streak']}d{mana}{combo_s}{od}",
                 classes="rank",
             )
             yield Static(bar_line, id="xp-bar")
             yield Static(rank.blurb, classes="muted")
             nxt = profile["next_rank"]
             if nxt:
+                extra = ""
+                if nxt.id == "edge_mage" and not profile.get("on_device"):
+                    extra = " + ritual on-device"
                 yield Static(
-                    f"Próximo rank: {nxt.title} ({nxt.min_xp} XP)",
+                    f"Próximo: {nxt.title} (≥{nxt.min_xp} XP{extra})",
                     classes="accent",
                 )
             yield Static(
-                "j/k · Enter/l  ·  :help  ·  gt trilhas  ·  gp perfil  ·  gr grimório",
+                "j/k · Enter  ·  :continue  ·  :daily  ·  gr grimório",
                 classes="muted",
             )
             yield OptionList(
-                Option("▶  Continuar / Trilhas", id="tracks"),
+                Option(continue_label(store, tracks), id="continue"),
+                Option("☀  Run de hoje (~20 min)", id="daily"),
+                Option("📚  Todas as trilhas", id="tracks"),
                 Option("◆  Perfil / Ranks", id="profile"),
                 Option("✧  Grimório", id="grimoire"),
                 Option("?  Ajuda", id="help"),
@@ -79,7 +91,13 @@ class HomeScreen(MageScreen):
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
         oid = str(event.option.id)
-        if oid == "tracks":
+        if oid == "continue":
+            self.app.action_go_continue()  # type: ignore[attr-defined]
+        elif oid == "daily":
+            from edge_mage.screens.daily import DailyRunScreen
+
+            self.app.push_screen(DailyRunScreen())
+        elif oid == "tracks":
             from edge_mage.screens.tracks import TracksScreen
 
             self.app.push_screen(TracksScreen())

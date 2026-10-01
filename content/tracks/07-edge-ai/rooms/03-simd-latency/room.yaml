@@ -1,4 +1,7 @@
 id: simd-latency
+requires_skills:
+  - memory-layout
+  - flops-bandwidth
 title: SIMD & Latência
 summary: Paralelismo de dados e tradeoffs de acurácia.
 xp_reward: 45
@@ -32,3 +35,14 @@ tasks:
       - "somente CUDA cores"
       - "JavaScript SIMD.js obrigatório"
       - "FTP vector mode"
+
+  - id: code-throughput
+    type: code
+    prompt: "Implemente `ideal_speedup(lanes)` = float(lanes) (modelo ingênuo)."
+    xp: 18
+    code_template: |
+      def ideal_speedup(lanes):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.ideal_speedup(8)==8.0

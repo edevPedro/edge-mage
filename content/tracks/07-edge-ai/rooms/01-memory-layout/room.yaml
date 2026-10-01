@@ -34,3 +34,14 @@ tasks:
       - "planner"
       - "arena estática"
       - "static arena"
+
+  - id: code-row-major
+    type: code
+    prompt: "Implemente `idx_row_major(i,j,cols)` = i*cols+j."
+    xp: 22
+    code_template: |
+      def idx_row_major(i, j, cols):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.idx_row_major(2,3,10)==23

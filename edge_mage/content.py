@@ -10,7 +10,6 @@ from edge_mage.models import Room, Task, Track
 
 
 def content_root() -> Path:
-    # Prefer project content/ next to package parent
     here = Path(__file__).resolve().parent.parent / "content"
     if here.exists():
         return here
@@ -35,6 +34,8 @@ def _load_tasks(raw_tasks: list) -> list[Task]:
                 code_tests=str(raw.get("code_tests") or ""),
                 expected_stdout=str(raw.get("expected_stdout") or ""),
                 hint=str(raw.get("hint") or ""),
+                ritual_id=str(raw.get("ritual_id") or ""),
+                mastery_variant=bool(raw.get("mastery_variant", False)),
             )
         )
     return tasks
@@ -50,9 +51,11 @@ def load_room(room_dir: Path) -> Room:
     meta_path = room_dir / "room.yaml"
     meta = yaml.safe_load(meta_path.read_text(encoding="utf-8"))
     lesson = _read_md(room_dir / "lesson.md")
-    # story/concept: arquivo dedicado, ou campo inline no YAML
     story = _read_md(room_dir / "story.md", str(meta.get("story") or ""))
     concept = _read_md(room_dir / "concept.md", str(meta.get("concept") or ""))
+    req = meta.get("requires_skills") or []
+    if isinstance(req, str):
+        req = [req]
     return Room(
         id=str(meta["id"]),
         title=str(meta["title"]),
@@ -65,6 +68,10 @@ def load_room(room_dir: Path) -> Room:
         tasks=_load_tasks(meta.get("tasks") or []),
         path=str(room_dir),
         animation=str(meta.get("animation") or ""),
+        boss=bool(meta.get("boss", False)),
+        requires_skills=[str(x) for x in req],
+        elite_skill=str(meta.get("elite_skill") or ""),
+        unlocks_track=str(meta.get("unlocks_track") or ""),
     )
 
 
@@ -76,6 +83,9 @@ def load_track(track_dir: Path) -> Track:
         for room_dir in sorted(p for p in rooms_root.iterdir() if p.is_dir()):
             if (room_dir / "room.yaml").exists():
                 rooms.append(load_room(room_dir))
+    req = meta.get("requires_skills") or []
+    if isinstance(req, str):
+        req = [req]
     return Track(
         id=str(meta["id"]),
         title=str(meta["title"]),
@@ -86,6 +96,8 @@ def load_track(track_dir: Path) -> Track:
         rooms=rooms,
         path=str(track_dir),
         scaffold=bool(meta.get("scaffold", False)),
+        requires_skills=[str(x) for x in req],
+        requires_ritual=str(meta.get("requires_ritual") or ""),
     )
 
 

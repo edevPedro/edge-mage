@@ -42,3 +42,18 @@ tasks:
       - "Produto matriz-vetor + bias"
       - "Apenas softmax"
       - "FFT"
+
+  - id: code-norm
+    type: code
+    prompt: "Implemente `norm2(v)` = √(Σ v_i²)."
+    xp: 24
+    code_template: |
+      import math
+
+      def norm2(v):
+          # TODO
+          ...
+    code_tests: |
+      import math
+      assert abs(mod.norm2([3,4])-5)<1e-9
+      assert abs(mod.norm2([0,0,0]))<1e-12

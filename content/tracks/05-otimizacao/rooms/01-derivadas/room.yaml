@@ -48,3 +48,16 @@ tasks:
       - "backpropagation"
       - "retropropagação"
       - "retropropagacao"
+
+  - id: code-fwd-diff
+    type: code
+    prompt: "Implemente `fwd_diff(f, x, h=1e-5)` ≈ (f(x+h)-f(x))/h."
+    xp: 26
+    code_template: |
+      def fwd_diff(f, x, h=1e-5):
+          # TODO
+          ...
+    code_tests: |
+      import math
+      g=mod.fwd_diff(math.sin, 0.0)
+      assert abs(g-1)<1e-3

@@ -5,3 +5,4 @@ order: 8
 unlock_xp: 2300
 icon: '⬢'
 scaffold: false
+requires_ritual: softmax-estavel

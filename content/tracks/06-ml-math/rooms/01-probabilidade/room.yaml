@@ -47,3 +47,14 @@ tasks:
       - "categorica"
       - "categorical"
       - "categorial"
+
+  - id: code-expect
+    type: code
+    prompt: "Implemente `expect(xs, ps)` = Σ x*p (listas mesma len)."
+    xp: 24
+    code_template: |
+      def expect(xs, ps):
+          # TODO
+          ...
+    code_tests: |
+      assert abs(mod.expect([1,2,3],[0.2,0.5,0.3])-2.1)<1e-9

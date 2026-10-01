@@ -1,0 +1,7 @@
+id: rituais
+title: Rituais (Boss)
+summary: Provas fora do quiz — elite skills e portões.
+order: 9
+unlock_xp: 400
+icon: '⛧'
+scaffold: false

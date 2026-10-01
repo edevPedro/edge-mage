@@ -45,6 +45,10 @@ def test_validators_and_xp(tmp_path: Path) -> None:
     assert level_from_xp(0) == 1
     assert rank_from_xp(0).id == "novico"
     assert rank_from_xp(2900).id == "edge_mage"
+    from edge_mage.ranks import effective_rank
+
+    assert effective_rank(2900, False).id == "arquimago"
+    assert effective_rank(2900, True).id == "edge_mage"
 
 
 def test_code_task() -> None:
@@ -86,7 +90,6 @@ def test_fundamentos_end_to_end(tmp_path: Path) -> None:
     room = fund.rooms[0]
     for task in room.tasks:
         if task.type == "mcq":
-            # answer 0-based index → send letter
             from edge_mage.validators import _resolve_mcq_answer
 
             idx = _resolve_mcq_answer(task)
@@ -95,6 +98,16 @@ def test_fundamentos_end_to_end(tmp_path: Path) -> None:
             ans = str(task.answer)
         elif task.type == "fill":
             ans = task.answers[0]
+        elif task.type == "code":
+            # solução mínima conhecida p/ trigonometria unit_point
+            if "unit_point" in (task.code_template or "") or "unit_point" in task.prompt:
+                ans = (
+                    "import math\n"
+                    "def unit_point(theta):\n"
+                    "    return (math.cos(theta), math.sin(theta))\n"
+                )
+            else:
+                continue
         else:
             continue
         ok, msg = validate_task(task, ans)

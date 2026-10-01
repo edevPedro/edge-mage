@@ -42,6 +42,12 @@ _ALIASES: dict[str, str] = {
     "grimorio": "grimoire",
     "grimório": "grimoire",
     "grim": "grimoire",
+    "daily": "daily",
+    "hoje": "daily",
+    "run": "daily",
+    "continue": "continue",
+    "continuar": "continue",
+    "c": "continue",
 }
 
 
@@ -122,22 +128,20 @@ LEADER (g + tecla)
 COMANDOS (:)
   :q / :sair          sair
   :tracks / :trilhas  lista de trilhas
+  :continue / :c      próxima porta pedagógica
+  :daily / :hoje      run de hoje (~20 min)
   :profile / :perfil  perfil e ranks
   :grimorio / :grim   grimório de habilidades
   :home               tela inicial
   :room <id>          abrir sala pelo id
   :anim [kind]        toggle animação
-  :xp                 XP / rank / skills
-  :sync               commit/push do diário
+  :xp                 XP / rank / skills / mana
+  :sync               commit/push do diário + artifacts
   :help / :ajuda      esta ajuda
 
-OUTROS
-  q                   sair (fora de INSERT)
-  ?                   ajuda
-  :                   abrir linha de comando
-
-TASKS
-  Começa em NORMAL. i ou «Editar» → INSERT.
-  Esc sai de INSERT sem perder o texto.
-  Enter no campo (não-code) verifica a resposta.
+LOOP
+  quiz (MCQ/num) → feitiço (code+tests) → ritual (artifact/boss)
+  Edge Mage = XP≥2900 + checklist on-device (não só XP)
+  Mastery: M numa sala limpa (3/3)
+  Streak≥3 → mana ×1.25
 """

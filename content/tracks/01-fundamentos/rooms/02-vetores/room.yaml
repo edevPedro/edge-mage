@@ -28,3 +28,15 @@ tasks:
       - "1"
       - "π"
       - "depende da dimensão"
+
+  - id: code-dot
+    type: code
+    prompt: "Implemente `dot(a, b)` produto escalar de listas."
+    xp: 24
+    code_template: |
+      def dot(a, b):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.dot([1,2,3],[4,-5,6])==12
+      assert mod.dot([3,4],[0,0])==0

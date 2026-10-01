@@ -31,3 +31,14 @@ tasks:
       - "sempre calcula ∇loss"
       - "exige epoch completo"
       - "só roda em float64"
+
+  - id: code-mse
+    type: code
+    prompt: "Implemente `mse(y_hat, y)` média dos (ŷ-y)²."
+    xp: 24
+    code_template: |
+      def mse(y_hat, y):
+          # TODO
+          ...
+    code_tests: |
+      assert abs(mod.mse([1,2],[1,0])-2.0)<1e-9

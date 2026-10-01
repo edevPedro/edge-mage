@@ -72,7 +72,7 @@ class RoomScreen(MageScreen):
                     panel.add_class("-hidden")
                     yield panel
             yield Static(
-                "TAREFAS — j/k · Enter/l  ·  Ctrl+w cicla painéis",
+                "TAREFAS — j/k · Enter/l  ·  Ctrl+w  ·  M mastery (sala limpa)",
                 classes="panel-title",
             )
             yield OptionList(*self._task_options(), id="task-list")
@@ -80,17 +80,35 @@ class RoomScreen(MageScreen):
     def _task_options(self) -> list[Option]:
         store = self.app.store  # type: ignore[attr-defined]
         options: list[Option] = []
+        missing = store.missing_skills_for_room(self.room)
+        if missing:
+            options.append(
+                Option(f"🔒 Requer skills: {', '.join(missing)}", id="_locked")
+            )
         for t in self.room.tasks:
             done = store.is_task_done(self.track.id, self.room.id, t.id)
             mark = "✓" if done else "○"
-            kind = {"mcq": "MCQ", "numeric": "NUM", "fill": "FILL", "code": "CODE"}.get(
-                t.type, t.type.upper()
-            )
+            kind = {
+                "mcq": "MCQ",
+                "numeric": "NUM",
+                "fill": "FILL",
+                "code": "CODE",
+                "ritual": "RITUAL",
+            }.get(t.type, t.type.upper())
             label = (
                 f"{mark}  [{kind}]  {t.prompt[:70]}"
                 f"{'…' if len(t.prompt) > 70 else ''}  (+{t.xp} XP)"
             )
             options.append(Option(label, id=t.id))
+        if store.is_room_done(self.track.id, self.room.id):
+            m = store.mastery_count(self.track.id, self.room.id)
+            shine = "✦" if m >= 3 else "·"
+            options.append(
+                Option(
+                    f"{shine}  Mastery {m}/3 — variantes (+XP menor)",
+                    id="_mastery",
+                )
+            )
         return options
 
     def on_mount(self) -> None:
@@ -121,7 +139,6 @@ class RoomScreen(MageScreen):
         return "  ".join(marks)
 
     def _apply_content_visibility(self) -> None:
-        """Mostra só o painel de texto ativo (story/concept/desafio) para caber."""
         active = self.focused_pane if self.focused_pane in {
             "story",
             "concept",
@@ -168,16 +185,61 @@ class RoomScreen(MageScreen):
             self.anim_kind = kind  # type: ignore[assignment]
         panel.toggle(use)
 
+    def action_start_mastery(self) -> None:
+        import hashlib
+        import random
+        from datetime import date
+
+        from edge_mage.daily import _variant_numeric
+        from edge_mage.screens.task import TaskScreen
+
+        store = self.app.store  # type: ignore[attr-defined]
+        if not store.is_room_done(self.track.id, self.room.id):
+            self.app.notify("complete a sala antes do mastery", severity="warning")
+            return
+        if store.mastery_count(self.track.id, self.room.id) >= 3:
+            self.app.notify("mastery 3/3 — glyph no máximo", severity="information")
+            return
+        candidates = [t for t in self.room.tasks if t.type in {"numeric", "code", "mcq"}]
+        if not candidates:
+            self.app.notify("sem task para mastery", severity="warning")
+            return
+        seed = int(
+            hashlib.sha256(
+                f"{date.today().isoformat()}:{self.room.id}:{store.mastery_count(self.track.id, self.room.id)}".encode()
+            ).hexdigest()[:8],
+            16,
+        )
+        rng = random.Random(seed)
+        base = rng.choice(candidates)
+        quest = _variant_numeric(base, rng) if base.type == "numeric" else base
+        self.app.push_screen(TaskScreen(self.track, self.room, quest, mastery=True))
+
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
-        if self.focused_pane and self.focused_pane != "tasks":
-            # evita abrir task se o foco visual não está em tarefas
-            # (OptionList ainda pode receber select) — permitir sempre é ok
-            pass
         task_id = str(event.option.id)
+        if task_id == "_mastery":
+            self.action_start_mastery()
+            return
+        if task_id == "_locked":
+            return
+        missing = self.app.store.missing_skills_for_room(self.room)  # type: ignore[attr-defined]
+        if missing:
+            self.app.notify(
+                f"skills necessárias: {', '.join(missing)}",
+                severity="warning",
+            )
+            return
         task = next(t for t in self.room.tasks if t.id == task_id)
         from edge_mage.screens.task import TaskScreen
 
         self.app.push_screen(TaskScreen(self.track, self.room, task))
+
+    def on_key(self, event) -> None:  # type: ignore[no-untyped-def]
+        if event.character == "M":
+            if getattr(self.app, "_in_insert", lambda: False)():
+                return
+            event.stop()
+            self.action_start_mastery()
 
     def on_screen_resume(self) -> None:
         super().on_screen_resume()

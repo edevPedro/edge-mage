@@ -1,4 +1,6 @@
 id: quantizacao
+requires_skills:
+  - softmax-ce
 title: Quantização & Fixed-Point
 summary: scale, int8, Q-format e tradeoff de acurácia.
 xp_reward: 54
@@ -44,3 +46,17 @@ tasks:
       - "fixed"
       - "fixo (fixed-point)"
       - "fixed-point"
+
+  - id: code-quantize
+    type: code
+    prompt: "Implemente `quantize_int8(x, scale)` → int em [-128,127] via round(x/scale) clipado."
+    xp: 28
+    code_template: |
+      def quantize_int8(x, scale):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.quantize_int8(0.0, 0.1)==0
+      q=mod.quantize_int8(12.5, 0.1)
+      assert q==125
+      assert mod.quantize_int8(1000, 0.1)==127

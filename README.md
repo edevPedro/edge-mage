@@ -76,6 +76,21 @@ Refazer a mesma task **não** gera commit (evita spam). Se commit ou push falhar
 - `git` precisa estar no `PATH`; push usa sua autenticação habitual (SSH ou `gh auth`).
 - Commits vão para a **branch atual** (em geral `main`), só com mudanças em `study-log/`.
 
+## Loop: quiz → feitiço → ritual
+
+1. **Quiz** (MCQ/num) — ensina, XP baixo, feedback rápido (cerimônia `+XP`)
+2. **Feitiço** (`code` + `code_tests`) — aplica no sandbox (3s)
+3. **Ritual** (boss / `study-log/artifacts/`) — prova fora do quiz
+
+**Edge Mage** ≠ só XP: precisa XP ≥ 2900 **e** checklist on-device (`study-log/artifacts/on-device.md`). Ver [`SPEC-edge-mage-loop.md`](SPEC-edge-mage-loop.md).
+
+| Home / comando | Efeito |
+|----------------|--------|
+| Continuar / `:continue` | próxima porta pedagógica |
+| Run de hoje / `:daily` | review + task nova (~20 min, seed por data) |
+| `M` na sala limpa | mastery 0..3 |
+| Streak ≥ 3 | mana XP ×1.25 |
+
 ## UX estilo Neovim
 
 ### Modos (statusline)
@@ -179,22 +194,23 @@ Controles: `Space` ou `:anim` / `:anim softmax_bars`.
 | Evocador | 550 | Elétrica + robótica |
 | Mago | 1100 | Derivadas / gradiente / batch |
 | Arquimago | 1750 | Softmax, FLOPs, quantização |
-| **Edge Mage** | 2900 | On-device de ponta a ponta |
+| **Edge Mage** | 2900 + ritual on-device | Checklist real — não cosmético |
 
-Mapa pedagógico: [`content/CURRICULUM.md`](content/CURRICULUM.md). XP total ≈ **3144**.
+Mapa pedagógico: [`content/CURRICULUM.md`](content/CURRICULUM.md). Spec do loop: [`SPEC-edge-mage-loop.md`](SPEC-edge-mage-loop.md). XP total ≈ **3144+** (bosses).
 
 ## Trilhas
 
-1. **Fundamentos** (0) — trig, vetores, exp/log, álgebra linear (+ animações)
+1. **Fundamentos** (0) — trig, vetores, exp/log, álgebra linear (+ code spells)
 2. **Programação** (100) — Python alinhado à math
 3. **Física & Sinais** (250) — cinemática, ondas, amostragem
 4. **Elétrica Edge** (500) — Ohm, divisor, ADC
 5. **Robótica** (800) — transforms 2D, cinemática, sensores
 6. **Otimização** (1100) — derivadas, gradiente, loss/LR, batch
 7. **ML Math** (1650) — probabilidade, softmax/CE, matmul/FLOPs, quantização
-8. **Edge AI Low-Level** (2300) — layout, FLOPs/banda, SIMD, on-device
+8. **Edge AI Low-Level** (2300 + ritual Softmax Estável) — layout, banda, SIMD, on-device
+9. **Rituais (Boss)** (400+) — Codex Matricial, Softmax Estável, Quant Lab
 
-28 salas no total.
+28+ salas + 3 bosses. Skills no grimório (~31).
 ## Adicionar uma sala
 
 1. `content/tracks/<trilha>/rooms/<id>/`

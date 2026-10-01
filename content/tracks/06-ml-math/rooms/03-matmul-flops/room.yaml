@@ -38,3 +38,14 @@ tasks:
       - "hidden"
       - "de contração"
       - "contracted"
+
+  - id: code-flops
+    type: code
+    prompt: "Implemente `matmul_flops(m,k,n)` ≈ 2*m*k*n."
+    xp: 22
+    code_template: |
+      def matmul_flops(m, k, n):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.matmul_flops(2,3,4)==48

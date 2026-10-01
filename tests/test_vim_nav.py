@@ -40,7 +40,16 @@ async def test_home_jk_and_enter_without_mouse() -> None:
         await pilot.press("g", "g")
         assert lst.highlighted == 0
 
-        # Enter abre trilhas
+        # Enter abre Continuar (próxima sala) — primeira opção do menu
+        await pilot.press("enter")
+        from edge_mage.screens.room import RoomScreen
+
+        assert isinstance(app.screen, RoomScreen)
+        await pilot.press("h")  # voltar
+        assert isinstance(app.screen, HomeScreen)
+
+        # j até trilhas e abrir
+        await pilot.press("j", "j")  # daily, then tracks
         await pilot.press("enter")
         assert isinstance(app.screen, TracksScreen)
         tracks = app.screen

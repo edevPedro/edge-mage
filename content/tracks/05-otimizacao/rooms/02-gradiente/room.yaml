@@ -32,3 +32,14 @@ tasks:
       - "ponto estacionário (mín/máx/sela)"
       - "obrigatoriamente máximo"
       - "prova de overfitting"
+
+  - id: code-grad-step
+    type: code
+    prompt: "Implemente `grad_step(theta, grad, lr)` → theta - lr*grad (listas)."
+    xp: 26
+    code_template: |
+      def grad_step(theta, grad, lr):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.grad_step([1.0,2.0],[0.5,1.0],0.1)==[0.95,1.9]

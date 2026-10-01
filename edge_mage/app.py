@@ -309,6 +309,31 @@ class EdgeMageApp(App[None]):
 
         self.push_screen(TracksScreen())
 
+    def action_go_daily(self) -> None:
+        from edge_mage.screens.daily import DailyRunScreen
+
+        self.push_screen(DailyRunScreen())
+
+    def action_go_continue(self) -> None:
+        from edge_mage.curriculum import next_open_room
+        from edge_mage.screens.room import RoomScreen
+
+        nxt = next_open_room(self.store, self.tracks)
+        if nxt is None:
+            self.notify("currículo completo — faça mastery ou rituals", severity="information")
+            return
+        track, room = nxt
+        if not self.store.is_room_unlocked(track, room):
+            missing = self.store.missing_skills_for_room(room)
+            why = f"precisa {room.unlock_xp} XP"
+            if missing:
+                why = f"skills: {', '.join(missing)}"
+            if track.requires_ritual and not self.store.has_ritual(track.requires_ritual):
+                why = f"ritual `{track.requires_ritual}`"
+            self.notify(f"próxima porta bloqueada — {why}", severity="warning")
+            return
+        self.push_screen(RoomScreen(track, room))
+
     def dispatch_colon(self, line: str) -> None:
         cmd = parse_command(line)
         if cmd.error:
@@ -322,6 +347,10 @@ class EdgeMageApp(App[None]):
             self.action_go_profile()
         elif cmd.name == "grimoire":
             self.action_go_grimoire()
+        elif cmd.name == "daily":
+            self.action_go_daily()
+        elif cmd.name == "continue":
+            self.action_go_continue()
         elif cmd.name == "home":
             self.action_go_home()
         elif cmd.name == "help":

@@ -71,7 +71,7 @@ RANKS: tuple[Rank, ...] = (
         "Edge Mage",
         2900,
         17,
-        "Layout, banda, SIMD e checklist on-device de ponta a ponta.",
+        "Checklist on-device (ritual) + XP ≥2900 — competência embarcada real.",
     ),
 )
 
@@ -128,6 +128,20 @@ def rank_from_xp(xp: int) -> Rank:
         else:
             break
     return current
+
+
+def effective_rank(xp: int, has_on_device_ritual: bool) -> Rank:
+    """
+    Ranks intermediários = XP.
+    Edge Mage exige ritual on-device além do XP floor (2900).
+    """
+    by_xp = rank_from_xp(xp)
+    if by_xp.id != "edge_mage":
+        return by_xp
+    if has_on_device_ritual:
+        return by_xp
+    # Cap em Arquimago até o checklist on-device
+    return next(r for r in RANKS if r.id == "arquimago")
 
 
 def next_rank(xp: int) -> Rank | None:

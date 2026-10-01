@@ -46,3 +46,15 @@ tasks:
       - "roofline"
       - "roof-line"
       - "Roofline"
+
+  - id: code-roofline
+    type: code
+    prompt: "Implemente `roofline_bound(flops, bytes_, peak_flops, peak_bw)` → 'compute' se flops/bytes_ >= peak_flops/peak_bw senão 'memory'."
+    xp: 28
+    code_template: |
+      def roofline_bound(flops, bytes_, peak_flops, peak_bw):
+          # TODO retorne 'compute' ou 'memory'
+          ...
+    code_tests: |
+      assert mod.roofline_bound(1e12, 1e8, 1e12, 1e11)=='compute'
+      assert mod.roofline_bound(1e9, 1e9, 1e12, 1e11)=='memory'

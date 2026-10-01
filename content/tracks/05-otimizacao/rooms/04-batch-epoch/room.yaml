@@ -33,3 +33,17 @@ tasks:
       - "inferência eficiente (às vezes fine-tune leve)"
       - "somente backprop na NPU"
       - "descartar o modelo"
+
+  - id: code-batches
+    type: code
+    prompt: "Implemente `n_batches(n, batch_size)` = ceil(n/batch_size)."
+    xp: 22
+    code_template: |
+      import math
+
+      def n_batches(n, batch_size):
+          # TODO
+          ...
+    code_tests: |
+      assert mod.n_batches(10,4)==3
+      assert mod.n_batches(8,4)==2
