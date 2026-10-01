@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Edge Mage — instalador (clone local ou curl|bash)
+# e-mage — instalador (clone local ou curl|bash)
 # Uso:
 #   ./install.sh
 #   curl -fsSL https://raw.githubusercontent.com/edevPedro/edge-mage/main/install.sh | bash
@@ -8,7 +8,7 @@ set -euo pipefail
 REPO_URL="${EDGE_MAGE_REPO_URL:-https://github.com/edevPedro/edge-mage.git}"
 REPO_BRANCH="${EDGE_MAGE_BRANCH:-main}"
 BIN_DIR="${HOME}/.local/bin"
-DEFAULT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/edge-mage"
+DEFAULT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/e-mage"
 CLONE_DIR="${EDGE_MAGE_HOME:-${HOME}/edge-mage}"
 PYTHON="${PYTHON:-}"
 
@@ -46,7 +46,7 @@ resolve_root() {
 
   if script_dir="$(cd "$(dirname "${script}")" 2>/dev/null && pwd)"; then
     if [[ -f "${script_dir}/pyproject.toml" ]] \
-      && grep -q 'name = "edge-mage"' "${script_dir}/pyproject.toml" 2>/dev/null; then
+      && grep -Eq 'name = "(e-mage|edge-mage)"' "${script_dir}/pyproject.toml" 2>/dev/null; then
       echo "${script_dir}"
       return
     fi
@@ -167,10 +167,11 @@ fi
 echo ""
 echo "Próximo passo:"
 echo "  mage --version"
-echo "  mage"
+echo "  mage          # course launcher"
+echo "  mage sync     # packs + progress stub"
 echo ""
 echo "Teste de qualquer pasta:"
 echo "  cd /tmp && mage --version"
 echo ""
 echo "Comandos: mage | emage | edge-mage"
-echo "Progresso: ~/.edge-mage/progress.json"
+echo "Progresso: ~/.mage/progress.json  (migra de ~/.edge-mage/ na 1ª execução)"

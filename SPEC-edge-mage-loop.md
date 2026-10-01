@@ -1,6 +1,7 @@
-# SPEC — Edge Mage loop (quiz → spell → ritual)
+# SPEC — e-mage / Edge ML loop (quiz → spell → ritual)
 
-Documento de produto/engenaria do loop jogável. Implementação em `edge_mage/` + `content/`.
+Documento de produto/engenharia do loop jogável (curso **Edge**). Implementação em `edge_mage/` + `content/`.  
+Produto unificado: **e-mage** (Fundamentals · Systems · Edge). Repo GitHub: `edge-mage`.
 
 ## Princípio
 
@@ -10,13 +11,17 @@ Documento de produto/engenaria do loop jogável. Implementação em `edge_mage/`
 | 2. Spell | `type: code` + `code_tests` (sandbox 3s) | “Eu escrevi” — aplica o conceito |
 | 3. Ritual | Boss room / artefato em `study-log/artifacts/` | Elite skill, portões, **Edge Mage** |
 
-Ctrl+w (História | Conceito | Desafio | Anim | Tarefas), grimório e animações permanecem a casca UX.
+Ctrl+w (História | Conceito | Desafio | Anim | Tarefas), grimório e animações permanecem a casca UX do curso Edge.
 
 ## Ranks
 
+### Curso Edge (interno)
 - Ranks intermediários: **só XP** (`ranks.rank_from_xp`).
-- **Edge Mage**: `effective_rank(xp, has_on_device_ritual)` — exige XP ≥ 2900 **e** ritual `on-device` (`progress.rituals["on-device"]`).
+- **Edge Mage**: `effective_rank(xp, has_on_device_ritual)` — exige XP ≥ 2900 **e** ritual `on-device`.
 - Sem o checklist, o título fica em Arquimago mesmo com XP alto.
+
+### Global (e-mage)
+- none → **Mago base** (Fundamentals clear) → intermediate → **Mago Supremo** (systems boss craft + edge on-device + evidence).
 
 ## Validators
 

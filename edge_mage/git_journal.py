@@ -10,8 +10,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from edge_mage.paths import config_path
+
 LEDGER_PATH = Path("study-log/completions.jsonl")
-CONFIG_PATH = Path.home() / ".edge-mage" / "config.json"
+CONFIG_PATH = config_path()
 
 
 @dataclass(frozen=True)
