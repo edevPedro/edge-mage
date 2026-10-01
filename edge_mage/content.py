@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 import yaml
 
 from edge_mage.courses import COURSE_EDGE, COURSE_FUNDAMENTALS, COURSE_SYSTEMS
 from edge_mage.models import Resource, Room, Task, Track
-from edge_mage.paths import packs_dir
 
 
 def content_root() -> Path:
@@ -39,6 +37,7 @@ def _load_tasks(raw_tasks: list) -> list[Task]:
                 hint=str(raw.get("hint") or ""),
                 ritual_id=str(raw.get("ritual_id") or ""),
                 mastery_variant=bool(raw.get("mastery_variant", False)),
+                answer_pattern=str(raw.get("answer_pattern") or ""),
             )
         )
     return tasks
@@ -182,80 +181,148 @@ def _room_from_pack_entry(entry: dict, path_hint: str) -> Room:
     )
 
 
-def load_systems_from_pack() -> list[Track]:
-    """FLAG-lab player stub: load ~/.mage/packs/systems.json if present."""
-    pack = packs_dir() / "systems.json"
+def _bundled_craft_rooms() -> list[Room]:
+    """Keep Edge richness: boss-craft + shared-math-evidence (not flag-hello)."""
     rooms: list[Room] = []
-    if pack.exists():
-        try:
-            data = json.loads(pack.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
-            data = {}
-        for entry in data.get("rooms") or []:
-            if isinstance(entry, dict) and entry.get("id"):
-                rooms.append(_room_from_pack_entry(entry, str(pack)))
+    craft_ids = ("boss-craft", "shared-math-evidence")
+    base = content_root() / "courses" / "systems" / "rooms"
+    for name in craft_ids:
+        room_dir = base / name
+        if (room_dir / "room.yaml").exists():
+            rooms.append(load_room(room_dir))
+    return rooms
 
-    bundled: list[Track] = []
+
+def load_systems_from_pack() -> list[Track]:
+    """
+    Systems Mage FLAG catalog: bundled / ~/.mage/packs/systems.json
+    (systems + llvm + math), plus craft YAML rooms and shared core credit.
+    """
+    from edge_mage.packs import TRACK_META, load_systems_pack_data
+
+    data, pack_path = load_systems_pack_data()
+    entries = list(data.get("rooms") or [])
+    by_track: dict[str, list[Room]] = {"systems": [], "llvm": [], "math": []}
+
+    for entry in entries:
+        if not isinstance(entry, dict) or not entry.get("id"):
+            continue
+        # Skip thin stub when real catalog is present
+        if entry.get("id") == "flag-hello" and len(entries) > 3:
+            continue
+        track_id = str(entry.get("track") or "systems")
+        if track_id not in by_track:
+            by_track[track_id] = []
+        by_track[track_id].append(_room_from_pack_entry(entry, str(pack_path)))
+
+    for rooms in by_track.values():
+        rooms.sort(key=lambda r: (r.unlock_xp, r.id))
+
+    # Prefer pack order field when present
+    for track_id, rooms in list(by_track.items()):
+        keyed: list[tuple[int, Room]] = []
+        for i, room in enumerate(rooms):
+            order = i
+            # recover order from matching entry
+            for entry in entries:
+                if isinstance(entry, dict) and entry.get("id") == room.id:
+                    order = int(entry.get("order", i))
+                    break
+            keyed.append((order, room))
+        keyed.sort(key=lambda x: x[0])
+        by_track[track_id] = [r for _, r in keyed]
+
+    craft = _bundled_craft_rooms()
+    shared = load_shared_rooms()
+
+    tracks: list[Track] = []
+    for track_id in ("systems", "llvm", "math"):
+        rooms = by_track.get(track_id) or []
+        if track_id == "systems":
+            # Shared core once at the front of systems phase
+            seen = {r.id for r in rooms}
+            rooms = [r for r in shared if r.id not in seen] + rooms
+        if not rooms:
+            continue
+        meta = TRACK_META.get(track_id, {})
+        tracks.append(
+            Track(
+                id=track_id,
+                title=str(meta.get("title") or track_id),
+                summary=str(meta.get("summary") or ""),
+                order=int(meta.get("order", 99)),
+                unlock_xp=0,
+                icon=str(meta.get("icon") or "◆"),
+                rooms=rooms,
+                path=str(pack_path),
+                course=COURSE_SYSTEMS,
+            )
+        )
+
+    if craft:
+        meta = TRACK_META["craft"]
+        tracks.append(
+            Track(
+                id="craft",
+                title=str(meta["title"]),
+                summary=str(meta["summary"]),
+                order=int(meta["order"]),
+                unlock_xp=0,
+                icon=str(meta["icon"]),
+                rooms=craft,
+                path=str(content_root() / "courses" / "systems"),
+                course=COURSE_SYSTEMS,
+            )
+        )
+
+    if tracks:
+        return tracks
+
+    # Absolute last resort: YAML stub track (flag-hello era)
     stub_dir = content_root() / "courses" / "systems"
     if (stub_dir / "track.yaml").exists():
-        bundled = [load_track(stub_dir)]
-
-    if not rooms and bundled:
-        # still prepend shared core into bundled track
-        track = bundled[0]
-        shared = load_shared_rooms()
+        track = load_track(stub_dir)
         seen = {r.id for r in track.rooms}
         track.rooms = [r for r in shared if r.id not in seen] + track.rooms
         return [track]
 
-    if not rooms:
-        rooms = [
-            Room(
-                id="flag-hello",
-                title="FLAG lab hello",
-                summary="Offline stub — run mage sync to refresh packs.",
-                xp_reward=10,
-                unlock_xp=0,
-                lesson_md="Systems Mage pack cache is empty. Use `:sync` / `mage sync`.",
-                tasks=_load_tasks(
-                    [
-                        {
-                            "id": "ack",
-                            "type": "mcq",
-                            "prompt": "Acknowledge systems stub?",
-                            "xp": 5,
-                            "answer": 0,
-                            "choices": ["Yes", "Later"],
-                        }
-                    ]
-                ),
-                path=str(pack),
-                course=COURSE_SYSTEMS,
-                resources=[
-                    Resource(
-                        title="Computer Systems: A Programmer's Perspective",
-                        url="https://csapp.cs.cmu.edu/",
-                        kind="book",
-                    )
-                ],
-            )
-        ]
-    shared = load_shared_rooms()
-    merged = {r.id: r for r in shared}
-    for r in rooms:
-        merged[r.id] = r
-    track = Track(
-        id="systems",
-        title="Systems Mage",
-        summary="FLAG-lab / systems catalog (pack-backed).",
-        order=1,
-        unlock_xp=0,
-        icon="⚙",
-        rooms=list(merged.values()),
-        path=str(pack.parent),
-        course=COURSE_SYSTEMS,
-    )
-    return [track]
+    return [
+        Track(
+            id="systems",
+            title="Systems Mage",
+            summary="Offline stub — run mage sync / reinstall for full pack.",
+            order=1,
+            unlock_xp=0,
+            icon="⚙",
+            rooms=shared
+            or [
+                Room(
+                    id="flag-hello",
+                    title="FLAG lab hello",
+                    summary="Offline stub — run mage sync to refresh packs.",
+                    xp_reward=10,
+                    unlock_xp=0,
+                    lesson_md="Systems Mage pack cache is empty. Use `:sync` / `mage sync`.",
+                    tasks=_load_tasks(
+                        [
+                            {
+                                "id": "ack",
+                                "type": "mcq",
+                                "prompt": "Acknowledge systems stub?",
+                                "xp": 5,
+                                "answer": 0,
+                                "choices": ["Yes", "Later"],
+                            }
+                        ]
+                    ),
+                    path=str(pack_path),
+                    course=COURSE_SYSTEMS,
+                )
+            ],
+            path=str(pack_path),
+            course=COURSE_SYSTEMS,
+        )
+    ]
 
 
 def load_fundamentals_tracks() -> list[Track]:

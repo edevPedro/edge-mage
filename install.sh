@@ -143,6 +143,24 @@ else
   "${VENV}/bin/pip" install -e "${ROOT}"
 fi
 
+# Seed Systems Mage FLAG pack into ~/.mage/packs (offline-first; mage sync refreshes)
+MAGE_PACKS="${MAGE_HOME:-${HOME}/.mage}/packs"
+mkdir -p "${MAGE_PACKS}"
+BUNDLED_SYSTEMS="${ROOT}/content/packs/systems.json"
+if [[ -f "${BUNDLED_SYSTEMS}" ]]; then
+  if [[ ! -f "${MAGE_PACKS}/systems.json" ]]; then
+    cp "${BUNDLED_SYSTEMS}" "${MAGE_PACKS}/systems.json"
+    info "Systems pack → ${MAGE_PACKS}/systems.json"
+  else
+    # Refresh thin stubs (<70 rooms) from bundled full catalog
+    ROOM_COUNT="$("${PY}" -c "import json; d=json.load(open('${MAGE_PACKS}/systems.json')); r=d.get('rooms') or (d.get('systemsMagePack') or {}).get('rooms') or []; print(len(r))" 2>/dev/null || echo 0)"
+    if [[ "${ROOM_COUNT}" -lt 70 ]]; then
+      cp "${BUNDLED_SYSTEMS}" "${MAGE_PACKS}/systems.json"
+      info "Systems pack refreshed (${ROOM_COUNT} → full) → ${MAGE_PACKS}/systems.json"
+    fi
+  fi
+fi
+
 for cmd in edge-mage emage mage; do
   target="${VENV}/bin/${cmd}"
   [[ -x "${target}" ]] || die "entrypoint ausente após install: ${target}"
@@ -167,11 +185,12 @@ fi
 echo ""
 echo "Próximo passo:"
 echo "  mage --version"
-echo "  mage          # course launcher"
-echo "  mage sync     # packs + progress stub"
+echo "  mage          # course launcher (Systems = full FLAG catalog offline)"
+echo "  mage sync     # refresh packs from API when online + push progress"
 echo ""
 echo "Teste de qualquer pasta:"
 echo "  cd /tmp && mage --version"
 echo ""
 echo "Comandos: mage | emage | edge-mage"
 echo "Progresso: ~/.mage/progress.json  (migra de ~/.edge-mage/ na 1ª execução)"
+echo "Systems pack: ~/.mage/packs/systems.json (seeded from content/packs on install)"

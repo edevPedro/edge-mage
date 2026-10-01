@@ -35,6 +35,8 @@ class Task:
     # ritual: nome do artefato em study-log/artifacts/<id>.md
     ritual_id: str = ""
     mastery_variant: bool = False
+    # fill: optional regex (Systems FLAG packs from web catalog)
+    answer_pattern: str = ""
 
 
 @dataclass

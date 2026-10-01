@@ -54,10 +54,12 @@ def test_fundamentals_and_systems_load() -> None:
     assert {"vectors", "bits", "intro-asm", "fundamentals-clear"} <= ids
 
     sys_tracks = load_tracks_for_course(COURSE_SYSTEMS)
-    assert sys_tracks and sys_tracks[0].rooms
-    sys_ids = {r.id for r in sys_tracks[0].rooms}
-    assert "flag-hello" in sys_ids or "systems-boss-craft" in sys_ids
+    assert sys_tracks
+    sys_ids = {r.id for t in sys_tracks for r in t.rooms}
+    assert "systems-boss-craft" in sys_ids
+    assert "sys-memory" in sys_ids
     assert "vectors" in sys_ids  # shared core merged
+    assert sum(len(t.rooms) for t in sys_tracks) >= 70
 
     edge = load_tracks_for_course(COURSE_EDGE)
     assert len(edge) >= 8

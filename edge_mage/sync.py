@@ -109,17 +109,48 @@ def progress_to_api_payload(progress: dict[str, Any], *, user: str = "pedro") ->
 
 
 def pull_catalog(*, course: str = "systems") -> SyncResult:
-    """Pull catalog JSON into ~/.mage/packs/<course>.json (stub-friendly)."""
+    """Pull catalog JSON into ~/.mage/packs/<course>.json (full Systems pack when available)."""
+    from edge_mage.packs import (
+        bundled_systems_pack_path,
+        seed_systems_pack,
+        write_systems_pack,
+    )
+
     packs = packs_dir()
     dest = packs / f"{course}.json"
     base = api_base()
     url = f"{base}/api/estudo/mage/catalog?course={course}"
     status, data = _http_json("GET", url)
     if status == 200 and isinstance(data, dict):
-        dest.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        if course == "systems":
+            write_systems_pack(data)
+        else:
+            dest.write_text(
+                json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
         return SyncResult(ok=True, message=f"catalog → {dest}", pulled=True)
 
-    # Offline stub: ensure a minimal pack exists for systems
+    # Offline: seed full bundled Systems pack (not the thin flag-hello stub)
+    if course == "systems":
+        seeded = seed_systems_pack(force=False)
+        if seeded and seeded.exists():
+            return SyncResult(
+                ok=True,
+                message=f"bundled pack → {seeded}",
+                pulled=True,
+                warning=f"catalog GET {status}: {data}",
+            )
+        bundled = bundled_systems_pack_path()
+        if bundled.exists():
+            write_systems_pack(json.loads(bundled.read_text(encoding="utf-8")))
+            return SyncResult(
+                ok=True,
+                message=f"bundled pack → {dest}",
+                pulled=True,
+                warning=f"catalog GET {status}: {data}",
+            )
+
     if not dest.exists():
         stub = {
             "course": course,

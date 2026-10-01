@@ -83,10 +83,22 @@ Faster if you already code; slower on a first terminal/C contact.
 | id | Course | Role |
 |----|--------|------|
 | `fundamentals` | Fundamentals | Path to **Mago base** (shared core + clearance) |
-| `systems` | Systems Mage | FLAG-lab / systems catalog (`~/.mage/packs/systems.json`) |
-| `edge` | Edge ML Mage | Current math → on-device Edge AI tracks (full TUI UX) |
+| `systems` | Systems Mage | **Full FLAG catalog** in TUI: systems + llvm + math (same scope as web Systems Mage core) |
+| `edge` | Edge ML Mage | Current math → on-device Edge AI tracks (full TUI UX) — **ARM-first** unchanged |
 
 `mage` opens a **course launcher** first (plus GitHub connect stub). Systems/Edge are soft-gated behind Mago base (preview allowed with a warning).
+
+### Systems Mage on the TUI
+
+Opening **Systems** loads many FLAG rooms offline (not a hello stub):
+
+- Bundled snapshot: `content/packs/systems.json` (exported from edevs `systems.ts` / `llvm.ts` / `math.ts`)
+- Install seeds `~/.mage/packs/systems.json` so first launch is full
+- Phases as tracks: **systems** · **llvm** · **math** · **craft** (`boss-craft` + `shared-math-evidence` stay as Edge-rich YAML rituals)
+- Shared cores (`vectors`, `bits`, …) still credit once via `room_id`
+- `mage sync` / `:sync` refreshes the pack from `GET /api/estudo/mage/catalog` (`systemsMagePack`) when online; offline keeps the bundled catalog
+
+Edge ML Mage stays the ARM-deep on-device path — Systems does **not** replace Edge AI tracks.
 
 Shared core rooms live under `content/shared/` (`vectors`, `bits`, `intro-asm`, `isa-x86-aarch64`, `riscv-lite`) with stable `room_id` credit.
 
@@ -134,9 +146,9 @@ Dev: `make install-dev` · `make test` · `USE_PIPX=1 ./install.sh`
 ## Offline progress & sync
 
 - Progress home: **`~/.mage/`** (one-time copy from `~/.edge-mage/` if present)
-- Packs cache: `~/.mage/packs/`
+- Packs cache: `~/.mage/packs/` — Systems ships with a full FLAG pack on install (`content/packs/systems.json` → `systems.json`)
 - Auth stub: `~/.mage/auth.json`
-- `mage sync` / `:sync` — pull catalog stub + POST progress to `{MAGE_API_BASE}/api/estudo/mage/progress` (default API base `https://edevs.com`)
+- `mage sync` / `:sync` — pull Systems pack from `{MAGE_API_BASE}/api/estudo/mage/catalog` (writes `systemsMagePack`) + POST progress to `/api/estudo/mage/progress` (default API base `https://edevs.com`). If offline, keeps/seeds the bundled pack.
 
 ## Controls (Edge course TUI)
 

@@ -86,6 +86,15 @@ def check_numeric(task: Task, user_input: str) -> tuple[bool, str]:
 
 
 def check_fill(task: Task, user_input: str) -> tuple[bool, str]:
+    pattern = (task.answer_pattern or "").strip()
+    if pattern:
+        try:
+            if re.search(pattern, user_input.strip(), flags=re.IGNORECASE):
+                return True, "Correto!"
+        except re.error:
+            return False, "Padrão de resposta inválido no conteúdo."
+        return False, "Resposta não confere com o padrão esperado."
+
     candidates = [normalize_text(a) for a in (task.answers or [str(task.answer)])]
     if normalize_text(user_input) in candidates:
         return True, "Correto!"

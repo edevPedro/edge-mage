@@ -34,7 +34,7 @@ COURSES: tuple[CourseInfo, ...] = (
         COURSE_SYSTEMS,
         "Systems Mage",
         "Systems Mage",
-        "FLAG-lab / systems catalog (pack cache).",
+        "FLAG catalog offline (systems + llvm + math); sync refreshes pack.",
         requires_mago_base=True,
     ),
     CourseInfo(

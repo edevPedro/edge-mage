@@ -53,7 +53,7 @@ class HomeScreen(MageScreen):
             banner = (
                 "╔══════════════════════════════════════════════════╗\n"
                 "║      S Y S T E M S   M A G E  ·  FLAG-lab         ║\n"
-                "║   packs ~/.mage/packs  ·  :sync                  ║\n"
+                "║   systems+llvm+math · craft · :sync              ║\n"
                 "╚══════════════════════════════════════════════════╝"
             )
         else:
