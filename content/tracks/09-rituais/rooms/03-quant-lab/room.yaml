@@ -1,36 +1,42 @@
 id: quant-lab
 title: Quant Lab
-summary: Ritual boss — prova de competência.
+summary: Ritual boss — float→int8 com erro máximo reportado (contrato LiteRT).
 xp_reward: 80
 unlock_xp: 2000
 resources:
-- title: arXiv — PTQ / QAT survey
-  url: https://arxiv.org/abs/2103.13630
-  kind: paper
-- title: ONNX Runtime quantization
-  url: https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html
-  kind: docs
+  - title: LiteRT 8-bit quantization specification
+    url: https://developers.google.com/edge/litert/conversion/tensorflow/quantization/quantization_spec
+    kind: docs
+  - title: arXiv — Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference (Jacob et al.)
+    url: https://arxiv.org/abs/1712.05877
+    kind: paper
+  - title: CMSIS-NN — official library docs
+    url: https://arm-software.github.io/CMSIS-NN/latest/
+    kind: docs
+  - title: ONNX Runtime quantization
+    url: https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html
+    kind: docs
 animation: quantize_steps
 boss: true
 elite_skill: elite-quant
 tasks:
-- id: warm
-  type: mcq
-  prompt: Este ritual exige código + harness. Qual a ordem correta do loop?
-  xp: 10
-  answer: 0
-  choices:
-  - quiz leve → feitiço (código) → selo
-  - só XP até Edge Mage
-  - pular código
-- id: spell
-  type: code
-  prompt: Implemente `max_quant_error(xs, scale)` = max |x - scale*quantize_int8(x,scale)|.
-  xp: 50
-  code_template: "def quantize_int8(x, scale):\n    q=int(round(x/scale))\n    return\
-    \ max(-128, min(127, q))\n\ndef max_quant_error(xs, scale):\n    ...\n"
-  code_tests: 'e=mod.max_quant_error([0.05,0.14,-0.2], 0.1)
+  - id: warm
+    type: mcq
+    prompt: Este ritual exige código + harness. Qual a ordem correta do loop?
+    xp: 10
+    answer: 0
+    choices:
+      - quiz leve → feitiço (código) → selo
+      - só XP até Edge Mage
+      - pular código
+  - id: spell
+    type: code
+    prompt: Implemente `max_quant_error(xs, scale)` = max |x - scale*quantize_int8(x,scale)|.
+    xp: 50
+    code_template: "def quantize_int8(x, scale):\n    q=int(round(x/scale))\n    return\
+      \ max(-128, min(127, q))\n\ndef max_quant_error(xs, scale):\n    ...\n"
+    code_tests: 'e=mod.max_quant_error([0.05,0.14,-0.2], 0.1)
 
-    assert e < 0.06
+      assert e < 0.06
 
-    '
+      '

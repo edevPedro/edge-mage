@@ -4,12 +4,15 @@ summary: MSE, η e treino vs inferência.
 xp_reward: 45
 unlock_xp: 1300
 resources:
+- title: PyTorch — torch.nn.MSELoss
+  url: https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html
+  kind: docs
+- title: PyTorch — torch.optim
+  url: https://pytorch.org/docs/stable/optim.html
+  kind: docs
 - title: CS231n — Loss functions
   url: https://cs231n.github.io/neural-networks-2/#losses
   kind: docs
-- title: arXiv — Adam paper
-  url: https://arxiv.org/abs/1412.6980
-  kind: paper
 animation: gradient_descent
 tasks:
 - id: mse

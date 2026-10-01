@@ -10,6 +10,9 @@ resources:
 - title: Arm Neoverse N1 Software Optimization Guide
   url: https://developer.arm.com/documentation/swog01195/latest
   kind: docs
+- title: Arm Architecture Reference Manual for A-profile (DDI0487)
+  url: https://developer.arm.com/documentation/ddi0487/latest
+  kind: docs
 animation: memory_grid
 tasks:
 - id: dense-flops

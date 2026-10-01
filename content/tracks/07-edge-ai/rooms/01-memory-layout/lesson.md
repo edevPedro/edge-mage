@@ -9,8 +9,12 @@ Tensores precisam de ordem em memória. Duas convenções comuns em visão:
 
 Em row-major, o **último** índice varia mais rápido no endereço. Localidade ruim ⇒ cache miss ⇒ latência.
 
-## Arena estática
+## Tensor arena (fonte oficial)
 
-Em MCU, evita-se `malloc` no hot path. Um **memory arena** pré-alocado guarda ativações intermediárias com lifetime planejado (memory planner).
+Em MCU, evita-se `malloc` no hot path. [TFLM Memory Management](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/docs/memory_management.md) descreve um **tensor arena** compartilhado com seções:
 
-Fragmentação e pico de RAM ditam se o modelo cabe.
+- **Head** — tensores não-persistentes (planner ganancioso reutiliza)
+- **Temporary** — alocações de escopo curto
+- **Tail** — alocações persistentes
+
+[LiteRT Micro get started](https://developers.google.com/edge/litert/microcontrollers/get_started) mostra o `uint8_t tensor_arena[...]` passado ao interpreter. Fragmentação e pico de RAM ditam se o modelo cabe; alinhe (muitas vezes 16 bytes) para SIMD.

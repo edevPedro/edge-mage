@@ -1,51 +1,67 @@
 id: memory-layout
 title: Memory Layout
-summary: NCHW/NHWC, row-major e arena estática.
-xp_reward: 45
+summary: NCHW/NHWC, row-major e tensor arena (TFLM).
+xp_reward: 48
 unlock_xp: 2300
 resources:
-- title: CSAPP — Memory hierarchy
-  url: https://csapp.cs.cmu.edu/
-  kind: book
-- title: LLVM LangRef (types/layout)
-  url: https://llvm.org/docs/LangRef.html
-  kind: docs
+  - title: TFLM — Memory Management (tensor arena)
+    url: https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/docs/memory_management.md
+    kind: docs
+  - title: LiteRT Microcontrollers — get started
+    url: https://developers.google.com/edge/litert/microcontrollers/get_started
+    kind: docs
+  - title: LLVM LangRef (types / data layout)
+    url: https://llvm.org/docs/LangRef.html#data-layout
+    kind: docs
+  - title: CSAPP — Student site (memory hierarchy labs)
+    url: https://csapp.cs.cmu.edu/3e/students.html
+    kind: book
 animation: memory_grid
 tasks:
-- id: rowmajor
-  type: mcq
-  prompt: 'Em row-major, o índice que varia mais rápido é o:'
-  xp: 21
-  answer: 1
-  choices:
-  - primeiro
-  - último
-  - do meio sempre
-  - aleatório
-- id: nhwc
-  type: mcq
-  prompt: 'Em NHWC, o eixo que varia mais rápido tipicamente é:'
-  xp: 18
-  answer: 2
-  choices:
-  - N (batch)
-  - H (altura)
-  - C (canal)
-  - sempre W
-- id: arena
-  type: fill
-  prompt: 'No MCU, buffer pré-alocado para tensores costuma se chamar memory ___:'
-  xp: 21
-  answers:
-  - arena
-  - planner
-  - arena estática
-  - static arena
-- id: code-row-major
-  type: code
-  prompt: Implemente `idx_row_major(i,j,cols)` = i*cols+j.
-  xp: 22
-  code_template: "def idx_row_major(i, j, cols):\n    # TODO\n    ...\n"
-  code_tests: 'assert mod.idx_row_major(2,3,10)==23
+  - id: rowmajor
+    type: mcq
+    prompt: 'Em row-major, o índice que varia mais rápido é o:'
+    xp: 18
+    answer: 1
+    choices:
+      - primeiro
+      - último
+      - do meio sempre
+      - aleatório
+  - id: nhwc
+    type: mcq
+    prompt: 'Em NHWC, o eixo que varia mais rápido tipicamente é:'
+    xp: 16
+    answer: 2
+    choices:
+      - N (batch)
+      - H (altura)
+      - C (canal)
+      - sempre W
+  - id: arena
+    type: fill
+    prompt: 'No MCU, buffer pré-alocado para tensores costuma se chamar memory ___:'
+    xp: 18
+    answers:
+      - arena
+      - planner
+      - arena estática
+      - static arena
+  - id: arena-parts
+    type: mcq
+    prompt: 'Na doc TFLM, o tensor arena tipicamente divide alocações em:'
+    xp: 18
+    answer: 0
+    choices:
+      - head (não-persistente), temporary, tail (persistente)
+      - só heap e stack do OS
+      - VRAM e swapfile
+      - i-cache e d-cache apenas
+  - id: code-row-major
+    type: code
+    prompt: Implemente `idx_row_major(i,j,cols)` = i*cols+j.
+    xp: 22
+    code_template: "def idx_row_major(i, j, cols):\n    # TODO\n    ...\n"
+    code_tests: 'assert mod.idx_row_major(2,3,10)==23
 
-    '
+      '

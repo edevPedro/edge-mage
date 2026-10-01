@@ -21,8 +21,8 @@ resources:
   - title: Compiler Explorer (Godbolt) — pick rv64
     url: https://godbolt.org/
     kind: tool
-  - title: AAPCS64 releases (contrast only)
-    url: https://github.com/ARM-software/abi-aa/releases
+  - title: AAPCS64 — contrast (abi-aa source)
+    url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
     kind: docs
 tasks:
   - id: load-store

@@ -1,0 +1,66 @@
+id: autograd
+requires_skills:
+- gradiente
+- loss-lr
+title: Autograd & Grafo
+summary: Forward tape, backward, requires_grad e no_grad na inferência.
+xp_reward: 48
+unlock_xp: 1500
+resources:
+- title: PyTorch — A Gentle Introduction to torch.autograd
+  url: https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html
+  kind: docs
+- title: PyTorch — Automatic differentiation package torch.autograd
+  url: https://pytorch.org/docs/stable/autograd.html
+  kind: docs
+- title: PyTorch — torch.no_grad
+  url: https://pytorch.org/docs/stable/generated/torch.no_grad.html
+  kind: docs
+animation: gradient_descent
+tasks:
+- id: tape
+  type: mcq
+  prompt: 'Autograd tipicamente constrói o grafo de derivadas durante:'
+  xp: 18
+  answer: 0
+  choices:
+  - o forward (quando requires_grad=True)
+  - só o print do tensor
+  - somente o save do checkpoint
+  - a amostragem Nyquist
+- id: backward
+  type: fill
+  prompt: 'Método que dispara a cadeia de gradientes a partir de um escalar (uma palavra):'
+  xp: 16
+  answers:
+  - backward
+  - .backward
+  - backward()
+- id: nograd
+  type: mcq
+  prompt: 'Em inferência on-device / eval, o padrão correto é:'
+  xp: 22
+  answer: 1
+  choices:
+  - manter o tape completo para 'segurança'
+  - desligar o tape (no_grad / inference_mode) e model.eval()
+  - sempre chamar backward após cada forward
+  - forçar float64 em todos os pesos
+- id: leaf
+  type: mcq
+  prompt: 'requires_grad=True em pesos significa que:'
+  xp: 18
+  answer: 0
+  choices:
+  - o autograd pode acumular ∂L/∂peso no backward
+  - o tensor vira int8 automaticamente
+  - a loss some
+  - o batch size vira 1
+- id: code-chain-mul
+  type: code
+  prompt: "Implemente `chain_dz_dx(x, y_fn, z_fn)` aproximando dz/dx via diferenças\n  finitas compostas: z=z_fn(y_fn(x)). Use h=1e-5. (intuição do tape sem framework)"
+  xp: 28
+  code_template: "def chain_dz_dx(x, y_fn, z_fn, h=1e-5):\n    # TODO: (z(x+h)-z(x))/h com z=z_fn(y_fn(...))\n\
+    \    ...\n"
+  code_tests: "def y(u):\n    return 2*u+1\n\ndef z(v):\n    return v*v\n\ng=mod.chain_dz_dx(1.0,\
+    \ y, z)\n# z=(2x+1)^2 → dz/dx=2(2x+1)*2; @1 → 12\nassert abs(g-12)<1e-2\n"

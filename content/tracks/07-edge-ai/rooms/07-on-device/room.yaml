@@ -1,0 +1,102 @@
+id: on-device
+boss: true
+elite_skill: on-device
+requires_skills:
+  - export-runtime
+  - cmsis-nn
+  - quantizacao
+  - flops-bandwidth
+  - simd-latency
+  - aarch64-abi
+title: On-Device Checklist
+summary: Orçamento, export→runtime, arena TFLM, CMSIS-NN e golden tests.
+xp_reward: 72
+unlock_xp: 2780
+resources:
+  - title: ExecuTorch — Getting Started
+    url: https://pytorch.org/executorch/stable/getting-started.html
+    kind: docs
+  - title: LiteRT Microcontrollers — get started
+    url: https://developers.google.com/edge/litert/microcontrollers/get_started
+    kind: docs
+  - title: TFLM — Memory Management (tensor arena)
+    url: https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/docs/memory_management.md
+    kind: docs
+  - title: CMSIS-NN — official library docs (latest)
+    url: https://arm-software.github.io/CMSIS-NN/latest/
+    kind: docs
+  - title: ML Developers Guide for Cortex-M and Ethos-U NPU
+    url: https://developer.arm.com/documentation/109267/latest/
+    kind: docs
+  - title: Arm Architecture Reference Manual for A-profile (DDI0487)
+    url: https://developer.arm.com/documentation/ddi0487/latest
+    kind: docs
+  - title: ONNX Runtime — mobile / edge
+    url: https://onnxruntime.ai/docs/tutorials/mobile/
+    kind: docs
+animation: memory_grid
+tasks:
+  - id: budget
+    type: mcq
+    prompt: Antes de deploy edge, o que DEVE entrar no orçamento?
+    xp: 18
+    answer: 1
+    choices:
+      - só o número de likes no paper
+      - RAM, flash, potência e latência
+      - apenas a loss de treino
+      - a cor do enclosure
+  - id: golden
+    type: fill
+    prompt: 'Testes que comparam saída com referência conhecida: ___ tests'
+    xp: 14
+    answers:
+      - golden
+      - golden tests
+      - gold
+  - id: ops
+    type: mcq
+    prompt: 'Ops não suportadas pelo acelerador tendem a:'
+    xp: 16
+    answer: 1
+    choices:
+      - ficar mais rápidas magicamente
+      - cair em fallback CPU lento
+      - apagar a flash
+      - treinar sozinhas
+  - id: runtime-pick
+    type: mcq
+    prompt: 'Escolher runtime (ExecuTorch / LiteRT / ORT Mobile) depende principalmente de:'
+    xp: 16
+    answer: 0
+    choices:
+      - stack de treino + ops/backends do device alvo
+      - cor do LED do board
+      - número de likes do tweet do modelo
+      - usar sempre float64
+  - id: arena
+    type: mcq
+    prompt: 'No TFLM/LiteRT Micro, tensores intermediários tipicamente vivem em:'
+    xp: 14
+    answer: 0
+    choices:
+      - um tensor arena estático pré-alocado
+      - malloc ilimitado no hot path
+      - só registradores NEON sem DRAM
+      - Git LFS
+  - id: pipeline
+    type: mcq
+    prompt: 'No pipeline edge completo, o modelo de inferência é:'
+    xp: 12
+    answer: 1
+    choices:
+      - a única etapa que importa
+      - o miolo entre sensor/pré e pós/ato
+      - substituível por printf
+      - sempre treinado on-device
+  - id: ritual-checklist
+    type: ritual
+    prompt: Preencha study-log/artifacts/on-device.md (latency_ms, ram_mb, model, device)
+      e confirme — cite runtime (ExecuTorch/LiteRT/ORT/CMSIS-NN).
+    xp: 40
+    ritual_id: on-device

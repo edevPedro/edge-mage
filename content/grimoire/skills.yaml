@@ -140,6 +140,13 @@ skills:
     unlock_room: batch-epoch
     unlock_track: otimizacao
 
+  - id: autograd
+    name: Tape Autograd
+    description: "Grafo dinâmico, backward e no_grad na inferência."
+    glyph: "⟲"
+    unlock_room: autograd
+    unlock_track: otimizacao
+
   - id: probabilidade
     name: Oráculo Probabilístico
     description: "Esperança, variância e distribuições discretas."
@@ -194,6 +201,20 @@ skills:
     description: "AAPCS64 return regs, stack align, NEON int8 lanes — ponte Systems↔Edge."
     glyph: "⬡"
     unlock_room: aarch64-abi
+    unlock_track: edge-ai
+
+  - id: export-runtime
+    name: Export & Runtime
+    description: "torch.export → ONNX / ExecuTorch / LiteRT — treino chega no device."
+    glyph: "⇪"
+    unlock_room: export-runtime
+    unlock_track: edge-ai
+
+  - id: cmsis-nn
+    name: CMSIS-NN Kernels
+    description: "Kernels int8 Cortex-M / contrato de quant LiteRT — ponte kernel↔modelo."
+    glyph: "⧉"
+    unlock_room: cmsis-nn
     unlock_track: edge-ai
 
   - id: isa-compare

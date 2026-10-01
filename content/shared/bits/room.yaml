@@ -9,11 +9,11 @@ resources:
   - title: CSAPP — Student site & labs (data representation)
     url: https://csapp.cs.cmu.edu/3e/students.html
     kind: docs
-  - title: Wikipedia — Two's complement
-    url: https://en.wikipedia.org/wiki/Two%27s_complement
-    kind: docs
   - title: LLVM LangRef — Integer types
     url: https://llvm.org/docs/LangRef.html#integer-type
+    kind: docs
+  - title: CSAPP — Data Lab page
+    url: https://csapp.cs.cmu.edu/3e/labs.html
     kind: docs
 tasks:
   - id: two-pow-10

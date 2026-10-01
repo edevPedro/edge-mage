@@ -1,73 +1,93 @@
 id: quantizacao
 requires_skills:
-- softmax-ce
+  - softmax-ce
 title: Quantização & Fixed-Point
-summary: scale, int8, Q-format e tradeoff de acurácia.
-xp_reward: 54
+summary: scale, zero-point, int8 LiteRT contract e fixed-point no edge.
+xp_reward: 58
 unlock_xp: 2050
 resources:
-- title: arXiv — Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference (Jacob et al.)
-  url: https://arxiv.org/abs/1712.05877
-  kind: paper
-- title: arXiv — A Survey of Quantization Methods for Efficient Neural Network Inference
-  url: https://arxiv.org/abs/2103.13630
-  kind: paper
-- title: Arm — CMSIS-NN
-  url: https://arm-software.github.io/CMSIS_5/NN/html/index.html
-  kind: docs
+  - title: arXiv — Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference (Jacob et al.)
+    url: https://arxiv.org/abs/1712.05877
+    kind: paper
+  - title: LiteRT 8-bit quantization specification
+    url: https://developers.google.com/edge/litert/conversion/tensorflow/quantization/quantization_spec
+    kind: docs
+  - title: CMSIS-NN — Quantization Specification (library docs)
+    url: https://arm-software.github.io/CMSIS-NN/latest/
+    kind: docs
+  - title: arXiv — A Survey of Quantization Methods for Efficient Neural Network Inference
+    url: https://arxiv.org/abs/2103.13630
+    kind: paper
 animation: quantize_steps
 tasks:
-- id: bytes
-  type: numeric
-  prompt: 'Tensor de 1000 float32 → int8: bytes aproximados depois? (1 byte/elem)'
-  xp: 16
-  answer: 1000
-  tolerance: 0
-- id: ratio
-  type: numeric
-  prompt: Redução de memória float32→int8 (fator)?
-  xp: 18
-  answer: 4
-  tolerance: 0.001
-- id: scale
-  type: numeric
-  prompt: x em [−2, 2] mapeado para int8 [−128, 127]. scale ≈ (2−(−2))/(127−(−128))?
-  xp: 25
-  answer: 0.015686
-  tolerance: 0.001
-  relative_tolerance: 0.05
-  hint: 4 / 255
-- id: trade
-  type: mcq
-  prompt: 'Quantizar para int8 tipicamente:'
-  xp: 21
-  answer: 1
-  choices:
-  - aumenta memória e latência
-  - reduz memória/latência com possível perda de acurácia
-  - elimina a necessidade de pesos
-  - só funciona em Python puro
-- id: qformat
-  type: fill
-  prompt: 'Representar reais como inteiros com fator 2⁻ⁿ implícito: ponto ___:'
-  xp: 16
-  answers:
-  - fixo
-  - fixed
-  - fixo (fixed-point)
-  - fixed-point
-- id: code-quantize
-  type: code
-  prompt: Implemente `quantize_int8(x, scale)` → int em [-128,127] via round(x/scale)
-    clipado.
-  xp: 28
-  code_template: "def quantize_int8(x, scale):\n    # TODO\n    ...\n"
-  code_tests: 'assert mod.quantize_int8(0.0, 0.1)==0
+  - id: bytes
+    type: numeric
+    prompt: 'Tensor de 1000 float32 → int8: bytes aproximados depois? (1 byte/elem)'
+    xp: 14
+    answer: 1000
+    tolerance: 0
+  - id: ratio
+    type: numeric
+    prompt: Redução de memória float32→int8 (fator)?
+    xp: 14
+    answer: 4
+    tolerance: 0.001
+  - id: scale
+    type: numeric
+    prompt: x em [−2, 2] mapeado para int8 [−128, 127]. scale ≈ (2−(−2))/(127−(−128))?
+    xp: 22
+    answer: 0.015686
+    tolerance: 0.001
+    relative_tolerance: 0.05
+    hint: 4 / 255
+  - id: dequant
+    type: mcq
+    prompt: 'Na especificação afim LiteRT/Jacob, real_value ≈'
+    xp: 18
+    answer: 0
+    choices:
+      - '(q − zero_point) · scale'
+      - 'q / zero_point + scale'
+      - 'somente q sem scale'
+      - 'softmax(q)'
+  - id: weight-zp
+    type: fill
+    prompt: 'LiteRT 8-bit: pesos CONV/FC simétricos tipicamente exigem zero_point = ___'
+    xp: 14
+    answers:
+      - "0"
+      - "zero"
+  - id: trade
+    type: mcq
+    prompt: 'Quantizar para int8 tipicamente:'
+    xp: 16
+    answer: 1
+    choices:
+      - aumenta memória e latência
+      - reduz memória/latência com possível perda de acurácia
+      - elimina a necessidade de pesos
+      - só funciona em Python puro
+  - id: qformat
+    type: fill
+    prompt: 'Representar reais como inteiros com fator 2⁻ⁿ implícito: ponto ___:'
+    xp: 12
+    answers:
+      - fixo
+      - fixed
+      - fixo (fixed-point)
+      - fixed-point
+  - id: code-quantize
+    type: code
+    prompt: Implemente `quantize_int8(x, scale)` → int em [-128,127] via round(x/scale)
+      clipado.
+    xp: 28
+    code_template: "def quantize_int8(x, scale):\n    # TODO\n    ...\n"
+    code_tests: 'assert mod.quantize_int8(0.0, 0.1)==0
 
-    q=mod.quantize_int8(12.5, 0.1)
+      q=mod.quantize_int8(12.5, 0.1)
 
-    assert q==125
+      assert q==125
 
-    assert mod.quantize_int8(1000, 0.1)==127
+      assert mod.quantize_int8(1000, 0.1)==127
 
-    '
+      '

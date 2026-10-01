@@ -4,11 +4,14 @@ summary: Direção de descida, update e η.
 xp_reward: 45
 unlock_xp: 1200
 resources:
-- title: Khan Academy — Gradient
-  url: https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives
+- title: PyTorch — torch.autograd
+  url: https://pytorch.org/docs/stable/autograd.html
   kind: docs
 - title: CS231n — Optimization notes
   url: https://cs231n.github.io/optimization-1/
+  kind: docs
+- title: Khan Academy — Gradient
+  url: https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives
   kind: docs
 animation: gradient_descent
 tasks:

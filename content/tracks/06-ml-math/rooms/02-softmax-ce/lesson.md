@@ -18,7 +18,11 @@ Com label one-hot na classe k: `CE = −log p_k`.
 
 Minimizar CE = maximizar a probabilidade da classe correta.
 
+## Craft PyTorch
+
+Em produção de treino, use `nn.CrossEntropyLoss` com **logits** (não softmax prévio): a loss aplica log-softmax fused — mais estável e o padrão da API oficial.
+
 ## Por que importa no edge
 
 Classificadores on-device (wake-word, gestos, anomalia) terminam em softmax + argmax.
-Quantização pode afetar logits — valide a calibração.
+Quantização pode afetar logits — valide a calibração (golden float vs int8).

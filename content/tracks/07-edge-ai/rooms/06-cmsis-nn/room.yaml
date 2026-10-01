@@ -1,0 +1,94 @@
+id: cmsis-nn
+title: CMSIS-NN & integer kernels
+summary: Cortex-M int8 kernels, LiteRT quant contract, and why NEON/MVE lanes matter on-device.
+xp_reward: 58
+unlock_xp: 2700
+requires_skills:
+  - export-runtime
+  - quantizacao
+  - aarch64-abi
+  - simd-latency
+resources:
+  - title: CMSIS-NN — official library docs (latest)
+    url: https://arm-software.github.io/CMSIS-NN/latest/
+    kind: docs
+  - title: LiteRT 8-bit quantization specification
+    url: https://developers.google.com/edge/litert/conversion/tensorflow/quantization/quantization_spec
+    kind: docs
+  - title: ML Developers Guide for Cortex-M and Ethos-U NPU
+    url: https://developer.arm.com/documentation/109267/latest/
+    kind: docs
+  - title: Arm Neon Intrinsics Reference
+    url: https://developer.arm.com/architectures/instruction-sets/intrinsics/
+    kind: docs
+animation: quantize_steps
+tasks:
+  - id: cmsis-target
+    type: mcq
+    prompt: "CMSIS-NN (current docs) primarily optimizes NN kernels for…"
+    xp: 18
+    answer: 0
+    choices:
+      - "Arm Cortex-M (SIMD / DSP / MVE variants)"
+      - "only NVIDIA GPUs"
+      - "JavaScript browsers exclusively"
+      - "x86 microcode ROM"
+  - id: quant-contract
+    type: mcq
+    prompt: "CMSIS-NN states it follows which integer quant scheme?"
+    xp: 18
+    answer: 1
+    choices:
+      - "IEEE-754 half only"
+      - "int8 / int16 as in TensorFlow Lite for Microcontrollers / LiteRT"
+      - "arbitrary float16 with no scale"
+      - "ASCII digit packing"
+  - id: weight-zp
+    type: fill
+    prompt: >-
+      LiteRT 8-bit spec: for many CONV/FC weight tensors, zero_point must be ___
+      (digit).
+    xp: 16
+    answers:
+      - "0"
+      - "zero"
+  - id: a-class-pref
+    type: mcq
+    prompt: "For Arm A-class CPUs, CMSIS-NN float docs recommend preferring…"
+    xp: 16
+    answer: 2
+    choices:
+      - "only CMSIS-NN float kernels"
+      - "CUDA Graph capture"
+      - "Arm Compute Library or XNNPACK-class optimized runtimes"
+      - "Python list comprehensions"
+  - id: outside-cmsis
+    type: fill
+    prompt: >-
+      Outside lab: open CMSIS-NN docs and name one kernel category listed
+      (one token: Convolution, Softmax, Pooling, LSTM, …).
+    xp: 14
+    answers:
+      - "Convolution"
+      - "convolution"
+      - "Softmax"
+      - "softmax"
+      - "Pooling"
+      - "pooling"
+      - "LSTM"
+      - "lstm"
+      - "SVDF"
+      - "svdf"
+      - "Activation"
+      - "activation"
+      - "Elementwise"
+      - "elementwise"
+      - "Fully-connected"
+      - "fully-connected"
+      - "Fully connected"
+  - id: code-int8-bytes
+    type: code
+    prompt: "Implemente `weight_bytes_int8(out_ch, in_ch)` = out_ch * in_ch (pesos FC int8, sem bias)."
+    xp: 20
+    code_template: "def weight_bytes_int8(out_ch, in_ch):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.weight_bytes_int8(128, 64)==8192\nassert mod.weight_bytes_int8(1, 1)==1\n"

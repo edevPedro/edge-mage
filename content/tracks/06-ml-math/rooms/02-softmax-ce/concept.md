@@ -5,3 +5,6 @@
 
 ## Cross-entropy
 `CE = −Σ y_i log p_i` (one-hot → `−log p_{classe}`)
+
+## Craft PyTorch
+Prefira `nn.CrossEntropyLoss` sobre `softmax` + `NLLLoss` separados: o fused **log-softmax** é mais estável ([docs](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html)).

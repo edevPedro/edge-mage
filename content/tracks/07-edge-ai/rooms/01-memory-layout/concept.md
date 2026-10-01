@@ -1,7 +1,7 @@
 # Conceito — Memory layout
 
 ## Row-major
-Elementos de uma linha contíguos.
+Último índice varia mais rápido; acesse na ordem de armazenamento.
 
-## Localidade
-Acesse memória na ordem em que está armazenada.
+## Arena TFLM
+Buffer estático: head / temporary / tail — não heap no hot path.

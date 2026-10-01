@@ -1,37 +1,50 @@
 id: softmax-ce
 title: Softmax & Cross-Entropy
-summary: Probabilidades, CE e softmax estável (com código).
+summary: Probabilidades, CE fused, softmax estável (com código).
 xp_reward: 48
 unlock_xp: 1750
 resources:
+- title: PyTorch — torch.nn.functional.softmax
+  url: https://pytorch.org/docs/stable/generated/torch.nn.functional.softmax.html
+  kind: docs
+- title: PyTorch — CrossEntropyLoss (log-softmax fused)
+  url: https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
+  kind: docs
 - title: CS231n — Softmax classifier
   url: https://cs231n.github.io/linear-classify/#softmax
   kind: docs
-- title: arXiv — Deep learning survey
-  url: https://arxiv.org/abs/1404.7828
-  kind: paper
 animation: softmax_bars
 tasks:
 - id: softsum
   type: numeric
   prompt: 'Softmax de qualquer vetor: soma das probabilidades?'
-  xp: 18
+  xp: 14
   answer: 1
   tolerance: 0.001
 - id: ce
   type: mcq
   prompt: 'Com label one-hot na classe k, CE simplifica para:'
-  xp: 21
+  xp: 18
   answer: 0
   choices:
   - −log p_k
   - p_k²
   - max z
   - ‖W‖
+- id: fused
+  type: mcq
+  prompt: 'torch.nn.CrossEntropyLoss espera tipicamente:'
+  xp: 18
+  answer: 1
+  choices:
+  - probabilidades já normalizadas pelo softmax
+  - logits crus (aplica log-softmax internamente)
+  - apenas int8
+  - só vetores de tamanho 2
 - id: stable
   type: fill
   prompt: 'Antes do exp no softmax estável, subtraímos o ___ dos logits:'
-  xp: 16
+  xp: 14
   answers:
   - max
   - máximo
@@ -45,14 +58,14 @@ tasks:
     6)
 
     '
-  xp: 36
+  xp: 30
   expected_stdout: '1.0'
-  code_template: "import math\n\ndef softmax(zs):\n    # TODO: retorne lista de probabilidades\n\
-    \    ...\n\nprint(round(sum(softmax([1.0, 2.0, 3.0])), 6))\n"
+  code_template: "import math\n\ndef softmax(zs):\n    # TODO: retorne lista de\
+    \ probabilidades\n    ...\n\nprint(round(sum(softmax([1.0, 2.0, 3.0])), 6))\n"
 - id: code-softmax-stable
   type: code
   prompt: Implemente `softmax(zs)` estável (subtrai max) → lista de probs.
-  xp: 30
+  xp: 28
   code_template: "import math\n\ndef softmax(zs):\n    # TODO\n    ...\n"
   code_tests: 'import math
 

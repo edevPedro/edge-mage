@@ -1,0 +1,81 @@
+id: export-runtime
+requires_skills:
+- quantizacao
+- flops-bandwidth
+- simd-latency
+title: Export & Runtime
+summary: torch.export → ONNX / ExecuTorch / LiteRT — o caminho treino→device.
+xp_reward: 54
+unlock_xp: 2680
+resources:
+- title: PyTorch — torch.export
+  url: https://pytorch.org/docs/stable/export.html
+  kind: docs
+- title: PyTorch — torch.onnx (export-based)
+  url: https://pytorch.org/docs/stable/onnx.html
+  kind: docs
+- title: ExecuTorch — Getting Started
+  url: https://pytorch.org/executorch/stable/getting-started.html
+  kind: docs
+- title: LiteRT overview (Google AI Edge)
+  url: https://ai.google.dev/edge/litert/overview
+  kind: docs
+- title: ONNX Runtime — quantization
+  url: https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html
+  kind: docs
+animation: memory_grid
+tasks:
+- id: export-api
+  type: mcq
+  prompt: 'No PyTorch 2.x, capturar o grafo para deploy (caminho canônico) usa:'
+  xp: 20
+  answer: 1
+  choices:
+  - só pickle do nn.Module
+  - torch.export (e a partir dele ONNX / ExecuTorch)
+  - print(model) redirecionado para .bin
+  - CSV dos pesos
+- id: onnx-role
+  type: fill
+  prompt: 'Formato intermediário aberto treino→runtime (4 letras):'
+  xp: 14
+  answers:
+  - onnx
+  - ONNX
+- id: runtime
+  type: mcq
+  prompt: 'Runtime PyTorch oficial para edge (.pte) é:'
+  xp: 20
+  answer: 0
+  choices:
+  - ExecuTorch
+  - Jupyter Notebook
+  - somente CUDA driver
+  - Git LFS
+- id: litert
+  type: mcq
+  prompt: 'Sucessor / marca atual do runtime on-device do ecossistema TFLite é:'
+  xp: 18
+  answer: 1
+  choices:
+  - TensorBoard
+  - LiteRT (Google AI Edge)
+  - BLAS netlib
+  - Godbolt
+- id: eval-mode
+  type: mcq
+  prompt: 'Antes de exportar para inferência, o modelo deve estar em:'
+  xp: 16
+  answer: 0
+  choices:
+  - eval() (e tipicamente sem grad)
+  - train() com dropout ligado
+  - modo random init
+  - half só no bias
+- id: code-pipeline-tag
+  type: code
+  prompt: "Implemente `edge_pipeline_stages()` → lista na ordem:\n  ['train','export','quantize','runtime','golden'].\n\
+    \  (tags do caminho real; harness checa igualdade)"
+  xp: 24
+  code_template: "def edge_pipeline_stages():\n    # TODO\n    ...\n"
+  code_tests: "assert mod.edge_pipeline_stages()==['train','export','quantize','runtime','golden']\n"

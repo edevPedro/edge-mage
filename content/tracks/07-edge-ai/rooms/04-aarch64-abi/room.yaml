@@ -1,13 +1,16 @@
 id: aarch64-abi
 title: AArch64 ABI on the edge
-summary: AAPCS64 return regs, stack alignment, and why NEON lanes matter for int8 kernels.
-xp_reward: 52
+summary: AAPCS64 regs/frames, stack align, NEON int8 lanes — device-facing bridge to CMSIS-NN kernels.
+xp_reward: 58
 unlock_xp: 2450
 requires_skills:
   - memory-layout
 resources:
-  - title: Procedure Call Standard for the Arm 64-bit Architecture (AAPCS64)
-    url: https://github.com/ARM-software/abi-aa/releases
+  - title: AAPCS64 — Procedure Call Standard (abi-aa source)
+    url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
+    kind: docs
+  - title: Arm Architecture Reference Manual for A-profile (DDI0487)
+    url: https://developer.arm.com/documentation/ddi0487/latest
     kind: docs
   - title: Arm — Learn the architecture · A64 Overview
     url: https://developer.arm.com/documentation/102374/0101/Overview
@@ -15,12 +18,15 @@ resources:
   - title: Arm Neon Intrinsics Reference
     url: https://developer.arm.com/architectures/instruction-sets/intrinsics/
     kind: docs
+  - title: LLVM Target-Independent Code Generator (frames / CC context)
+    url: https://llvm.org/docs/CodeGenerator.html
+    kind: docs
 animation: memory_grid
 tasks:
   - id: ret-reg
     type: mcq
     prompt: "Under AAPCS64, a 32-bit int return value is typically in…"
-    xp: 18
+    xp: 14
     answer: 0
     choices:
       - "w0 / x0"
@@ -30,15 +36,33 @@ tasks:
   - id: stack-align
     type: fill
     prompt: "AAPCS64 requires the stack pointer to be ___-byte aligned at public interfaces (number)."
-    xp: 16
+    xp: 12
     answers:
       - "16"
       - "16-byte"
       - "16 bytes"
+  - id: callee-saved
+    type: mcq
+    prompt: "Under AAPCS64, which general-purpose registers are callee-saved (must preserve across a call)?"
+    xp: 16
+    answer: 1
+    choices:
+      - "x0–x7 only"
+      - "x19–x28 (plus FP/LR when used as such)"
+      - "x8–x15 exclusively"
+      - "none — everything is caller-saved"
+  - id: lr-reg
+    type: fill
+    prompt: "AAPCS64 link register (return address) is X___ (number)."
+    xp: 12
+    answers:
+      - "30"
+      - "x30"
+      - "X30"
   - id: neon-int8
     type: mcq
-    prompt: "A 128-bit NEON register can hold how many int8 lanes?"
-    xp: 18
+    prompt: "A 128-bit NEON / Advanced SIMD register can hold how many int8 lanes?"
+    xp: 14
     answer: 2
     choices:
       - "4"
@@ -48,9 +72,15 @@ tasks:
   - id: outside-aapcs
     type: fill
     prompt: >-
-      Outside lab: open AAPCS64 (Arm ABI) and name the register used for the
+      Outside lab: open AAPCS64 and name the register used for the
       indirect result location (one token, e.g. x8).
-    xp: 16
+    xp: 12
     answers:
       - "x8"
       - "X8"
+  - id: code-int8-lanes
+    type: code
+    prompt: "Implemente `neon_int8_lanes(bits=128)` = bits // 8 (lanes int8 num vetor SIMD)."
+    xp: 18
+    code_template: "def neon_int8_lanes(bits=128):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.neon_int8_lanes()==16\nassert mod.neon_int8_lanes(64)==8\n"

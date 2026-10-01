@@ -69,8 +69,10 @@ Campos extras: `unlocked_skills`, `rituals`, `mastery`, `daily_run`, `daily_comb
 |------|--------|--------|
 | Codex Matricial | `matmul2` + harness | `elite-codex` |
 | Softmax Estável | softmax extremos | `elite-softmax` + libera track `edge-ai` (`requires_ritual: softmax-estavel`) |
-| Quant Lab | erro max int8 | `elite-quant` |
-| On-Device (Edge AI) | checklist markdown | ritual `on-device` → rank Edge Mage |
+| Quant Lab | erro max int8 (+ PTQ) | `elite-quant` |
+| On-Device (Edge AI) | checklist markdown + runtime cite | ritual `on-device` → rank Edge Mage |
+
+Pré-requisitos Edge AI (após Softmax ritual): layout → FLOPs → SIMD → AArch64 → **export-runtime** → **cmsis-nn** → on-device.
 
 ## Cerimônia
 

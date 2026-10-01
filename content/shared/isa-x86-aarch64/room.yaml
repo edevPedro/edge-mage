@@ -9,14 +9,17 @@ resources:
   - title: Compiler Explorer (Godbolt)
     url: https://godbolt.org/
     kind: tool
-  - title: System V AMD64 ABI (PDF)
-    url: https://refspecs.linuxbase.org/elf/x86_64-abi-0.99.pdf
+  - title: x86-64 psABI (System V AMD64 — living source)
+    url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    kind: docs
+  - title: AAPCS64 — Procedure Call Standard (abi-aa source)
+    url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
     kind: docs
   - title: Arm — Learn the architecture · A64 overview
     url: https://developer.arm.com/documentation/102374/0101/Overview
     kind: docs
-  - title: Procedure Call Standard for the Arm 64-bit Architecture (AAPCS64)
-    url: https://github.com/ARM-software/abi-aa/releases
+  - title: Arm Architecture Reference Manual for A-profile (DDI0487)
+    url: https://developer.arm.com/documentation/ddi0487/latest
     kind: docs
 tasks:
   - id: same-c

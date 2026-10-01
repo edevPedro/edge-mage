@@ -4,41 +4,54 @@ summary: Dimensões de Y=XW e custo 2·B·M·N.
 xp_reward: 48
 unlock_xp: 1900
 resources:
-- title: BLAS overview
+- title: PyTorch — torch.nn.Linear
+  url: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
+  kind: docs
+- title: PyTorch — Profiler (performance)
+  url: https://pytorch.org/docs/stable/profiler.html
+  kind: docs
+- title: BLAS overview (GEMM)
   url: https://netlib.org/blas/
   kind: docs
-- title: arXiv — FLOPs / efficiency notes
-  url: https://arxiv.org/abs/2007.05558
-  kind: paper
 animation: matrix
 tasks:
 - id: outdim
   type: numeric
   prompt: X é 1×4, W é 4×8. Quantas saídas (features) em Y=XW?
-  xp: 18
+  xp: 16
   answer: 8
   tolerance: 0
 - id: flops-num
   type: numeric
   prompt: B=2, M=10, N=5. FLOPs ≈ 2·B·M·N?
-  xp: 25
+  xp: 22
   answer: 200
   tolerance: 0
 - id: flops
   type: mcq
   prompt: 'Custo dominante de uma densa grande é tipicamente:'
-  xp: 18
+  xp: 16
   answer: 1
   choices:
   - softmax
   - GEMM / matmul
   - print debug
   - JSON parse
+- id: linear-api
+  type: mcq
+  prompt: 'Em PyTorch, a camada densa Y=XWᵀ+b (API) é tipicamente:'
+  xp: 16
+  answer: 0
+  choices:
+  - torch.nn.Linear
+  - torch.nn.Softmax
+  - torch.optim.Adam
+  - torch.utils.data.Dataset
 - id: inner
   type: fill
   prompt: 'Em Y=XW, o eixo que precisa coincidir (tamanho interno) chama-se dimensão
     ___:'
-  xp: 16
+  xp: 14
   answers:
   - interna
   - inner

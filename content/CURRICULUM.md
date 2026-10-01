@@ -12,6 +12,7 @@ Cada sala agora tem **História** (cenário narrativo), **Conceito** (editorial 
 4. **Cobertura Edge incompleta**: pouco sobre FLOPs, banda/memory-bound, fixed-point; matmul/FLOPs e quantização rasos.
 5. **Lições finas**: várias salas com 5–8 linhas e só 2 tasks (trivia em vez de entendimento).
 6. **Rank Edge Mage cedo demais**: 2000 XP antes do checklist on-device — título sem competência plena.
+7. **(2026-04 audit ML)** Faltava **autograd**, **export→runtime** (torch.export / ONNX / ExecuTorch / LiteRT) e quant com docs oficiais (PTQ vs QAT) — bar de applicant de mestrado Edge ML.
 
 ## Assembly e ISAs (mínimo honest)
 
@@ -22,7 +23,7 @@ Não há três trilhas ISA. Há **um núcleo** + **uma profundidade** + **uma el
 | `intro-asm` | Registradores / mov / call-ret + Godbolt |
 | `isa-x86-aarch64` | Ponte — mesmo C, dialetos x86_64 vs AArch64 (0–1 lab de reforço x86) |
 | `riscv-lite` | Eletiva — load/store + `a0`–`a7` vs AAPCS64; **não** gate de Mago base |
-| Edge `aarch64-abi` + LLVM F2 | Profundidade AArch64 (AAPCS64, frames, NEON) |
+| Edge `aarch64-abi` + `cmsis-nn` + LLVM F2 | Profundidade AArch64 (AAPCS64, frames, NEON) + kernels int8 Cortex-M |
 
 x86_64 permanece host/RE em Systems (`sys-sysv-abi`, `sys-asm-read`). RISC-V **não** ensina privileged ISA, Vector `V`, nem core design.
 
@@ -46,13 +47,15 @@ Robótica (reusa trig + matrizes)
   transforms 2D → cinemática → sensores
        ↓
 Otimização
-  derivadas/cadeia → gradiente → loss/LR → batch/epoch
+  derivadas/cadeia → gradiente → loss/LR → batch/epoch → autograd/no_grad
        ↓
 ML Math
-  probabilidade → softmax/CE (+ código estável) → matmul/FLOPs → quantização/fixed-point
+  probabilidade → softmax/CE (+ código estável) → matmul/FLOPs → quantização (PTQ/QAT)
        ↓
 Edge AI Low-Level
-  memory layout → FLOPs/banda → SIMD/latência → checklist on-device
+  memory layout → FLOPs/banda → SIMD → AArch64 ABI
+  → export/runtime (torch.export / ONNX / ExecuTorch / LiteRT)
+  → CMSIS-NN kernels → checklist on-device
 ```
 
 ## Trilhas e salas
@@ -64,11 +67,11 @@ Edge AI Low-Level
 | 3 | Física & Sinais | 250 | cinematica, ondas, amostragem | Movimento → Nyquist |
 | 4 | Elétrica Edge | 500 | ohm, divisao-tensao, adc-potencia | Ohm → Escada ADC |
 | 5 | Robótica | 800 | transforms-2d, cinematica-robo, sensores | Portal 2D → Percepção |
-| 6 | Otimização | 1100 | derivadas, gradiente, loss-lr, batch-epoch | Tangente → Epoch Ritual |
+| 6 | Otimização | 1100 | derivadas, gradiente, loss-lr, batch-epoch, **autograd** | Tangente → Tape Autograd |
 | 7 | ML Math | 1650 | probabilidade, softmax-ce, matmul-flops, quantizacao | Oráculo → Int8 |
-| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, aarch64-abi, on-device | Layout → AArch64 ABI → **Edge Mage** |
+| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, aarch64-abi, **export-runtime**, **cmsis-nn**, on-device | Layout → Export → CMSIS → **Edge Mage** |
 
-XP total disponível ≈ **3144+** (bosses). Rank **Edge Mage** = **2900 XP + ritual on-device** (artefato em `study-log/artifacts/on-device.md`). **31 skills** no grimório.
+XP total disponível ≈ **3300+** (bosses). Rank **Edge Mage** = **2900 XP + ritual on-device** (artefato em `study-log/artifacts/on-device.md`). Skills no grimório crescem com as salas novas.
 
 Track **Edge AI** exige ritual `softmax-estavel` (boss Softmax Estável), além do unlock de XP.
 
@@ -78,8 +81,8 @@ Track **Edge AI** exige ritual `softmax-estavel` (boss Softmax Estável), além 
 |------|--------|----------------|
 | Codex Matricial | `matmul2` + harness | elite-codex |
 | Softmax Estável | softmax extremos | abre Edge AI |
-| Quant Lab | erro max int8 | elite-quant |
-| On-Device | checklist latency/RAM/model/device | **Edge Mage** |
+| Quant Lab | erro max int8 + PTQ intuição | elite-quant |
+| On-Device | checklist latency/RAM/model/device (+ runtime cite) | **Edge Mage** |
 
 Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 
@@ -90,16 +93,17 @@ Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 | `story.md` | História hipotética — resolver a math = resolver o conflito |
 | `concept.md` | Conceitos necessários (estilo editorial LeetCode) |
 | `lesson.md` | Desafio / lição operacional + contexto das tasks |
-| `room.yaml` | Meta, tasks, `animation:` |
+| `room.yaml` | Meta, tasks, `animation:` — **resources preferem docs oficiais** (PyTorch / LiteRT / Arm / ONNX) |
 
 ## Princípios pedagógicos aplicados
 
 - **Pré-requisitos**: cada sala só assume o que as anteriores desbloqueiam.
-- **Spiral**: trig/matrizes voltam em robótica; matmul/FLOPs voltam em Edge AI; gradiente em código antes da teoria completa de opt.
+- **Spiral**: trig/matrizes voltam em robótica; matmul/FLOPs voltam em Edge AI; gradiente → autograd → export.
 - **Narrativa**: a história motiva o cálculo; o conceito ensina; as tasks comprovam.
 - **Grimório**: skills nomeadas amarram conhecimento a progresso persistente.
 - **Idioma**: português claro e profissional.
+- **Fontes**: preferir guias oficiais de framework; papers (arXiv) só quando amarrados a lab.
 
 ## Como completar até Edge Mage
 
-Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — não só XP acumulado cedo.
+Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — **treino → export → quant → runtime → golden** — não só XP acumulado cedo.
