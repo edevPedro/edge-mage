@@ -1,48 +1,52 @@
 id: simd-latency
 requires_skills:
-  - memory-layout
-  - flops-bandwidth
+- memory-layout
+- flops-bandwidth
 title: SIMD & Latência
 summary: Paralelismo de dados e tradeoffs de acurácia.
 xp_reward: 45
 unlock_xp: 2600
+resources:
+- title: Arm Neon Intrinsics
+  url: https://developer.arm.com/architectures/instruction-sets/intrinsics/
+  kind: docs
+- title: Intel Intrinsics Guide
+  url: https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html
+  kind: docs
 animation: memory_grid
 tasks:
-  - id: simd
-    type: fill
-    prompt: "Sigla para Single Instruction Multiple Data:"
-    xp: 18
-    answers:
-      - "simd"
-      - "SIMD"
-  - id: trade
-    type: mcq
-    prompt: "Reduzir latência on-device com quantização pode:"
-    xp: 25
-    answer: 1
-    choices:
-      - "só melhorar acurácia sempre"
-      - "trocar um pouco de acurácia por velocidade/energia"
-      - "aumentar o tamanho do binário 100×"
-      - "remover a necessidade de dataset"
-  - id: neon
-    type: mcq
-    prompt: "Em Cortex-A/M com extensão vetorial ARM típica, você ouve falar de:"
-    xp: 18
-    answer: 0
-    choices:
-      - "NEON / Helium (MVE)"
-      - "somente CUDA cores"
-      - "JavaScript SIMD.js obrigatório"
-      - "FTP vector mode"
+- id: simd
+  type: fill
+  prompt: 'Sigla para Single Instruction Multiple Data:'
+  xp: 18
+  answers:
+  - simd
+  - SIMD
+- id: trade
+  type: mcq
+  prompt: 'Reduzir latência on-device com quantização pode:'
+  xp: 25
+  answer: 1
+  choices:
+  - só melhorar acurácia sempre
+  - trocar um pouco de acurácia por velocidade/energia
+  - aumentar o tamanho do binário 100×
+  - remover a necessidade de dataset
+- id: neon
+  type: mcq
+  prompt: 'Em Cortex-A/M com extensão vetorial ARM típica, você ouve falar de:'
+  xp: 18
+  answer: 0
+  choices:
+  - NEON / Helium (MVE)
+  - somente CUDA cores
+  - JavaScript SIMD.js obrigatório
+  - FTP vector mode
+- id: code-throughput
+  type: code
+  prompt: Implemente `ideal_speedup(lanes)` = float(lanes) (modelo ingênuo).
+  xp: 18
+  code_template: "def ideal_speedup(lanes):\n    # TODO\n    ...\n"
+  code_tests: 'assert mod.ideal_speedup(8)==8.0
 
-  - id: code-throughput
-    type: code
-    prompt: "Implemente `ideal_speedup(lanes)` = float(lanes) (modelo ingênuo)."
-    xp: 18
-    code_template: |
-      def ideal_speedup(lanes):
-          # TODO
-          ...
-    code_tests: |
-      assert mod.ideal_speedup(8)==8.0
+    '

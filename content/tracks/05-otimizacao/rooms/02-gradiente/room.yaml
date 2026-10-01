@@ -3,43 +3,47 @@ title: Gradiente
 summary: Direção de descida, update e η.
 xp_reward: 45
 unlock_xp: 1200
+resources:
+- title: Khan Academy — Gradient
+  url: https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives
+  kind: docs
+- title: CS231n — Optimization notes
+  url: https://cs231n.github.io/optimization-1/
+  kind: docs
 animation: gradient_descent
 tasks:
-  - id: update
-    type: numeric
-    prompt: "x=2, grad=4, η=0.1. Novo x após uma descida?"
-    xp: 25
-    answer: 1.6
-    tolerance: 0.001
-    hint: "x − η·grad"
-  - id: direction
-    type: mcq
-    prompt: "Gradiente aponta para:"
-    xp: 21
-    answer: 1
-    choices:
-      - "maior diminuição de f"
-      - "maior aumento de f"
-      - "sempre a origem"
-      - "o bias apenas"
-  - id: zero-grad
-    type: mcq
-    prompt: "Se ∇f(x*) = 0, x* é:"
-    xp: 18
-    answer: 1
-    choices:
-      - "sempre um mínimo global"
-      - "ponto estacionário (mín/máx/sela)"
-      - "obrigatoriamente máximo"
-      - "prova de overfitting"
+- id: update
+  type: numeric
+  prompt: x=2, grad=4, η=0.1. Novo x após uma descida?
+  xp: 25
+  answer: 1.6
+  tolerance: 0.001
+  hint: x − η·grad
+- id: direction
+  type: mcq
+  prompt: 'Gradiente aponta para:'
+  xp: 21
+  answer: 1
+  choices:
+  - maior diminuição de f
+  - maior aumento de f
+  - sempre a origem
+  - o bias apenas
+- id: zero-grad
+  type: mcq
+  prompt: 'Se ∇f(x*) = 0, x* é:'
+  xp: 18
+  answer: 1
+  choices:
+  - sempre um mínimo global
+  - ponto estacionário (mín/máx/sela)
+  - obrigatoriamente máximo
+  - prova de overfitting
+- id: code-grad-step
+  type: code
+  prompt: Implemente `grad_step(theta, grad, lr)` → theta - lr*grad (listas).
+  xp: 26
+  code_template: "def grad_step(theta, grad, lr):\n    # TODO\n    ...\n"
+  code_tests: 'assert mod.grad_step([1.0,2.0],[0.5,1.0],0.1)==[0.95,1.9]
 
-  - id: code-grad-step
-    type: code
-    prompt: "Implemente `grad_step(theta, grad, lr)` → theta - lr*grad (listas)."
-    xp: 26
-    code_template: |
-      def grad_step(theta, grad, lr):
-          # TODO
-          ...
-    code_tests: |
-      assert mod.grad_step([1.0,2.0],[0.5,1.0],0.1)==[0.95,1.9]
+    '

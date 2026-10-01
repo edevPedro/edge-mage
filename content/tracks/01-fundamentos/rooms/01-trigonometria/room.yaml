@@ -3,55 +3,62 @@ title: Trigonometria
 summary: Circulo unitário, radianos e identidades básicas.
 xp_reward: 36
 unlock_xp: 0
+resources:
+- title: Khan Academy — Trigonometry
+  url: https://www.khanacademy.org/math/trigonometry
+  kind: docs
+- title: MDN — Math.sin
+  url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sin
+  kind: docs
 animation: unit_circle
 tasks:
-  - id: rad-90
-    type: numeric
-    prompt: "Quantos radianos equivalem a 90 graus? (use π≈3.14159 → resposta ≈1.5708)"
-    xp: 21
-    answer: 1.5708
-    tolerance: 0.01
-    relative_tolerance: 0.01
-    hint: "π/2"
-  - id: sin-pi6
-    type: numeric
-    prompt: "sin(π/6) = ?"
-    xp: 21
-    answer: 0.5
-    tolerance: 0.001
-  - id: identity
-    type: mcq
-    prompt: "Qual identidade é sempre verdadeira?"
-    xp: 18
-    answer: 0
-    choices:
-      - "sin²θ + cos²θ = 1"
-      - "sin θ + cos θ = 1"
-      - "tan θ = cos θ / sin θ"
-      - "sin θ = θ para todo θ"
-  - id: tan-name
-    type: fill
-    prompt: "tan θ = sin θ / ___  (preencha a função)"
-    xp: 14
-    answers:
-      - "cos"
-      - "cos θ"
-      - "cos(θ)"
-      - "cosine"
+- id: rad-90
+  type: numeric
+  prompt: Quantos radianos equivalem a 90 graus? (use π≈3.14159 → resposta ≈1.5708)
+  xp: 21
+  answer: 1.5708
+  tolerance: 0.01
+  relative_tolerance: 0.01
+  hint: π/2
+- id: sin-pi6
+  type: numeric
+  prompt: sin(π/6) = ?
+  xp: 21
+  answer: 0.5
+  tolerance: 0.001
+- id: identity
+  type: mcq
+  prompt: Qual identidade é sempre verdadeira?
+  xp: 18
+  answer: 0
+  choices:
+  - sin²θ + cos²θ = 1
+  - sin θ + cos θ = 1
+  - tan θ = cos θ / sin θ
+  - sin θ = θ para todo θ
+- id: tan-name
+  type: fill
+  prompt: tan θ = sin θ / ___  (preencha a função)
+  xp: 14
+  answers:
+  - cos
+  - cos θ
+  - cos(θ)
+  - cosine
+- id: code-sin-cos
+  type: code
+  prompt: Implemente `unit_point(theta)` → (cosθ, sinθ) com math.
+  xp: 24
+  code_template: "import math\n\ndef unit_point(theta):\n    # TODO: retorne (cos,\
+    \ sin)\n    ...\n"
+  code_tests: 'import math
 
-  - id: code-sin-cos
-    type: code
-    prompt: "Implemente `unit_point(theta)` → (cosθ, sinθ) com math."
-    xp: 24
-    code_template: |
-      import math
+    x, y = mod.unit_point(0.0)
 
-      def unit_point(theta):
-          # TODO: retorne (cos, sin)
-          ...
-    code_tests: |
-      import math
-      x, y = mod.unit_point(0.0)
-      assert abs(x-1)<1e-9 and abs(y)<1e-9
-      x, y = mod.unit_point(math.pi/2)
-      assert abs(x)<1e-9 and abs(y-1)<1e-9
+    assert abs(x-1)<1e-9 and abs(y)<1e-9
+
+    x, y = mod.unit_point(math.pi/2)
+
+    assert abs(x)<1e-9 and abs(y-1)<1e-9
+
+    '

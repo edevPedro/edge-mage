@@ -1,62 +1,70 @@
 id: quantizacao
 requires_skills:
-  - softmax-ce
+- softmax-ce
 title: Quantização & Fixed-Point
 summary: scale, int8, Q-format e tradeoff de acurácia.
 xp_reward: 54
 unlock_xp: 2050
+resources:
+- title: arXiv — Quantization survey
+  url: https://arxiv.org/abs/2103.13630
+  kind: paper
+- title: Arm — CMSIS-NN
+  url: https://arm-software.github.io/CMSIS_5/NN/html/index.html
+  kind: docs
 animation: quantize_steps
 tasks:
-  - id: bytes
-    type: numeric
-    prompt: "Tensor de 1000 float32 → int8: bytes aproximados depois? (1 byte/elem)"
-    xp: 16
-    answer: 1000
-    tolerance: 0
-  - id: ratio
-    type: numeric
-    prompt: "Redução de memória float32→int8 (fator)?"
-    xp: 18
-    answer: 4
-    tolerance: 0.001
-  - id: scale
-    type: numeric
-    prompt: "x em [−2, 2] mapeado para int8 [−128, 127]. scale ≈ (2−(−2))/(127−(−128))?"
-    xp: 25
-    answer: 0.015686
-    tolerance: 0.001
-    relative_tolerance: 0.05
-    hint: "4 / 255"
-  - id: trade
-    type: mcq
-    prompt: "Quantizar para int8 tipicamente:"
-    xp: 21
-    answer: 1
-    choices:
-      - "aumenta memória e latência"
-      - "reduz memória/latência com possível perda de acurácia"
-      - "elimina a necessidade de pesos"
-      - "só funciona em Python puro"
-  - id: qformat
-    type: fill
-    prompt: "Representar reais como inteiros com fator 2⁻ⁿ implícito: ponto ___:"
-    xp: 16
-    answers:
-      - "fixo"
-      - "fixed"
-      - "fixo (fixed-point)"
-      - "fixed-point"
+- id: bytes
+  type: numeric
+  prompt: 'Tensor de 1000 float32 → int8: bytes aproximados depois? (1 byte/elem)'
+  xp: 16
+  answer: 1000
+  tolerance: 0
+- id: ratio
+  type: numeric
+  prompt: Redução de memória float32→int8 (fator)?
+  xp: 18
+  answer: 4
+  tolerance: 0.001
+- id: scale
+  type: numeric
+  prompt: x em [−2, 2] mapeado para int8 [−128, 127]. scale ≈ (2−(−2))/(127−(−128))?
+  xp: 25
+  answer: 0.015686
+  tolerance: 0.001
+  relative_tolerance: 0.05
+  hint: 4 / 255
+- id: trade
+  type: mcq
+  prompt: 'Quantizar para int8 tipicamente:'
+  xp: 21
+  answer: 1
+  choices:
+  - aumenta memória e latência
+  - reduz memória/latência com possível perda de acurácia
+  - elimina a necessidade de pesos
+  - só funciona em Python puro
+- id: qformat
+  type: fill
+  prompt: 'Representar reais como inteiros com fator 2⁻ⁿ implícito: ponto ___:'
+  xp: 16
+  answers:
+  - fixo
+  - fixed
+  - fixo (fixed-point)
+  - fixed-point
+- id: code-quantize
+  type: code
+  prompt: Implemente `quantize_int8(x, scale)` → int em [-128,127] via round(x/scale)
+    clipado.
+  xp: 28
+  code_template: "def quantize_int8(x, scale):\n    # TODO\n    ...\n"
+  code_tests: 'assert mod.quantize_int8(0.0, 0.1)==0
 
-  - id: code-quantize
-    type: code
-    prompt: "Implemente `quantize_int8(x, scale)` → int em [-128,127] via round(x/scale) clipado."
-    xp: 28
-    code_template: |
-      def quantize_int8(x, scale):
-          # TODO
-          ...
-    code_tests: |
-      assert mod.quantize_int8(0.0, 0.1)==0
-      q=mod.quantize_int8(12.5, 0.1)
-      assert q==125
-      assert mod.quantize_int8(1000, 0.1)==127
+    q=mod.quantize_int8(12.5, 0.1)
+
+    assert q==125
+
+    assert mod.quantize_int8(1000, 0.1)==127
+
+    '

@@ -3,30 +3,27 @@ title: Python Básico
 summary: Funções e stdout.
 xp_reward: 36
 unlock_xp: 100
+resources:
+- title: Python tutorial
+  url: https://docs.python.org/3/tutorial/
+  kind: docs
+- title: MDN — JavaScript first steps (contrast)
+  url: https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics
+  kind: docs
 animation: vector
 tasks:
-  - id: hypot
-    type: code
-    prompt: "Implemente hypot(x,y) = sqrt(x²+y²) e imprima hypot(3,4)."
-    xp: 28
-    hint: "math.sqrt(x*x + y*y)"
-    expected_stdout: "5.0"
-    code_template: |
-      import math
-      
-      def hypot(x, y):
-          # TODO
-          ...
-      
-      print(hypot(3, 4))
-  - id: dot
-    type: code
-    prompt: "Defina dot(a,b) para listas 1D e imprima dot([1,2,3],[4,5,6])."
-    xp: 28
-    expected_stdout: "32"
-    code_template: |
-      def dot(a, b):
-          # TODO
-          ...
-      
-      print(dot([1, 2, 3], [4, 5, 6]))
+- id: hypot
+  type: code
+  prompt: Implemente hypot(x,y) = sqrt(x²+y²) e imprima hypot(3,4).
+  xp: 28
+  hint: math.sqrt(x*x + y*y)
+  expected_stdout: '5.0'
+  code_template: "import math\n\ndef hypot(x, y):\n    # TODO\n    ...\n\nprint(hypot(3,\
+    \ 4))\n"
+- id: dot
+  type: code
+  prompt: Defina dot(a,b) para listas 1D e imprima dot([1,2,3],[4,5,6]).
+  xp: 28
+  expected_stdout: '32'
+  code_template: "def dot(a, b):\n    # TODO\n    ...\n\nprint(dot([1, 2, 3], [4,\
+    \ 5, 6]))\n"

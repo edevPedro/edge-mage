@@ -3,29 +3,36 @@ title: Ondas & Frequência
 summary: Amplitude, período, Hertz.
 xp_reward: 36
 unlock_xp: 320
+resources:
+- title: The DSP Guide — Statistics / DSP
+  url: https://www.dspguide.com/
+  kind: book
+- title: Khan Academy — Waves
+  url: https://www.khanacademy.org/science/physics/mechanical-waves-and-sound
+  kind: docs
 animation: sine_wave
 tasks:
-  - id: period
-    type: numeric
-    prompt: "Sinal com f=50 Hz. Período T em segundos?"
-    xp: 21
-    answer: 0.02
-    tolerance: 0.0001
-  - id: hz
-    type: fill
-    prompt: "Unidade de frequência no SI (palavra ou símbolo):"
-    xp: 14
-    answers:
-      - "hertz"
-      - "Hz"
-      - "hz"
-  - id: sine
-    type: mcq
-    prompt: "Em A·sin(2πft+φ), A controla:"
-    xp: 18
-    answer: 2
-    choices:
-      - "frequência"
-      - "fase"
-      - "amplitude"
-      - "período apenas"
+- id: period
+  type: numeric
+  prompt: Sinal com f=50 Hz. Período T em segundos?
+  xp: 21
+  answer: 0.02
+  tolerance: 0.0001
+- id: hz
+  type: fill
+  prompt: 'Unidade de frequência no SI (palavra ou símbolo):'
+  xp: 14
+  answers:
+  - hertz
+  - Hz
+  - hz
+- id: sine
+  type: mcq
+  prompt: 'Em A·sin(2πft+φ), A controla:'
+  xp: 18
+  answer: 2
+  choices:
+  - frequência
+  - fase
+  - amplitude
+  - período apenas

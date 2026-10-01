@@ -3,42 +3,46 @@ title: Loss & Learning Rate
 summary: MSE, η e treino vs inferência.
 xp_reward: 45
 unlock_xp: 1300
+resources:
+- title: CS231n — Loss functions
+  url: https://cs231n.github.io/neural-networks-2/#losses
+  kind: docs
+- title: arXiv — Adam paper
+  url: https://arxiv.org/abs/1412.6980
+  kind: paper
 animation: gradient_descent
 tasks:
-  - id: mse
-    type: numeric
-    prompt: "Erros: 1 e −1. MSE = média dos quadrados?"
-    xp: 21
-    answer: 1
-    tolerance: 0.001
-  - id: lr
-    type: mcq
-    prompt: "η (learning rate) muito grande tende a:"
-    xp: 21
-    answer: 1
-    choices:
-      - "convergência sempre perfeita"
-      - "oscilação / divergência"
-      - "zerar o dataset"
-      - "converter para int8"
-  - id: infer
-    type: mcq
-    prompt: "Inferência (só forward) tipicamente:"
-    xp: 18
-    answer: 0
-    choices:
-      - "não atualiza pesos"
-      - "sempre calcula ∇loss"
-      - "exige epoch completo"
-      - "só roda em float64"
+- id: mse
+  type: numeric
+  prompt: 'Erros: 1 e −1. MSE = média dos quadrados?'
+  xp: 21
+  answer: 1
+  tolerance: 0.001
+- id: lr
+  type: mcq
+  prompt: 'η (learning rate) muito grande tende a:'
+  xp: 21
+  answer: 1
+  choices:
+  - convergência sempre perfeita
+  - oscilação / divergência
+  - zerar o dataset
+  - converter para int8
+- id: infer
+  type: mcq
+  prompt: 'Inferência (só forward) tipicamente:'
+  xp: 18
+  answer: 0
+  choices:
+  - não atualiza pesos
+  - sempre calcula ∇loss
+  - exige epoch completo
+  - só roda em float64
+- id: code-mse
+  type: code
+  prompt: Implemente `mse(y_hat, y)` média dos (ŷ-y)².
+  xp: 24
+  code_template: "def mse(y_hat, y):\n    # TODO\n    ...\n"
+  code_tests: 'assert abs(mod.mse([1,2],[1,0])-2.0)<1e-9
 
-  - id: code-mse
-    type: code
-    prompt: "Implemente `mse(y_hat, y)` média dos (ŷ-y)²."
-    xp: 24
-    code_template: |
-      def mse(y_hat, y):
-          # TODO
-          ...
-    code_tests: |
-      assert abs(mod.mse([1,2],[1,0])-2.0)<1e-9
+    '

@@ -3,60 +3,66 @@ title: Exponenciais & Logs
 summary: exp, ln, mudança de base — base do softmax e da CE.
 xp_reward: 40
 unlock_xp: 100
+resources:
+- title: Khan Academy — Exponential & logs
+  url: https://www.khanacademy.org/math/algebra2/x2ec2f6f830c9fb89:exp-log
+  kind: docs
+- title: MDN — Math.log
+  url: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/log
+  kind: docs
 animation: derivative_slope
 tasks:
-  - id: e0
-    type: numeric
-    prompt: "e⁰ = ?"
-    xp: 14
-    answer: 1
-    tolerance: 0.001
-  - id: ln-e2
-    type: numeric
-    prompt: "ln(e²) = ? (log natural)"
-    xp: 18
-    answer: 2
-    tolerance: 0.001
-    hint: "ln eˣ = x"
-  - id: log2-8
-    type: numeric
-    prompt: "log₂(8) = ?"
-    xp: 18
-    answer: 3
-    tolerance: 0.001
-  - id: product
-    type: mcq
-    prompt: "ln(ab) é igual a:"
-    xp: 18
-    answer: 0
-    choices:
-      - "ln a + ln b"
-      - "ln a · ln b"
-      - "ln(a + b)"
-      - "a · ln b"
-  - id: why-ce
-    type: fill
-    prompt: "Na cross-entropy, a perda da classe correta usa −___ p_k:"
-    xp: 16
-    answers:
-      - "log"
-      - "ln"
-      - "logarithm"
-      - "logaritmo"
+- id: e0
+  type: numeric
+  prompt: e⁰ = ?
+  xp: 14
+  answer: 1
+  tolerance: 0.001
+- id: ln-e2
+  type: numeric
+  prompt: ln(e²) = ? (log natural)
+  xp: 18
+  answer: 2
+  tolerance: 0.001
+  hint: ln eˣ = x
+- id: log2-8
+  type: numeric
+  prompt: log₂(8) = ?
+  xp: 18
+  answer: 3
+  tolerance: 0.001
+- id: product
+  type: mcq
+  prompt: 'ln(ab) é igual a:'
+  xp: 18
+  answer: 0
+  choices:
+  - ln a + ln b
+  - ln a · ln b
+  - ln(a + b)
+  - a · ln b
+- id: why-ce
+  type: fill
+  prompt: 'Na cross-entropy, a perda da classe correta usa −___ p_k:'
+  xp: 16
+  answers:
+  - log
+  - ln
+  - logarithm
+  - logaritmo
+- id: code-logsum
+  type: code
+  prompt: Implemente `log_sum(a,b)` = log(exp(a)+exp(b)) de forma estável (use max).
+  xp: 26
+  code_template: "import math\n\ndef log_sum(a, b):\n    # TODO estável\n    ...\n"
+  code_tests: 'import math
 
-  - id: code-logsum
-    type: code
-    prompt: "Implemente `log_sum(a,b)` = log(exp(a)+exp(b)) de forma estável (use max)."
-    xp: 26
-    code_template: |
-      import math
+    v = mod.log_sum(1.0, 1.0)
 
-      def log_sum(a, b):
-          # TODO estável
-          ...
-    code_tests: |
-      import math
-      v = mod.log_sum(1.0, 1.0)
-      assert abs(v - math.log(2*math.e)) < 1e-9
-      v2 = mod.log_sum(1000.0, 1000.0)
-      assert abs(v2 - (1000+math.log(2))) < 1e-6
+    assert abs(v - math.log(2*math.e)) < 1e-9
+
+    v2 = mod.log_sum(1000.0, 1000.0)
+
+    assert abs(v2 - (1000+math.log(2))) < 1e-6
+
+    '

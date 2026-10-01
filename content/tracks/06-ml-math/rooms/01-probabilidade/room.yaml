@@ -3,58 +3,62 @@ title: Probabilidade Básica
 summary: Massa, soma 1, log-prob — pré-requisito do softmax.
 xp_reward: 40
 unlock_xp: 1650
+resources:
+- title: Khan Academy — Probability
+  url: https://www.khanacademy.org/math/statistics-probability
+  kind: docs
+- title: Seeing Theory
+  url: https://seeing-theory.brown.edu/
+  kind: docs
 animation: probability_bars
 tasks:
-  - id: sum1
-    type: numeric
-    prompt: "p=(0.2, 0.5, 0.3). Soma das probabilidades?"
-    xp: 14
-    answer: 1
-    tolerance: 0.001
-  - id: valid
-    type: mcq
-    prompt: "Qual vetor NÃO pode ser uma distribuição de probabilidade?"
-    xp: 21
-    answer: 2
-    choices:
-      - "(0.5, 0.5)"
-      - "(1, 0, 0)"
-      - "(0.7, 0.7)"
-      - "(0.25, 0.25, 0.5)"
-  - id: expect
-    type: numeric
-    prompt: "X vale 0 ou 10 com p=(0.4, 0.6). E[X]?"
-    xp: 21
-    answer: 6
-    tolerance: 0.001
-    hint: "0*0.4 + 10*0.6"
-  - id: logprob
-    type: mcq
-    prompt: "Para 0 < p ≤ 1, log p é:"
-    xp: 18
-    answer: 1
-    choices:
-      - "sempre positivo"
-      - "≤ 0"
-      - "sempre indefinido"
-      - "igual a p²"
-  - id: categorical
-    type: fill
-    prompt: "Distribuição discreta sobre K classes (uma palavra): distribuição ___:"
-    xp: 16
-    answers:
-      - "categórica"
-      - "categorica"
-      - "categorical"
-      - "categorial"
+- id: sum1
+  type: numeric
+  prompt: p=(0.2, 0.5, 0.3). Soma das probabilidades?
+  xp: 14
+  answer: 1
+  tolerance: 0.001
+- id: valid
+  type: mcq
+  prompt: Qual vetor NÃO pode ser uma distribuição de probabilidade?
+  xp: 21
+  answer: 2
+  choices:
+  - (0.5, 0.5)
+  - (1, 0, 0)
+  - (0.7, 0.7)
+  - (0.25, 0.25, 0.5)
+- id: expect
+  type: numeric
+  prompt: X vale 0 ou 10 com p=(0.4, 0.6). E[X]?
+  xp: 21
+  answer: 6
+  tolerance: 0.001
+  hint: 0*0.4 + 10*0.6
+- id: logprob
+  type: mcq
+  prompt: 'Para 0 < p ≤ 1, log p é:'
+  xp: 18
+  answer: 1
+  choices:
+  - sempre positivo
+  - ≤ 0
+  - sempre indefinido
+  - igual a p²
+- id: categorical
+  type: fill
+  prompt: 'Distribuição discreta sobre K classes (uma palavra): distribuição ___:'
+  xp: 16
+  answers:
+  - categórica
+  - categorica
+  - categorical
+  - categorial
+- id: code-expect
+  type: code
+  prompt: Implemente `expect(xs, ps)` = Σ x*p (listas mesma len).
+  xp: 24
+  code_template: "def expect(xs, ps):\n    # TODO\n    ...\n"
+  code_tests: 'assert abs(mod.expect([1,2,3],[0.2,0.5,0.3])-2.1)<1e-9
 
-  - id: code-expect
-    type: code
-    prompt: "Implemente `expect(xs, ps)` = Σ x*p (listas mesma len)."
-    xp: 24
-    code_template: |
-      def expect(xs, ps):
-          # TODO
-          ...
-    code_tests: |
-      assert abs(mod.expect([1,2,3],[0.2,0.5,0.3])-2.1)<1e-9
+    '

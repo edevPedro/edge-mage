@@ -3,45 +3,49 @@ title: Memory Layout
 summary: NCHW/NHWC, row-major e arena estática.
 xp_reward: 45
 unlock_xp: 2300
+resources:
+- title: CSAPP — Memory hierarchy
+  url: https://csapp.cs.cmu.edu/
+  kind: book
+- title: LLVM LangRef (types/layout)
+  url: https://llvm.org/docs/LangRef.html
+  kind: docs
 animation: memory_grid
 tasks:
-  - id: rowmajor
-    type: mcq
-    prompt: "Em row-major, o índice que varia mais rápido é o:"
-    xp: 21
-    answer: 1
-    choices:
-      - "primeiro"
-      - "último"
-      - "do meio sempre"
-      - "aleatório"
-  - id: nhwc
-    type: mcq
-    prompt: "Em NHWC, o eixo que varia mais rápido tipicamente é:"
-    xp: 18
-    answer: 2
-    choices:
-      - "N (batch)"
-      - "H (altura)"
-      - "C (canal)"
-      - "sempre W"
-  - id: arena
-    type: fill
-    prompt: "No MCU, buffer pré-alocado para tensores costuma se chamar memory ___:"
-    xp: 21
-    answers:
-      - "arena"
-      - "planner"
-      - "arena estática"
-      - "static arena"
+- id: rowmajor
+  type: mcq
+  prompt: 'Em row-major, o índice que varia mais rápido é o:'
+  xp: 21
+  answer: 1
+  choices:
+  - primeiro
+  - último
+  - do meio sempre
+  - aleatório
+- id: nhwc
+  type: mcq
+  prompt: 'Em NHWC, o eixo que varia mais rápido tipicamente é:'
+  xp: 18
+  answer: 2
+  choices:
+  - N (batch)
+  - H (altura)
+  - C (canal)
+  - sempre W
+- id: arena
+  type: fill
+  prompt: 'No MCU, buffer pré-alocado para tensores costuma se chamar memory ___:'
+  xp: 21
+  answers:
+  - arena
+  - planner
+  - arena estática
+  - static arena
+- id: code-row-major
+  type: code
+  prompt: Implemente `idx_row_major(i,j,cols)` = i*cols+j.
+  xp: 22
+  code_template: "def idx_row_major(i, j, cols):\n    # TODO\n    ...\n"
+  code_tests: 'assert mod.idx_row_major(2,3,10)==23
 
-  - id: code-row-major
-    type: code
-    prompt: "Implemente `idx_row_major(i,j,cols)` = i*cols+j."
-    xp: 22
-    code_template: |
-      def idx_row_major(i, j, cols):
-          # TODO
-          ...
-    code_tests: |
-      assert mod.idx_row_major(2,3,10)==23
+    '

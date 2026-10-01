@@ -3,61 +3,67 @@ title: Derivadas & Cadeia
 summary: Taxa de variação, regras básicas e intuição de backprop.
 xp_reward: 45
 unlock_xp: 1100
+resources:
+- title: Khan Academy — Derivatives
+  url: https://www.khanacademy.org/math/calculus-1/cs1-derivatives-definition-and-basic-rules
+  kind: docs
+- title: 3Blue1Brown — Essence of calculus
+  url: https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr
+  kind: video
 animation: derivative_slope
 tasks:
-  - id: power
-    type: numeric
-    prompt: "Derivada de x³ em x=2? (3x²)"
-    xp: 21
-    answer: 12
-    tolerance: 0.001
-  - id: exp-der
-    type: mcq
-    prompt: "A derivada de eˣ é:"
-    xp: 18
-    answer: 1
-    choices:
-      - "x · eˣ"
-      - "eˣ"
-      - "1/x"
-      - "ln x"
-  - id: chain
-    type: mcq
-    prompt: "Se y = f(g(x)), dy/dx =:"
-    xp: 21
-    answer: 0
-    choices:
-      - "f'(g(x)) · g'(x)"
-      - "f'(x) · g'(x)"
-      - "f(g'(x))"
-      - "só f'(x)"
-  - id: fd
-    type: numeric
-    prompt: "f(x)=x². Aproxime f'(3) com h=0.001: (f(3.001)−f(3))/0.001. Resposta ≈?"
-    xp: 21
-    answer: 6.001
-    tolerance: 0.01
-    relative_tolerance: 0.01
-    hint: "Analítico: 2x = 6; a diferença finita fica um pouco acima."
-  - id: backprop-name
-    type: fill
-    prompt: "Algoritmo que aplica a regra da cadeia nas camadas (uma palavra):"
-    xp: 16
-    answers:
-      - "backprop"
-      - "backpropagation"
-      - "retropropagação"
-      - "retropropagacao"
+- id: power
+  type: numeric
+  prompt: Derivada de x³ em x=2? (3x²)
+  xp: 21
+  answer: 12
+  tolerance: 0.001
+- id: exp-der
+  type: mcq
+  prompt: 'A derivada de eˣ é:'
+  xp: 18
+  answer: 1
+  choices:
+  - x · eˣ
+  - eˣ
+  - 1/x
+  - ln x
+- id: chain
+  type: mcq
+  prompt: 'Se y = f(g(x)), dy/dx =:'
+  xp: 21
+  answer: 0
+  choices:
+  - f'(g(x)) · g'(x)
+  - f'(x) · g'(x)
+  - f(g'(x))
+  - só f'(x)
+- id: fd
+  type: numeric
+  prompt: 'f(x)=x². Aproxime f''(3) com h=0.001: (f(3.001)−f(3))/0.001. Resposta ≈?'
+  xp: 21
+  answer: 6.001
+  tolerance: 0.01
+  relative_tolerance: 0.01
+  hint: 'Analítico: 2x = 6; a diferença finita fica um pouco acima.'
+- id: backprop-name
+  type: fill
+  prompt: 'Algoritmo que aplica a regra da cadeia nas camadas (uma palavra):'
+  xp: 16
+  answers:
+  - backprop
+  - backpropagation
+  - retropropagação
+  - retropropagacao
+- id: code-fwd-diff
+  type: code
+  prompt: Implemente `fwd_diff(f, x, h=1e-5)` ≈ (f(x+h)-f(x))/h.
+  xp: 26
+  code_template: "def fwd_diff(f, x, h=1e-5):\n    # TODO\n    ...\n"
+  code_tests: 'import math
 
-  - id: code-fwd-diff
-    type: code
-    prompt: "Implemente `fwd_diff(f, x, h=1e-5)` ≈ (f(x+h)-f(x))/h."
-    xp: 26
-    code_template: |
-      def fwd_diff(f, x, h=1e-5):
-          # TODO
-          ...
-    code_tests: |
-      import math
-      g=mod.fwd_diff(math.sin, 0.0)
-      assert abs(g-1)<1e-3
+    g=mod.fwd_diff(math.sin, 0.0)
+
+    assert abs(g-1)<1e-3
+
+    '

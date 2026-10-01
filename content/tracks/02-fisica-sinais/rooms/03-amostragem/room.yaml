@@ -3,30 +3,37 @@ title: Amostragem
 summary: Nyquist e aliasing.
 xp_reward: 45
 unlock_xp: 400
+resources:
+- title: The DSP Guide — Sampling theorem
+  url: https://www.dspguide.com/ch3.htm
+  kind: book
+- title: Wikipedia — Nyquist–Shannon
+  url: https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem
+  kind: docs
 animation: sampling_dots
 tasks:
-  - id: nyquist
-    type: numeric
-    prompt: "Sinal com f_max=4 kHz. fs mínima teórica (Nyquist) em Hz?"
-    xp: 25
-    answer: 8000
-    tolerance: 1
-  - id: alias
-    type: mcq
-    prompt: "Amostrar abaixo de 2·f_max pode causar:"
-    xp: 21
-    answer: 1
-    choices:
-      - "quantização int8"
-      - "aliasing"
-      - "overflow de softmax"
-      - "deadlock"
-  - id: nyquist-name
-    type: fill
-    prompt: "Nome do teorema fs > 2 f_max:"
-    xp: 18
-    answers:
-      - "nyquist"
-      - "teorema de nyquist"
-      - "nyquist-shannon"
-      - "shannon-nyquist"
+- id: nyquist
+  type: numeric
+  prompt: Sinal com f_max=4 kHz. fs mínima teórica (Nyquist) em Hz?
+  xp: 25
+  answer: 8000
+  tolerance: 1
+- id: alias
+  type: mcq
+  prompt: 'Amostrar abaixo de 2·f_max pode causar:'
+  xp: 21
+  answer: 1
+  choices:
+  - quantização int8
+  - aliasing
+  - overflow de softmax
+  - deadlock
+- id: nyquist-name
+  type: fill
+  prompt: 'Nome do teorema fs > 2 f_max:'
+  xp: 18
+  answers:
+  - nyquist
+  - teorema de nyquist
+  - nyquist-shannon
+  - shannon-nyquist

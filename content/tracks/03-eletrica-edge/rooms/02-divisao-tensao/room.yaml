@@ -3,28 +3,35 @@ title: Divisão de Tensão
 summary: Divisor resistivo clássico.
 xp_reward: 36
 unlock_xp: 580
+resources:
+- title: All About Circuits — Voltage divider
+  url: https://www.allaboutcircuits.com/textbook/direct-current/chpt-6/voltage-divider-circuits/
+  kind: docs
+- title: Arm Developer docs
+  url: https://developer.arm.com/documentation
+  kind: docs
 animation: circuit_pulse
 tasks:
-  - id: divider
-    type: numeric
-    prompt: "Vin=3.3 V, R1=2 kΩ, R2=1 kΩ. Vout (em R2) em volts?"
-    xp: 25
-    answer: 1.1
-    tolerance: 0.01
-    hint: "3.3 * 1/(2+1)"
-  - id: formula
-    type: mcq
-    prompt: "Vout = Vin · R2 / (R1+R2) assume R2:"
-    xp: 18
-    answer: 0
-    choices:
-      - "em série com a carga infinita idealizada / para GND"
-      - "em curto com Vin"
-      - "igual a zero"
-      - "sendo indutor"
-  - id: half
-    type: numeric
-    prompt: "Vin=5 V, R1=R2. Vout em volts?"
-    xp: 18
-    answer: 2.5
-    tolerance: 0.01
+- id: divider
+  type: numeric
+  prompt: Vin=3.3 V, R1=2 kΩ, R2=1 kΩ. Vout (em R2) em volts?
+  xp: 25
+  answer: 1.1
+  tolerance: 0.01
+  hint: 3.3 * 1/(2+1)
+- id: formula
+  type: mcq
+  prompt: 'Vout = Vin · R2 / (R1+R2) assume R2:'
+  xp: 18
+  answer: 0
+  choices:
+  - em série com a carga infinita idealizada / para GND
+  - em curto com Vin
+  - igual a zero
+  - sendo indutor
+- id: half
+  type: numeric
+  prompt: Vin=5 V, R1=R2. Vout em volts?
+  xp: 18
+  answer: 2.5
+  tolerance: 0.01

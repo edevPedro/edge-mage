@@ -3,32 +3,38 @@ title: Softmax Estável
 summary: Ritual boss — prova de competência.
 xp_reward: 80
 unlock_xp: 1700
+resources:
+- title: CS231n Softmax
+  url: https://cs231n.github.io/linear-classify/#softmax
+  kind: docs
+- title: arXiv — Numerically stable softmax
+  url: https://arxiv.org/abs/2001.04438
+  kind: paper
 animation: softmax_bars
 boss: true
 elite_skill: elite-softmax
 unlocks_track: edge-ai
 tasks:
-  - id: warm
-    type: mcq
-    prompt: "Este ritual exige código + harness. Qual a ordem correta do loop?"
-    xp: 10
-    answer: 0
-    choices:
-      - "quiz leve → feitiço (código) → selo"
-      - "só XP até Edge Mage"
-      - "pular código"
-  - id: spell
-    type: code
-    prompt: "Implemente `softmax(zs)` estável sob logits extremos."
-    xp: 50
-    code_template: |
-      import math
+- id: warm
+  type: mcq
+  prompt: Este ritual exige código + harness. Qual a ordem correta do loop?
+  xp: 10
+  answer: 0
+  choices:
+  - quiz leve → feitiço (código) → selo
+  - só XP até Edge Mage
+  - pular código
+- id: spell
+  type: code
+  prompt: Implemente `softmax(zs)` estável sob logits extremos.
+  xp: 50
+  code_template: "import math\n\ndef softmax(zs):\n    ...\n"
+  code_tests: 'p=mod.softmax([1e3,1e3,1e3])
 
-      def softmax(zs):
-          ...
-    code_tests: |
-      p=mod.softmax([1e3,1e3,1e3])
-      assert abs(sum(p)-1)<1e-9
-      p2=mod.softmax([-1e3,0,1e3])
-      assert p2[2]>0.99
+    assert abs(sum(p)-1)<1e-9
 
+    p2=mod.softmax([-1e3,0,1e3])
+
+    assert p2[2]>0.99
+
+    '
