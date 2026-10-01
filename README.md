@@ -51,16 +51,15 @@ e-mage teaches you to **read the machine**, not memorize three full ISAs.
 
 | ISA | Role | Where |
 |-----|------|--------|
-| **x86_64** | Desktop/server host + classic RE + SysV ABI | Fundamentals `intro-asm` (Godbolt) · Systems (`sys-sysv-abi`, `sys-asm-read`) |
-| **AArch64 (ARM 64-bit)** | **Deep** ISA path — phones, Apple Silicon, on-device | LLVM F2 (regs, AAPCS64, frames, NEON, `llc`) · Edge `aarch64-abi` · firmware bridges |
-| **AArch32** | Historical context only | Arm docs mentions — **not** a track |
-| **RISC-V** | Short elective — open ISA / emerging embedded | Shared `riscv-lite` · Systems elective — **does not** replace AArch64 |
-| **Compare** | Same C, two host/edge dialects | Shared `isa-x86-aarch64` (after `intro-asm`) |
+| **x86_64** | Host/RE + SysV — **no full ISA track** | `intro-asm` · bridge `isa-x86-aarch64` · Systems (`sys-sysv-abi`, `sys-asm-read`) |
+| **AArch64 (ARM 64-bit)** | **Deep** ISA — phones, Apple Silicon, on-device | Bridge `isa-x86-aarch64` · LLVM F2 · Edge `aarch64-abi` |
+| **AArch32** | Historical context only | Arm docs — **not** a track |
+| **RISC-V** | Short elective — load/store + psABI taste | Shared `riscv-lite` — **does not** replace AArch64 |
 | **Other (MIPS, AVR…)** | Out of scope | — |
 
 **Why AArch64 first?** Phones, Arm Macs, boards, on-device kernels.  
-**Why keep x86_64?** Your Linux/Windows box and much RE still live there.  
-**Why light RISC-V?** Growing open silicon — literacy, not a second LLVM curriculum.
+**Why keep x86_64?** PC Linux/Windows + classic RE — strengthen with the compare room only (0–1 lab), not opcode farm.  
+**Why light RISC-V?** Open silicon literacy (`lw`/`sw`, `a0`); skip privileged ISA / Vector `V` / core design.
 
 ## Duration (± current formation)
 

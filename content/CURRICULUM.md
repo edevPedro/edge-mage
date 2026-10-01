@@ -13,11 +13,25 @@ Cada sala agora tem **História** (cenário narrativo), **Conceito** (editorial 
 5. **Lições finas**: várias salas com 5–8 linhas e só 2 tasks (trivia em vez de entendimento).
 6. **Rank Edge Mage cedo demais**: 2000 XP antes do checklist on-device — título sem competência plena.
 
+## Assembly e ISAs (mínimo honest)
+
+Não há três trilhas ISA. Há **um núcleo** + **uma profundidade** + **uma eletiva**:
+
+| Sala shared | Papel |
+|-------------|--------|
+| `intro-asm` | Registradores / mov / call-ret + Godbolt |
+| `isa-x86-aarch64` | Ponte — mesmo C, dialetos x86_64 vs AArch64 (0–1 lab de reforço x86) |
+| `riscv-lite` | Eletiva — load/store + `a0`–`a7` vs AAPCS64; **não** gate de Mago base |
+| Edge `aarch64-abi` + LLVM F2 | Profundidade AArch64 (AAPCS64, frames, NEON) |
+
+x86_64 permanece host/RE em Systems (`sys-sysv-abi`, `sys-asm-read`). RISC-V **não** ensina privileged ISA, Vector `V`, nem core design.
+
 ## Ordem de estudo recomendada
 
 ```text
 Fundamentos
   trig → vetores → exp/log → álgebra linear (normas, matmul)
+  (+ shared: bits → intro-asm → isa-x86-aarch64; opcional riscv-lite)
        ↓
 Programação (espiral da math)
   hypot/dot → argmax/scale → grad_step + matmul2
@@ -52,7 +66,7 @@ Edge AI Low-Level
 | 5 | Robótica | 800 | transforms-2d, cinematica-robo, sensores | Portal 2D → Percepção |
 | 6 | Otimização | 1100 | derivadas, gradiente, loss-lr, batch-epoch | Tangente → Epoch Ritual |
 | 7 | ML Math | 1650 | probabilidade, softmax-ce, matmul-flops, quantizacao | Oráculo → Int8 |
-| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, on-device | Layout → **Edge Mage** |
+| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, aarch64-abi, on-device | Layout → AArch64 ABI → **Edge Mage** |
 
 XP total disponível ≈ **3144+** (bosses). Rank **Edge Mage** = **2900 XP + ritual on-device** (artefato em `study-log/artifacts/on-device.md`). **31 skills** no grimório.
 
