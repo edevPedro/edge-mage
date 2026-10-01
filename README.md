@@ -22,7 +22,7 @@ CLI entrypoints: `mage` · `emage` · `edge-mage`.
 
 Shared core rooms live under `content/shared/` (`vectors`, `bits`, `intro-asm`) with stable `room_id` credit.
 
-Content packs may later live in a sibling `emage-content` repo; none was present beside this tree at Phase 0–1.
+Portable curriculum indexes + shared room JSON: sibling repo **[edevPedro/emage-content](https://github.com/edevPedro/emage-content)** (`SYNC.md` there). Clone beside this tree or set `EMAGE_CONTENT_ROOT`.
 
 ## Install
 

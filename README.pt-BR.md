@@ -22,7 +22,7 @@ CLIs: `mage` · `emage` · `edge-mage`.
 
 Salas compartilhadas em `content/shared/` (`vectors`, `bits`, `intro-asm`) com crédito por `room_id` único.
 
-Packs de conteúdo podem morar depois num repo irmão `emage-content`; na Fase 0–1 não havia esse sibling.
+Índices de currículo + salas shared em JSON: repo irmão **[edevPedro/emage-content](https://github.com/edevPedro/emage-content)** (`SYNC.md`). Clone ao lado deste tree ou use `EMAGE_CONTENT_ROOT`.
 
 ## Instalar
 
