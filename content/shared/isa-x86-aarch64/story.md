@@ -1,1 +1,1 @@
-Ponte curta — mesmo C, dois dialetos. Host/RE fala x86_64; edge/LLVM aprofunda AArch64.
+Um C, dois dialetos — literacy no host x86_64; a trilha profunda continua AArch64 (edge / BCI).

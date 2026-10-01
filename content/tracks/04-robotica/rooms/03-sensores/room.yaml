@@ -7,8 +7,8 @@ resources:
 - title: Arduino — Sensors guide
   url: https://docs.arduino.cc/learn/electronics/sensor-basics/
   kind: docs
-- title: Arm Developer docs
-  url: https://developer.arm.com/documentation
+- title: SparkFun — Accelerometer Basics
+  url: https://learn.sparkfun.com/tutorials/accelerometer-basics/all
   kind: docs
 animation: sampling_dots
 tasks:

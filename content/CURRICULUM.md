@@ -14,25 +14,30 @@ Cada sala agora tem **História** (cenário narrativo), **Conceito** (editorial 
 6. **Rank Edge Mage cedo demais**: 2000 XP antes do checklist on-device — título sem competência plena.
 7. **(2026-04 audit ML)** Faltava **autograd**, **export→runtime** (torch.export / ONNX / ExecuTorch / LiteRT) e quant com docs oficiais (PTQ vs QAT) — bar de applicant de mestrado Edge ML.
 
-## Assembly e ISAs (mínimo honest)
+## Assembly e ISAs — ARM primeiro (Edge / BCI)
 
-Não há três trilhas ISA. Há **um núcleo** + **uma profundidade** + **uma eletiva**:
+**Foco real = AArch64.** Edge ML Mage (e o alvo BCI / on-device) aprofunda **AAPCS64 · DDI0487 · NEON · CMSIS-NN · LiteRT Micro**.  
+**Outras ISAs = alfabetização só** — o aluno não fica cego no host/docs alheios, mas **não** há trilha multi-ISA nem profundidade igual.
 
-| Sala shared | Papel |
-|-------------|--------|
-| `intro-asm` | Registradores / mov / call-ret + Godbolt |
-| `isa-x86-aarch64` | Ponte — mesmo C, dialetos x86_64 vs AArch64 (0–1 lab de reforço x86) |
-| `riscv-lite` | Eletiva — load/store + `a0`–`a7` vs AAPCS64; **não** gate de Mago base |
-| Edge `aarch64-abi` + `cmsis-nn` + LLVM F2 | Profundidade AArch64 (AAPCS64, frames, NEON) + kernels int8 Cortex-M |
+Não diluir as salas ARM (`aarch64-abi`, `cmsis-nn`, on-device). Systems Mage **não** vira tour de ISAs: x86_64 fica host/RE; RISC-V fica eletiva de 1 sala.
 
-x86_64 permanece host/RE em Systems (`sys-sysv-abi`, `sys-asm-read`). RISC-V **não** ensina privileged ISA, Vector `V`, nem core design.
+| Sala | Papel | Profundidade |
+|------|--------|--------------|
+| `intro-asm` | Ler registradores / mov / call-ret + Godbolt | Núcleo shared (crédito único) |
+| `isa-x86-aarch64` | **Outras ISAs de relance** — mesmo C, dialetos x86_64 vs AArch64; por que edge ≠ desktop | 1 sala · literacy |
+| `riscv-lite` | Eletiva — load/store + `a0`–`a7` vs AAPCS64 | 1 sala · literacy · **não** gate Mago |
+| Edge `aarch64-abi` → `cmsis-nn` → on-device (+ LLVM F2) | **Trilha profunda ARM** | Frames, NEON int8, kernels Cortex-M, checklist |
+
+**Fontes oficiais (primárias):** [AAPCS64](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst) · [DDI0487](https://developer.arm.com/documentation/ddi0487/latest) · [x86-64 psABI](https://gitlab.com/x86-psABIs/x86-64-ABI) / [Intel SDM](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) (breve) · [RISC-V Unpriv](https://docs.riscv.org/reference/isa/v20260120/unpriv/unpriv-index.html) / [psABI](https://riscv-non-isa.github.io/riscv-elf-psabi-doc/) se fizer a eletiva.
+
+RISC-V **não** ensina privileged ISA, Vector `V`, nem core design. x86_64 **não** vira farm de opcodes.
 
 ## Ordem de estudo recomendada
 
 ```text
 Fundamentos
   trig → vetores → exp/log → álgebra linear (normas, matmul)
-  (+ shared: bits → intro-asm → isa-x86-aarch64; opcional riscv-lite)
+  (+ shared: bits → intro-asm → isa-x86-aarch64 [glance]; opcional riscv-lite)
        ↓
 Programação (espiral da math)
   hypot/dot → argmax/scale → grad_step + matmul2
@@ -52,7 +57,7 @@ Otimização
 ML Math
   probabilidade → softmax/CE (+ código estável) → matmul/FLOPs → quantização (PTQ/QAT)
        ↓
-Edge AI Low-Level
+Edge AI Low-Level  ← ARM profundo (edge / BCI)
   memory layout → FLOPs/banda → SIMD → AArch64 ABI
   → export/runtime (torch.export / ONNX / ExecuTorch / LiteRT)
   → CMSIS-NN kernels → checklist on-device
@@ -103,6 +108,7 @@ Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 - **Grimório**: skills nomeadas amarram conhecimento a progresso persistente.
 - **Idioma**: português claro e profissional.
 - **Fontes**: preferir guias oficiais de framework; papers (arXiv) só quando amarrados a lab.
+- **ISA**: profundidade **só** em AArch64 no caminho Edge/BCI; x86_64 e RISC-V = literacia de relance.
 
 ## Como completar até Edge Mage
 

@@ -1,6 +1,6 @@
 # AArch64 ABI on the edge
 
-On-device ML kernels live on **AArch64** calling conventions and often **NEON** SIMD.
+On-device ML / BCI kernels live on **AArch64** calling conventions and often **NEON** SIMD. This is the **deep** Edge ISA room — not a multi-ISA tour (x86_64 / RISC-V stay shared literacy only).
 
 ## Why this room exists
 

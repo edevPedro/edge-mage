@@ -1,6 +1,6 @@
-# RISC-V load/store (lite elective)
+# RISC-V at a glance (lite elective)
 
-Open ISA literacy — **not** a second LLVM track.
+Open-ISA **literacy** — **not** a second LLVM track, **not** equal depth to AArch64.
 
 ## Teach (minimum)
 
@@ -13,13 +13,13 @@ Open ISA literacy — **not** a second LLVM track.
 - Privileged / supervisor / hypervisor manuals  
 - Vector (`V`) / crypto / full extension zoo  
 - Building a core, Chisel, or FPGA bring-up  
-- Memorizing both ABIs cold — **deep path stays AArch64**
+- Memorizing both ABIs cold — **deep path stays AArch64 (Edge / BCI)**
 
 ## Outside the grimório
 
 1. Skim [Unprivileged ISA](https://docs.riscv.org/reference/isa/v20260120/unpriv/unpriv-index.html) overview (registers + load/store).  
 2. Peek [psABI](https://riscv-non-isa.github.io/riscv-elf-psabi-doc/) § integer register convention.  
 3. Godbolt **rv64** *or* [RARS](https://github.com/TheThirdOne/rars) on a leaf `add`.  
-4. Return to **AArch64** for frames / NEON / on-device.
+4. Return to **AArch64** for frames / NEON / CMSIS-NN / on-device.
 
-`room_id: riscv-lite` — elective; **not** required for Mago base.
+`room_id: riscv-lite` — elective; **not** required for Mago base or Edge Mage.

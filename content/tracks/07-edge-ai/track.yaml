@@ -1,8 +1,13 @@
 id: edge-ai
 title: Edge AI Low-Level
-summary: Layout, FLOPs/banda, SIMD, AArch64 ABI, export/runtime, CMSIS-NN e checklist on-device.
+summary: >-
+  ARM-first Edge/BCI path — layout, FLOPs/banda, SIMD, AArch64 ABI, export/runtime,
+  CMSIS-NN, on-device. Other ISAs = shared literacy only (isa-x86-aarch64 / optional riscv-lite).
 order: 8
 unlock_xp: 2300
 icon: '⬢'
 scaffold: false
 requires_ritual: softmax-estavel
+curriculum_note: >-
+  Focus = AArch64 / AAPCS64 / CMSIS-NN / LiteRT Micro for edge ML + BCI.
+  x86_64 and RISC-V stay glance rooms in shared fundamentals — do not dilute ARM rooms.

@@ -1,6 +1,6 @@
 id: riscv-lite
-title: RISC-V load/store (lite elective)
-summary: LW/SW + a0–a7 intuition vs AAPCS64 — open-ISA literacy, not a third track.
+title: RISC-V at a glance (lite elective)
+summary: LW/SW + a0–a7 vs AAPCS64 — open-ISA literacy only; deep path stays AArch64 (Edge/BCI).
 xp_reward: 32
 unlock_xp: 40
 shared: true

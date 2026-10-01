@@ -2,9 +2,10 @@ id: aarch64-abi
 title: AArch64 ABI on the edge
 summary: AAPCS64 regs/frames, stack align, NEON int8 lanes — device-facing bridge to CMSIS-NN kernels.
 xp_reward: 58
-unlock_xp: 2450
+unlock_xp: 2650
 requires_skills:
   - memory-layout
+  - simd-latency
 resources:
   - title: AAPCS64 — Procedure Call Standard (abi-aa source)
     url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst

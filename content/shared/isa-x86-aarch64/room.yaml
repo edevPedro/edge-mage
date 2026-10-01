@@ -1,6 +1,6 @@
 id: isa-x86-aarch64
-title: x86_64 vs AArch64 (shared bridge)
-summary: Same C, two asm dialects — host/RE literacy vs phone/edge deep path (Godbolt two targets).
+title: Other ISAs at a glance (x86_64 vs AArch64)
+summary: Literacy compare — same C, two dialects; why edge ≠ desktop. Deep path stays AArch64.
 xp_reward: 30
 unlock_xp: 20
 shared: true
@@ -11,6 +11,9 @@ resources:
     kind: tool
   - title: x86-64 psABI (System V AMD64 — living source)
     url: https://gitlab.com/x86-psABIs/x86-64-ABI
+    kind: docs
+  - title: Intel® 64 and IA-32 Architectures Software Developer Manuals (SDM)
+    url: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
     kind: docs
   - title: AAPCS64 — Procedure Call Standard (abi-aa source)
     url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
@@ -42,9 +45,19 @@ tasks:
       - "both always use r1 only"
       - "both return only via the stack, never registers"
       - "AArch64 returns in the instruction pointer"
+  - id: edge-vs-desktop
+    type: mcq
+    prompt: "Edge / BCI targets often differ from a desktop x86_64 CPU mainly because…"
+    xp: 10
+    answer: 1
+    choices:
+      - "they use identical power budgets and always run the same SysV ABI forever"
+      - "power, area, and thermal limits push fixed-point / NEON / MCU kernels — not desktop OoO scale"
+      - "AArch64 forbids registers and forces all math through disk"
+      - "Intel SDM replaces AAPCS64 on every phone"
   - id: which-deep
     type: fill
-    prompt: "In e-mage the ISA you go deep on for edge/mobile is ___ (AArch64 / ARM64)."
+    prompt: "In e-mage the ISA you go deep on for edge/BCI is ___ (AArch64)."
     xp: 10
     answers:
       - "AArch64"

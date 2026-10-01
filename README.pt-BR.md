@@ -51,14 +51,16 @@ O curso **ensina a ler máquina**, não a memorizar três ISAs inteiras. Papel d
 
 | ISA | Papel no curso | Onde |
 |-----|----------------|------|
-| **x86_64** | Host/RE + SysV — **sem trilha ISA completa** | `intro-asm` · ponte `isa-x86-aarch64` · Systems (`sys-sysv-abi`, `sys-asm-read`) |
-| **AArch64 (ARM 64-bit)** | ISA **profunda** — mobile, Apple Silicon, edge | Ponte `isa-x86-aarch64` · LLVM F2 · Edge `aarch64-abi` |
+| **AArch64 (ARM 64-bit)** | ISA **profunda** — Edge ML / BCI, mobile, Apple Silicon | `intro-asm` → Edge `aarch64-abi` → CMSIS-NN · LLVM F2 |
+| **x86_64** | Host/RE literacy — **sem trilha ISA completa** | Relance `isa-x86-aarch64` · Systems SysV / `sys-asm-read` |
 | **ARM 32-bit (AArch32)** | Só contexto histórico | Docs Arm — **não** é trilha |
-| **RISC-V** | Eletiva curta — load/store + gosto de psABI | Shared `riscv-lite` — **não** substitui AArch64 |
+| **RISC-V** | Relance opcional — load/store + gosto de psABI | Shared `riscv-lite` — **não** substitui AArch64 |
 | **Outras (MIPS, AVR…)** | Fora de escopo | — |
 
-**Por que AArch64 no centro?** Phone, Mac ARM, boards e kernels on-device.  
-**Por que x86_64 ainda existe?** PC Linux/Windows + RE clássico — reforço só com a sala compare (0–1 lab), não farm de opcode.  
+**Regra (Edge / BCI):** profundidade real = **AArch64**. x86_64 e RISC-V = literacia de relance (≤1 sala cada). Não diluir salas ARM.
+
+**Por que AArch64 no centro?** Edge ML + BCI: energia/área/térmica, NEON/CMSIS-NN, LiteRT Micro.  
+**Por que x86_64 ainda existe?** PC host + RE clássico — uma sala compare, não farm de opcode.  
 **Por que RISC-V leve?** Silício aberto; alfabetização (`lw`/`sw`, `a0`); sem privileged ISA / Vector `V` / design de core.
 
 Leitura pedida: conseguir abrir Godbolt / `objdump`, apontar registradores de arg/retorno e não entrar em pânico — depois o IR do LLVM amarra as pontas.

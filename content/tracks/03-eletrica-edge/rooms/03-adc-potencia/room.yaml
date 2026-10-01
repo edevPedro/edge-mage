@@ -7,8 +7,8 @@ resources:
 - title: Analog Devices — ADC basics
   url: https://www.analog.com/en/analog-dialogue/articles/adc-architectures.html
   kind: docs
-- title: Arm Developer — MCU docs
-  url: https://developer.arm.com/documentation
+- title: All About Circuits — Analog-to-Digital Conversion
+  url: https://www.allaboutcircuits.com/textbook/digital/chpt-13/analog-digital-conversion/
   kind: docs
 animation: adc_ladder
 tasks:

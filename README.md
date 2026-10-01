@@ -49,16 +49,18 @@ Web mirror: [edevs.com.br/estudo](https://edevs.com.br/estudo) · details in ede
 
 e-mage teaches you to **read the machine**, not memorize three full ISAs.
 
+**Curriculum rule (Edge / BCI):** real depth = **AArch64**. x86_64 and RISC-V are **literacy at a glance** (≤1 room each). Do not dilute ARM rooms in Edge AI.
+
 | ISA | Role | Where |
 |-----|------|--------|
-| **x86_64** | Host/RE + SysV — **no full ISA track** | `intro-asm` · bridge `isa-x86-aarch64` · Systems (`sys-sysv-abi`, `sys-asm-read`) |
-| **AArch64 (ARM 64-bit)** | **Deep** ISA — phones, Apple Silicon, on-device | Bridge `isa-x86-aarch64` · LLVM F2 · Edge `aarch64-abi` |
+| **AArch64 (ARM 64-bit)** | **Deep** — phones, Apple Silicon, edge ML / BCI | `intro-asm` → Edge `aarch64-abi` → CMSIS-NN → on-device · LLVM F2 |
+| **x86_64** | Host/RE literacy — **no full ISA track** | Glance room `isa-x86-aarch64` · Systems SysV / `sys-asm-read` |
 | **AArch32** | Historical context only | Arm docs — **not** a track |
-| **RISC-V** | Short elective — load/store + psABI taste | Shared `riscv-lite` — **does not** replace AArch64 |
+| **RISC-V** | Optional glance — load/store + psABI taste | Shared `riscv-lite` — **does not** replace AArch64 |
 | **Other (MIPS, AVR…)** | Out of scope | — |
 
-**Why AArch64 first?** Phones, Arm Macs, boards, on-device kernels.  
-**Why keep x86_64?** PC Linux/Windows + classic RE — strengthen with the compare room only (0–1 lab), not opcode farm.  
+**Why AArch64 first?** Edge ML + BCI targets: power/area/thermal, NEON/CMSIS-NN, LiteRT Micro.  
+**Why keep x86_64?** PC host dumps + classic RE — one compare room, not opcode farm.  
 **Why light RISC-V?** Open silicon literacy (`lw`/`sw`, `a0`); skip privileged ISA / Vector `V` / core design.
 
 ## Duration (± current formation)

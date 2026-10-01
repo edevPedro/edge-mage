@@ -7,8 +7,8 @@ resources:
 - title: All About Circuits — Voltage divider
   url: https://www.allaboutcircuits.com/textbook/direct-current/chpt-6/voltage-divider-circuits/
   kind: docs
-- title: Arm Developer docs
-  url: https://developer.arm.com/documentation
+- title: Khan Academy — Voltage divider
+  url: https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-resistor-circuits/a/ee-voltage-divider
   kind: docs
 animation: circuit_pulse
 tasks:
