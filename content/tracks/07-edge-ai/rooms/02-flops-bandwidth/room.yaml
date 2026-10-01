@@ -7,8 +7,8 @@ resources:
 - title: Roofline model (LBNL)
   url: https://crd.lbl.gov/divisions/americas/cl/roofline-model/
   kind: docs
-- title: Arm Neoverse docs
-  url: https://developer.arm.com/documentation
+- title: Arm Neoverse N1 Software Optimization Guide
+  url: https://developer.arm.com/documentation/swog01195/latest
   kind: docs
 animation: memory_grid
 tasks:
