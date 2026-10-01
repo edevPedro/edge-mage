@@ -1,6 +1,6 @@
 id: intro-asm
 title: Intro assembly (shared core)
-summary: Registers, mov, call/ret — shared foundation before AArch64 edge and LLVM asm-read.
+summary: Registers, mov, call/ret — then bridge `isa-x86-aarch64`; optional `riscv-lite`.
 xp_reward: 28
 unlock_xp: 0
 shared: true

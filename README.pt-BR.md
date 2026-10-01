@@ -49,18 +49,17 @@ Web espelho: [edevs.com.br/estudo](https://edevs.com.br/estudo) · detalhes: doc
 
 O curso **ensina a ler máquina**, não a memorizar três ISAs inteiras. Papel de cada família:
 
-| ISA | Papel no e-mage | Onde aparece |
-|-----|-----------------|--------------|
-| **x86_64** | Host desktop/servidor + RE clássico + ABI SysV (args em registradores) | Fundamentos `intro-asm` (Godbolt) · Systems (`sys-sysv-abi`, `sys-asm-read`) |
-| **AArch64 (ARM 64-bit)** | ISA **profunda** do caminho — mobile, Apple Silicon, edge NPU/CPU | LLVM F2 (regs, AAPCS64, frames, NEON, `llc`) · Edge `aarch64-abi` · bridges firmware |
-| **ARM 32-bit (AArch32)** | Só contexto histórico / não é trilha | Mencionado em docs Arm; **não** é foco |
-| **RISC-V** | Eletiva curta — ISA aberta / embedded emergente (load/store + contraste com AAPCS64) | Shared `riscv-lite` · Systems eletiva · **não** substitui AArch64 |
-| **Comparativo** | Mesmo C nos dois dialetos host vs edge | Shared `isa-x86-aarch64` (após `intro-asm`) |
+| ISA | Papel no curso | Onde |
+|-----|----------------|------|
+| **x86_64** | Host/RE + SysV — **sem trilha ISA completa** | `intro-asm` · ponte `isa-x86-aarch64` · Systems (`sys-sysv-abi`, `sys-asm-read`) |
+| **AArch64 (ARM 64-bit)** | ISA **profunda** — mobile, Apple Silicon, edge | Ponte `isa-x86-aarch64` · LLVM F2 · Edge `aarch64-abi` |
+| **ARM 32-bit (AArch32)** | Só contexto histórico | Docs Arm — **não** é trilha |
+| **RISC-V** | Eletiva curta — load/store + gosto de psABI | Shared `riscv-lite` — **não** substitui AArch64 |
 | **Outras (MIPS, AVR…)** | Fora de escopo | — |
 
-**Por que AArch64 no centro?** É o que você encontra em phone, Mac ARM, muitas boards e kernels on-device.  
-**Por que x86_64 ainda existe?** Seu PC Linux/Windows e boa parte de RE/malware samples ainda são Intel/AMD.  
-**Por que RISC-V leve?** Mercado e silício aberto crescem; basta **alfabetização**, não um segundo LLVM track.
+**Por que AArch64 no centro?** Phone, Mac ARM, boards e kernels on-device.  
+**Por que x86_64 ainda existe?** PC Linux/Windows + RE clássico — reforço só com a sala compare (0–1 lab), não farm de opcode.  
+**Por que RISC-V leve?** Silício aberto; alfabetização (`lw`/`sw`, `a0`); sem privileged ISA / Vector `V` / design de core.
 
 Leitura pedida: conseguir abrir Godbolt / `objdump`, apontar registradores de arg/retorno e não entrar em pânico — depois o IR do LLVM amarra as pontas.
 
