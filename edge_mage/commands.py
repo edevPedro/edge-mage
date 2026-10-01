@@ -48,6 +48,9 @@ _ALIASES: dict[str, str] = {
     "continue": "continue",
     "continuar": "continue",
     "c": "continue",
+    "courses": "courses",
+    "cursos": "courses",
+    "launcher": "launcher",
 }
 
 
@@ -136,12 +139,14 @@ COMANDOS (:)
   :room <id>          abrir sala pelo id
   :anim [kind]        toggle animação
   :xp                 XP / rank / skills / mana
-  :sync               commit/push do diário + artifacts
+  :sync               packs + progress API + diário git
+  :courses / :cursos  launcher de cursos
   :help / :ajuda      esta ajuda
 
 LOOP
   quiz (MCQ/num) → feitiço (code+tests) → ritual (artifact/boss)
-  Edge Mage = XP≥2900 + checklist on-device (não só XP)
+  Edge course: Edge Mage = XP≥2900 + checklist on-device
+  Global: Mago base (Fundamentals) → Mago Supremo (evidence)
   Mastery: M numa sala limpa (3/3)
   Streak≥3 → mana ×1.25
 """

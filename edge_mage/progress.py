@@ -7,10 +7,14 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from edge_mage.courses import COURSE_EDGE, COURSE_FUNDAMENTALS, COURSE_SYSTEMS
 from edge_mage.models import ProgressState, Room, Track
+from edge_mage.paths import progress_path
 from edge_mage.ranks import (
     effective_rank,
+    global_rank_from_flags,
     level_from_xp,
+    next_global_rank,
     next_rank,
     rank_from_xp,
     xp_for_next_level,
@@ -21,9 +25,7 @@ STREAK_MANA_MULT = 1.25
 
 
 def default_progress_path() -> Path:
-    home = Path.home() / ".edge-mage"
-    home.mkdir(parents=True, exist_ok=True)
-    return home / "progress.json"
+    return progress_path()
 
 
 class ProgressStore:
@@ -35,10 +37,17 @@ class ProgressStore:
         if not self.path.exists():
             return ProgressState()
         raw = json.loads(self.path.read_text(encoding="utf-8"))
+        by_id = dict(raw.get("completed_rooms_by_id", {}))
+        # backfill room_id credit from legacy track/room keys
+        if not by_id:
+            for key, done in dict(raw.get("completed_rooms", {})).items():
+                if done and "/" in str(key):
+                    by_id[str(key).rsplit("/", 1)[-1]] = True
         return ProgressState(
             xp=int(raw.get("xp", 0)),
             completed_tasks=dict(raw.get("completed_tasks", {})),
             completed_rooms=dict(raw.get("completed_rooms", {})),
+            completed_rooms_by_id=by_id,
             unlocked_skills=dict(raw.get("unlocked_skills", {})),
             rituals=dict(raw.get("rituals", {})),
             mastery={k: int(v) for k, v in dict(raw.get("mastery", {})).items()},
@@ -48,7 +57,9 @@ class ProgressStore:
             daily_combo=int(raw.get("daily_combo", 0)),
             combo_date=str(raw.get("combo_date", "")),
             unlocked_tracks=dict(raw.get("unlocked_tracks", {})),
-            version=int(raw.get("version", 3)),
+            courses=dict(raw.get("courses", {})),
+            evidence=dict(raw.get("evidence", {})),
+            version=int(raw.get("version", 4)),
         )
 
     def save(self) -> None:
@@ -57,6 +68,7 @@ class ProgressStore:
             "xp": self.state.xp,
             "completed_tasks": self.state.completed_tasks,
             "completed_rooms": self.state.completed_rooms,
+            "completed_rooms_by_id": self.state.completed_rooms_by_id,
             "unlocked_skills": self.state.unlocked_skills,
             "rituals": self.state.rituals,
             "mastery": self.state.mastery,
@@ -66,12 +78,25 @@ class ProgressStore:
             "daily_combo": self.state.daily_combo,
             "combo_date": self.state.combo_date,
             "unlocked_tracks": self.state.unlocked_tracks,
+            "courses": self.state.courses,
+            "evidence": self.state.evidence,
             "version": self.state.version,
         }
         self.path.write_text(
             json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
+
+    def to_dict(self) -> dict[str, Any]:
+        return json.loads(self.path.read_text(encoding="utf-8")) if self.path.exists() else {
+            "xp": self.state.xp,
+            "completed_rooms": self.state.completed_rooms,
+            "completed_rooms_by_id": self.state.completed_rooms_by_id,
+            "courses": self.state.courses,
+            "rituals": self.state.rituals,
+            "version": self.state.version,
+            "last_active": self.state.last_active,
+        }
 
     def xp_multiplier(self) -> float:
         if self.state.streak_days >= STREAK_MANA_THRESHOLD:
@@ -89,7 +114,6 @@ class ProgressStore:
                 if gap == 1:
                     self.state.streak_days += 1
                 elif gap > 1:
-                    # perde streak → mana volta a 1.0 (streak_days=1 de novo)
                     self.state.streak_days = 1
             except ValueError:
                 self.state.streak_days = 1
@@ -114,13 +138,45 @@ class ProgressStore:
         )
 
     def is_room_done(self, track_id: str, room_id: str) -> bool:
-        return bool(self.state.completed_rooms.get(self.state.room_key(track_id, room_id)))
+        if self.state.completed_rooms.get(self.state.room_key(track_id, room_id)):
+            return True
+        # shared core: single room_id credit
+        return bool(self.state.completed_rooms_by_id.get(room_id))
+
+    def mark_room_id(self, room_id: str) -> None:
+        self.state.completed_rooms_by_id[room_id] = True
 
     def is_skill_unlocked(self, skill_id: str) -> bool:
         return bool(self.state.unlocked_skills.get(skill_id))
 
     def has_ritual(self, ritual_id: str) -> bool:
         return bool(self.state.rituals.get(ritual_id))
+
+    def course_meta(self, course_id: str) -> dict[str, Any]:
+        raw = self.state.courses.get(course_id)
+        return dict(raw) if isinstance(raw, dict) else {}
+
+    def set_course_flag(self, course_id: str, **flags: Any) -> None:
+        cur = self.course_meta(course_id)
+        cur.update(flags)
+        self.state.courses[course_id] = cur
+        self.save()
+
+    def has_mago_base(self) -> bool:
+        fund = self.course_meta(COURSE_FUNDAMENTALS)
+        if fund.get("cleared") or fund.get("mago_base"):
+            return True
+        # heuristic: all fundamentals tutorial rooms done by id
+        needed = {"intro-asm", "bits", "vectors", "fundamentals-clear"}
+        done = set(k for k, v in self.state.completed_rooms_by_id.items() if v)
+        return needed.issubset(done) or bool(fund.get("cleared"))
+
+    def has_systems_boss(self) -> bool:
+        sys = self.course_meta(COURSE_SYSTEMS)
+        return bool(sys.get("boss_craft") or self.has_ritual("systems-boss-craft"))
+
+    def has_evidence(self) -> bool:
+        return bool(self.state.evidence.get("portfolio") or self.state.evidence.get("signed"))
 
     def unlock_skills(self, skill_ids: list[str]) -> list[str]:
         newly: list[str] = []
@@ -177,7 +233,6 @@ class ProgressStore:
         mastery_bump = 0
 
         if mastery:
-            # mastery dá XP menor e não re-marca task
             base = max(1, xp // 3)
             gained = self.award_xp(base)
             self.touch_streak()
@@ -194,8 +249,11 @@ class ProgressStore:
             all_done = all(
                 self.is_task_done(track_id, room_id, t.id) for t in room.tasks
             )
-            if all_done and not self.is_room_done(track_id, room_id):
+            if all_done and not self.state.completed_rooms.get(
+                self.state.room_key(track_id, room_id)
+            ):
                 self.state.completed_rooms[self.state.room_key(track_id, room_id)] = True
+                self.mark_room_id(room_id)
                 gained += self.award_xp(room.xp_reward)
                 room_completed = True
                 if room.elite_skill:
@@ -204,6 +262,10 @@ class ProgressStore:
                     self.state.unlocked_tracks[room.unlocks_track] = True
                 if room.boss:
                     self.state.rituals[room.id] = True
+                if room_id == "fundamentals-clear" or room.id == "fundamentals-clear":
+                    self.state.courses.setdefault(COURSE_FUNDAMENTALS, {})
+                    self.state.courses[COURSE_FUNDAMENTALS]["cleared"] = True
+                    self.state.courses[COURSE_FUNDAMENTALS]["mago_base"] = True
 
             self.save()
         else:
@@ -269,6 +331,23 @@ class ProgressStore:
         self.state.daily_run = dict(data)
         self.save()
 
+    def global_rank(self):
+        edge_progress = bool(
+            self.course_meta(COURSE_EDGE).get("started")
+            or self.state.xp > 0
+            or any(self.state.completed_rooms.values())
+        )
+        systems_progress = bool(
+            self.course_meta(COURSE_SYSTEMS).get("started") or self.has_systems_boss()
+        )
+        return global_rank_from_flags(
+            has_mago_base=self.has_mago_base(),
+            has_systems_boss=self.has_systems_boss(),
+            has_edge_on_device=self.has_ritual("on-device"),
+            has_evidence=self.has_evidence(),
+            any_advanced_progress=edge_progress or systems_progress,
+        )
+
     def profile_summary(self) -> dict:
         xp = self.state.xp
         level = level_from_xp(xp)
@@ -276,15 +355,18 @@ class ProgressStore:
         rank = effective_rank(xp, has_od)
         into, need = xp_for_next_level(xp)
         nxt = next_rank(xp)
-        # se XP já no floor Edge Mage mas sem ritual, next ainda é Edge Mage
         if rank.id == "arquimago" and xp >= 2900 and not has_od:
-            from edge_mage.ranks import RANKS
+            from edge_mage.ranks import EDGE_RANKS
 
-            nxt = next(r for r in RANKS if r.id == "edge_mage")
+            nxt = next(r for r in EDGE_RANKS if r.id == "edge_mage")
+        g_rank = self.global_rank()
         return {
             "xp": xp,
             "level": level,
             "rank": rank,
+            "global_rank": g_rank,
+            "next_global_rank": next_global_rank(g_rank.id),
+            "mago_base": self.has_mago_base(),
             "into_level": into,
             "need_level": need,
             "next_rank": nxt,

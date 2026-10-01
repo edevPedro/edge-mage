@@ -1,0 +1,22 @@
+id: flag-hello
+title: FLAG lab hello
+summary: Offline stub until catalog sync fills ~/.mage/packs/systems.json.
+xp_reward: 15
+unlock_xp: 0
+course: systems
+resources:
+  - title: CSAPP (CMU)
+    url: https://csapp.cs.cmu.edu/
+    kind: book
+  - title: Linux man-pages project
+    url: https://www.kernel.org/doc/man-pages/
+    kind: docs
+tasks:
+  - id: ack
+    type: mcq
+    prompt: "Systems Mage loads cached packs. Acknowledge stub?"
+    xp: 8
+    answer: 0
+    choices:
+      - "Yes"
+      - "Later"

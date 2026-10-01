@@ -1,4 +1,4 @@
-"""App Textual principal do Edge Mage."""
+"""App Textual principal do e-mage (Edge ML course keeps Edge Mage UX)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,8 @@ from textual.binding import Binding
 from textual.widgets import Input, TextArea
 
 from edge_mage.commands import parse_command
-from edge_mage.content import find_room, load_all_tracks
+from edge_mage.content import find_room, load_tracks_for_course
+from edge_mage.courses import COURSE_EDGE
 from edge_mage.git_journal import sync_study_journal
 from edge_mage.grimoire import load_skills
 from edge_mage.models import Track
@@ -21,8 +22,8 @@ from edge_mage.widgets.cmdline import CmdlineScreen
 
 
 class EdgeMageApp(App[None]):
-    TITLE = "Edge Mage"
-    SUB_TITLE = "Academia · Math → Edge AI"
+    TITLE = "e-mage"
+    SUB_TITLE = "Fundamentals · Systems · Edge ML"
     CSS = THEME_CSS
     BINDINGS = [
         Binding("j", "vim_down", show=False, priority=True),
@@ -39,19 +40,57 @@ class EdgeMageApp(App[None]):
         Binding("ctrl+w", "window_prefix", show=False, priority=True),
     ]
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        course: str | None = None,
+        *,
+        show_launcher: bool = True,
+    ) -> None:
         super().__init__()
         self.store = ProgressStore()
-        self.tracks: list[Track] = load_all_tracks()
+        self.course: str | None = course
+        self.show_launcher = show_launcher and course is None
+        self.preview_mode = False
+        self.tracks: list[Track] = (
+            load_tracks_for_course(course) if course else load_tracks_for_course(COURSE_EDGE)
+        )
         self.skills = load_skills()
         self.skills_total = len(self.skills)
         self.nav_mode: NavMode = NavMode.NORMAL
-        self.nav_context: str = "home"
+        self.nav_context: str = "launcher" if self.show_launcher else "home"
         self._leader: str | None = None
 
     def on_mount(self) -> None:
         self.store.touch_streak()
+        if self.show_launcher:
+            from edge_mage.screens.launcher import LauncherScreen
+
+            self.push_screen(LauncherScreen())
+        else:
+            self._backfill_skills()
+            self.push_screen(HomeScreen())
+
+    def enter_course(self, course_id: str, *, preview: bool = False) -> None:
+        """Switch content pack and open HomeScreen (Edge UX for edge course)."""
+        self.course = course_id
+        self.preview_mode = preview
+        self.tracks = load_tracks_for_course(course_id)
+        self.skills = load_skills()
+        self.skills_total = len(self.skills)
         self._backfill_skills()
+        meta = self.store.course_meta(course_id)
+        if not meta.get("started"):
+            self.store.set_course_flag(course_id, started=True)
+        if course_id == COURSE_EDGE:
+            self.TITLE = "Edge ML Mage"
+            self.SUB_TITLE = "Academia · Math → Edge AI"
+        elif course_id == COURSE_SYSTEMS:
+            self.TITLE = "Systems Mage"
+            self.SUB_TITLE = "FLAG-lab · packs"
+        else:
+            self.TITLE = "Fundamentals"
+            self.SUB_TITLE = "Path to Mago base"
+        # leave launcher under home so h can return
         self.push_screen(HomeScreen())
 
     def _backfill_skills(self) -> None:
@@ -373,6 +412,12 @@ class EdgeMageApp(App[None]):
                 severity="information",
             )
         elif cmd.name == "sync":
+            from edge_mage.sync import sync_all
+
+            api = sync_all()
+            if api.warning:
+                self.notify(api.warning[:160], severity="warning")
+            self.notify(api.message, severity="information" if api.ok else "warning")
             jr = sync_study_journal()
             if jr.warning:
                 self.notify(jr.warning, severity="warning")
@@ -380,8 +425,10 @@ class EdgeMageApp(App[None]):
                 self.notify("Diário sincronizado com origin", severity="information")
             elif jr.message:
                 self.notify(jr.message, severity="information")
-            else:
-                self.notify("Nada a sincronizar", severity="information")
+        elif cmd.name == "courses" or cmd.name == "launcher":
+            from edge_mage.screens.launcher import LauncherScreen
+
+            self.push_screen(LauncherScreen())
         elif cmd.name == "room":
             room_id = cmd.args[0]
             found = None
@@ -418,5 +465,5 @@ class EdgeMageApp(App[None]):
             self.push_screen(RoomScreen(track, room))
 
 
-def run() -> None:
-    EdgeMageApp().run()
+def run(*, course: str | None = None, show_launcher: bool = True) -> None:
+    EdgeMageApp(course=course, show_launcher=show_launcher).run()

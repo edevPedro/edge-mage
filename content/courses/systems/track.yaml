@@ -1,0 +1,7 @@
+id: systems
+title: Systems Mage
+summary: FLAG-lab stub — prefers ~/.mage/packs/systems.json when present.
+order: 1
+unlock_xp: 0
+icon: "⚙"
+course: systems

@@ -7,6 +7,14 @@ from typing import Any, Literal
 
 
 TaskType = Literal["mcq", "numeric", "fill", "code", "ritual"]
+ResourceKind = Literal["docs", "video", "paper", "book", "tool", "other"]
+
+
+@dataclass
+class Resource:
+    title: str
+    url: str
+    kind: ResourceKind = "docs"
 
 
 @dataclass
@@ -46,6 +54,9 @@ class Room:
     requires_skills: list[str] = field(default_factory=list)
     elite_skill: str = ""  # skill id concedida ao concluir boss
     unlocks_track: str = ""  # ex.: edge-ai após Softmax Estável
+    resources: list[Resource] = field(default_factory=list)
+    shared: bool = False  # shared-core room (single room_id credit)
+    course: str = ""  # optional course tag: fundamentals|systems|edge
 
 
 @dataclass
@@ -61,6 +72,7 @@ class Track:
     scaffold: bool = False
     requires_skills: list[str] = field(default_factory=list)
     requires_ritual: str = ""
+    course: str = ""
 
 
 @dataclass
@@ -79,6 +91,8 @@ class ProgressState:
     xp: int = 0
     completed_tasks: dict[str, bool] = field(default_factory=dict)
     completed_rooms: dict[str, bool] = field(default_factory=dict)
+    # Shared credit: room_id → done (systems + edge maps reference same ids)
+    completed_rooms_by_id: dict[str, bool] = field(default_factory=dict)
     unlocked_skills: dict[str, bool] = field(default_factory=dict)
     rituals: dict[str, bool] = field(default_factory=dict)
     mastery: dict[str, int] = field(default_factory=dict)  # room_key -> 0..3
@@ -88,7 +102,10 @@ class ProgressState:
     daily_combo: int = 0
     combo_date: str = ""
     unlocked_tracks: dict[str, bool] = field(default_factory=dict)
-    version: int = 3
+    # per-course flags: { fundamentals: { cleared: bool }, … }
+    courses: dict[str, Any] = field(default_factory=dict)
+    evidence: dict[str, bool] = field(default_factory=dict)
+    version: int = 4
 
     def task_key(self, track_id: str, room_id: str, task_id: str) -> str:
         return f"{track_id}/{room_id}/{task_id}"

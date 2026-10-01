@@ -1,0 +1,31 @@
+id: vectors
+title: Vectors (shared core)
+summary: Magnitude, direction, and dot product — credited once across courses.
+xp_reward: 20
+unlock_xp: 0
+shared: true
+course: fundamentals
+resources:
+  - title: Khan Academy — Vectors
+    url: https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces
+    kind: docs
+  - title: 3Blue1Brown — Essence of linear algebra
+    url: https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab
+    kind: video
+tasks:
+  - id: mag-3-4
+    type: numeric
+    prompt: "Magnitude of vector (3, 4)?"
+    xp: 12
+    answer: 5
+    tolerance: 0.01
+  - id: dot-orth
+    type: mcq
+    prompt: "Two non-zero vectors are orthogonal when their dot product is…"
+    xp: 10
+    answer: 0
+    choices:
+      - "0"
+      - "1"
+      - "equal to the product of magnitudes"
+      - "undefined"

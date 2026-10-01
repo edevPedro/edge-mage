@@ -1,0 +1,33 @@
+id: intro-asm
+title: Intro assembly (shared core)
+summary: Registers, mov, and why compilers emit asm.
+xp_reward: 24
+unlock_xp: 0
+shared: true
+course: fundamentals
+resources:
+  - title: ARM Compiler migration / asm overview
+    url: https://developer.arm.com/documentation
+    kind: docs
+  - title: LLVM Language Reference (IR intuition)
+    url: https://llvm.org/docs/LangRef.html
+    kind: docs
+tasks:
+  - id: mov-role
+    type: mcq
+    prompt: "In typical asm, `mov dst, src` primarily…"
+    xp: 12
+    answer: 0
+    choices:
+      - "copies a value into a register or memory"
+      - "multiplies two registers"
+      - "jumps to a label"
+      - "halts the CPU"
+  - id: why-asm
+    type: fill
+    prompt: "Compilers lower high-level code toward ___ (or machine code)."
+    xp: 10
+    answers:
+      - "assembly"
+      - "asm"
+      - "Assembly"

@@ -13,7 +13,7 @@ from edge_mage.screens.base import MageScreen
 
 BANNER = r"""
 ╔══════════════════════════════════════════════════╗
-║      E D G E   M A G E   ·   ACADEMIA             ║
+║      E D G E   M L   M A G E   ·   ACADEMIA      ║
 ║   quiz → feitiço → ritual   ·   Ctrl+w painéis   ║
 ╚══════════════════════════════════════════════════╝
 """
@@ -24,13 +24,40 @@ class HomeScreen(MageScreen):
     list_id = "home-menu"
 
     def action_vim_back(self) -> None:
-        if len(self.app.screen_stack) <= 2:
+        stack = self.app.screen_stack
+        if len(stack) <= 1:
+            return
+        # allow return to course launcher
+        prev = stack[-2] if len(stack) >= 2 else None
+        from edge_mage.screens.launcher import LauncherScreen
+
+        if isinstance(prev, LauncherScreen):
+            self.app.pop_screen()
+            return
+        if len(stack) <= 2:
             return
         self.app.pop_screen()
 
     def compose_body(self) -> ComposeResult:
         store = self.app.store  # type: ignore[attr-defined]
         tracks = self.app.tracks  # type: ignore[attr-defined]
+        course = getattr(self.app, "course", None) or "edge"
+        if course == "fundamentals":
+            banner = (
+                "╔══════════════════════════════════════════════════╗\n"
+                "║      F U N D A M E N T A L S  ·  MAGO BASE       ║\n"
+                "║   shared core → clear → unlock Systems / Edge    ║\n"
+                "╚══════════════════════════════════════════════════╝"
+            )
+        elif course == "systems":
+            banner = (
+                "╔══════════════════════════════════════════════════╗\n"
+                "║      S Y S T E M S   M A G E  ·  FLAG-lab         ║\n"
+                "║   packs ~/.mage/packs  ·  :sync                  ║\n"
+                "╚══════════════════════════════════════════════════╝"
+            )
+        else:
+            banner = BANNER
         profile = store.profile_summary()
         rank = profile["rank"]
         into, need = xp_for_next_level(profile["xp"])
@@ -48,7 +75,7 @@ class HomeScreen(MageScreen):
         od = "  ·  ritual on-device ✓" if profile.get("on_device") else ""
 
         with Vertical():
-            yield Static(BANNER, id="banner")
+            yield Static(banner, id="banner")
             yield Static("STATUS DO MAGO", classes="panel-title")
             yield Static(
                 f"Rank: [{rank.title}]  ·  XP: {profile['xp']}  ·  "

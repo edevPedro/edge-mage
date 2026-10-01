@@ -1,0 +1,54 @@
+"""Course catalog for e-mage launcher (fundamentals / systems / edge)."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+COURSE_FUNDAMENTALS = "fundamentals"
+COURSE_SYSTEMS = "systems"
+COURSE_EDGE = "edge"
+
+# Soft gate: Systems + Edge prefer Mago base; preview allowed with warning.
+GATED_COURSES = frozenset({COURSE_SYSTEMS, COURSE_EDGE})
+
+
+@dataclass(frozen=True)
+class CourseInfo:
+    id: str
+    title: str
+    title_pt: str
+    blurb: str
+    requires_mago_base: bool = False
+
+
+COURSES: tuple[CourseInfo, ...] = (
+    CourseInfo(
+        COURSE_FUNDAMENTALS,
+        "Fundamentals",
+        "Fundamentos",
+        "Path to Mago base — shared core + tutorial rooms.",
+        requires_mago_base=False,
+    ),
+    CourseInfo(
+        COURSE_SYSTEMS,
+        "Systems Mage",
+        "Systems Mage",
+        "FLAG-lab / systems catalog (pack cache).",
+        requires_mago_base=True,
+    ),
+    CourseInfo(
+        COURSE_EDGE,
+        "Edge ML Mage",
+        "Edge ML Mage",
+        "Current TUI tracks: math → on-device Edge AI.",
+        requires_mago_base=True,
+    ),
+)
+
+
+def course_by_id(course_id: str) -> CourseInfo | None:
+    for c in COURSES:
+        if c.id == course_id:
+            return c
+    return None

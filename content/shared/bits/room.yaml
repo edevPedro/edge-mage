@@ -1,0 +1,31 @@
+id: bits
+title: Bits & binary (shared core)
+summary: Powers of two, hex, and what a byte actually is.
+xp_reward: 20
+unlock_xp: 0
+shared: true
+course: fundamentals
+resources:
+  - title: MDN — Number systems
+    url: https://developer.mozilla.org/en-US/docs/Glossary/Number
+    kind: docs
+  - title: CSAPP — Data representation notes
+    url: https://csapp.cs.cmu.edu/
+    kind: book
+tasks:
+  - id: two-pow-10
+    type: numeric
+    prompt: "2^10 = ?"
+    xp: 10
+    answer: 1024
+    tolerance: 0
+  - id: byte-bits
+    type: mcq
+    prompt: "How many bits in one byte (modern convention)?"
+    xp: 8
+    answer: 0
+    choices:
+      - "8"
+      - "4"
+      - "16"
+      - "10"

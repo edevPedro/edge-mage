@@ -1,4 +1,4 @@
-"""Tabela de ranks/níveis do Mage Academy."""
+"""Ranks: global e-mage path + Edge ML course internal ranks."""
 
 from __future__ import annotations
 
@@ -15,8 +15,8 @@ class Rank:
     blurb: str
 
 
-# Progressão: noviço em trig → Edge Mage (competência on-device real)
-RANKS: tuple[Rank, ...] = (
+# --- Edge ML Mage course (internal feeling; preserved from Edge Mage) --------
+EDGE_RANKS: tuple[Rank, ...] = (
     Rank(
         "novico",
         "Noviço",
@@ -75,7 +75,47 @@ RANKS: tuple[Rank, ...] = (
     ),
 )
 
-# XP acumulado mínimo para cada nível (1-indexed via enumerate)
+# Back-compat alias used across the Edge course UI
+RANKS = EDGE_RANKS
+
+# --- Global e-mage path (cross-course) ---------------------------------------
+# none → Mago base (fundamentals clear) → intermediate → Mago Supremo (evidence)
+GLOBAL_RANKS: tuple[Rank, ...] = (
+    Rank(
+        "none",
+        "Sem rank",
+        "Unranked",
+        0,
+        1,
+        "Comece por Fundamentals para conquistar Mago base.",
+    ),
+    Rank(
+        "mago_base",
+        "Mago base",
+        "Base Mage",
+        0,
+        1,
+        "Fundamentals concluído — Systems e Edge liberados (soft gate).",
+    ),
+    Rank(
+        "intermediate",
+        "Intermediário",
+        "Intermediate",
+        0,
+        1,
+        "Progresso em Systems e/ou Edge — ainda sem evidência completa.",
+    ),
+    Rank(
+        "mago_supremo",
+        "Mago Supremo",
+        "Supreme Mage",
+        0,
+        1,
+        "Systems boss craft + Edge on-device + evidência registrada.",
+    ),
+)
+
+
 LEVEL_THRESHOLDS: tuple[int, ...] = (
     0,  # L1
     40,  # L2
@@ -121,8 +161,9 @@ def xp_for_next_level(xp: int) -> tuple[int, int | None]:
 
 
 def rank_from_xp(xp: int) -> Rank:
-    current = RANKS[0]
-    for rank in RANKS:
+    """Edge-course rank from XP alone (ignores on-device ritual)."""
+    current = EDGE_RANKS[0]
+    for rank in EDGE_RANKS:
         if xp >= rank.min_xp:
             current = rank
         else:
@@ -132,7 +173,7 @@ def rank_from_xp(xp: int) -> Rank:
 
 def effective_rank(xp: int, has_on_device_ritual: bool) -> Rank:
     """
-    Ranks intermediários = XP.
+    Edge-course ranks: intermediários = XP.
     Edge Mage exige ritual on-device além do XP floor (2900).
     """
     by_xp = rank_from_xp(xp)
@@ -140,20 +181,48 @@ def effective_rank(xp: int, has_on_device_ritual: bool) -> Rank:
         return by_xp
     if has_on_device_ritual:
         return by_xp
-    # Cap em Arquimago até o checklist on-device
-    return next(r for r in RANKS if r.id == "arquimago")
+    return next(r for r in EDGE_RANKS if r.id == "arquimago")
 
 
 def next_rank(xp: int) -> Rank | None:
     current = rank_from_xp(xp)
-    for i, rank in enumerate(RANKS):
-        if rank.id == current.id and i + 1 < len(RANKS):
-            return RANKS[i + 1]
+    for i, rank in enumerate(EDGE_RANKS):
+        if rank.id == current.id and i + 1 < len(EDGE_RANKS):
+            return EDGE_RANKS[i + 1]
+    return None
+
+
+def global_rank_from_flags(
+    *,
+    has_mago_base: bool,
+    has_systems_boss: bool = False,
+    has_edge_on_device: bool = False,
+    has_evidence: bool = False,
+    any_advanced_progress: bool = False,
+) -> Rank:
+    """
+    Global path:
+      none → Mago base → intermediate → Mago Supremo
+    Mago Supremo gated by systems boss craft + edge on-device + evidence.
+    """
+    if has_mago_base and has_systems_boss and has_edge_on_device and has_evidence:
+        return next(r for r in GLOBAL_RANKS if r.id == "mago_supremo")
+    if has_mago_base and (any_advanced_progress or has_systems_boss or has_edge_on_device):
+        return next(r for r in GLOBAL_RANKS if r.id == "intermediate")
+    if has_mago_base:
+        return next(r for r in GLOBAL_RANKS if r.id == "mago_base")
+    return next(r for r in GLOBAL_RANKS if r.id == "none")
+
+
+def next_global_rank(current_id: str) -> Rank | None:
+    for i, rank in enumerate(GLOBAL_RANKS):
+        if rank.id == current_id and i + 1 < len(GLOBAL_RANKS):
+            return GLOBAL_RANKS[i + 1]
     return None
 
 
 def format_level_table() -> str:
-    lines = ["Nível | XP mín. | Rank típico", "------|---------|------------"]
+    lines = ["Nível | XP mín. | Rank típico (Edge)", "------|---------|--------------------"]
     for i, thr in enumerate(LEVEL_THRESHOLDS):
         lvl = i + 1
         rank = rank_from_xp(thr)

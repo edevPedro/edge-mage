@@ -1,0 +1,23 @@
+id: systems-boss-craft
+title: Systems boss craft (stub)
+summary: Evidence gate toward Mago Supremo — craft artifact stub.
+xp_reward: 50
+unlock_xp: 0
+boss: true
+course: systems
+resources:
+  - title: LLVM Getting Started
+    url: https://llvm.org/docs/GettingStarted.html
+    kind: docs
+  - title: Arm Architecture Reference
+    url: https://developer.arm.com/documentation
+    kind: docs
+tasks:
+  - id: craft
+    type: mcq
+    prompt: "Stub: mark systems boss craft complete?"
+    xp: 25
+    answer: 0
+    choices:
+      - "Craft complete (stub)"
+      - "Not yet"

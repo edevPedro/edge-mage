@@ -1,0 +1,31 @@
+id: fundamentals-clear
+title: Fundamentals clearance
+summary: Seal Mago base after shared core rooms.
+xp_reward: 40
+unlock_xp: 0
+boss: true
+course: fundamentals
+resources:
+  - title: Khan Academy — Algebra foundations
+    url: https://www.khanacademy.org/math
+    kind: docs
+  - title: MDN Learning Area
+    url: https://developer.mozilla.org/en-US/docs/Learn
+    kind: docs
+tasks:
+  - id: ready
+    type: mcq
+    prompt: "Shared rooms (vectors, bits, intro-asm) done. Claim Mago base?"
+    xp: 20
+    answer: 0
+    choices:
+      - "Yes — grant Mago base"
+      - "Not yet"
+  - id: pledge
+    type: fill
+    prompt: "Type the rank you unlock: mago base"
+    xp: 15
+    answers:
+      - "mago base"
+      - "Mago base"
+      - "mago_base"
