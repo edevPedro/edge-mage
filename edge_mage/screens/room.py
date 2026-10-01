@@ -1,4 +1,4 @@
-"""Vista de sala: lição + animação + lista de tasks."""
+"""Vista de sala: História | Conceito | Desafio + animação + tarefas (Ctrl+w)."""
 
 from __future__ import annotations
 
@@ -22,6 +22,24 @@ class RoomScreen(MageScreen):
         self.room = room
         self.context_label = f"{track.id}/{room.id}"
         self.anim_kind = animation_for_room(room.id, room.animation)
+        panes = ["story", "concept", "desafio"]
+        if self.anim_kind != "none":
+            panes.append("anim")
+        panes.append("tasks")
+        self.pane_ids = panes
+        self.focused_pane = "story"
+        self._content_tab = "story"  # qual markdown está no painel esquerdo
+
+    def _md(self, kind: str) -> str:
+        if kind == "story":
+            return self.room.story_md.strip() or (
+                f"_Sem história ainda._\n\n{self.room.summary}"
+            )
+        if kind == "concept":
+            return self.room.concept_md.strip() or (
+                "_Sem conceito ainda._\n\nUse a lição em Desafio."
+            )
+        return self.room.lesson_md.strip() or "_Sem lição._"
 
     def compose_body(self) -> ComposeResult:
         store = self.app.store  # type: ignore[attr-defined]
@@ -29,21 +47,32 @@ class RoomScreen(MageScreen):
         has_anim = self.anim_kind != "none"
         with Vertical():
             yield Static(self.room.title, classes="title")
-            hint = "  ·  Space/:anim visual" if has_anim else ""
+            hint = "  ·  Ctrl+w painéis  ·  Space/:anim" if has_anim else "  ·  Ctrl+w painéis"
             yield Static(
-                f"{self.room.summary}  ·  progresso {done}/{total}{hint}",
+                f"{self.room.summary}  ·  {done}/{total}{hint}",
                 classes="muted",
             )
+            yield Static(
+                "[História]  Conceito  Desafio",
+                id="tab-bar",
+                classes="tab-bar",
+            )
             with Horizontal(id="room-main"):
-                with VerticalScroll(classes="panel", id="lesson", can_focus=False):
-                    yield Static("LIÇÃO", classes="panel-title")
-                    yield Markdown(self.room.lesson_md or "_Sem lição._")
+                with VerticalScroll(classes="panel -pane-focus", id="pane-story"):
+                    yield Static("HISTÓRIA", classes="panel-title")
+                    yield Markdown(self._md("story"), id="md-story")
+                with VerticalScroll(classes="panel", id="pane-concept"):
+                    yield Static("CONCEITO", classes="panel-title")
+                    yield Markdown(self._md("concept"), id="md-concept")
+                with VerticalScroll(classes="panel", id="pane-desafio"):
+                    yield Static("DESAFIO / LIÇÃO", classes="panel-title")
+                    yield Markdown(self._md("desafio"), id="md-desafio")
                 if has_anim:
                     panel = AnimationPanel(self.anim_kind, id="anim-panel")
                     panel.add_class("-hidden")
                     yield panel
             yield Static(
-                "TAREFAS — j/k · Enter/l  ·  Esc/h voltar",
+                "TAREFAS — j/k · Enter/l  ·  Ctrl+w cicla painéis",
                 classes="panel-title",
             )
             yield OptionList(*self._task_options(), id="task-list")
@@ -70,9 +99,53 @@ class RoomScreen(MageScreen):
             self.app.set_nav_context(self.context_label)  # type: ignore[attr-defined]
         if hasattr(self.app, "enter_normal"):
             self.app.enter_normal()  # type: ignore[attr-defined]
+        self._apply_content_visibility()
+        self.set_focused_pane("story")
         if self.anim_kind != "none":
-            # Auto-play breve ao abrir a sala
             self.call_after_refresh(self._autoplay)
+
+    def _tab_label(self) -> str:
+        marks = []
+        for key, name in (
+            ("story", "História"),
+            ("concept", "Conceito"),
+            ("desafio", "Desafio"),
+        ):
+            if self.focused_pane == key or (
+                self.focused_pane not in {"story", "concept", "desafio"}
+                and self._content_tab == key
+            ):
+                marks.append(f"[{name}]")
+            else:
+                marks.append(f" {name} ")
+        return "  ".join(marks)
+
+    def _apply_content_visibility(self) -> None:
+        """Mostra só o painel de texto ativo (story/concept/desafio) para caber."""
+        active = self.focused_pane if self.focused_pane in {
+            "story",
+            "concept",
+            "desafio",
+        } else self._content_tab
+        self._content_tab = active
+        for key in ("story", "concept", "desafio"):
+            try:
+                w = self.query_one(f"#pane-{key}")
+                if key == active:
+                    w.remove_class("-hidden-pane")
+                else:
+                    w.add_class("-hidden-pane")
+            except Exception:
+                pass
+        try:
+            self.query_one("#tab-bar", Static).update(self._tab_label())
+        except Exception:
+            pass
+
+    def on_pane_changed(self, pane: str) -> None:
+        if pane in {"story", "concept", "desafio"}:
+            self._content_tab = pane
+        self._apply_content_visibility()
 
     def _autoplay(self) -> None:
         try:
@@ -96,6 +169,10 @@ class RoomScreen(MageScreen):
         panel.toggle(use)
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
+        if self.focused_pane and self.focused_pane != "tasks":
+            # evita abrir task se o foco visual não está em tarefas
+            # (OptionList ainda pode receber select) — permitir sempre é ok
+            pass
         task_id = str(event.option.id)
         task = next(t for t in self.room.tasks if t.id == task_id)
         from edge_mage.screens.task import TaskScreen

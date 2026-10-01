@@ -138,14 +138,20 @@ Input:focus, TextArea:focus {
 }
 
 #room-main {
-    height: 12;
+    height: 14;
     margin: 0 0 1 0;
 }
 
-#room-main #lesson {
+#room-main #pane-story,
+#room-main #pane-concept,
+#room-main #pane-desafio {
     width: 1fr;
     height: 1fr;
     margin: 0 1 0 1;
+}
+
+#room-main .-hidden-pane {
+    display: none;
 }
 
 #room-main AnimationPanel {
@@ -153,12 +159,22 @@ Input:focus, TextArea:focus {
     height: 1fr;
 }
 
+.tab-bar {
+    color: #9db8a5;
+    padding: 0 1;
+    margin-bottom: 0;
+}
+
+.-pane-focus {
+    border: solid #5a7a68 !important;
+}
+
 #home-menu, #track-list, #room-list, #task-list, #task-actions {
     height: 1fr;
     margin: 0 1 1 1;
 }
 
-#help-actions, #profile-actions {
+#help-actions, #profile-actions, #grimoire-actions {
     height: auto;
     max-height: 5;
     margin: 0 1 1 1;

@@ -10,6 +10,20 @@ class NavMode(str, Enum):
     INSERT = "INSERT"
     COMMAND = "COMMAND"
     LEADER = "G-"
+    WINDOW = "C-W"  # após Ctrl+w: w cicla, h/j/k/l move painéis
+
+
+# Nomes curtos dos painéis (statusline)
+PANE_LABELS = {
+    "story": "HISTÓRIA",
+    "concept": "CONCEITO",
+    "desafio": "DESAFIO",
+    "anim": "ANIM",
+    "tasks": "TAREFAS",
+    "prompt": "PROMPT",
+    "answer": "RESPOSTA",
+    "actions": "AÇÕES",
+}
 
 
 def mode_label(mode: NavMode | str) -> str:

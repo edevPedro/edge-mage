@@ -1,0 +1,197 @@
+# Grimório — habilidades desbloqueadas ao concluir salas
+skills:
+  - id: trig-arcana
+    name: Trigonometria Arcana
+    description: "Domínio do círculo unitário, radianos e identidades fundamentais."
+    glyph: "∠"
+    unlock_room: trigonometria
+    unlock_track: fundamentos
+
+  - id: produto-escalar
+    name: Produto Escalar
+    description: "Norma, projeção e produto interno em R²/R³."
+    glyph: "·"
+    unlock_room: vetores
+    unlock_track: fundamentos
+
+  - id: logs-exp
+    name: Escala Logarítmica
+    description: "Exp, log e mudança de base — linguagem de estabilidade numérica."
+    glyph: "ℯ"
+    unlock_room: exponenciais-logs
+    unlock_track: fundamentos
+
+  - id: algebra-linear
+    name: Feitiço Matricial
+    description: "Normas, matmul e transformações lineares."
+    glyph: "▦"
+    unlock_room: algebra-linear
+    unlock_track: fundamentos
+
+  - id: python-basico
+    name: Runas de Python
+    description: "Hipotenusa, dot e controle de fluxo como ferramentas do mago."
+    glyph: "λ"
+    unlock_room: python-basico
+    unlock_track: programacao
+
+  - id: numpy-intuicao
+    name: Vetorização
+    description: "Intuição de arrays, broadcasting e operações em lote."
+    glyph: "ℕ"
+    unlock_room: numpy-intuicao
+    unlock_track: programacao
+
+  - id: desafios-codigo
+    name: Codex do Desafio
+    description: "Implementar grad_step e matmul2 com precisão."
+    glyph: "⌘"
+    unlock_room: desafios
+    unlock_track: programacao
+
+  - id: cinematica
+    name: Movimento Relativo
+    description: "Posição, velocidade e aceleração no plano do laboratório."
+    glyph: "→"
+    unlock_room: cinematica
+    unlock_track: fisica-sinais
+
+  - id: ondas
+    name: Ressonância
+    description: "Amplitude, período, frequência e fase de sinais."
+    glyph: "∿"
+    unlock_room: ondas
+    unlock_track: fisica-sinais
+
+  - id: amostragem
+    name: Olho de Nyquist
+    description: "Amostragem discreta sem aliasing."
+    glyph: "⋮"
+    unlock_room: amostragem
+    unlock_track: fisica-sinais
+
+  - id: lei-ohm
+    name: Corrente Arcana
+    description: "V = IR e potência em circuitos resistivos."
+    glyph: "Ω"
+    unlock_room: ohm
+    unlock_track: eletrica-edge
+
+  - id: divisor
+    name: Divisor de Potência
+    description: "Divisão de tensão e polarização de sensores."
+    glyph: "÷"
+    unlock_room: divisao-tensao
+    unlock_track: eletrica-edge
+
+  - id: adc-potencia
+    name: Escada ADC
+    description: "Quantização analógico-digital e orçamento de potência."
+    glyph: "▣"
+    unlock_room: adc-potencia
+    unlock_track: eletrica-edge
+
+  - id: transforms-2d
+    name: Portal 2D
+    description: "Rotações e translações homogêneas no plano."
+    glyph: "⟳"
+    unlock_room: transforms-2d
+    unlock_track: robotica
+
+  - id: cinematica-robo
+    name: Elo Articulado
+    description: "Cinemática direta de braços e elos."
+    glyph: "⊕"
+    unlock_room: cinematica-robo
+    unlock_track: robotica
+
+  - id: sensores
+    name: Percepção Edge
+    description: "Modelar ruído e leitura de sensores embarcados."
+    glyph: "◎"
+    unlock_room: sensores
+    unlock_track: robotica
+
+  - id: derivadas
+    name: Tangente Infinitesimal
+    description: "Derivada, regra da cadeia e sensibilidade local."
+    glyph: "∂"
+    unlock_room: derivadas
+    unlock_track: otimizacao
+
+  - id: gradiente
+    name: Gradiente Descendente
+    description: "Descer a loss na direção −∇f."
+    glyph: "∇"
+    unlock_room: gradiente
+    unlock_track: otimizacao
+
+  - id: loss-lr
+    name: Ritmo de Aprendizado
+    description: "Loss, learning rate e estabilidade do passo."
+    glyph: "η"
+    unlock_room: loss-lr
+    unlock_track: otimizacao
+
+  - id: batch-epoch
+    name: Epoch Ritual
+    description: "Mini-batch, epoch e estatística do treino."
+    glyph: "⊚"
+    unlock_room: batch-epoch
+    unlock_track: otimizacao
+
+  - id: probabilidade
+    name: Oráculo Probabilístico
+    description: "Esperança, variância e distribuições discretas."
+    glyph: "P"
+    unlock_room: probabilidade
+    unlock_track: ml-math
+
+  - id: softmax-ce
+    name: Softmax Estável
+    description: "Softmax numericamente estável e cross-entropy."
+    glyph: "σ"
+    unlock_room: softmax-ce
+    unlock_track: ml-math
+
+  - id: matmul-flops
+    name: Contagem de FLOPs
+    description: "Custo de matmul e intensidade aritmética."
+    glyph: "×"
+    unlock_room: matmul-flops
+    unlock_track: ml-math
+
+  - id: quantizacao
+    name: Quantização Int8
+    description: "Escala, zero-point e fixed-point no edge."
+    glyph: "ℤ"
+    unlock_room: quantizacao
+    unlock_track: ml-math
+
+  - id: memory-layout
+    name: Layout de Memória
+    description: "Row/column-major e localidade de cache."
+    glyph: "▤"
+    unlock_room: memory-layout
+    unlock_track: edge-ai
+
+  - id: flops-bandwidth
+    name: Teto de Roofline
+    description: "Compute-bound vs memory-bound."
+    glyph: "⫽"
+    unlock_room: flops-bandwidth
+    unlock_track: edge-ai
+
+  - id: simd-latency
+    name: Vetor SIMD
+    description: "Latência, throughput e paralelismo de instrução."
+    glyph: "∥"
+    unlock_room: simd-latency
+    unlock_track: edge-ai
+
+  - id: on-device
+    name: Edge Mage
+    description: "Checklist on-device — competência plena de inferência embarcada."
+    glyph: "✦"
+    unlock_room: on-device
+    unlock_track: edge-ai

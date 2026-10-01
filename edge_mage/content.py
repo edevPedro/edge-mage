@@ -40,11 +40,19 @@ def _load_tasks(raw_tasks: list) -> list[Task]:
     return tasks
 
 
+def _read_md(path: Path, fallback: str = "") -> str:
+    if path.exists():
+        return path.read_text(encoding="utf-8")
+    return fallback
+
+
 def load_room(room_dir: Path) -> Room:
     meta_path = room_dir / "room.yaml"
     meta = yaml.safe_load(meta_path.read_text(encoding="utf-8"))
-    lesson_path = room_dir / "lesson.md"
-    lesson = lesson_path.read_text(encoding="utf-8") if lesson_path.exists() else ""
+    lesson = _read_md(room_dir / "lesson.md")
+    # story/concept: arquivo dedicado, ou campo inline no YAML
+    story = _read_md(room_dir / "story.md", str(meta.get("story") or ""))
+    concept = _read_md(room_dir / "concept.md", str(meta.get("concept") or ""))
     return Room(
         id=str(meta["id"]),
         title=str(meta["title"]),
@@ -52,6 +60,8 @@ def load_room(room_dir: Path) -> Room:
         xp_reward=int(meta.get("xp_reward", 15)),
         unlock_xp=int(meta.get("unlock_xp", 0)),
         lesson_md=lesson,
+        story_md=story,
+        concept_md=concept,
         tasks=_load_tasks(meta.get("tasks") or []),
         path=str(room_dir),
         animation=str(meta.get("animation") or ""),

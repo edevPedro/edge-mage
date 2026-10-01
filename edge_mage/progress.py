@@ -29,9 +29,10 @@ class ProgressStore:
             xp=int(raw.get("xp", 0)),
             completed_tasks=dict(raw.get("completed_tasks", {})),
             completed_rooms=dict(raw.get("completed_rooms", {})),
+            unlocked_skills=dict(raw.get("unlocked_skills", {})),
             streak_days=int(raw.get("streak_days", 0)),
             last_active=str(raw.get("last_active", "")),
-            version=int(raw.get("version", 1)),
+            version=int(raw.get("version", 2)),
         )
 
     def save(self) -> None:
@@ -40,6 +41,7 @@ class ProgressStore:
             "xp": self.state.xp,
             "completed_tasks": self.state.completed_tasks,
             "completed_rooms": self.state.completed_rooms,
+            "unlocked_skills": self.state.unlocked_skills,
             "streak_days": self.state.streak_days,
             "last_active": self.state.last_active,
             "version": self.state.version,
@@ -75,6 +77,19 @@ class ProgressStore:
     def is_room_done(self, track_id: str, room_id: str) -> bool:
         return bool(self.state.completed_rooms.get(self.state.room_key(track_id, room_id)))
 
+    def is_skill_unlocked(self, skill_id: str) -> bool:
+        return bool(self.state.unlocked_skills.get(skill_id))
+
+    def unlock_skills(self, skill_ids: list[str]) -> list[str]:
+        """Marca skills novas; retorna ids recém-desbloqueados."""
+        newly: list[str] = []
+        for sid in skill_ids:
+            if not sid or self.state.unlocked_skills.get(sid):
+                continue
+            self.state.unlocked_skills[sid] = True
+            newly.append(sid)
+        return newly
+
     def mark_task(
         self, track_id: str, room_id: str, task_id: str, xp: int, room: Room
     ) -> dict:
@@ -82,6 +97,7 @@ class ProgressStore:
         gained = 0
         leveled = False
         ranked_up = False
+        room_completed = False
         before_level = level_from_xp(self.state.xp)
         before_rank = rank_from_xp(self.state.xp)
 
@@ -100,6 +116,7 @@ class ProgressStore:
                 self.state.completed_rooms[self.state.room_key(track_id, room_id)] = True
                 self.state.xp += room.xp_reward
                 gained += room.xp_reward
+                room_completed = True
 
             self.save()
 
@@ -116,6 +133,7 @@ class ProgressStore:
             "rank": after_rank,
             "leveled": leveled,
             "ranked_up": ranked_up,
+            "room_completed": room_completed,
         }
 
     def room_progress(self, track_id: str, room: Room) -> tuple[int, int]:
@@ -150,5 +168,6 @@ class ProgressStore:
             "streak": self.state.streak_days,
             "tasks_done": sum(1 for v in self.state.completed_tasks.values() if v),
             "rooms_done": sum(1 for v in self.state.completed_rooms.values() if v),
+            "skills_done": sum(1 for v in self.state.unlocked_skills.values() if v),
             "updated": datetime.now(timezone.utc).isoformat(),
         }

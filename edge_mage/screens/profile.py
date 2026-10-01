@@ -55,10 +55,15 @@ class ProfileScreen(MageScreen):
                     )
                 yield Static(
                     f"Streak: {p['streak']} dias  ·  "
-                    f"Tasks: {p['tasks_done']}  ·  Salas: {p['rooms_done']}",
+                    f"Tasks: {p['tasks_done']}  ·  Salas: {p['rooms_done']}  ·  "
+                    f"Skills: {p.get('skills_done', 0)}",
                     classes="muted",
                 )
                 yield Static(f"Progresso em: {store.path}", classes="muted")
+                yield Static(
+                    "Grimório: :grimorio  ·  g r",
+                    classes="accent",
+                )
 
             yield Static("RANKS", classes="panel-title")
             yield Static("\n".join(rank_lines), classes="panel")

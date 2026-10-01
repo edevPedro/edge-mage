@@ -9,9 +9,10 @@ from textual.widgets import Input, TextArea
 
 from edge_mage.commands import parse_command
 from edge_mage.content import find_room, load_all_tracks
+from edge_mage.git_journal import sync_study_journal
+from edge_mage.grimoire import load_skills
 from edge_mage.models import Track
 from edge_mage.nav import NavMode
-from edge_mage.git_journal import sync_study_journal
 from edge_mage.progress import ProgressStore
 from edge_mage.screens.base import MageScreen
 from edge_mage.screens.home import HomeScreen
@@ -23,8 +24,6 @@ class EdgeMageApp(App[None]):
     TITLE = "Edge Mage"
     SUB_TITLE = "Academia · Math → Edge AI"
     CSS = THEME_CSS
-    # priority=True: teclas chegam mesmo com OptionList/Button focado.
-    # check_action desliga em INSERT para não roubar digitação.
     BINDINGS = [
         Binding("j", "vim_down", show=False, priority=True),
         Binding("k", "vim_up", show=False, priority=True),
@@ -37,19 +36,41 @@ class EdgeMageApp(App[None]):
         Binding("q", "smart_quit", show=False, priority=True),
         Binding("question_mark", "show_help", show=False, priority=True),
         Binding("colon", "open_cmdline", show=False, priority=True),
+        Binding("ctrl+w", "window_prefix", show=False, priority=True),
     ]
 
     def __init__(self) -> None:
         super().__init__()
         self.store = ProgressStore()
         self.tracks: list[Track] = load_all_tracks()
+        self.skills = load_skills()
+        self.skills_total = len(self.skills)
         self.nav_mode: NavMode = NavMode.NORMAL
         self.nav_context: str = "home"
         self._leader: str | None = None
 
     def on_mount(self) -> None:
         self.store.touch_streak()
+        self._backfill_skills()
         self.push_screen(HomeScreen())
+
+    def _backfill_skills(self) -> None:
+        """Desbloqueia skills de salas já concluídas (progresso antigo)."""
+        from edge_mage.grimoire import skills_for_room
+
+        newly_all: list[str] = []
+        for track in self.tracks:
+            for room in track.rooms:
+                if not self.store.is_room_done(track.id, room.id):
+                    continue
+                granted = skills_for_room(
+                    self.skills, track_id=track.id, room_id=room.id
+                )
+                newly_all.extend(
+                    self.store.unlock_skills([s.id for s in granted])
+                )
+        if newly_all:
+            self.store.save()
 
     def compose(self) -> ComposeResult:
         return
@@ -64,7 +85,10 @@ class EdgeMageApp(App[None]):
         )
 
     def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
-        """Em INSERT/COMMAND, libera teclas alfanuméricas para o Input."""
+        if action == "window_prefix":
+            if self.nav_mode == NavMode.COMMAND or self._in_insert():
+                return False
+            return True
         if action in {
             "vim_down",
             "vim_up",
@@ -79,10 +103,12 @@ class EdgeMageApp(App[None]):
         }:
             if self.nav_mode == NavMode.COMMAND:
                 return False
+            if self.nav_mode == NavMode.WINDOW:
+                # teclas h/j/k/l/w tratadas em on_key
+                return False
             if self._in_insert():
                 return False
             if self._leader == "g" and action != "smart_quit":
-                # leader consome via on_key
                 return False
         return True
 
@@ -105,6 +131,10 @@ class EdgeMageApp(App[None]):
         self._leader = None
         self.set_nav_mode(NavMode.INSERT)
 
+    def enter_window(self) -> None:
+        self._leader = None
+        self.set_nav_mode(NavMode.WINDOW)
+
     def set_nav_context(self, context: str) -> None:
         self.nav_context = context
         screen = self.screen
@@ -116,17 +146,36 @@ class EdgeMageApp(App[None]):
         screen = self.screen
         return screen if isinstance(screen, MageScreen) else None
 
+    def action_window_prefix(self) -> None:
+        """Ctrl+w: entra em modo janela (nvim). 2º w / Ctrl+w cicla."""
+        if self._in_insert() or self.nav_mode == NavMode.COMMAND:
+            return
+        if self.nav_mode == NavMode.WINDOW:
+            m = self._mage()
+            if m and m.pane_ids:
+                m.cycle_pane(1)
+            self.enter_normal()
+            return
+        m = self._mage()
+        if not m or not m.pane_ids:
+            self.notify("sem painéis nesta tela", severity="information")
+            return
+        self.enter_window()
+
     def action_vim_down(self) -> None:
         m = self._mage()
         if m:
             m.action_vim_down()
-            m.focus_nav_target()
+            # não re-focar OptionList se estamos num scroll pane
+            if m.focused_pane in {None, "tasks", "actions"} or not m.pane_ids:
+                m.focus_nav_target()
 
     def action_vim_up(self) -> None:
         m = self._mage()
         if m:
             m.action_vim_up()
-            m.focus_nav_target()
+            if m.focused_pane in {None, "tasks", "actions"} or not m.pane_ids:
+                m.focus_nav_target()
 
     def action_vim_back(self) -> None:
         m = self._mage()
@@ -158,12 +207,33 @@ class EdgeMageApp(App[None]):
         if self.nav_mode == NavMode.COMMAND:
             return
 
+        if self.nav_mode == NavMode.WINDOW:
+            event.stop()
+            event.prevent_default()
+            key = event.character or event.key
+            m = self._mage()
+            if event.key == "escape":
+                self.enter_normal()
+                return
+            if key in {"w", "W"} or event.key == "ctrl+w":
+                if m and m.pane_ids:
+                    m.cycle_pane(1)
+                self.enter_normal()
+                return
+            if key in {"h", "j", "k", "l"}:
+                if m and m.pane_ids:
+                    m.move_pane(key)
+                self.enter_normal()
+                return
+            # tecla inválida: cancela modo janela
+            self.enter_normal()
+            return
+
         if self._in_insert():
             if self.nav_mode != NavMode.INSERT and self._focused_is_input():
                 self.set_nav_mode(NavMode.INSERT)
             return
 
-        # Leader g + 2ª tecla
         if self._leader == "g":
             event.stop()
             event.prevent_default()
@@ -185,6 +255,8 @@ class EdgeMageApp(App[None]):
                 self.action_go_tracks()
             elif key == "h":
                 self.action_go_home()
+            elif key == "r":
+                self.action_go_grimoire()
             return
 
         if event.character == "g":
@@ -227,6 +299,11 @@ class EdgeMageApp(App[None]):
 
         self.push_screen(ProfileScreen())
 
+    def action_go_grimoire(self) -> None:
+        from edge_mage.screens.grimoire import GrimoireScreen
+
+        self.push_screen(GrimoireScreen())
+
     def action_go_tracks(self) -> None:
         from edge_mage.screens.tracks import TracksScreen
 
@@ -243,6 +320,8 @@ class EdgeMageApp(App[None]):
             self.action_go_tracks()
         elif cmd.name == "profile":
             self.action_go_profile()
+        elif cmd.name == "grimoire":
+            self.action_go_grimoire()
         elif cmd.name == "home":
             self.action_go_home()
         elif cmd.name == "help":
@@ -259,8 +338,9 @@ class EdgeMageApp(App[None]):
             p = self.store.profile_summary()
             nxt = p["next_rank"]
             extra = f" → {nxt.title} ({nxt.min_xp})" if nxt else " (rank máx.)"
+            skills = f" · grimório {p.get('skills_done', 0)}/{self.skills_total}"
             self.notify(
-                f"XP {p['xp']} · Nv {p['level']} · {p['rank'].title}{extra}",
+                f"XP {p['xp']} · Nv {p['level']} · {p['rank'].title}{extra}{skills}",
                 severity="information",
             )
         elif cmd.name == "sync":

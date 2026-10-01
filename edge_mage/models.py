@@ -36,8 +36,10 @@ class Room:
     lesson_md: str
     tasks: list[Task]
     path: str
-    # unit_circle | sine_wave | vector | matrix | "" (heurística por id)
+    # unit_circle | sine_wave | vector | matrix | circuit_pulse | … | "" (heurística)
     animation: str = ""
+    story_md: str = ""
+    concept_md: str = ""
 
 
 @dataclass
@@ -54,13 +56,24 @@ class Track:
 
 
 @dataclass
+class Skill:
+    id: str
+    name: str
+    description: str
+    glyph: str = "◆"
+    unlock_room: str = ""
+    unlock_track: str = ""
+
+
+@dataclass
 class ProgressState:
     xp: int = 0
     completed_tasks: dict[str, bool] = field(default_factory=dict)
     completed_rooms: dict[str, bool] = field(default_factory=dict)
+    unlocked_skills: dict[str, bool] = field(default_factory=dict)
     streak_days: int = 0
     last_active: str = ""
-    version: int = 1
+    version: int = 2
 
     def task_key(self, track_id: str, room_id: str, task_id: str) -> str:
         return f"{track_id}/{room_id}/{task_id}"

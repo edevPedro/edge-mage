@@ -85,18 +85,33 @@ Refazer a mesma task **não** gera commit (evita spam). Se commit ou push falhar
 | **NORMAL** | padrão / após Esc | `j/k/h/l`, leader, `:` — navega sem mouse |
 | **INSERT** | `i` na task ou menu «Editar» | digitar resposta; Esc → NORMAL |
 | **COMMAND** | após `:` | linha de comando |
-| **G-** | após `g` | espera 2ª tecla (`gg`, `gp`, `gt`, `gh`) |
+| **G-** | após `g` | espera 2ª tecla (`gg`, `gp`, `gt`, `gh`, `gr`) |
+| **C-W** | após `Ctrl+w` | modo janela — próxima tecla move painéis |
+
+### Painéis (`Ctrl+w`) — salas e tasks
+
+Na sala: **História → Conceito → Desafio → Anim → Tarefas**. Na task: **Prompt → Resposta → Ações**.
+
+| Tecla | Ação |
+|-------|------|
+| `Ctrl+w` então `w` | ciclar painel focado |
+| `Ctrl+w` então `h` / `l` | painel anterior / próximo |
+| `Ctrl+w` então `j` / `k` | idem (layout linear) |
+| `j` / `k` no painel de texto | scroll (sem mouse) |
+| `j` / `k` em Tarefas | navegar opções |
+
+A statusline mostra o painel (`· HISTÓRIA`, `· CONCEITO`, …) e o contador do grimório (`✧n/28`).
 
 ### Navegação (NORMAL)
 
 | Tecla | Ação |
 |-------|------|
-| `j` / `k` | descer / subir na lista |
-| `h` / `Esc` | voltar (Esc em INSERT → NORMAL) |
+| `j` / `k` | descer / subir (lista ou scroll) |
+| `h` / `Esc` | voltar (Esc em INSERT/C-W → NORMAL) |
 | `l` / `Enter` | abrir item |
-| `gg` | topo da lista |
-| `G` | fim da lista |
-| `Space` | toggle animação matemática (salas com visual) |
+| `gg` | topo |
+| `G` | fim |
+| `Space` | toggle animação |
 | `i` | INSERT (tela de task) |
 | `q` | sair (fora de INSERT) |
 | `?` | ajuda |
@@ -106,6 +121,7 @@ Refazer a mesma task **não** gera commit (evita spam). Se commit ou push falhar
 | Sequência | Ação |
 |-----------|------|
 | `gp` | perfil |
+| `gr` | grimório |
 | `gt` | trilhas |
 | `gh` | home |
 
@@ -116,25 +132,42 @@ Refazer a mesma task **não** gera commit (evita spam). Se commit ou push falhar
 | `:q` / `:sair` | sair |
 | `:tracks` / `:trilhas` | trilhas |
 | `:profile` / `:perfil` | perfil |
+| `:grimorio` / `:grim` | grimório de habilidades |
 | `:home` | tela inicial |
 | `:room <id>` | abrir sala (ex.: `:room trigonometria`) |
-| `:anim [kind]` | toggle animação (`unit_circle`, `sine_wave`, `vector`, `matrix`) |
-| `:xp` | notificar XP / rank |
+| `:anim [kind]` | toggle animação |
+| `:xp` | XP / rank / skills |
 | `:sync` | commit/push pendente do diário (`study-log/`) |
 | `:help` / `:ajuda` | ajuda |
 
-## Animações matemáticas
+## História · Conceito · Desafio
 
-Salas de Fundamentos (e algumas de Física/Robótica) abrem um painel braille/ASCII (~12 fps):
+Cada sala carrega:
 
-| Animação | Salas |
-|----------|--------|
-| **unit_circle** | Trigonometria — raio varrendo θ, cos/sin |
-| **sine_wave** | Ondas — seno/cosseno com fase |
-| **vector** | Vetores — seta + componentes |
-| **matrix** | Álgebra linear / Transforms 2D — R(θ)·diag |
+| Arquivo | Aba / painel |
+|---------|----------------|
+| `story.md` | **História** — cenário; resolver a task = resolver o conflito |
+| `concept.md` | **Conceito** — editorial pedagógico (estilo LeetCode) |
+| `lesson.md` | **Desafio** — lição operacional + tasks |
 
-Controles: `Space` ou `:anim` / `:anim sine_wave`.
+## Grimório
+
+Skills definidas em [`content/grimoire/skills.yaml`](content/grimoire/skills.yaml). Completar uma sala desbloqueia 1+ habilidades (ex.: *Trigonometria Arcana*, *Gradiente Descendente*, *Quantização Int8*). Abrir com `:grimorio`, `gr`, ou o menu Home. Persistido em `progress.json` (`unlocked_skills`).
+
+## Animações TUI
+
+Painel braille/ASCII (~12 fps) em **todas** as salas (kind no `room.yaml`):
+
+| Kind | Uso típico |
+|------|------------|
+| `unit_circle` / `sine_wave` / `vector` / `matrix` | Fundamentos / ondas / matmul |
+| `circuit_pulse` / `adc_ladder` | Ohm, divisor, ADC |
+| `gradient_descent` / `derivative_slope` | Otimização |
+| `softmax_bars` / `probability_bars` / `quantize_steps` | ML Math |
+| `robot_transform` / `sampling_dots` | Robótica / amostragem |
+| `memory_grid` | Edge AI layout / roofline |
+
+Controles: `Space` ou `:anim` / `:anim softmax_bars`.
 
 ## Progressão (ranks)
 
@@ -165,8 +198,9 @@ Mapa pedagógico: [`content/CURRICULUM.md`](content/CURRICULUM.md). XP total ≈
 ## Adicionar uma sala
 
 1. `content/tracks/<trilha>/rooms/<id>/`
-2. `lesson.md` + `room.yaml` (opcional `animation: unit_circle|sine_wave|vector|matrix`)
-3. Tasks: `mcq` | `numeric` | `fill` | `code`
+2. `story.md` + `concept.md` + `lesson.md` + `room.yaml` (`animation: …`)
+3. Entrada em `content/grimoire/skills.yaml`
+4. Tasks: `mcq` | `numeric` | `fill` | `code`
 
 ## Testes
 

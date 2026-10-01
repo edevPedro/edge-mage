@@ -38,6 +38,10 @@ _ALIASES: dict[str, str] = {
     "anim": "anim",
     "animation": "anim",
     "sync": "sync",
+    "grimoire": "grimoire",
+    "grimorio": "grimoire",
+    "grimório": "grimoire",
+    "grim": "grimoire",
 }
 
 
@@ -91,18 +95,27 @@ MODOS (statusline)
   INSERT      digitar resposta na task (i ou menu)
   COMMAND     linha : (após :)
   G-          leader aguardando 2ª tecla (após g)
+  C-W         modo janela (após Ctrl+w)
+
+PAINÉIS (Ctrl+w) — salas e tasks
+  Ctrl+w w    ciclar painel (História→Conceito→Desafio→Anim→Tarefas)
+  Ctrl+w h/l  painel anterior / próximo
+  Ctrl+w j/k  idem (layout linear)
+  j / k       scroll no painel de texto · navegar opções em Tarefas
+  Statusline  mostra o painel focado (HISTÓRIA, CONCEITO, …)
 
 NAVEGAÇÃO (NORMAL)
-  j / k       descer / subir na lista
-  h / Esc     voltar (Esc em INSERT → NORMAL)
+  j / k       descer / subir (lista ou scroll)
+  h / Esc     voltar (Esc em INSERT/C-W → NORMAL)
   l / Enter   abrir item / confirmar
-  g g         topo da lista
-  G           fim da lista
-  Space       toggle animação matemática (salas com visual)
-  i           entrar em INSERT (tela de task)
+  g g         topo
+  G           fim
+  Space       toggle animação
+  i           INSERT (tela de task)
 
 LEADER (g + tecla)
   g p         perfil
+  g r         grimório
   g t         trilhas
   g h         home
 
@@ -110,11 +123,12 @@ COMANDOS (:)
   :q / :sair          sair
   :tracks / :trilhas  lista de trilhas
   :profile / :perfil  perfil e ranks
+  :grimorio / :grim   grimório de habilidades
   :home               tela inicial
   :room <id>          abrir sala pelo id
-  :anim [kind]        toggle animação (unit_circle|sine_wave|vector|matrix)
-  :xp                 mostrar XP / rank
-  :sync               commit/push pendente do diário (study-log)
+  :anim [kind]        toggle animação
+  :xp                 XP / rank / skills
+  :sync               commit/push do diário
   :help / :ajuda      esta ajuda
 
 OUTROS

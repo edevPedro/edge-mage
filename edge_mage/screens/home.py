@@ -57,12 +57,13 @@ class HomeScreen(MageScreen):
                     classes="accent",
                 )
             yield Static(
-                "j/k · Enter/l abrir  ·  :help  ·  gt trilhas  ·  gp perfil",
+                "j/k · Enter/l  ·  :help  ·  gt trilhas  ·  gp perfil  ·  gr grimório",
                 classes="muted",
             )
             yield OptionList(
                 Option("▶  Continuar / Trilhas", id="tracks"),
                 Option("◆  Perfil / Ranks", id="profile"),
+                Option("✧  Grimório", id="grimoire"),
                 Option("?  Ajuda", id="help"),
                 Option("✕  Sair", id="quit"),
                 id="home-menu",
@@ -86,6 +87,10 @@ class HomeScreen(MageScreen):
             from edge_mage.screens.profile import ProfileScreen
 
             self.app.push_screen(ProfileScreen())
+        elif oid == "grimoire":
+            from edge_mage.screens.grimoire import GrimoireScreen
+
+            self.app.push_screen(GrimoireScreen())
         elif oid == "help":
             from edge_mage.screens.help import HelpScreen
 

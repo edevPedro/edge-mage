@@ -15,6 +15,7 @@ from edge_mage.validators import validate_task
 
 class TaskScreen(MageScreen):
     list_id = "task-actions"
+    pane_ids = ["prompt", "answer", "actions"]
 
     def __init__(self, track: Track, room: Room, quest: Task) -> None:
         super().__init__()
@@ -22,6 +23,7 @@ class TaskScreen(MageScreen):
         self.room = room
         self.quest = quest
         self.context_label = f"{track.id}/{room.id}/{quest.id}"
+        self.focused_pane = "actions"
 
     def compose_body(self) -> ComposeResult:
         store = self.app.store  # type: ignore[attr-defined]
@@ -32,10 +34,10 @@ class TaskScreen(MageScreen):
                 classes="title",
             )
             yield Static(
-                "NORMAL: j/k menu · i INSERT · Esc volta  ·  INSERT: digitar · Esc NORMAL",
+                "Ctrl+w painéis · i INSERT · Esc NORMAL  ·  NORMAL: j/k menu",
                 classes="muted",
             )
-            with VerticalScroll(classes="panel", can_focus=False):
+            with VerticalScroll(classes="panel", id="pane-prompt", can_focus=True):
                 yield Static(self.quest.prompt)
                 if self.quest.type == "mcq" and self.quest.choices:
                     lines = []
@@ -53,7 +55,7 @@ class TaskScreen(MageScreen):
 
             if self.quest.type == "code":
                 initial = self.quest.code_template or "# seu código aqui\n"
-                yield TextArea(initial, id="answer", language="python")
+                yield TextArea(initial, id="answer")
             else:
                 placeholder = {
                     "mcq": "A, B, C… ou 1, 2, 3…",
@@ -158,7 +160,28 @@ class TaskScreen(MageScreen):
                 self.notify(f"GitHub · {jr.message}", severity="information")
             elif jr.committed:
                 self.notify(f"Commit local · {jr.message}", severity="information")
+        if result.get("room_completed"):
+            self._grant_room_skills()
         self.refresh_statusline()
+
+    def _grant_room_skills(self) -> None:
+        from edge_mage.grimoire import skills_for_room
+
+        app = self.app
+        skills = getattr(app, "skills", []) or []
+        granted = skills_for_room(
+            skills, track_id=self.track.id, room_id=self.room.id
+        )
+        if not granted:
+            return
+        store = app.store  # type: ignore[attr-defined]
+        newly = store.unlock_skills([s.id for s in granted])
+        if newly:
+            store.save()
+            names = ", ".join(
+                next(s.name for s in granted if s.id == nid) for nid in newly
+            )
+            self.notify(f"Grimório · {names}", severity="information")
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
         oid = str(event.option.id)

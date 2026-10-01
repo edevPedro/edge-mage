@@ -56,10 +56,23 @@ def test_help_mentions_bindings() -> None:
     assert ":q" in text
     assert "j / k" in text
     assert "g p" in text
+    assert "g r" in text
+    assert "Ctrl+w" in text
     assert "NORMAL" in text
     assert "INSERT" in text
     assert ":anim" in text
-    for name in ("quit", "tracks", "profile", "room", "help", "xp", "anim", "sync"):
+    assert "grimório" in text.lower() or "grimorio" in text.lower()
+    for name in (
+        "quit",
+        "tracks",
+        "profile",
+        "room",
+        "help",
+        "xp",
+        "anim",
+        "sync",
+        "grimoire",
+    ):
         assert name in KNOWN_COMMANDS
 
 

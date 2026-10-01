@@ -58,6 +58,11 @@ class StatusLine(Widget):
         text-style: bold;
         padding: 0 1;
     }
+    StatusLine #sl-skills {
+        width: auto;
+        color: #9db8a5;
+        padding: 0 1;
+    }
     """
 
     can_focus = False
@@ -66,6 +71,7 @@ class StatusLine(Widget):
         with Horizontal():
             yield Static(" NORMAL ", id="sl-mode")
             yield Static("", id="sl-ctx")
+            yield Static("", id="sl-skills")
             yield Static("", id="sl-xp")
             yield Static("", id="sl-rank")
 
@@ -76,6 +82,7 @@ class StatusLine(Widget):
         context: str = "",
         xp: int = 0,
         rank: str = "",
+        skills: str = "",
     ) -> None:
         mode_w = self.query_one("#sl-mode", Static)
         upper = mode.upper()
@@ -84,6 +91,8 @@ class StatusLine(Widget):
         mode_w.set_class(upper.startswith("COMMAND"), "-command")
         mode_w.set_class(upper.startswith("G-") or upper == "LEADER", "-leader")
         mode_w.set_class(upper == "INSERT", "-insert")
+        mode_w.set_class(upper.startswith("C-W") or upper == "WINDOW", "-leader")
         self.query_one("#sl-ctx", Static).update(context)
+        self.query_one("#sl-skills", Static).update(skills)
         self.query_one("#sl-xp", Static).update(f"XP:{xp}")
         self.query_one("#sl-rank", Static).update(rank)

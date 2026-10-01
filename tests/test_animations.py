@@ -26,16 +26,21 @@ def test_render_and_kinds() -> None:
     kinds = available_animations()
     assert "unit_circle" in kinds
     assert "vector" in kinds
+    assert "circuit_pulse" in kinds
+    assert "gradient_descent" in kinds
+    assert "softmax_bars" in kinds
     for k in kinds:
-        assert "θ" in render_frame(k, 0.0) or "v=" in render_frame(k, 0.0) or "A =" in render_frame(
-            k, 0.0
-        ) or "sin" in render_frame(k, 0.0)
+        frame = render_frame(k, 0.0)
+        assert isinstance(frame, str)
+        assert len(frame) > 20
+        assert "\n" in frame
 
 
 def test_room_animation_mapping() -> None:
     assert animation_for_room("trigonometria", "unit_circle") == "unit_circle"
     assert animation_for_room("vetores") == "vector"
     assert animation_for_room("algebra-linear") == "matrix"
+    assert animation_for_room("ohm", "circuit_pulse") == "circuit_pulse"
     assert animation_for_room("foo-bar") == "none"
 
     tracks = load_all_tracks()

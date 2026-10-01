@@ -2,6 +2,8 @@
 
 Avaliação e caminho de estudo: da trigonometria ao low-level de Edge AI.
 
+Cada sala agora tem **História** (cenário narrativo), **Conceito** (editorial pedagógico) e **Desafio** (lição + tasks), com animação TUI quando faz sentido. Completar uma sala concede skills ao **Grimório**.
+
 ## O que estava errado (antes do ajuste)
 
 1. **Saltos de pré-requisito**: softmax/CE e desafios de código com softmax apareciam sem exp/log, probabilidade nem intuição de derivada.
@@ -39,28 +41,38 @@ Edge AI Low-Level
   memory layout → FLOPs/banda → SIMD/latência → checklist on-device
 ```
 
-## Trilhas e salas (após o fix)
+## Trilhas e salas
 
-| Ordem | Trilha | Unlock | Salas |
-|------:|--------|-------:|-------|
-| 1 | Fundamentos | 0 | trigonometria, vetores, exponenciais-logs, algebra-linear |
-| 2 | Programação | 100 | python-basico, numpy-intuicao, desafios |
-| 3 | Física & Sinais | 250 | cinematica, ondas, amostragem |
-| 4 | Elétrica Edge | 500 | ohm, divisao-tensao, adc-potencia |
-| 5 | Robótica | 800 | transforms-2d, cinematica-robo, sensores |
-| 6 | Otimização | 1100 | derivadas, gradiente, loss-lr, batch-epoch |
-| 7 | ML Math | 1650 | probabilidade, softmax-ce, matmul-flops, quantizacao |
-| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, on-device |
+| Ordem | Trilha | Unlock | Salas | Skills (grimório) |
+|------:|--------|-------:|-------|-------------------|
+| 1 | Fundamentos | 0 | trigonometria, vetores, exponenciais-logs, algebra-linear | Trigonometria Arcana → Feitiço Matricial |
+| 2 | Programação | 100 | python-basico, numpy-intuicao, desafios | Runas de Python → Codex |
+| 3 | Física & Sinais | 250 | cinematica, ondas, amostragem | Movimento → Nyquist |
+| 4 | Elétrica Edge | 500 | ohm, divisao-tensao, adc-potencia | Ohm → Escada ADC |
+| 5 | Robótica | 800 | transforms-2d, cinematica-robo, sensores | Portal 2D → Percepção |
+| 6 | Otimização | 1100 | derivadas, gradiente, loss-lr, batch-epoch | Tangente → Epoch Ritual |
+| 7 | ML Math | 1650 | probabilidade, softmax-ce, matmul-flops, quantizacao | Oráculo → Int8 |
+| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, on-device | Layout → **Edge Mage** |
 
-XP total disponível ≈ **3144**. Rank **Edge Mage** em **2900 XP** (exige atravessar o núcleo Edge AI).
+XP total disponível ≈ **3144**. Rank **Edge Mage** em **2900 XP** (exige atravessar o núcleo Edge AI). **28 skills** no grimório (1 por sala).
+
+## Conteúdo por sala
+
+| Arquivo | Papel |
+|---------|--------|
+| `story.md` | História hipotética — resolver a math = resolver o conflito |
+| `concept.md` | Conceitos necessários (estilo editorial LeetCode) |
+| `lesson.md` | Desafio / lição operacional + contexto das tasks |
+| `room.yaml` | Meta, tasks, `animation:` |
 
 ## Princípios pedagógicos aplicados
 
 - **Pré-requisitos**: cada sala só assume o que as anteriores desbloqueiam.
 - **Spiral**: trig/matrizes voltam em robótica; matmul/FLOPs voltam em Edge AI; gradiente em código antes da teoria completa de opt.
-- **Tasks**: numéricas com tolerância saneada; código reforça a ideia (não só trivia de siglas).
-- **Idioma**: lições em português claro e profissional.
+- **Narrativa**: a história motiva o cálculo; o conceito ensina; as tasks comprovam.
+- **Grimório**: skills nomeadas amarram conhecimento a progresso persistente.
+- **Idioma**: português claro e profissional.
 
 ## Como completar até Edge Mage
 
-Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). Não é obrigatório zerar uma trilha antes de olhar a seguinte quando os gates já abriram — mas a ordem acima evita buracos conceituais.
+Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — não só XP acumulado cedo.

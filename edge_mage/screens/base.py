@@ -1,20 +1,20 @@
-"""Tela base com statusline e navegação estilo nvim."""
+"""Tela base com statusline, painéis (Ctrl+w) e navegação estilo nvim."""
 
 from __future__ import annotations
 
 from textual.app import ComposeResult
 from textual.binding import Binding
+from textual.containers import VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Input, OptionList, TextArea
 
-from edge_mage.nav import NavMode
+from edge_mage.nav import PANE_LABELS, NavMode
 from edge_mage.widgets.statusline import StatusLine
 
 
 class MageScreen(Screen[None]):
     """Base: statusline + vim nav (teclas tratadas no App em NORMAL)."""
 
-    # Só Esc com priority: sai de INSERT sem depender do Input engolir Esc.
     BINDINGS = [
         Binding("escape", "vim_escape", "Esc", show=False, priority=True),
     ]
@@ -22,6 +22,9 @@ class MageScreen(Screen[None]):
     context_label: str = ""
     #: id do OptionList principal desta tela (se houver)
     list_id: str | None = None
+    #: painéis cicláveis via Ctrl+w (override nas telas)
+    pane_ids: list[str] = []
+    focused_pane: str | None = None
 
     def compose_body(self) -> ComposeResult:
         yield from ()
@@ -35,8 +38,16 @@ class MageScreen(Screen[None]):
         self.call_after_refresh(self.focus_nav_target)
 
     def on_mount(self) -> None:
+        if self.pane_ids and self.focused_pane is None:
+            self.focused_pane = self.pane_ids[0]
         self.refresh_statusline()
         self.call_after_refresh(self.focus_nav_target)
+
+    def pane_context_suffix(self) -> str:
+        if not self.focused_pane:
+            return ""
+        label = PANE_LABELS.get(self.focused_pane, self.focused_pane.upper())
+        return f" · {label}"
 
     def refresh_statusline(self) -> None:
         app = self.app
@@ -48,14 +59,21 @@ class MageScreen(Screen[None]):
         mode = getattr(app, "nav_mode", NavMode.NORMAL)
         if hasattr(mode, "value"):
             mode = mode.value
-        ctx = self.context_label or getattr(app, "nav_context", "")
+        ctx = (self.context_label or getattr(app, "nav_context", "")) + self.pane_context_suffix()
         xp = 0
         rank = ""
+        skills = ""
         if store is not None:
             p = store.profile_summary()
             xp = p["xp"]
             rank = p["rank"].title
-        sl.set_status(mode=str(mode), context=ctx, xp=xp, rank=rank)
+            skills_n = p.get("skills_done", 0)
+            skills_total = getattr(app, "skills_total", 0)
+            if skills_total:
+                skills = f"✧{skills_n}/{skills_total}"
+            elif skills_n:
+                skills = f"✧{skills_n}"
+        sl.set_status(mode=str(mode), context=ctx, xp=xp, rank=rank, skills=skills)
 
     def is_typing(self) -> bool:
         focused = self.focused
@@ -72,11 +90,54 @@ class MageScreen(Screen[None]):
         except Exception:
             return None
 
+    def _scroll_for_pane(self, pane: str | None) -> VerticalScroll | None:
+        if not pane:
+            return None
+        mapping = {
+            "story": "#pane-story",
+            "concept": "#pane-concept",
+            "desafio": "#pane-desafio",
+            "prompt": "#pane-prompt",
+        }
+        wid = mapping.get(pane)
+        if not wid:
+            return None
+        try:
+            return self.query_one(wid, VerticalScroll)
+        except Exception:
+            return None
+
     def focus_nav_target(self) -> None:
-        """Foca o OptionList em NORMAL; não rouba foco se já estamos em INSERT."""
+        """Foca o painel ativo (OptionList / scroll / input); não rouba INSERT."""
         app = self.app
         mode = getattr(app, "nav_mode", NavMode.NORMAL)
         if mode == NavMode.INSERT or mode == NavMode.COMMAND:
+            return
+        pane = self.focused_pane
+        if pane == "tasks" or pane == "actions" or (pane is None and self.list_id):
+            lst = self._option_list()
+            if lst is not None:
+                lst.focus()
+                if lst.option_count and lst.highlighted is None:
+                    lst.highlighted = 0
+                return
+        if pane == "answer":
+            # Em NORMAL não foca o input — só destaca o pane no statusline
+            try:
+                self.set_focus(None)
+            except Exception:
+                pass
+            return
+        if pane == "anim":
+            try:
+                self.set_focus(None)
+            except Exception:
+                pass
+            return
+        scroll = self._scroll_for_pane(pane)
+        if scroll is not None:
+            scroll.can_focus = True
+            scroll.focus()
             return
         lst = self._option_list()
         if lst is not None:
@@ -89,8 +150,68 @@ class MageScreen(Screen[None]):
         except Exception:
             pass
 
+    def cycle_pane(self, delta: int = 1) -> None:
+        if not self.pane_ids:
+            return
+        cur = self.focused_pane or self.pane_ids[0]
+        try:
+            idx = self.pane_ids.index(cur)
+        except ValueError:
+            idx = 0
+        idx = (idx + delta) % len(self.pane_ids)
+        self.set_focused_pane(self.pane_ids[idx])
+
+    def set_focused_pane(self, pane: str) -> None:
+        if pane not in self.pane_ids and self.pane_ids:
+            return
+        self.focused_pane = pane
+        # highlight CSS
+        for pid in self.pane_ids:
+            try:
+                w = self.query_one(f"#pane-{pid}")
+                w.set_class(pid == pane, "-pane-focus")
+            except Exception:
+                pass
+        # also task-list / anim-panel ids
+        try:
+            if pane == "tasks":
+                self.query_one("#task-list").set_class(True, "-pane-focus")
+            else:
+                self.query_one("#task-list").set_class(False, "-pane-focus")
+        except Exception:
+            pass
+        try:
+            if pane == "actions":
+                self.query_one("#task-actions").set_class(True, "-pane-focus")
+            else:
+                self.query_one("#task-actions").set_class(False, "-pane-focus")
+        except Exception:
+            pass
+        try:
+            anim = self.query_one("#anim-panel")
+            anim.set_class(pane == "anim", "-pane-focus")
+        except Exception:
+            pass
+        on_change = getattr(self, "on_pane_changed", None)
+        if callable(on_change):
+            on_change(pane)
+        self.focus_nav_target()
+        self.refresh_statusline()
+
+    def move_pane(self, direction: str) -> None:
+        """h/l ciclam; j/k também ciclam (layout linear)."""
+        if direction in {"l", "j", "w"}:
+            self.cycle_pane(1)
+        elif direction in {"h", "k"}:
+            self.cycle_pane(-1)
+
     def action_vim_escape(self) -> None:
         app = self.app
+        if getattr(app, "nav_mode", None) == NavMode.WINDOW:
+            if hasattr(app, "enter_normal"):
+                app.enter_normal()  # type: ignore[attr-defined]
+            self.refresh_statusline()
+            return
         if self.is_typing() or getattr(app, "nav_mode", None) == NavMode.INSERT:
             self.set_focus(None)
             if hasattr(app, "enter_normal"):
@@ -109,6 +230,16 @@ class MageScreen(Screen[None]):
     def action_vim_down(self) -> None:
         if self.is_typing():
             return
+        pane = self.focused_pane
+        if pane in {"story", "concept", "desafio", "prompt"}:
+            scroll = self._scroll_for_pane(pane)
+            if scroll is not None:
+                scroll.scroll_down(animate=False)
+                return
+        if pane == "anim":
+            return
+        if pane == "answer":
+            return
         lst = self._option_list()
         if lst is not None:
             if not lst.has_focus:
@@ -118,6 +249,16 @@ class MageScreen(Screen[None]):
     def action_vim_up(self) -> None:
         if self.is_typing():
             return
+        pane = self.focused_pane
+        if pane in {"story", "concept", "desafio", "prompt"}:
+            scroll = self._scroll_for_pane(pane)
+            if scroll is not None:
+                scroll.scroll_up(animate=False)
+                return
+        if pane == "anim":
+            return
+        if pane == "answer":
+            return
         lst = self._option_list()
         if lst is not None:
             if not lst.has_focus:
@@ -126,6 +267,14 @@ class MageScreen(Screen[None]):
 
     def action_vim_open(self) -> None:
         if self.is_typing():
+            return
+        pane = self.focused_pane
+        if pane == "answer":
+            enter = getattr(self, "enter_insert", None)
+            if callable(enter):
+                enter()
+            return
+        if pane in {"story", "concept", "desafio", "anim", "prompt"}:
             return
         lst = self._option_list()
         if lst is not None:
@@ -141,6 +290,12 @@ class MageScreen(Screen[None]):
     def action_vim_top(self) -> None:
         if self.is_typing():
             return
+        pane = self.focused_pane
+        if pane in {"story", "concept", "desafio", "prompt"}:
+            scroll = self._scroll_for_pane(pane)
+            if scroll is not None:
+                scroll.scroll_home(animate=False)
+                return
         lst = self._option_list()
         if lst is not None and lst.option_count:
             if not lst.has_focus:
@@ -150,6 +305,12 @@ class MageScreen(Screen[None]):
     def action_vim_bottom(self) -> None:
         if self.is_typing():
             return
+        pane = self.focused_pane
+        if pane in {"story", "concept", "desafio", "prompt"}:
+            scroll = self._scroll_for_pane(pane)
+            if scroll is not None:
+                scroll.scroll_end(animate=False)
+                return
         lst = self._option_list()
         if lst is not None and lst.option_count:
             if not lst.has_focus:
