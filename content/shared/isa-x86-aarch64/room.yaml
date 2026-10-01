@@ -1,0 +1,61 @@
+id: isa-x86-aarch64
+title: x86_64 vs AArch64 (shared bridge)
+summary: Same C, two asm dialects — host/RE literacy vs phone/edge deep path (Godbolt two targets).
+xp_reward: 30
+unlock_xp: 20
+shared: true
+course: fundamentals
+resources:
+  - title: Compiler Explorer (Godbolt)
+    url: https://godbolt.org/
+    kind: tool
+  - title: System V AMD64 ABI (PDF)
+    url: https://refspecs.linuxbase.org/elf/x86_64-abi-0.99.pdf
+    kind: docs
+  - title: Arm — Learn the architecture · A64 overview
+    url: https://developer.arm.com/documentation/102374/0101/Overview
+    kind: docs
+  - title: Procedure Call Standard for the Arm 64-bit Architecture (AAPCS64)
+    url: https://github.com/ARM-software/abi-aa/releases
+    kind: docs
+tasks:
+  - id: same-c
+    type: mcq
+    prompt: "Compiling the same `add(a,b)` on Godbolt for x86_64 vs AArch64…"
+    xp: 10
+    answer: 2
+    choices:
+      - "must produce identical opcodes"
+      - "is illegal — C only targets one ISA forever"
+      - "produces different asm dialects that still implement the same function"
+      - "deletes the return value on AArch64"
+  - id: ret-reg-hint
+    type: mcq
+    prompt: "A common teaching pair for integer return registers is…"
+    xp: 12
+    answer: 0
+    choices:
+      - "x86_64: rax · AArch64: w0/x0 (width depends on type)"
+      - "both always use r1 only"
+      - "both return only via the stack, never registers"
+      - "AArch64 returns in the instruction pointer"
+  - id: which-deep
+    type: fill
+    prompt: "In e-mage the ISA you go deep on for edge/mobile is ___ (AArch64 / ARM64)."
+    xp: 10
+    answers:
+      - "AArch64"
+      - "aarch64"
+      - "ARM64"
+      - "arm64"
+      - "A64"
+  - id: outside-two-targets
+    type: fill
+    prompt: >-
+      Outside lab: on Godbolt compile the same add() once as x86_64 and once as
+      aarch64/armv8. Type ok when you spotted different register names.
+    xp: 12
+    answers:
+      - "ok"
+      - "OK"
+      - "Ok"

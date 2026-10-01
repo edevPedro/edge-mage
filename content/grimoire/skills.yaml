@@ -196,6 +196,18 @@ skills:
     unlock_room: aarch64-abi
     unlock_track: edge-ai
 
+  - id: isa-compare
+    name: Dois dialetos
+    description: "Mesmo C em x86_64 e AArch64 (Godbolt) — ponte host/RE ↔ edge sem opcode farm."
+    glyph: "⇄"
+    unlock_room: isa-x86-aarch64
+
+  - id: riscv-lite
+    name: RISC-V load/store
+    description: "LW/SW + a0–a7 vs AAPCS64 — alfabetização ISA aberta (eletiva; não substitui AArch64)."
+    glyph: "Ⅴ"
+    unlock_room: riscv-lite
+
   - id: on-device
     name: Edge Mage
     description: "Checklist on-device — competência plena de inferência embarcada."

@@ -45,6 +45,38 @@ This does **not** mint you a senior compiler engineer or red-teamer overnight. I
 
 Web mirror: [edevs.com.br/estudo](https://edevs.com.br/estudo) · details in edevs `docs/estudo-emage.md`.
 
+## Assembly & architectures
+
+e-mage teaches you to **read the machine**, not memorize three full ISAs.
+
+| ISA | Role | Where |
+|-----|------|--------|
+| **x86_64** | Desktop/server host + classic RE + SysV ABI | Fundamentals `intro-asm` (Godbolt) · Systems (`sys-sysv-abi`, `sys-asm-read`) |
+| **AArch64 (ARM 64-bit)** | **Deep** ISA path — phones, Apple Silicon, on-device | LLVM F2 (regs, AAPCS64, frames, NEON, `llc`) · Edge `aarch64-abi` · firmware bridges |
+| **AArch32** | Historical context only | Arm docs mentions — **not** a track |
+| **RISC-V** | Short elective — open ISA / emerging embedded | Shared `riscv-lite` · Systems elective — **does not** replace AArch64 |
+| **Compare** | Same C, two host/edge dialects | Shared `isa-x86-aarch64` (after `intro-asm`) |
+| **Other (MIPS, AVR…)** | Out of scope | — |
+
+**Why AArch64 first?** Phones, Arm Macs, boards, on-device kernels.  
+**Why keep x86_64?** Your Linux/Windows box and much RE still live there.  
+**Why light RISC-V?** Growing open silicon — literacy, not a second LLVM curriculum.
+
+## Duration (± current formation)
+
+Rough hours for **today’s** catalog (~100+ web/TUI rooms + craft bosses), at **4–6 h/week**.
+
+| Slice | Study hours (±) | Calendar (±) |
+|-------|-----------------|--------------|
+| **Fundamentals** → Mago base | 25–40 h | 5–10 weeks |
+| **Systems Mage** (systems + LLVM + bosses) | 50–90 h | 3–5 months |
+| **Edge ML Mage** | 30–50 h | 2–3 months |
+| **Full path** → Mago Supremo | **~110–180 h** | **~6–10 months** |
+
+Faster if you already code; slower on a first terminal/C contact.
+
+> **The curriculum is meant to evolve.** Rooms, bosses, and electives (e.g. RISC-V) will be added or retired. Treat these numbers as a snapshot of the *current* formation, not a fixed diploma workload. The skill target (table above) stays; the path gets sharper over time.
+
 ## Courses
 
 | id | Course | Role |
@@ -55,7 +87,7 @@ Web mirror: [edevs.com.br/estudo](https://edevs.com.br/estudo) · details in ede
 
 `mage` opens a **course launcher** first (plus GitHub connect stub). Systems/Edge are soft-gated behind Mago base (preview allowed with a warning).
 
-Shared core rooms live under `content/shared/` (`vectors`, `bits`, `intro-asm`) with stable `room_id` credit.
+Shared core rooms live under `content/shared/` (`vectors`, `bits`, `intro-asm`, `isa-x86-aarch64`, `riscv-lite`) with stable `room_id` credit.
 
 Portable curriculum indexes + shared room JSON: sibling repo **[edevPedro/emage-content](https://github.com/edevPedro/emage-content)** (`SYNC.md` there). Clone beside this tree or set `EMAGE_CONTENT_ROOT`.
 

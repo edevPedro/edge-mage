@@ -45,6 +45,40 @@ Isso **não** te transforma automaticamente em sênior de compilador ou red team
 
 Web espelho: [edevs.com.br/estudo](https://edevs.com.br/estudo) · detalhes: docs no edevs (`estudo-emage.md`).
 
+## Assembly e arquiteturas
+
+O curso **ensina a ler máquina**, não a memorizar três ISAs inteiras. Papel de cada família:
+
+| ISA | Papel no e-mage | Onde aparece |
+|-----|-----------------|--------------|
+| **x86_64** | Host desktop/servidor + RE clássico + ABI SysV (args em registradores) | Fundamentos `intro-asm` (Godbolt) · Systems (`sys-sysv-abi`, `sys-asm-read`) |
+| **AArch64 (ARM 64-bit)** | ISA **profunda** do caminho — mobile, Apple Silicon, edge NPU/CPU | LLVM F2 (regs, AAPCS64, frames, NEON, `llc`) · Edge `aarch64-abi` · bridges firmware |
+| **ARM 32-bit (AArch32)** | Só contexto histórico / não é trilha | Mencionado em docs Arm; **não** é foco |
+| **RISC-V** | Eletiva curta — ISA aberta / embedded emergente (load/store + contraste com AAPCS64) | Shared `riscv-lite` · Systems eletiva · **não** substitui AArch64 |
+| **Comparativo** | Mesmo C nos dois dialetos host vs edge | Shared `isa-x86-aarch64` (após `intro-asm`) |
+| **Outras (MIPS, AVR…)** | Fora de escopo | — |
+
+**Por que AArch64 no centro?** É o que você encontra em phone, Mac ARM, muitas boards e kernels on-device.  
+**Por que x86_64 ainda existe?** Seu PC Linux/Windows e boa parte de RE/malware samples ainda são Intel/AMD.  
+**Por que RISC-V leve?** Mercado e silício aberto crescem; basta **alfabetização**, não um segundo LLVM track.
+
+Leitura pedida: conseguir abrir Godbolt / `objdump`, apontar registradores de arg/retorno e não entrar em pânico — depois o IR do LLVM amarra as pontas.
+
+## Duração (± formação atual)
+
+Números **aproximados** da grade de hoje (~100+ salas web/TUI + bosses craft). Ritmo assume **4–6 h/semana** com labs + 1 craft quando pedido.
+
+| Fatia | Horas de estudo (±) | Calendário (±) |
+|-------|---------------------|----------------|
+| **Fundamentos** → Mago base | 25–40 h | 5–10 semanas |
+| **Systems Mage** (systems + LLVM + bosses) | 50–90 h | 3–5 meses |
+| **Edge ML Mage** (math → on-device) | 30–50 h | 2–3 meses |
+| **Formação completa** → Mago Supremo | **~110–180 h** | **~6–10 meses** |
+
+Mais rápido se você já programa; mais lento se for o primeiro contato com terminal/C.
+
+> **O currículo evolui de propósito.** Salas, bosses e eletivas (ex.: RISC-V) entram e saem. Trate estes tempos como snapshot da formação *atual*, não como diploma com carga horária fixa. O alvo de habilidade (tabela acima) permanece; o caminho fica mais afiado com o tempo.
+
 ## Cursos
 
 | id | Curso | Papel |
@@ -55,7 +89,7 @@ Web espelho: [edevs.com.br/estudo](https://edevs.com.br/estudo) · detalhes: doc
 
 `mage` abre o **seletor de cursos** primeiro (e stub de GitHub). Systems/Edge têm soft gate atrás de Mago base (preview com aviso).
 
-Salas compartilhadas em `content/shared/` (`vectors`, `bits`, `intro-asm`) com crédito por `room_id` único.
+Salas compartilhadas em `content/shared/` (`vectors`, `bits`, `intro-asm`, `isa-x86-aarch64`, `riscv-lite`) com crédito por `room_id` único.
 
 Índices de currículo + salas shared em JSON: repo irmão **[edevPedro/emage-content](https://github.com/edevPedro/emage-content)** (`SYNC.md`). Clone ao lado deste tree ou use `EMAGE_CONTENT_ROOT`.
 

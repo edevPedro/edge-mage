@@ -1,0 +1,78 @@
+id: riscv-lite
+title: RISC-V load/store (lite elective)
+summary: LW/SW + a0–a7 intuition vs AAPCS64 — open-ISA literacy, not a third track.
+xp_reward: 32
+unlock_xp: 40
+shared: true
+course: fundamentals
+resources:
+  - title: RISC-V Unprivileged ISA (docs.riscv.org)
+    url: https://docs.riscv.org/reference/isa/v20260120/unpriv/unpriv-index.html
+    kind: docs
+  - title: RISC-V Technical Specifications (landing)
+    url: https://riscv.org/technical/specifications/
+    kind: docs
+  - title: RISC-V ELF psABI (argument / return regs)
+    url: https://riscv-non-isa.github.io/riscv-elf-psabi-doc/
+    kind: docs
+  - title: RARS — RISC-V Assembler and Runtime Simulator
+    url: https://github.com/TheThirdOne/rars
+    kind: tool
+  - title: Compiler Explorer (Godbolt) — pick rv64
+    url: https://godbolt.org/
+    kind: tool
+  - title: AAPCS64 releases (contrast only)
+    url: https://github.com/ARM-software/abi-aa/releases
+    kind: docs
+tasks:
+  - id: load-store
+    type: mcq
+    prompt: "RISC-V (like AArch64) is primarily a ___ architecture for memory access."
+    xp: 10
+    answer: 1
+    choices:
+      - "memory-memory (ALU ops directly on RAM without registers)"
+      - "load/store (ALU ops on registers; memory via load/store)"
+      - "stack-only (no general registers)"
+      - "microcode-only (no assembler)"
+  - id: x0-zero
+    type: fill
+    prompt: "Integer GPRs are x0…x31; x0 is hardwired to ___."
+    xp: 8
+    answers:
+      - "0"
+      - "zero"
+      - "ZERO"
+  - id: ret-a0
+    type: mcq
+    prompt: "Under the standard RISC-V integer calling convention, a small int return typically lands in…"
+    xp: 12
+    answer: 0
+    choices:
+      - "a0 (aka x10) — first of a0–a7"
+      - "x0 (always, because it is zero)"
+      - "rax (SysV x86_64 register on every RISC-V chip)"
+      - "sp only"
+  - id: vs-aapcs
+    type: mcq
+    prompt: "Compared with AArch64 AAPCS64 (x0–x7 args / x0 return), RISC-V psABI…"
+    xp: 10
+    answer: 2
+    choices:
+      - "uses identical register names and must never be contrasted"
+      - "forbids register args and forces everything through memory"
+      - "also uses early integer arg regs, but names/numbering differ (a0–a7 / a0 return)"
+      - "requires learning the full privileged ISA first"
+  - id: outside-rv
+    type: fill
+    prompt: >-
+      Outside lab: Godbolt rv64 OR RARS — assemble/compile a tiny add and type
+      the ISA tag you used (riscv64 / rv64 / riscv).
+    xp: 12
+    answers:
+      - "riscv64"
+      - "riscv"
+      - "rv64"
+      - "RV64"
+      - "risc-v"
+      - "RISC-V"
