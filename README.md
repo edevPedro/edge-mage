@@ -10,6 +10,41 @@ CLI entrypoints: `mage` · `emage` · `edge-mage`.
 [![python](https://img.shields.io/badge/python-3.11%2B-1c1c1c?style=flat-square)](pyproject.toml)
 [![tests](https://img.shields.io/github/actions/workflow/status/edevPedro/edge-mage/test.yml?branch=main&style=flat-square&label=tests)](https://github.com/edevPedro/edge-mage/actions)
 
+## Goals — what to expect
+
+**e-mage is not a loose syntax tutorial.** It is a path to **read the machine + prove craft + run ML on-device**, with FLAGs in labs and real artifacts (GitHub / on-device) at bosses.
+
+### Arrival level (Mago Supremo)
+
+After closing the loop (Fundamentals + Systems craft + Edge on-device), the intended bar is someone who can:
+
+| Domain | You should be able to |
+|--------|------------------------|
+| **Compilers / LLVM** | Read IR, explain clang→opt→llc, contribute to pedagogical compiler-tooling issues/PRs, write or adapt a simple pass/lab |
+| **Systems / low-level** | Reason about stack/heap/ABI, use nm/objdump/lldb without fear, go C → object → binary |
+| **Security / RE** | Spot failure classes (UB, races, trust boundaries), do light classic RE and state lifting limits — foundation for bug hunting / defensive cyber |
+| **Embedded / bare-metal lite** | Read enough AArch64 asm for frames, MMIO, syscalls, and conceptual boot — on-ramp to firmware/robotics |
+| **Machine learning (edge)** | Train/export a tiny model, measure latency/RAM, run on-device inference and defend the numbers with evidence |
+| **Math → ML** | Treat features as vectors, take a real gradient step — not “I only called the library” |
+
+This does **not** mint you a senior compiler engineer or red-teamer overnight. It puts you **ahead of “I only finished a Python course”**: ready to contribute to low-level / edge-ML projects, interview for hardcore internships, and keep going solo.
+
+### Per course
+
+| Course | Goal | Level when done |
+|--------|------|-----------------|
+| **Fundamentals** → *Mago base* | Stop fearing the PC/terminal; order, failure, useful math; first page/craft | Follow a lab, capture a FLAG, ship one simple artifact |
+| **Systems Mage** | Bare metal → IR → AArch64 → DIY/RE | Join systems/LLVM discussions/PRs; hunt memory/ABI bugs |
+| **Edge ML Mage** | Math → signal → model → **on-device** | Complete an edge ritual (real latency/RAM) and discuss device deploy trade-offs |
+
+### What we do *not* promise
+
+- A job offer or official certification
+- A replacement for university / grad school (it complements them)
+- Clearing emulator rooms only, without bosses = grimoire progress, **not** the table above
+
+Web mirror: [edevs.com.br/estudo](https://edevs.com.br/estudo) · details in edevs `docs/estudo-emage.md`.
+
 ## Courses
 
 | id | Course | Role |

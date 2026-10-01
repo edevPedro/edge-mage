@@ -10,6 +10,41 @@ CLIs: `mage` · `emage` · `edge-mage`.
 [![python](https://img.shields.io/badge/python-3.11%2B-1c1c1c?style=flat-square)](pyproject.toml)
 [![tests](https://img.shields.io/github/actions/workflow/status/edevPedro/edge-mage/test.yml?branch=main&style=flat-square&label=tests)](https://github.com/edevPedro/edge-mage/actions)
 
+## Objetivos — o que esperar
+
+**e-mage não é um tutorial solto de sintaxe.** É um caminho até você conseguir **ler máquina + prova craft + ML no dispositivo**, com FLAG no lab e artefato real (GitHub / on-device) nos bosses.
+
+### Nível de chegada (Mago Supremo)
+
+Ao fechar o círculo (Fundamentos + Systems craft + Edge on-device), o nível técnico pretendido é o de alguém que consegue:
+
+| Domínio | O que você consegue fazer |
+|---------|---------------------------|
+| **Compiladores / LLVM** | Ler IR, explicar pipeline clang→opt→llc, contribuir em issues/PRs pedagógicos de tooling de compilador, escrever ou adaptar um pass/lab simples |
+| **Systems / low-level** | Raciocinar stack/heap/ABI, usar nm/objdump/lldb sem medo, ligar C → objeto → binário |
+| **Segurança / RE** | Achar classes de falha (UB, race, trust boundary), fazer RE clássico leve e falar limites de lifting — base para bug hunting e cyber defensivo |
+| **Embedded / bare-metal lite** | Ler asm AArch64 o suficiente para frames, MMIO, syscalls e boot conceitual — porta de entrada para firmware/robotics |
+| **Machine learning (edge)** | Treinar/exportar modelo minúsculo, medir latência/RAM, rodar inferência on-device e defender o número com evidência |
+| **Math → ML** | Tratar feature como vetor, um passo de gradiente de verdade, não só “usei a lib” |
+
+Isso **não** te transforma automaticamente em sênior de compilador ou red team. Te deixa **acima de “só fiz curso de Python”**: pronto para contribuir em projetos low-level/ML edge, entrevistar para estágio hardcore, e continuar sozinho.
+
+### Por curso
+
+| Curso | Objetivo | Nível ao concluir |
+|-------|----------|-------------------|
+| **Fundamentos** → *Mago base* | Perder medo do PC/terminal; ordem, erro, math útil; primeira página/craft | Consegue seguir um lab, capturar FLAG, publicar 1 artefato simples |
+| **Systems Mage** | Máquina nua → IR → AArch64 → DIY/RE | Consegue contribuir em discussões/PRs de systems/LLVM e caçar bugs de memória/ABI |
+| **Edge ML Mage** | Math → sinal → modelo → **on-device** | Consegue um ritual edge (latência/RAM reais) e falar trade-offs de deploy no device |
+
+### O que *não* prometer
+
+- Emprego garantido ou certificação oficial
+- Substituir faculdade / mestrado (complementa)
+- Zerar só no emulador sem bosses = progresso de grimório, **não** o nível da tabela acima
+
+Web espelho: [edevs.com.br/estudo](https://edevs.com.br/estudo) · detalhes: docs no edevs (`estudo-emage.md`).
+
 ## Cursos
 
 | id | Curso | Papel |
