@@ -48,6 +48,34 @@ edge-mage
 
 Progresso local em `~/.edge-mage/progress.json` (não versionado).
 
+## Diário no GitHub (auto-commit)
+
+Na **primeira** vez que você conclui uma task (validação OK, XP ganho), o Edge Mage:
+
+1. acrescenta uma linha em [`study-log/completions.jsonl`](study-log/completions.jsonl) (`timestamp`, `track_id`, `room_id`, `task_id`, `xp_awarded`);
+2. faz `git commit` só desse arquivo (mensagem em PT, ex.: `study: concluiu fundamentos/trigonometria — Quantos radianos?`);
+3. faz `git push origin HEAD` se existir remote `origin` (sem force push).
+
+Refazer a mesma task **não** gera commit (evita spam). Se commit ou push falhar (rede, credencial, repo sujo), o app mostra aviso na TUI e continua; use `:sync` para commitar/push pendente do ledger.
+
+### Config (`~/.edge-mage/config.json`)
+
+```json
+{
+  "auto_git_commit": true,
+  "auto_git_push": true
+}
+```
+
+- `auto_git_commit`: padrão `true` quando o app detecta um repositório git (cwd, pacote instalado ou `EDGE_MAGE_REPO_ROOT`).
+- `auto_git_push`: padrão `true` quando há `origin`; desligue para só commit local.
+
+### Push / credenciais
+
+- Rode o jogo **dentro do clone** ou exporte `EDGE_MAGE_REPO_ROOT=/caminho/para/edge-mage`.
+- `git` precisa estar no `PATH`; push usa sua autenticação habitual (SSH ou `gh auth`).
+- Commits vão para a **branch atual** (em geral `main`), só com mudanças em `study-log/`.
+
 ## UX estilo Neovim
 
 ### Modos (statusline)
@@ -92,6 +120,7 @@ Progresso local em `~/.edge-mage/progress.json` (não versionado).
 | `:room <id>` | abrir sala (ex.: `:room trigonometria`) |
 | `:anim [kind]` | toggle animação (`unit_circle`, `sine_wave`, `vector`, `matrix`) |
 | `:xp` | notificar XP / rank |
+| `:sync` | commit/push pendente do diário (`study-log/`) |
 | `:help` / `:ajuda` | ajuda |
 
 ## Animações matemáticas

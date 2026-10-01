@@ -85,7 +85,9 @@ class ProgressStore:
         before_level = level_from_xp(self.state.xp)
         before_rank = rank_from_xp(self.state.xp)
 
+        first_completion = False
         if not self.state.completed_tasks.get(key):
+            first_completion = True
             self.state.completed_tasks[key] = True
             self.state.xp += xp
             gained = xp
@@ -107,6 +109,8 @@ class ProgressStore:
         ranked_up = after_rank.id != before_rank.id
         return {
             "gained": gained,
+            "first_completion": first_completion,
+            "task_xp": xp if first_completion else 0,
             "xp": self.state.xp,
             "level": after_level,
             "rank": after_rank,

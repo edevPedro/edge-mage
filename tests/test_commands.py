@@ -59,7 +59,7 @@ def test_help_mentions_bindings() -> None:
     assert "NORMAL" in text
     assert "INSERT" in text
     assert ":anim" in text
-    for name in ("quit", "tracks", "profile", "room", "help", "xp", "anim"):
+    for name in ("quit", "tracks", "profile", "room", "help", "xp", "anim", "sync"):
         assert name in KNOWN_COMMANDS
 
 

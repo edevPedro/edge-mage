@@ -37,6 +37,7 @@ _ALIASES: dict[str, str] = {
     "xp": "xp",
     "anim": "anim",
     "animation": "anim",
+    "sync": "sync",
 }
 
 
@@ -113,6 +114,7 @@ COMANDOS (:)
   :room <id>          abrir sala pelo id
   :anim [kind]        toggle animação (unit_circle|sine_wave|vector|matrix)
   :xp                 mostrar XP / rank
+  :sync               commit/push pendente do diário (study-log)
   :help / :ajuda      esta ajuda
 
 OUTROS

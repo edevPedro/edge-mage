@@ -7,6 +7,7 @@ from textual.containers import Vertical, VerticalScroll
 from textual.widgets import Input, OptionList, Static, TextArea
 from textual.widgets.option_list import Option
 
+from edge_mage.git_journal import journal_task_completion
 from edge_mage.models import Room, Task, Track
 from edge_mage.screens.base import MageScreen
 from edge_mage.validators import validate_task
@@ -143,6 +144,20 @@ class TaskScreen(MageScreen):
         status.set_class(True, "ok")
         status.set_class(False, "err")
         self.notify("  ·  ".join(parts), severity="information")
+        if result.get("first_completion"):
+            jr = journal_task_completion(
+                track_id=self.track.id,
+                room_id=self.room.id,
+                task_id=self.quest.id,
+                task_prompt=self.quest.prompt,
+                xp_awarded=int(result.get("task_xp") or self.quest.xp),
+            )
+            if jr.warning:
+                self.notify(jr.warning, severity="warning")
+            elif jr.committed and jr.pushed:
+                self.notify(f"GitHub · {jr.message}", severity="information")
+            elif jr.committed:
+                self.notify(f"Commit local · {jr.message}", severity="information")
         self.refresh_statusline()
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:

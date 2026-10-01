@@ -11,6 +11,7 @@ from edge_mage.commands import parse_command
 from edge_mage.content import find_room, load_all_tracks
 from edge_mage.models import Track
 from edge_mage.nav import NavMode
+from edge_mage.git_journal import sync_study_journal
 from edge_mage.progress import ProgressStore
 from edge_mage.screens.base import MageScreen
 from edge_mage.screens.home import HomeScreen
@@ -262,6 +263,16 @@ class EdgeMageApp(App[None]):
                 f"XP {p['xp']} · Nv {p['level']} · {p['rank'].title}{extra}",
                 severity="information",
             )
+        elif cmd.name == "sync":
+            jr = sync_study_journal()
+            if jr.warning:
+                self.notify(jr.warning, severity="warning")
+            elif jr.pushed:
+                self.notify("Diário sincronizado com origin", severity="information")
+            elif jr.message:
+                self.notify(jr.message, severity="information")
+            else:
+                self.notify("Nada a sincronizar", severity="information")
         elif cmd.name == "room":
             room_id = cmd.args[0]
             found = None
