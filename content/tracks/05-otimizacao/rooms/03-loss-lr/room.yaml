@@ -3,7 +3,7 @@ title: Loss & Learning Rate
 summary: MSE, η e treino vs inferência.
 xp_reward: 45
 unlock_xp: 1300
-animation: none
+animation: gradient_descent
 tasks:
   - id: mse
     type: numeric

@@ -3,6 +3,7 @@ title: Intuição de Tensores
 summary: Operações em listas como mini-tensores.
 xp_reward: 45
 unlock_xp: 180
+animation: matrix
 tasks:
   - id: argmax
     type: code

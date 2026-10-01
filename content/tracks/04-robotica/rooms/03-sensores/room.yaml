@@ -3,6 +3,7 @@ title: Sensores
 summary: Encoder, IMU, range.
 xp_reward: 36
 unlock_xp: 960
+animation: sampling_dots
 tasks:
   - id: imu
     type: fill

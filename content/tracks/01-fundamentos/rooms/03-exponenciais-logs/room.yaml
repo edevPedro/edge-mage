@@ -3,7 +3,7 @@ title: Exponenciais & Logs
 summary: exp, ln, mudança de base — base do softmax e da CE.
 xp_reward: 40
 unlock_xp: 100
-animation: none
+animation: derivative_slope
 tasks:
   - id: e0
     type: numeric

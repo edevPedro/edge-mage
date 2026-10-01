@@ -3,6 +3,7 @@ title: Divisão de Tensão
 summary: Divisor resistivo clássico.
 xp_reward: 36
 unlock_xp: 580
+animation: circuit_pulse
 tasks:
   - id: divider
     type: numeric

@@ -3,7 +3,7 @@ title: Quantização & Fixed-Point
 summary: scale, int8, Q-format e tradeoff de acurácia.
 xp_reward: 54
 unlock_xp: 2050
-animation: none
+animation: quantize_steps
 tasks:
   - id: bytes
     type: numeric

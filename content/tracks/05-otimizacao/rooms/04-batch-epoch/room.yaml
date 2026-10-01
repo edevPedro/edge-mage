@@ -3,7 +3,7 @@ title: Batch & Epoch
 summary: Mini-batch, epoch, forward/backward no edge.
 xp_reward: 40
 unlock_xp: 1400
-animation: none
+animation: probability_bars
 tasks:
   - id: epoch
     type: fill

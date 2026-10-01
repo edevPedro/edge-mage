@@ -3,6 +3,7 @@ title: Cinemática
 summary: Posição, velocidade, aceleração.
 xp_reward: 36
 unlock_xp: 250
+animation: robot_transform
 tasks:
   - id: vel
     type: numeric

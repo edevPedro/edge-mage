@@ -3,7 +3,7 @@ title: On-Device Checklist
 summary: Orçamento, fallback de ops e golden tests.
 xp_reward: 72
 unlock_xp: 2750
-animation: none
+animation: memory_grid
 tasks:
   - id: budget
     type: mcq

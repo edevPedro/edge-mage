@@ -3,6 +3,7 @@ title: Lei de Ohm
 summary: V, I, R e potência.
 xp_reward: 36
 unlock_xp: 500
+animation: circuit_pulse
 tasks:
   - id: current
     type: numeric

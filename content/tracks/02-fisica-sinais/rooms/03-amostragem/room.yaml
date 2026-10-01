@@ -3,6 +3,7 @@ title: Amostragem
 summary: Nyquist e aliasing.
 xp_reward: 45
 unlock_xp: 400
+animation: sampling_dots
 tasks:
   - id: nyquist
     type: numeric

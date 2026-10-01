@@ -3,7 +3,7 @@ title: Softmax & Cross-Entropy
 summary: Probabilidades, CE e softmax estável (com código).
 xp_reward: 48
 unlock_xp: 1750
-animation: none
+animation: softmax_bars
 tasks:
   - id: softsum
     type: numeric

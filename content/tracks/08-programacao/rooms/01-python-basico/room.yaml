@@ -3,6 +3,7 @@ title: Python Básico
 summary: Funções e stdout.
 xp_reward: 36
 unlock_xp: 100
+animation: vector
 tasks:
   - id: hypot
     type: code
