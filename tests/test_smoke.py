@@ -44,7 +44,7 @@ def test_validators_and_xp(tmp_path: Path) -> None:
 
     assert level_from_xp(0) == 1
     assert rank_from_xp(0).id == "novico"
-    assert rank_from_xp(2000).id == "edge_mage"
+    assert rank_from_xp(2900).id == "edge_mage"
 
 
 def test_code_task() -> None:

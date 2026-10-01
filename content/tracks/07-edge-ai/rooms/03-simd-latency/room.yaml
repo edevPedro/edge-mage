@@ -2,7 +2,7 @@ id: simd-latency
 title: SIMD & Latência
 summary: Paralelismo de dados e tradeoffs de acurácia.
 xp_reward: 45
-unlock_xp: 2200
+unlock_xp: 2600
 animation: none
 tasks:
   - id: simd

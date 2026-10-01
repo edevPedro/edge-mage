@@ -2,6 +2,6 @@ id: edge-ai
 title: Edge AI Low-Level
 summary: Layout, FLOPs/banda, SIMD, latência e checklist on-device.
 order: 8
-unlock_xp: 1950
+unlock_xp: 2300
 icon: '⬢'
 scaffold: false

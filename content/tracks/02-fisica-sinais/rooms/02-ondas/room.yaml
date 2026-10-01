@@ -2,7 +2,7 @@ id: ondas
 title: Ondas & Frequência
 summary: Amplitude, período, Hertz.
 xp_reward: 36
-unlock_xp: 200
+unlock_xp: 320
 animation: sine_wave
 tasks:
   - id: period

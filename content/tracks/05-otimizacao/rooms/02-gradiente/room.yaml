@@ -2,7 +2,7 @@ id: gradiente
 title: Gradiente
 summary: Direção de descida, update e η.
 xp_reward: 45
-unlock_xp: 1100
+unlock_xp: 1200
 animation: none
 tasks:
   - id: update

@@ -2,7 +2,7 @@ id: cinematica
 title: Cinemática
 summary: Posição, velocidade, aceleração.
 xp_reward: 36
-unlock_xp: 150
+unlock_xp: 250
 tasks:
   - id: vel
     type: numeric

@@ -2,7 +2,7 @@ id: exponenciais-logs
 title: Exponenciais & Logs
 summary: exp, ln, mudança de base — base do softmax e da CE.
 xp_reward: 40
-unlock_xp: 200
+unlock_xp: 100
 animation: none
 tasks:
   - id: e0

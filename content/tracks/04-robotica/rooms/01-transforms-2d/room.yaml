@@ -2,7 +2,7 @@ id: transforms-2d
 title: Transforms 2D
 summary: Rotação e translação no plano.
 xp_reward: 36
-unlock_xp: 550
+unlock_xp: 800
 animation: matrix
 tasks:
   - id: rot90

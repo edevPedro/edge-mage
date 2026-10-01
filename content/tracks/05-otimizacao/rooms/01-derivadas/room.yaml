@@ -2,7 +2,7 @@ id: derivadas
 title: Derivadas & Cadeia
 summary: Taxa de variação, regras básicas e intuição de backprop.
 xp_reward: 45
-unlock_xp: 1000
+unlock_xp: 1100
 animation: none
 tasks:
   - id: power

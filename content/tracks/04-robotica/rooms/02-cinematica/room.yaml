@@ -2,7 +2,7 @@ id: cinematica-robo
 title: Cinemática Simples
 summary: Diferencial e direta vs inversa.
 xp_reward: 36
-unlock_xp: 620
+unlock_xp: 880
 tasks:
   - id: vdiff
     type: numeric
@@ -20,3 +20,13 @@ tasks:
       - "juntas a partir da pose desejada"
       - "só a corrente do motor"
       - "FFT do encoder"
+  - id: fk
+    type: mcq
+    prompt: "Cinemática direta calcula:"
+    xp: 18
+    answer: 0
+    choices:
+      - "pose a partir das juntas"
+      - "somente a corrente do motor"
+      - "juntas a partir da pose"
+      - "aliasing do encoder"

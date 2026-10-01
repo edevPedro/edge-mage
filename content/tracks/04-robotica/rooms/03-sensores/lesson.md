@@ -1,8 +1,7 @@
 # Sensores
 
-- Encoder: ticks → ângulo/velocidade
-- IMU: accel + gyro (+ mag)
-- ToF / ultrasonic: range
-- Câmera: matriz de pixels → tensores
+- **Encoder** — ticks / rotação de eixo
+- **IMU** — acelerômetro + giroscópio (e às vezes mag)
+- **Range** — distância (ToF, ultrassom, lidar)
 
-Calibração e ruído importam mais que o modelo ML às vezes.
+Ruído e calibração dominam a qualidade do pipeline — modelo grande não salva sensor mal calibrado.

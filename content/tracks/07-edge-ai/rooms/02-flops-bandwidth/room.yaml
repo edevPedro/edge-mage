@@ -2,7 +2,7 @@ id: flops-bandwidth
 title: FLOPs & Bandwidth
 summary: Custo de matmul, batch e gargalo memória vs compute.
 xp_reward: 48
-unlock_xp: 2000
+unlock_xp: 2450
 animation: none
 tasks:
   - id: dense-flops

@@ -2,7 +2,7 @@ id: amostragem
 title: Amostragem
 summary: Nyquist e aliasing.
 xp_reward: 45
-unlock_xp: 260
+unlock_xp: 400
 tasks:
   - id: nyquist
     type: numeric

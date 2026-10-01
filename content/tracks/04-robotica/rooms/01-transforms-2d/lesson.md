@@ -1,12 +1,8 @@
 # Transforms 2D
 
-Rotação por θ:
+Rotação no plano (θ anti-horário):
 
-```
-| cosθ  -sinθ |   |x|
-| sinθ   cosθ | · |y|
-```
+`x' = x cos θ − y sin θ`  
+`y' = x sin θ + y cos θ`
 
-Translação: `p' = R·p + t`.
-
-Homogêneo 3×3 empacota R e t numa só matriz — padrão em ROS / robótica.
+Translação: soma um vetor. Juntas, usam coordenadas **homogêneas** 3×3 para um único matmul — eco da álgebra linear.

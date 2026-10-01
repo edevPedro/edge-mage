@@ -1,6 +1,6 @@
-# Cinemática simples
+# Cinemática de robô
 
-Robô diferencial: `v = (vr + vl)/2`, `ω = (vr - vl)/L`.
+**Direta**: juntas → pose. **Inversa**: pose desejada → juntas.
 
-Cinemática direta: dado ângulos das juntas → pose do end-effector.
-Inversa: pose → ângulos (pode ter múltiplas soluções).
+Drive diferencial: `v = (v_r + v_l)/2`, velocidade angular ligada à diferença das rodas.
+É a ponte entre sensores (encoder) e controle.

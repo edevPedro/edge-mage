@@ -15,7 +15,7 @@ class Rank:
     blurb: str
 
 
-# Progressão: noviço em trig → Edge Mage
+# Progressão: noviço em trig → Edge Mage (competência on-device real)
 RANKS: tuple[Rank, ...] = (
     Rank(
         "novico",
@@ -23,80 +23,80 @@ RANKS: tuple[Rank, ...] = (
         "Novice",
         0,
         1,
-        "Primeiros passos: ângulos, razões trigonométricas.",
+        "Ângulos, razões trigonométricas e primeiros passos.",
     ),
     Rank(
         "aprendiz",
         "Aprendiz",
         "Apprentice",
-        80,
+        100,
         2,
-        "Vetores e bases do cálculo espacial.",
+        "Vetores, exp/log e primeiros scripts Python.",
     ),
     Rank(
         "adepto",
         "Adepto",
         "Adept",
-        220,
+        280,
         4,
-        "Álgebra linear e física de sinais.",
+        "Álgebra linear, sinais e amostragem.",
     ),
     Rank(
         "evocador",
         "Evocador",
         "Evoker",
-        450,
+        550,
         6,
-        "Elétrica edge e transforms em robótica.",
+        "Elétrica edge, ADC e transforms em robótica.",
     ),
     Rank(
         "mago",
         "Mago",
         "Mage",
-        800,
+        1100,
         9,
-        "Otimização e intuição de loss/gradiente.",
+        "Derivadas, gradiente, loss e batch.",
     ),
     Rank(
         "arquimago",
         "Arquimago",
         "Archmage",
-        1300,
+        1750,
         12,
-        "ML math: softmax, matmul, quantização.",
+        "Probabilidade, softmax/CE, FLOPs e quantização.",
     ),
     Rank(
         "edge_mage",
         "Edge Mage",
         "Edge Mage",
-        2000,
-        16,
-        "Inferência on-device, latência e layout de tensores.",
+        2900,
+        17,
+        "Layout, banda, SIMD e checklist on-device de ponta a ponta.",
     ),
 )
 
-# XP por nível (nível N requer LEVEL_XP[N-1] XP acumulado)
+# XP acumulado mínimo para cada nível (1-indexed via enumerate)
 LEVEL_THRESHOLDS: tuple[int, ...] = (
     0,  # L1
     40,  # L2
-    80,  # L3
-    140,  # L4
-    220,  # L5
-    320,  # L6
-    450,  # L7
-    600,  # L8
-    800,  # L9
-    1000,  # L10
-    1150,  # L11
-    1300,  # L12
-    1500,  # L13
-    1700,  # L14
-    1850,  # L15
-    2000,  # L16 Edge Mage floor
-    2300,  # L17
-    2600,  # L18
-    3000,  # L19
-    3500,  # L20
+    100,  # L3
+    180,  # L4
+    280,  # L5
+    400,  # L6
+    550,  # L7
+    700,  # L8
+    900,  # L9
+    1100,  # L10
+    1300,  # L11
+    1500,  # L12
+    1750,  # L13
+    2000,  # L14
+    2300,  # L15
+    2500,  # L16
+    2700,  # L17
+    2900,  # L18 Edge Mage floor
+    3100,  # L19
+    3300,  # L20
 )
 
 

@@ -1,8 +1,11 @@
-# Cinemática básica
+# Cinemática
 
-- `v = Δx / Δt` (velocidade média)
-- `a = Δv / Δt` (aceleração média)
-- MRU: `x = x0 + v·t`
-- MRUV: `x = x0 + v0·t + ½ a t²`
+Posição `x(t)`, velocidade `v = dx/dt`, aceleração `a = dv/dt`.
 
-IMU em edge devices integra aceleração → velocidade → posição (com drift — cuidado).
+## MRU
+
+Velocidade constante: `x = x₀ + v·t`.
+
+## Por que importa
+
+Robôs e IMUs estimam movimento; filtros e dead-reckoning começam aqui. A derivada que você verá em otimização é a mesma ideia de “taxa de variação”.

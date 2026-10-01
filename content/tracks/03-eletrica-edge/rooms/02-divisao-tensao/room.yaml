@@ -2,7 +2,7 @@ id: divisao-tensao
 title: Divisão de Tensão
 summary: Divisor resistivo clássico.
 xp_reward: 36
-unlock_xp: 380
+unlock_xp: 580
 tasks:
   - id: divider
     type: numeric
@@ -21,3 +21,9 @@ tasks:
       - "em curto com Vin"
       - "igual a zero"
       - "sendo indutor"
+  - id: half
+    type: numeric
+    prompt: "Vin=5 V, R1=R2. Vout em volts?"
+    xp: 18
+    answer: 2.5
+    tolerance: 0.01

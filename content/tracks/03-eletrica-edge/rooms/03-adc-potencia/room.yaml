@@ -2,7 +2,7 @@ id: adc-potencia
 title: ADC & Potência
 summary: Quantização analógica e orçamento energético.
 xp_reward: 45
-unlock_xp: 450
+unlock_xp: 660
 tasks:
   - id: levels
     type: numeric

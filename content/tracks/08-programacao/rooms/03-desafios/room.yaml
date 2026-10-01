@@ -2,7 +2,7 @@ id: desafios
 title: Desafios
 summary: Passo de gradiente e matmul 2×2 em Python puro.
 xp_reward: 54
-unlock_xp: 320
+unlock_xp: 300
 animation: none
 tasks:
   - id: grad-step

@@ -109,27 +109,30 @@ Controles: `Space` ou `:anim` / `:anim sine_wave`.
 
 ## Progressão (ranks)
 
-| Rank | XP mín. |
-|------|---------|
-| Noviço | 0 |
-| Aprendiz | 80 |
-| Adepto | 220 |
-| Evocador | 450 |
-| Mago | 800 |
-| Arquimago | 1300 |
-| **Edge Mage** | 2000 |
+| Rank | XP mín. | Ideia |
+|------|---------|--------|
+| Noviço | 0 | Trig e primeiros passos |
+| Aprendiz | 100 | Vetores, exp/log, Python |
+| Adepto | 280 | Álgebra linear + sinais |
+| Evocador | 550 | Elétrica + robótica |
+| Mago | 1100 | Derivadas / gradiente / batch |
+| Arquimago | 1750 | Softmax, FLOPs, quantização |
+| **Edge Mage** | 2900 | On-device de ponta a ponta |
+
+Mapa pedagógico: [`content/CURRICULUM.md`](content/CURRICULUM.md). XP total ≈ **3144**.
 
 ## Trilhas
 
-1. **Fundamentos** — trig, vetores, álgebra linear (+ animações)
-2. **Programação** — desafios Python
-3. **Física & Sinais** — cinemática, ondas, amostragem
-4. **Elétrica Edge** — Ohm, divisor, ADC
-5. **Robótica** — transforms 2D, cinemática, sensores
-6. **Otimização** — gradiente, loss, LR
-7. **ML Math** — softmax, matmul, quantização
-8. **Edge AI Low-Level** — layout, SIMD, on-device
+1. **Fundamentos** (0) — trig, vetores, exp/log, álgebra linear (+ animações)
+2. **Programação** (100) — Python alinhado à math
+3. **Física & Sinais** (250) — cinemática, ondas, amostragem
+4. **Elétrica Edge** (500) — Ohm, divisor, ADC
+5. **Robótica** (800) — transforms 2D, cinemática, sensores
+6. **Otimização** (1100) — derivadas, gradiente, loss/LR, batch
+7. **ML Math** (1650) — probabilidade, softmax/CE, matmul/FLOPs, quantização
+8. **Edge AI Low-Level** (2300) — layout, FLOPs/banda, SIMD, on-device
 
+28 salas no total.
 ## Adicionar uma sala
 
 1. `content/tracks/<trilha>/rooms/<id>/`

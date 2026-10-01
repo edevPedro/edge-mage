@@ -2,7 +2,7 @@ id: probabilidade
 title: Probabilidade Básica
 summary: Massa, soma 1, log-prob — pré-requisito do softmax.
 xp_reward: 40
-unlock_xp: 1400
+unlock_xp: 1650
 animation: none
 tasks:
   - id: sum1

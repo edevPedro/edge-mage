@@ -2,7 +2,7 @@ id: algebra-linear
 title: Álgebra Linear Intro
 summary: Matrizes, normas L1/L2, identidade e matmul como camada.
 xp_reward: 45
-unlock_xp: 90
+unlock_xp: 180
 animation: matrix
 tasks:
   - id: matmul-2

@@ -2,7 +2,7 @@ id: memory-layout
 title: Memory Layout
 summary: NCHW/NHWC, row-major e arena estática.
 xp_reward: 45
-unlock_xp: 2050
+unlock_xp: 2300
 animation: none
 tasks:
   - id: rowmajor

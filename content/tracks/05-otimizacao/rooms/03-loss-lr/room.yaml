@@ -2,7 +2,7 @@ id: loss-lr
 title: Loss & Learning Rate
 summary: MSE, η e treino vs inferência.
 xp_reward: 45
-unlock_xp: 1200
+unlock_xp: 1300
 animation: none
 tasks:
   - id: mse

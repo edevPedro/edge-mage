@@ -2,7 +2,7 @@ id: matmul-flops
 title: Matmul, Camada & FLOPs
 summary: Dimensões de Y=XW e custo 2·B·M·N.
 xp_reward: 48
-unlock_xp: 1700
+unlock_xp: 1900
 animation: matrix
 tasks:
   - id: outdim

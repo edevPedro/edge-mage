@@ -1,5 +1,5 @@
 # Lei de Ohm
 
-`V = I · R`  ·  `P = V · I = I²R = V²/R`
+`V = I · R`. Potência `P = V · I = I²R = V²/R`.
 
-Em sensores resistivos e pull-ups no GPIO, Ohm é o feitiço diário.
+No edge, cada mA conta: resistores de pull-up, LEDs e rádios entram no orçamento energético do produto.

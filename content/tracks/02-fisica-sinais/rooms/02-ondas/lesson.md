@@ -1,9 +1,9 @@
-# Ondas e frequência
+# Ondas & frequência
 
-Sinal senoidal: `x(t) = A · sin(2π f t + φ)`
+Um seno `A·sin(2π f t + φ)`:
 
-- **f** = frequência (Hz) = 1/T
-- **A** = amplitude
-- **φ** = fase
+- **A** — amplitude
+- **f** — frequência (Hz); período `T = 1/f`
+- **φ** — fase
 
-Áudio, vibração de motor e EMI no PCB são ondas. Em ML edge, features espectrais (FFT) são comuns.
+Sinais de microfone, IMU e PWM são ondas (ou combinações). Amostrá-las exige respeito a Nyquist (próxima sala).

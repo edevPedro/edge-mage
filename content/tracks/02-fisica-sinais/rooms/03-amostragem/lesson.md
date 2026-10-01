@@ -1,8 +1,5 @@
-# Amostragem conceitual
+# Amostragem
 
-Teorema de Nyquist: para reconstruir um sinal de frequência máxima **f_max**,
-amostra com **fs > 2·f_max**.
+Teorema de Nyquist–Shannon: para reconstruir um sinal com conteúdo até `f_max`, precisa `f_s > 2 f_max`.
 
-Alias: frequências acima de fs/2 "dobram" e parecem mais baixas.
-
-No edge: escolher fs do microfone/ADC é tradeoff memória × fidelidade.
+Amostrar abaixo disso causa **aliasing** — frequências fantasmas. No edge: escolha `f_s` do ADC/microfone com margem e filtre anti-alias quando puder.

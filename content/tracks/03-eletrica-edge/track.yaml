@@ -2,6 +2,6 @@ id: eletrica-edge
 title: Elétrica Edge
 summary: Ohm, divisor de tensão, ADC e potência — o chão de fábrica do silício.
 order: 4
-unlock_xp: 480
+unlock_xp: 500
 icon: '⚡'
 scaffold: false
