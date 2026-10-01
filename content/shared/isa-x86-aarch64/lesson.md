@@ -10,7 +10,7 @@ One C function → two asm stories. This is the **0–1 strengthen** for x86_64 
 
 **Outside:** Godbolt → same `int add(int a,int b){return a+b;}` → switch target **x86_64** then **aarch64**. Note dialect change; do not chase opcode trivia.
 
-Primaries: [SysV AMD64 ABI](https://refspecs.linuxbase.org/elf/x86_64-abi-0.99.pdf) · [AAPCS64](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst) · [DDI0487](https://developer.arm.com/documentation/ddi0487/latest).
+Primaries: [x86-64 psABI](https://gitlab.com/x86-psABIs/x86-64-ABI) · [AAPCS64](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst) · [DDI0487](https://developer.arm.com/documentation/ddi0487/latest).
 
 Deep path after this: Systems SysV / `sys-asm-read` (x86 host) · LLVM + Edge `aarch64-abi` (AArch64).
 
