@@ -21,8 +21,8 @@ O código de auditoria (`audit_pipeline_evidence`) valida automaticamente se o d
 1. **Pipeline Incompleto:** Submeter evidências onde a latência foi omitida ou onde os filtros foram aplicados de forma não-causal.
 2. **Alegações Clínicas Sem Base:** Incluir afirmações de uso diagnóstico em humanos em um pipeline puramente educacional de laboratório.
 
-## 4. O que a Próxima Sala Assume
-A próxima fase (`nt-stats-bci`) inicia aprofundamento em estatística inferencial, testes de permutação, cálculo de poder experimental e controle de falsos positivos.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-app-assistive-bci`) — **Aplicação — BCI assistivo (literacy)** — inicia o bloco de aplicações reais, construindo interfaces assistivas com acumuladores de decisão e ética regulatória.
 
-## 5. Ponto de Destrave do Lab
-Consulte as diretrizes de avaliação e maturidade técnica de pipelines de BCI em [Wolpaw & Wolpaw (Brain-Computer Interfaces: Principles and Practice, Oxford University Press)](https://global.oup.com/academic/product/brain-computer-interfaces-9780195388855).
+## Artigos de Apoio e Leituras Recomendadas
+- [SPEC Neurotech](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

@@ -25,5 +25,8 @@ Sejam $y_{true} \in \{0, 1\}$ os rótulos reais e $y_{pred} \in \{0, 1\}$ as pre
 - Reproduzir um pipeline sobre dados sintéticos ou dados públicos abertos é uma emulação didática (*reproduction lite*).
 - É terminantemente vedado reivindicar colocações oficiais em leaderboards ou superar concorrentes históricos sem submeter-se ao protocolo original de avaliação cega em tempo real.
 
-## 4. O Que a Próxima Sala Assume
-Esta sala conclui a trilha de aplicações e casos emulados, preparando o engenheiro para os desafios de síntese metodológica do clímax do curso.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-irb-protocol`) — **IRB e protocolo ético (literacy)** — estrutura a submissão formal a comitês de ética em pesquisa e conformidade regulatória para ensaios clínicos.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Tangermann et al. 2012 BCI Competition IV review](https://doi.org/10.1088/1741-2560/9/2/025009) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

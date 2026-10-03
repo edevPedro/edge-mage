@@ -22,8 +22,9 @@ A conclusão bem-sucedida do ritual e a validação do artefato em `study-log/ar
 1. **Regressão de Métricas:** Apresentar acurácia média compatível com o nível de acaso ($\kappa < 0.20$), indicando que o filtro ou o extrator espacial foi mal configurado.
 2. **Inconsistência de Dimensões:** Falha de compatibilidade de canais entre o conjunto de treino e o conjunto de teste.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-paper-module-msc`) exige a formatação dos resultados experimentais em um módulo de artigo científico completo com DOI e discussão crítica de limitações.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-paper-module-msc`) — **Paper module MSc (padrão real)** — consolida o manuscrito científico completo pronto para submissão a periódicos indexados de neuroengenharia.
 
-## 5. Ponto de Destrave do Lab
-Consulte os benchmarks públicos e pipelines de referência do [BCI Competition IV Dataset 2a](https://www.bbci.de/competition/iv/) e o framework [MOABB (Mother of all BCI Benchmarks)](https://github.com/NeuroTechX/moabb).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Lotte et al. classification review](https://doi.org/10.1088/1741-2560/4/2/R01) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

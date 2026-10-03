@@ -20,8 +20,8 @@ Um arranjo recomendado de camadas em neurotecnologia:
 1. **Corte no Plano de Terra (Split Ground Plane):** Criar uma fenda no plano de terra sob trilhas rápidas, forçando as correntes de retorno a percorrerem um laço gigantesco ao redor da fenda.
 2. **Roteamento Paralelo de Sinais Digitais e Analógicos:** Rotear o barramento SPI de alta velocidade paralelamente às trilhas de eletrodo por vários centímetros, injetando ruído de clock por acoplamento capacitivo mútuo.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-shield-power`) conclui a espinha de eletrônica com técnicas de blindagem ativa de cabos (Shielding) e integridade de alimentação (PSRR).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-elec-shield-power`) — **Elétrica — Shielding, layout µV e power integrity** — aborda a blindagem eletrostática ativa (driven shield) e a rejeição de ruído de fonte de alimentação (PSRR).
 
-## 5. Ponto de Destrave do Lab
-Consulte o clássico absoluto de compatibilidade eletromagnética de [Ott (Electromagnetic Compatibility Engineering, Wiley 2009)](https://www.wiley.com/en-us/Electromagnetic+Compatibility+Engineering-p-9780470189306) e o manual de [Montrose (Printed Circuit Board Design Techniques for EMC Compliance, IEEE Press)](https://ieeexplore.ieee.org/book/5237731).
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

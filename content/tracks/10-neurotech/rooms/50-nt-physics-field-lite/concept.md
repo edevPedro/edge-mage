@@ -19,8 +19,8 @@ Além da queda puramente geométrica:
 1. **Alegações de Decodificação Subcortical em EEG de Superfície:** Reivindicar que um algoritmo decodifica núcleos da base ou amígdala a partir de 8 canais de escalpo sem controle de artefatos.
 2. **Ignorar Fontes Opostas:** Dipolos em paredes opostas do mesmo sulco cortical podem cancelar mutuamente seus campos a distância, gerando potencial zero no eletrodo superior.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-opamp-noise`) analisa o ruído elétrico de amplificadores operacionais, ruído térmico Johnson e taxa de rejeição de modo comum (CMRR).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-elec-circuit-fundamentals`) — **Elétrica — Ohm, Kirchhoff, DC/AC** — inicia a base de eletrônica analógica aplicando leis de Ohm e Kirchhoff na instrumentação de biopotenciais.
 
-## 5. Ponto de Destrave do Lab
-Consulte o tratamento clássico de propagação de campos e problemas diretos de EEG em [Nunez & Srinivasan (Electric Fields of the Brain, Oxford University Press)](https://global.oup.com/academic/product/electric-fields-of-the-brain-9780195050387).
+## Artigos de Apoio e Leituras Recomendadas
+- [Michel & Brunet EEG source imaging OA](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

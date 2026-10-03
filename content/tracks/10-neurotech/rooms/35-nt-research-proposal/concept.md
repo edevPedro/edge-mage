@@ -17,8 +17,9 @@ A criação do arquivo `study-log/artifacts/research-proposal.md` consolida o ga
 1. **Proposta Tautológica:** Formular hipóteses óbvias que não admitem falseamento experimental (ex. "redes neurais podem aprender padrões").
 2. **Omissão do Plano de Validação:** Descrever extensivamente a arquitetura do modelo mas não especificar como os dados serão divididos para prevenir vazamento de ensaios.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-thesis-methods`) exige a redação formal e a validação computacional da seção de Métodos da dissertação, no padrão exigido por periódicos internacionais como IEEE Transactions e Journal of Neural Engineering.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-thesis-methods`) — **Módulo Methods (padrão paper)** — redige a seção metodológica detalhada de um artigo científico em nível de publicação internacional.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia de elaboração de projetos de pós-graduação em engenharia de [Booth et al. (The Craft of Research, University of Chicago Press)](https://press.uchicago.edu/ucp/books/book/chicago/C/bo198544976.html).
+## Artigos de Apoio e Leituras Recomendadas
+- [MOABB documentation](https://neurotechx.github.io/moabb/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [SPEC Neurotech](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

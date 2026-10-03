@@ -29,5 +29,10 @@ $$d \ge \text{FWHM}_{\text{crânio}} \approx 2.5\text{ cm}$$
 1. **A Falácia do "Super-EEG de 256 Canais"**: Acreditar que adensar eletrodos a distâncias de $5\text{ mm}$ no escalpo confere resolução milimétrica aos sinais. Aumentar a densidade de eletrodos além de $\sim 64\text{--}128$ canais atinge o limite de difusão de Nyquist espacial do crânio. Sem modelos inversos regularizados com ressonância magnética estrutural, o ganho de informação útil satura.
 2. **Ignorar Correlação Espacial no Machine Learning**: Como um único dipolo induz voltagem em múltiplos eletrodos adjacentes devido à condução de volume, canais vizinhos possuem covariância não-nula mesmo sem qualquer conectividade funcional real entre as áreas corticais subjacentes. Assumir independência entre canais de EEG em modelos bayesianos é um erro conceitual grave.
 
-## 3. O que a Próxima Sala Assume
-A próxima sala do percurso é `nt-physics-field-lite` (Physics — Campo e distância (lite)): Potencial vs distância; por que fontes profundas somem.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-physics-field-lite`) — **Physics — Campo e distância (lite)** — aprofunda a atenuação geométrica de dipolos versus monopolos em condutores de volume tridimensionais.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [EEG MI techniques (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Michel & Brunet — EEG source imaging (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Nunez — Toward a quantitative description of large-scale neocortical dynamic function (BBS 2000)](https://doi.org/10.1017/S0140525X00003253) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

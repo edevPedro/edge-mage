@@ -25,8 +25,14 @@ $$\kappa = \frac{p_o - p_e}{1 - p_e}$$
 - $\kappa = 0$: Desempenho equivalente ao lançamento de uma moeda honesta.
 - $\kappa = 1$: Classificação perfeita.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-riemann-primer`) estuda a geometria não-euclidiana de matrizes de covariância em variedades Riemannianas.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-csp-primer`) — **Primer CSP (filtros espaciais)** — projeta filtros espaciais supervisionados Common Spatial Patterns para maximizar a separabilidade de variância entre classes motoras.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo clássico de regularização em BCI e Discriminante Linear com shrinkage, consulte [Blankertz et al. (NeuroImage 2011, The Berlin Brain-Computer Interface)](https://doi.org/10.1016/j.neuroimage.2011.01.057) e [Ledoit & Wolf (J Multivar Anal 2004)](https://doi.org/10.1016/S0047-259X(03)00096-4).
+## Artigos de Apoio e Leituras Recomendadas
+- [Padfield et al. EEG-MI techniques (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. MI-BCI review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Lotte et al. review of classification algorithms for EEG-BCI (IOP)](https://doi.org/10.1088/1741-2560/4/2/R01) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [sklearn — LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [sklearn — cohen_kappa_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [MNE-Python documentation](https://mne.tools/stable/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI — Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

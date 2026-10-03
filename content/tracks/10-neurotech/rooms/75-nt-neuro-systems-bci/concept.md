@@ -31,5 +31,9 @@ Convenção adotada:
 ## 4. O Sistema em Malha Fechada
 O EEG de escalpo reflete o somatório populacional de correntes corticais. Em um BCI funcional de imagética motora, o usuário recebe feedback visual ou tátil derivado dessa estimativa de ERD, permitindo que o sistema biológico e o decodificador computacional convirjam gradualmente para um controle robusto.
 
-## 5. O Que a Próxima Sala Assume
-Esta sala fundamenta as bases de sinal das salas de caso prático (`nt-case-berlin-mi`) e de aprendizado de máquina (`nt-decode-mvp`, `nt-csp-primer`).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-complexity`) — **CS — Complexidade e budget de compute** — abre o pilar de ciência da computação avaliando a complexidade de algoritmos espaciais e orçamentos temporais de execução.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Singh et al. — MI-BCI review (PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Wolpaw — BCI principles](https://doi.org/10.1016/j.clinph.2012.01.010) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

@@ -24,8 +24,10 @@ A cadeia completa de aquisição e processamento compreende:
 1. **Ilusão de Decodificação por Artefato:** Treinar modelos complexos sobre dados brutos onde o classificador aprende o reflexo de piscada ocular (EOG de $200\ \mu\text{V}$) ou contração de mandíbula (EMG de alta frequência) em vez do ritmo neural.
 2. **Ignorar Latência e Causalidade:** Utilizar filtros não-causais bidirecionais (como `scipy.signal.filtfilt`) no treinamento offline e descobrir no hardware em tempo real que o algoritmo exige dados do futuro, tornando o sistema inoperante.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-ethics-consent`) estabelece o arcabouço ético formal e os limites de segurança e privacidade biométrica indispensáveis antes de qualquer coleta de dados em voluntários humanos.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-ethics-consent`) — **Ética, consentimento, limites** — estabelece o arcabouço ético formal (Relatório Belmont, Declaração de Helsinque e neurodireitos) indispensável antes de qualquer aquisição com participantes humanos.
 
-## 5. Ponto de Destrave do Lab
-Para compreender a visão panorâmica de uma cadeia completa de BCI e seus desafios reais, consulte a revisão abrangente de [Singh et al. (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/).
+## Artigos de Apoio e Leituras Recomendadas
+- [SPEC Neurotech course](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI — Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. — MI-BCI review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

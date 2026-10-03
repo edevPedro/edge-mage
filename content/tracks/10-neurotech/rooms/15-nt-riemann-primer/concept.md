@@ -26,8 +26,11 @@ $$\delta_{\text{diag}}(d_1, d_2) = \sqrt{\sum_{i=1}^C \left(\ln\left(\frac{a_i}{
 1. **Submissão de Matriz Quase Singular:** Se o número de amostras $T < C$, a matriz terá posto reduzido e autovalores nulos, tornando $\ln(\lambda) = -\infty$. É obrigatório aplicar regularização prévia (shrinkage ou regularização de Tikhonov $\Sigma + \epsilon \mathbf{I}$).
 2. **Uso de Distância Euclidiana em Matrizes:** A distância Frobenius direta $\|A - B\|_F$ deforma as relações de variância e degrada a separabilidade das classes.
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-metrics-offline`) aborda a avaliação estatística rigorosa de classificadores, prevenção de vazamento de dados e o cálculo de Cohen's Kappa.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-metrics-offline`) — **Acurácia, κ, vazamento de trial** — consolida métricas rigorosas de avaliação offline, matrizes de confusão balanceadas e limites de generalização.
 
-## 6. Ponto de Destrave do Lab
-Para o estudo formal de geometria riemanniana aplicada a BCI, consulte a revisão seminal de [Yger et al. (IEEE Trans Neural Syst Rehabil Eng 2017)](https://doi.org/10.1109/TNSRE.2016.2627016) e [Barachant et al. (IEEE TBME 2011)](https://doi.org/10.1109/TBME.2011.2172210).
+## Artigos de Apoio e Leituras Recomendadas
+- [Yger et al. review (HAL PDF)](https://inria.hal.science/hal-01394253/document) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Congedo et al. 2017 primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [arXiv:2407.20250](https://arxiv.org/abs/2407.20250) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Barachant et al. — Multiclass brain–computer interface classification by Riemannian geometry (IEEE)](https://doi.org/10.1109/TBME.2011.2172210) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

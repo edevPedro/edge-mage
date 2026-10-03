@@ -14,8 +14,9 @@ O ritual exige a criação do artefato em `study-log/artifacts/checkpoint-projec
 1. **Acoplamento Monolítico:** Escrever o código de captura de porta serial diretamente misturado com o algoritmo de machine learning, inviabilizando testes unitários automatizados.
 2. **Dependência de Hardware Físico sem Mocks:** Não fornecer geradores de dados sintéticos determinísticos (emuladores), impedindo a integração contínua (CI) e a depuração de regressões algorítmicas.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-neuro-mage`) é o grande marco integrador (Boss intermediário), exigindo a comprovação de evidências de código e métricas para a conquista do título de Neuro Mage.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-mage`) — **Boss Neuro Mage** — submete o candidato ao julgamento do Boss intermediário, auditando o domínio unificado dos três pilares neurais (aquisição, decodificação e tempo real).
 
-## 5. Ponto de Destrave do Lab
-Consulte os padrões de arquitetura de software para biossinais no repositório de código aberto do [OpenBCI GitHub](https://github.com/OpenBCI) e a documentação do [Brainflow Library](https://brainflow.org/).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI Cyton](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [SPEC Neurotech checkpoints](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

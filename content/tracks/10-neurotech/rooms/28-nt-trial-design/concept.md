@@ -18,8 +18,10 @@ Para evitar que o participante tente adivinhar a próxima classe ou desenvolva e
 1. **Apresentação em Blocos Monótonos:** Executar toda a Classe 1 pela manhã e toda a Classe 2 à tarde, confundindo variações circadianas e deriva de gel condutor com sinal biológico.
 2. **ITI Fixo e Previsível:** Usar intervalos exatamente iguais a 2.000 segundos, fazendo com que ondas de expectativa do córtex frontal contaminem a linha de base pré-estímulo.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-cv-leakage`) estuda o esquema de particionamento aninhado (Nested CV) e auditoria estrita contra vazamento de ensaios.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-stats-bci`) — **Stats para BCI (N, κ, chance)** — aplica testes estatísticos de significância para verificar se a acurácia de decodificação supera a probabilidade de acerto ao acaso.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia de desenho experimental e boas práticas em BCI de [Schlögl et al. (IEEE Trans Biomed Eng 2007)](https://doi.org/10.1109/TBME.2007.903711) e [Makeig et al. (Science 2002)](https://doi.org/10.1126/science.1066168).
+## Artigos de Apoio e Leituras Recomendadas
+- [Pfurtscheller & Neuper 1997 — MI activates S1/M1](https://doi.org/10.1016/S0304-3940(97)00889-6) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Blankertz et al. Berlin BCI (OA)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Lab Streaming Layer](https://labstreaminglayer.readthedocs.io/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

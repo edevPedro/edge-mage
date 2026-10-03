@@ -19,8 +19,8 @@ Onde $\eta > 0$ é a taxa de aprendizado (learning rate / passo de gradiente).
 1. **Sinal Trocado (Gradiente Ascendente):** Somar o gradiente ($w + \eta \nabla L$) em vez de subtrair, maximizando o erro catastrófico.
 2. **Gradientes Desaparecendo ou Explodindo:** Gradientes de magnitudes descalibradas devido a variáveis de entrada que não foram normalizadas para desvio-padrão unitário.
 
-## 4. O que a Próxima Sala Assume
-A próxima fase (`nt-physics-rc-tissue`) inicia o aprofundamento na física bioelétrica dos tecidos biológicos modelados como circuitos RC.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-physics-electrostatics`) — **Física — Eletrostática e potencial** — faz a transição da matemática abstrata para a física dos campos eletrostáticos e a lei de Coulomb em meios condutores biológicos.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia clássico de otimização numérica em [Boyd & Vandenberghe (Convex Optimization, Cambridge University Press)](https://web.stanford.edu/~boyd/cvxbook/).
+## Artigos de Apoio e Leituras Recomendadas
+- [sklearn SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

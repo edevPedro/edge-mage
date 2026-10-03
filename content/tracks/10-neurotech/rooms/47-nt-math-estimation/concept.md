@@ -17,8 +17,8 @@ Ao estimar a covariância a partir de $T$ amostras com a média estimada a parti
 1. **Subdimensionamento Amostral:** Coletar poucos ensaios e acreditar que a média observada é um número exato sem margem de erro.
 2. **Confundir Desvio-Padrão com Erro Padrão:** Publicar barras de erro com SE (que é menor) para fazer os dados parecerem menos ruidosos do que são.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-math-gd-lite`) introduz os fundamentos de otimização contínua via Gradiente Descendente para ajuste de modelos neurais.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-math-gd-lite`) — **Math — Gradiente descendente lite** — explora a otimização convexa iterativa de pesos lineares através do algoritmo do gradiente descendente com taxa de aprendizado controlada.
 
-## 5. Ponto de Destrave do Lab
-Consulte o tratamento clássico de estimação não-viesada em [Wasserman (All of Statistics, Springer)](https://link.springer.com/book/10.1007/978-0-387-21736-9).
+## Artigos de Apoio e Leituras Recomendadas
+- [Combrisson & Jerbi 2015 statistical testing](https://doi.org/10.1016/j.jneumeth.2015.03.034) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

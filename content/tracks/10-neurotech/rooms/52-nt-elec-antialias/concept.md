@@ -18,8 +18,8 @@ A frequência $f_{\text{Nyquist}} = f_s / 2$ atua como um espelho espectral ríg
 1. **Conectar ADC sem Filtro Analógico:** Confiar em filtros digitais em Python/C, ignorando que o rebatimento já destruiu o sinal antes da execução da primeira linha de software.
 2. **Subdimensionar a Atenuação na Banda de Rebatimento:** Escolher um filtro passa-baixas com transição suave que atenua apenas 6 dB em $f_s / 2$, permitindo que ruídos fortes ultrapassem o piso de ruído do conversor.
 
-## 4. O que a Próxima Sala Assume
-A próxima fase (`nt-physics-electrostatics`) consolida os fundamentos de física eletrostática, gradiente de potencial e campos elétricos biofísicos.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-elec-pcb-emc`) — **Elétrica — PCB, grounding e EMI/EMC** — foca no layout de placas de circuito impresso, planos de terra e mitigação de loops de corrente indutivos.
 
-## 5. Ponto de Destrave do Lab
-Consulte o tratamento formal de amostragem e aliasing em [Oppenheim & Schafer (Discrete-Time Signal Processing, Prentice Hall)](https://www.pearson.com/) e a nota de aplicação da [Analog Devices (MT-002: What the Nyquist Criterion Means to Your Sampled Data System Design)](https://www.analog.com/media/en/training-seminars/tutorials/MT-002.pdf).
+## Artigos de Apoio e Leituras Recomendadas
+- [numpy/scipy resampling notes](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.decimate.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

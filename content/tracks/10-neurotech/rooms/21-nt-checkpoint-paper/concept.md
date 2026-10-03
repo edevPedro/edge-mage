@@ -17,8 +17,10 @@ O ritual de checkpoint de paper exige a criação de um documento formal de regi
 1. **Omissão de Hiperparâmetros de Filtragem:** Artigos que mencionam apenas "sinal foi filtrado entre 8 e 30 Hz", sem declarar se o filtro foi causal ou bidirecional (filtfilt), impossibilitando avaliar se o método funciona em tempo real.
 2. **Datasets Fantasma:** Publicações que utilizam bases privadas não compartilhadas e alegam acurácias mirabolantes sem permitir auditoria independente de vazamento de dados.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-checkpoint-project`) oferece o caminho alternativo de consolidação através da entrega de uma fatia de código de projeto funcional (filter-bank ou firmware stub).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-checkpoint-project`) — **Ritual fatia de projeto** — consolida a fatia prática executável de engenharia conectando hardware, software e validação estatística.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia de boas práticas de reprodutibilidade em neuroimagem de [Poldrack et al. (Nature 2017, Guidelines for transparent reporting)](https://doi.org/10.1038/s41562-016-0017) e [Singh et al. (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/).
+## Artigos de Apoio e Leituras Recomendadas
+- [Singh et al. MI-BCI review (Sensors 2021, PMC8003721) — CP-MI map](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Padfield et al. EEG-MI techniques (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Yger et al. HAL — CP-Riemann figure](https://inria.hal.science/hal-01394253/document) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

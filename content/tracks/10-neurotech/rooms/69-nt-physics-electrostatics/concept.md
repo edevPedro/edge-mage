@@ -22,8 +22,8 @@ Essa relação fundamenta o problema direto de EEG (forward problem) para resolu
 1. **Inversão de Sinal:** Omitir o sinal negativo do gradiente, concluindo erroneamente que correntes positivas fluem no sentido de potencial crescente sem fonte externa ativa.
 2. **Incompatibilidade de Unidades:** Misturar milímetros com metros ao calcular o gradiente de campo, gerando erros de três ordens de magnitude ($10^3$).
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-circuit-fundamentals`) aplica as leis de Kirchhoff e circuitos elétricos à interface de instrumentação de biopotenciais.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-dipole-scalp`) — **Dipolo → potencial de escalpo** — aplica o campo elétrico na modelagem de dipolos equivalentes de corrente e calcula o decaimento com a distância até os eletrodos de escalpo.
 
-## 6. Ponto de Destrave do Lab
-Consulte o tratamento fundamental de eletromagnetismo clássico em [Griffiths (Introduction to Electrodynamics, Cambridge University Press)](https://www.cambridge.org/) e [Plonsey & Barr (Bioelectricity: A Quantitative Approach, Springer)](https://link.springer.com/book/10.1007/978-0-387-48864-6).
+## Artigos de Apoio e Leituras Recomendadas
+- [Michel & Brunet — EEG source imaging (PMC6700197)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

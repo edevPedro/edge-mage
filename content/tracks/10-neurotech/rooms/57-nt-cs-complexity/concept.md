@@ -25,5 +25,8 @@ Quando o tempo de processamento por amostra excede o período de amostragem, o s
 - O feedback ao usuário dessincroniza do estado cognitivo atual.
 - A thread de aquisição é bloqueada ou descarta pacotes no driver.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-cs-ringbuf-ds`) implementa a estrutura de dados canônica para desacoplar a taxa de aquisição da taxa de consumo: o buffer circular (*ring buffer*).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-ringbuf-ds`) — **CS — Ring buffer (estrutura de dados)** — implementa buffers circulares com capacidade fixa e política overwrite para streaming de alta taxa sem alocação dinâmica.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Python timeit docs](https://docs.python.org/3/library/timeit.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

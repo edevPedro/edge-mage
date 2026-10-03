@@ -32,5 +32,9 @@ Essa inversão brusca de sinal desestabiliza filtros digitais recursivos (IIR), 
 A saturação (*saturation arithmetic*) força a limitação estrita:
 $$x_{sat} = \min(32767, \max(-32768, x_{scaled}))$$
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-fw-aarch64-bridge`) estuda como fazer a transição entre stubs didáticos no host de desenvolvimento e processamento vetorizado SIMD em arquiteturas Edge.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-fw-aarch64-bridge`) — **Embedded — Ponte AArch64 / Edge** — acelera operações de álgebra linear espacial utilizando instruções vetoriais SIMD de 128 bits (Arm Neon).
+
+## Artigos de Apoio e Leituras Recomendadas
+- [CMSIS-DSP fixed-point overview](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [ARM CMSIS Core docs](https://www.keil.com/pack/doc/CMSIS/Core/html/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

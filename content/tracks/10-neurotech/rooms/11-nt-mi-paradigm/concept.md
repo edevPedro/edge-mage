@@ -22,8 +22,11 @@ Onde $\text{pre}$ é o número de amostras antes do evento e $\text{post}$ é o 
 1. **Mistura de Janelas Temporais:** Incluir o potencial evocado visual inicial (respostas P100 e N200 causadas pelo estímulo da tela) dentro da janela de decodificação motora, fazendo o modelo classificar o reflexo óptico em vez da imagética intencional.
 2. **Jitter de Sincronismo de Hardware:** Se a placa de aquisição e o software de estímulo tiverem atrasos variáveis na marcação de triggers, os epochs ficarão desalinhados no tempo, destruindo a consistência das características espectrais.
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-artifacts`) trata da identificação e rejeição de artefatos de piscada ocular (EOG) e contrações musculares (EMG) que contaminam esses epochs.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-features-bandpower`) — **Potência de banda / covariância** — extrai vetores de características baseados na variância logarítmica das bandas e em matrizes de covariância espacial.
 
-## 6. Ponto de Destrave do Lab
-Para o estudo do protocolo clássico de Graz e parâmetros de modulação sensoriomotora, consulte o trabalho seminal de [Pfurtscheller & Neuper (NeuroImage 2001)](https://doi.org/10.1006/nimg.2001.0856) e [Padfield et al. (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/).
+## Artigos de Apoio e Leituras Recomendadas
+- [Padfield et al. EEG-MI (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. MI-BCI review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Pfurtscheller & Neuper — Motor imagery activates primary sensorimotor area (Neurosci Lett 1997)](https://doi.org/10.1016/S0304-3940(97)00889-6) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Neuper et al. — Imagery of motor actions (Cogn Brain Res 2005)](https://doi.org/10.1016/j.cogbrainres.2005.08.014) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

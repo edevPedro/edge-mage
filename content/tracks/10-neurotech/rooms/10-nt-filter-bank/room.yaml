@@ -12,8 +12,6 @@ requires_rooms:
 - nt-cs-harness
 - nt-cs-realtime-testing
 - nt-elec-shield-power
-- nt-dsp-sampling
-- nt-elec-filters-intro
 course: neurotech
 resources:
 - title: OpenBCI — Setting up for EEG
@@ -63,7 +61,7 @@ tasks:
 
     '
   xp: 16
-  code_template: "def band_mask(freqs, lo, hi):\n    # TODO\n    ...\n"
+  code_template: "def band_mask(freqs, lo, hi):\n    # Sua implementação aqui\n    ...\n"
   code_tests: 'assert mod.band_mask([8, 10, 12, 20], 8, 12) == [True, True, False,
     False]
 

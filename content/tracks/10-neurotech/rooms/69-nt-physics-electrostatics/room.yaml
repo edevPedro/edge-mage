@@ -45,40 +45,54 @@ tasks:
   - tesla (T)
 - id: code-efield
   type: code
-  prompt: Implemente `electric_field(q, r, k=8.99e9)` retornando a magnitude do campo elétrico E = k * |q| / r^2 em N/C, e `audit_quasistatic_volume_potential(p_current_dipole_am, distance_m, sigma_s_per_m=0.33, theta_rad=0.0)` calculando o potencial em condutor de volume biológico V = (p * cos(theta)) / (4 * pi * sigma * r^2) em uV, retornando `(is_measurable, v_potential_uv, is_radial)` onde is_measurable é True se |v_potential_uv| >= 1.0 uV e is_radial é True se |cos(theta)| > 0.01.
+  prompt: Implemente `electric_field(q, r, k=8.99e9)` retornando a magnitude do campo
+    elétrico E = k * |q| / r^2 em N/C, e `audit_quasistatic_volume_potential(p_current_dipole_am,
+    distance_m, sigma_s_per_m=0.33, theta_rad=0.0)` calculando o potencial em condutor
+    de volume biológico V = (p * cos(theta)) / (4 * pi * sigma * r^2) em uV, retornando
+    `(is_measurable, v_potential_uv, is_radial)` onde is_measurable é True se |v_potential_uv|
+    >= 1.0 uV e is_radial é True se |cos(theta)| > 0.01.
   xp: 14
-  code_template: |
-    import math
+  code_template: "import math\n\ndef electric_field(q, r, k=8.99e9):\n    return k\
+    \ * abs(q) / (r ** 2)\n\ndef audit_quasistatic_volume_potential(p_current_dipole_am,\
+    \ distance_m, sigma_s_per_m=0.33, theta_rad=0.0):\n    # V_volts = (p_current_dipole_am\
+    \ * math.cos(theta_rad)) / (4.0 * math.pi * sigma_s_per_m * (distance_m ** 2))\n\
+    \    # V_uv = V_volts * 1e6\n    # is_radial = abs(math.cos(theta_rad)) > 0.01\n\
+    \    # retorne (abs(V_uv) >= 1.0, V_uv, is_radial)\n    ...\n"
+  code_tests: 'import math
 
-    def electric_field(q, r, k=8.99e9):
-        return k * abs(q) / (r ** 2)
-
-    def audit_quasistatic_volume_potential(p_current_dipole_am, distance_m, sigma_s_per_m=0.33, theta_rad=0.0):
-        # V_volts = (p_current_dipole_am * math.cos(theta_rad)) / (4.0 * math.pi * sigma_s_per_m * (distance_m ** 2))
-        # V_uv = V_volts * 1e6
-        # is_radial = abs(math.cos(theta_rad)) > 0.01
-        # retorne (abs(V_uv) >= 1.0, V_uv, is_radial)
-        ...
-  code_tests: |
-    import math
     E = mod.electric_field(1e-9, 0.1)
+
     assert abs(E - 899.0) < 1.0
+
     assert mod.electric_field(1e-9, 0.2) < E
 
-    # Cortical macro-dipole: p = 1e-7 A*m (100 nA*m), r = 0.03 m (3 cm scalp), theta = 0 rad
+
+    # Cortical macro-dipole: p = 1e-7 A*m (100 nA*m), r = 0.03 m (3 cm scalp), theta
+    = 0 rad
+
     # V ~ (1e-7) / (4*pi*0.33*0.0009) ~ 26.79 uV -> measurable and radial
+
     meas, v_uv, rad = mod.audit_quasistatic_volume_potential(1e-7, 0.03, 0.33, 0.0)
+
     assert meas is True
+
     assert rad is True
+
     assert abs(v_uv - 26.79) < 0.5
 
+
     # Tangential orientation: theta = pi/2 -> cos(pi/2) = 0 -> cancellation
-    meas_tang, v_tang, rad_tang = mod.audit_quasistatic_volume_potential(1e-7, 0.03, 0.33, math.pi / 2.0)
+
+    meas_tang, v_tang, rad_tang = mod.audit_quasistatic_volume_potential(1e-7, 0.03,
+    0.33, math.pi / 2.0)
+
     assert meas_tang is False
+
     assert rad_tang is False
+
     assert abs(v_tang) < 1e-5
+
+    '
 order: 9
 requires_rooms:
 - nt-math-gd-lite
-- nt-found-trig
-- nt-physics-waves

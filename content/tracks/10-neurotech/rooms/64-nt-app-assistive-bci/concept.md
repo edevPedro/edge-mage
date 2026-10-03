@@ -22,5 +22,9 @@ $$S_t = \sum_{i=0}^t P_i$$
 - O sistema acumula as probabilidades sequencialmente até que $S_t \ge \theta$ (*threshold*).
 - O número de passos $t+1$ necessários para atingir o limiar define o tempo de permanência (*dwell time*). Se o sinal for ruído passageiro, o acumulador não atinge o limiar.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-app-neurofeedback`) explora como fechar o laço de retroalimentação em tempo real através do neurofeedback.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-app-neurofeedback`) — **Aplicação — Neurofeedback (literacy)** — projeta funções de recompensa linear retificada para autorregulação de ritmos cerebrais em malha fechada.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Wolpaw BCI principles](https://doi.org/10.1016/j.clinph.2012.01.010) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. MI-BCI Sensors 2021](https://doi.org/10.3390/s21062173) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

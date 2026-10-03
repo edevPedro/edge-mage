@@ -24,5 +24,8 @@ $$V_{LFP}(r) = \frac{1}{4 \pi \sigma} \sum_i \frac{I_i}{|r - r_i|}$$
 
 Por terem duração prolongada ($10\text{--}50\text{ ms}$), os PSPs somam-se linearmente no tempo e no espaço, dando origem ao Potencial de Campo Local (LFP) intracortical e, após atravessar crânio e tecidos, ao EEG de escalpo.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-neuro-maps`) investiga como as populações neuronais se organizam topograficamente no córtex e como mapeamos essas regiões via sistema internacional 10-20.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-rhythms`) — **Ritmos α/β/γ/µ** — investiga as oscilações cerebrais macroscópicas populacionais e a modulação dos ritmos alfa, beta, teta e gama no escalpo.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Einevoll et al. LFP (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

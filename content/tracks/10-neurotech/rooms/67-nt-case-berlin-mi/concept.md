@@ -23,5 +23,9 @@ $$r = \frac{P_{C3}}{P_{C4}}$$
 Regra de decisão:
 $$\text{predição} = \begin{cases} \text{'right\_hand'}, & \text{se } r < 1.0 \\ \text{'left\_hand'}, & \text{se } r \ge 1.0 \end{cases}$$
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-case-bci-comp-iv`) aplica esses conceitos em um dos maiores marcos de benchmarking público da neurotecnologia: a BCI Competition IV.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-case-bci-comp-iv`) — **Caso emulado — BCI Competition IV** — reproduz o benchmark internacional de 4 classes de Graz e calcula matrizes de confusão completas.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Blankertz et al. Berlin BCI (Frontiers OA)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Blankertz et al. related DOI path](https://doi.org/10.3389/fnins.2016.00530) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

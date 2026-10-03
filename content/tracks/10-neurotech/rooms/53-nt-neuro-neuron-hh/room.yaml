@@ -45,9 +45,12 @@ tasks:
   - CMRR
 - id: code-lif-step
   type: code
-  prompt: Implemente `lif_step(v, i_inj, dt=0.001, v_rest=-70.0, r=10.0, tau=0.02, v_thresh=-55.0)` calculando o passo de Euler do neurônio Leaky Integrate-and-Fire. Se v_next >= v_thresh, retorne (v_rest, True), senão (v_next, False).
+  prompt: Implemente `lif_step(v, i_inj, dt=0.001, v_rest=-70.0, r=10.0, tau=0.02,
+    v_thresh=-55.0)` calculando o passo de Euler do neurônio Leaky Integrate-and-Fire.
+    Se v_next >= v_thresh, retorne (v_rest, True), senão (v_next, False).
   xp: 16
-  code_template: "def lif_step(v, i_inj, dt=0.001, v_rest=-70.0, r=10.0, tau=0.02, v_thresh=-55.0):\n    ...\n"
+  code_template: "def lif_step(v, i_inj, dt=0.001, v_rest=-70.0, r=10.0, tau=0.02,\
+    \ v_thresh=-55.0):\n    ...\n"
   code_tests: '
 
     v1, s1 = mod.lif_step(-70.0, 0.0)
@@ -62,4 +65,3 @@ tasks:
 order: 25
 requires_rooms:
 - nt-elec-shield-power
-- nt-neuro-cell-anatomy

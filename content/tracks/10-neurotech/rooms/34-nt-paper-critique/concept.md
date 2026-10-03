@@ -17,8 +17,9 @@ Uma crítica técnica estruturada deve registrar:
 - **Pipeline Declarado:** Algoritmos exatos de filtragem, extração de features e classificação.
 - **Pontos Fortes e Fraquezas Metodológicas:** O que o artigo comprova legitimamente e quais alegações carecem de suporte experimental.
 
-## 3. O que a Próxima Sala Assume
-A próxima sala (`nt-research-proposal`) desafia o estudante a formular sua própria proposta formal de pesquisa de mestrado baseada em uma pergunta científica legítima e testável.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-research-proposal`) — **Proposta de pesquisa (mini)** — redige uma proposta formal de dissertação com hipótese falseável, plano experimental e cronograma de pesquisa.
 
-## 4. Ponto de Destrave do Lab
-Consulte as diretrizes internacionais de transparência e reprodutibilidade em neuroimagem de [Poldrack et al. (Nature 2017)](https://doi.org/10.1038/s41562-016-0017) e o manifesto de [Ioannidis (PLoS Med 2005, Why most published research findings are false)](https://doi.org/10.1371/journal.pmed.0020124).
+## Artigos de Apoio e Leituras Recomendadas
+- [Singh et al. Sensors 2021 MI-BCI](https://doi.org/10.3390/s21062173) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Padfield et al. Sensors 2019 EEG-MI](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

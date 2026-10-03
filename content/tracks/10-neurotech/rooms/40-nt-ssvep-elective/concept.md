@@ -18,8 +18,8 @@ Quando o sistema visual é estimulado por uma fonte intermitente piscando a uma 
 1. **Fadiga Visual e Risco de Fotossensibilidade:** Estímulos de alta luminância abaixo de 15 Hz podem causar cansaço ocular rápido e representam risco formal de desencadear crises em indivíduos com epilepsia fotossensível (triagem médica obrigatória).
 2. **Harmônicos Compartilhados:** Utilizar alvos em $10\text{ Hz}$ e $20\text{ Hz}$, onde o 2º harmônico do primeiro confunde-se com a frequência fundamental do segundo.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-fbcsp-bakeoff`) é a eletiva de comparação competitiva (bake-off) entre Filter Bank CSP e Classificadores Riemannianos no mesmo dataset.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-fbcsp-bakeoff`) — **Eletivo: FBCSP vs Riemann bake-off** — conduz um confronto comparativo direto entre Filter Bank CSP e classificadores Riemannianos (MDM).
 
-## 5. Ponto de Destrave do Lab
-Consulte a revisão abrangente de SSVEP em [Zhu et al. (IEEE Trans Biomed Eng 2010, High-speed BCI based on SSVEP)](https://doi.org/10.1109/TBME.2010.2041352) e [Lin et al. (J Neural Eng 2006)](https://doi.org/10.1088/1741-2560/3/4/007).
+## Artigos de Apoio e Leituras Recomendadas
+- [Zhu et al. SSVEP BCI review JNE 2010](https://doi.org/10.1088/1741-2560/7/4/041001) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

@@ -20,8 +20,11 @@ Diretrizes centrais de governança neural:
 1. **Reutilização Não Autorizada de Dados:** Coletar dados sob um protocolo experimental e reutilizá-los em aplicações comerciais sem novo consentimento aprovado por comitê de ética.
 2. **Venda de Pseudociência:** Vender produtos de consumo prometendo "leitura de pensamentos", ignorando que o EEG de escalpo mede apenas médias populacionais de potenciais pós-sinápticos com baixíssima relação sinal-ruído.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-dipole-scalp`) inicia o percurso da física eletrostática, ensinando como os neurônios geram campos de dipolo e por que esses potenciais decaem com o quadrado da distância até o escalpo.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-math-vectors`) — **Math — Vetores e espaços de features** — inicia a base matemática formal, modelando canais de EEG e épocas temporais como vetores em espaços euclidianos de características.
 
-## 5. Ponto de Destrave do Lab
-Para estudar os fundamentos dos neurodireitos e ética em neuroengenharia, consulte o artigo seminal de [Yuste et al. (Nature 2017, Four ethical priorities for neurotechnologies)](https://doi.org/10.1038/551159a) e as diretrizes do [Relatório Belmont](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI — Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. — MI-BCI review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [UNESCO — Recommendation on the Ethics of AI (2021)](https://unesdoc.unesco.org/ark:/48223/pf0000381137) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Ienca & Andorno — Towards new human rights in the age of neuroscience (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5447102/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

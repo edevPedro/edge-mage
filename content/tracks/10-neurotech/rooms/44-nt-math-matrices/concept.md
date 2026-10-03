@@ -20,8 +20,9 @@ Propriedades fundamentais da covariância:
 1. **Divisão por $T$ em vez de $T - 1$:** Introduzir um viés sistemático na estimativa de covariância amostral em janelas curtas.
 2. **Incompatibilidade de Dimensões:** Multiplicar $X^T X$ (que gera uma matriz $T \times T$ de correlação temporal massiva) em vez de $X X^T$ (que gera a matriz $C \times C$ de covariância espacial desejada).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-math-eigen`) decompõe essas matrizes de covariância em autovalores e autovetores através do método da iteração de potência (Power Iteration).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-math-eigen`) — **Math — Autovalores (PCA/CSP lite)** — aborda a decomposição espectral de matrizes de covariância via iteração de potência e cálculo de autovetores dominantes para filtragem espacial.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia de álgebra linear matricial de [Strang (Linear Algebra and Its Applications, Cengage Learning)](https://math.mit.edu/~gs/).
+## Artigos de Apoio e Leituras Recomendadas
+- [numpy.matmul](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Barachant et al. Riemannian MDM](https://doi.org/10.1109/TBME.2011.2172210) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

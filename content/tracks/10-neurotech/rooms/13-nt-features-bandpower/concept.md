@@ -22,8 +22,10 @@ produz duas vantagens matemáticas cruciais:
 1. **Janela Temporal Curta Demais:** Calcular bandpower em janelas menores que 250 ms (para um ritmo de 10 Hz, isso representa menos de 2.5 ciclos), resultando em estimativas de variância instáveis e ruidosas.
 2. **Logaritmo de Zero:** Se um canal saturar em zero constante, $\log(0) = -\infty$, quebrando a rotina de classificação numérica. Deve-se garantir um piso de estabilidade $\log(P + \epsilon)$ com $\epsilon = 10^{-10}$.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-decode-mvp`) conecta os vetores de potência de banda a um classificador linear LDA para calcular o hiperplano de separação e a métrica Cohen's Kappa.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-trial-design`) — **Desenho experimental e trials** — formaliza a sincronização temporal entre estímulos, gatilhos de hardware (triggers) e marcação de épocas neurais.
 
-## 5. Ponto de Destrave do Lab
-Para fundamentar o uso de bandpower e log-variância em BCI, consulte o trabalho de [Müller-Gerking et al. (Electroencephalogr Clin Neurophysiol 1999)](https://doi.org/10.1016/S0013-4694(98)00115-9).
+## Artigos de Apoio e Leituras Recomendadas
+- [Yger et al. Riemannian BCI (HAL)](https://inria.hal.science/hal-01394253/document) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Padfield et al. (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Lotte et al. — A review of classification algorithms for EEG-based BCI (IOP)](https://doi.org/10.1088/1741-2560/4/2/R01) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

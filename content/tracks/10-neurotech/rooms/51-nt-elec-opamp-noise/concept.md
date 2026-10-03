@@ -29,8 +29,8 @@ $$\text{CMRR} = 20 \log_{10}\left( \frac{A_d}{A_{\text{cm}}} \right) \ge 100\tex
 1. **Desbalanceamento de Impedância de Eletrodos:** Se um eletrodo tiver $5\text{ k}\Omega$ e o outro tiver $50\text{ k}\Omega$, o divisor de tensão na entrada converte ruído de modo comum de 60 Hz em sinal diferencial (degradação do CMRR efetivo do sistema).
 2. **Largura de Banda Excessiva:** Deixar o front-end analógico aberto até 10 kHz quando o sinal de interesse não ultrapassa 100 Hz, quadruplicando o ruído térmico integrado sem ganho fisiológico.
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-antialias`) aborda o teorema de amostragem de Nyquist, filtros anti-aliasing analógicos e o cálculo de frequências rebatidas.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-elec-ina-drl`) — **Elétrica — INA, DRL e bias de paciente** — implementa o circuito de perna direita acionada (Driven Right Leg - DRL) para cancelamento ativo de modo comum.
 
-## 6. Ponto de Destrave do Lab
-Consulte as notas de aplicação de biopotenciais da [Texas Instruments (SBAA160 - Improving Common-Mode Rejection Using the Right-Leg Drive)](https://www.ti.com/lit/an/sbaa160/sbaa160.pdf) e [Ott (Electromagnetic Compatibility Engineering, Wiley)](https://www.wiley.com/).
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

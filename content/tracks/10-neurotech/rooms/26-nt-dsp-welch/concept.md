@@ -28,8 +28,9 @@ $$\Delta f = \frac{1}{T_{\text{seg}}} = \frac{f_s}{L}$$
 1. **Janela Retangular Implícita:** Usar FFT direta sem função de janelamento, provocando vazamento espectral severo onde harmônicos de rede elétrica vazam para a banda beta.
 2. **Segmentos Excessivamente Curtos:** Usar janelas de 100 ms para estimar ondas delta (1 Hz), violando o critério fundamental de que a janela deve conter múltiplos ciclos completos da menor frequência de interesse.
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-filter-design-depth`) aborda o projeto detalhado de filtros causais IIR e FIR, distorção de fase e atraso de grupo.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-filter-design-depth`) — **FIR vs IIR e atraso de grupo** — compara filtros digitais de resposta finita (FIR) e infinita (IIR) sob critérios de linearidade de fase e atraso de grupo.
 
-## 6. Ponto de Destrave do Lab
-Para o estudo formal da técnica de estimativa espectral, consulte o artigo clássico de [Welch (IEEE Trans Audio Electroacoust 1967)](https://doi.org/10.1109/TAU.1967.1161901) e a documentação do [SciPy Signal Welch](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html).
+## Artigos de Apoio e Leituras Recomendadas
+- [scipy.signal.welch](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Michel & Brunet EEG source imaging (OA)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

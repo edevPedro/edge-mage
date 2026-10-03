@@ -28,8 +28,9 @@ $$\text{LSB}_{\mu\text{V}} = \frac{V_{\text{ref}}}{2^{N-1} \times \text{PGA}} \t
 ## 3. Modo de Falha na Engenharia
 Alimentar a entrada de um ADC de 10 ou 12 bits diretamente com o sinal do eletrodo sem um pré-amplificador analógico de alto ganho ($G \ge 1000$). O firmware compila, o código lê valores inteiros do registrador, mas o desenvolvedor está amostrando apenas ruído de quantização e offset térmico.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala do percurso é `nt-elec-antialias` (Elétrica — Nyquist e anti-alias): fs>2fmax; filtro antes do ADC — lab quantitativo.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-elec-antialias`) — **Elétrica — Nyquist e anti-alias** — projeta filtros analógicos passa-baixa anti-aliasing para garantir que componentes acima de Nyquist não dobrem sobre os ritmos cerebrais.
 
-## 5. Ponto de Destrave do Lab
-Para analisar a arquitetura de modulação Delta-Sigma de 24 bits e taxas de oversampling em biopotenciais, consulte o datasheet oficial do [Texas Instruments ADS1299](https://www.ti.com/lit/ds/symlink/ads1299.pdf) e a documentação do módulo [OpenBCI Cyton](https://docs.openbci.com/GettingStarted/Boards/CytonGS/).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI Cyton](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Texas Instruments — ADS1299 datasheet (EEG AFE reference)](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

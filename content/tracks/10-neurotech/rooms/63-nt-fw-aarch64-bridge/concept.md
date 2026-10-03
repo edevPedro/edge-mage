@@ -22,5 +22,8 @@ Ao transitar um algoritmo validado em notebook para um dispositivo embarcado:
 2. Garantir alinhamento de memória em múltiplos de 16 bytes (128 bits) para evitar falhas de barramento nas cargas vetoriais (`LDP`/`STP`).
 3. Declarar explicitamente as limitações do modelo de simulação do host antes da integração em bancada física.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-fw-rt-constraints`) estabelece as restrições temporais de interrupções e margens de segurança para execução estável de firmwares de BCI.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-fw-rt-constraints`) — **Firmware — Restrições realtime e buffers** — audita prazos rígidos de interrupções e calcula a margem de segurança temporal (headroom) do firmware.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [edge-mage Edge AI track](https://github.com/edevPedro/edge-mage/blob/main/content/tracks/07-edge-ai/README.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

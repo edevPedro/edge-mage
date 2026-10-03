@@ -43,41 +43,51 @@ tasks:
   - baixa / low
 - id: code-rc-cutoff
   type: code
-  prompt: Implemente `rc_cutoff(r_ohms, c_farads)` calculando a frequência de corte fc = 1 / (2 * pi * R * C) em Hz, e `audit_tissue_filtering(f_hz, r_membrane_ohm, c_membrane_farad)` calculando a resposta em frequência de passa-baixa da membrana |H(f)| = 1 / sqrt(1 + (2*pi*f*R*C)**2) e a atenuação em dB = 20 * log10(|H(f)|), retornando `(passes_low_freq, h_mag, atten_db, fc_hz)` onde passes_low_freq é True se atten_db >= -3.0 dB.
+  prompt: Implemente `rc_cutoff(r_ohms, c_farads)` calculando a frequência de corte
+    fc = 1 / (2 * pi * R * C) em Hz, e `audit_tissue_filtering(f_hz, r_membrane_ohm,
+    c_membrane_farad)` calculando a resposta em frequência de passa-baixa da membrana
+    |H(f)| = 1 / sqrt(1 + (2*pi*f*R*C)**2) e a atenuação em dB = 20 * log10(|H(f)|),
+    retornando `(passes_low_freq, h_mag, atten_db, fc_hz)` onde passes_low_freq é
+    True se atten_db >= -3.0 dB.
   xp: 14
-  code_template: |
-    import math
+  code_template: "import math\n\ndef rc_cutoff(r_ohms, c_farads):\n    return 1.0\
+    \ / (2.0 * math.pi * r_ohms * c_farads)\n\ndef audit_tissue_filtering(f_hz, r_membrane_ohm,\
+    \ c_membrane_farad):\n    # tau = R * C\n    # fc = 1 / (2 * pi * tau)\n    #\
+    \ h_mag = 1 / sqrt(1 + (2 * pi * f * tau)**2)\n    # atten_db = 20 * log10(h_mag)\n\
+    \    # retorne (atten_db >= -3.0, h_mag, atten_db, fc)\n    ...\n"
+  code_tests: 'import math
 
-    def rc_cutoff(r_ohms, c_farads):
-        return 1.0 / (2.0 * math.pi * r_ohms * c_farads)
-
-    def audit_tissue_filtering(f_hz, r_membrane_ohm, c_membrane_farad):
-        # tau = R * C
-        # fc = 1 / (2 * pi * tau)
-        # h_mag = 1 / sqrt(1 + (2 * pi * f * tau)**2)
-        # atten_db = 20 * log10(h_mag)
-        # retorne (atten_db >= -3.0, h_mag, atten_db, fc)
-        ...
-  code_tests: |
-    import math
     fc = mod.rc_cutoff(1000.0, 1e-6)
+
     assert abs(fc - (1.0 / (2.0 * math.pi * 1e-3))) < 1e-2
 
+
     # R = 1000 ohm, C = 10 uF -> tau = 0.01 s, fc ~ 15.915 Hz
+
     # 10 Hz rhythm (alpha/mu band): passes with minor attenuation (< 3 dB)
+
     p_low, h_low, att_low, fc_val = mod.audit_tissue_filtering(10.0, 1000.0, 10e-6)
+
     assert p_low is True
+
     assert h_low > 0.8
+
     assert -3.0 <= att_low <= 0.0
+
     assert abs(fc_val - 15.915) < 0.1
 
+
     # 1000 Hz spike component: strongly attenuated (> 30 dB loss)
+
     p_fast, h_fast, att_fast, _ = mod.audit_tissue_filtering(1000.0, 1000.0, 10e-6)
+
     assert p_fast is False
+
     assert h_fast < 0.05
+
     assert att_fast < -30.0
+
+    '
 order: 11
 requires_rooms:
 - nt-dipole-scalp
-- nt-found-exp-log
-- nt-physics-waves

@@ -26,8 +26,13 @@ Onde:
 1. **Comparações sem Nível de Acaso Declarado:** Relatar 60% de acurácia em 20 ensaios como "resultado significativo", ignorando que pela distribuição binomial exata o limiar de significância a $\alpha = 0.05$ é superior a 70%.
 2. **Ignorar Custo Temporal no ITR:** Obter 95% de acurácia com janelas de 10 segundos ($M = 6\text{ ensaios/min}$) gerando um ITR muito inferior a um sistema com 80% de acurácia operando a cada 1.5 segundo ($M = 40\text{ ensaios/min}$).
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-stream-buffer`) passa da análise offline para a engenharia de tempo real, construindo a estrutura de dados de buffer circular (ring buffer) para suportar fluxos contínuos de dados.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-ml-neural`) — **ML para dados neurais** — explora modelos de aprendizado profundo compactos voltados para dados eletrofisiológicos (como EEGNet) frente a métodos lineares clássicos.
 
-## 6. Ponto de Destrave do Lab
-Para a formulação da métrica ITR e avaliação padronizada de BCI, consulte o trabalho clássico de [Wolpaw et al. (IEEE TBME 2000)](https://doi.org/10.1109/10.841380) e [Schlögl et al. (J Neural Eng 2005, Characterization of four-class MI)](https://doi.org/10.1088/1741-2560/2/4/L02).
+## Artigos de Apoio e Leituras Recomendadas
+- [Padfield et al. (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. MI-BCI review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Schlögl et al. — Characterization of four-class MI EEG (JNE 2005; κ in BCI)](https://doi.org/10.1088/1741-2560/2/4/L02) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [sklearn — cohen_kappa_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [sklearn — LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [MNE-Python documentation](https://mne.tools/stable/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

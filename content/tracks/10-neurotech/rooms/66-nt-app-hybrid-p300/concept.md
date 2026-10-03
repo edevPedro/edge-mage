@@ -21,5 +21,8 @@ Para um sinal de EEG segmentado relativo ao início do estímulo ($t = 0\text{ m
    Na janela temporal $[idx_{start}, idx_{end}]$, determina-se o valor de amplitude máxima:
    $$V_{peak} = \max_{i = idx_{start}}^{idx_{end}} s[i]$$
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-case-berlin-mi`) conecta a decodificação de ritmos aos casos históricos publicados, explorando o benchmark Berlin BCI.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-case-berlin-mi`) — **Caso emulado — Berlin MI (publicado)** — emula o clássico benchmark de imagética motora do Berlin BCI com análise de assimetria contralateral.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Farwell & Donchin 1988 P300 speller](https://doi.org/10.1016/0013-4694(88)90149-6) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

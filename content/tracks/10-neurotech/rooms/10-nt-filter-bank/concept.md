@@ -25,8 +25,10 @@ Para $f_s = 250\text{ Hz}$, nenhuma frequência útil ou ruído acima de $125\te
 1. **Filtro com Fator Q Excessivamente Alto:** Pode causar oscilação prolongada (ringing no domínio do tempo) após transientes abruptos, gerando artefatos artificiais.
 2. **Ignorar Nyquist em Amostragem Subsequente:** Tentar subamostrar o sinal (downsampling) sem aplicar um filtro passa-baixas anti-aliasing prévio, causando distorção irreversível das bandas sensoriomotoras.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-mi-paradigm`) contextualiza a dinâmica temporal dos ensaios de imagética motora e a técnica de fatiamento de janelas temporais de interesse.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-dsp-welch`) — **DSP — Welch e vazamento espectral** — estima a densidade espectral de potência (PSD) utilizando janelamento e médias de periodogramas com controle de vazamento.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo fundamental do algoritmo Filter Bank Common Spatial Pattern (FBCSP), consulte o artigo seminal de [Ang et al. (IEEE IJCNN 2008, FBCSP)](https://doi.org/10.1109/IJCNN.2008.4634130) e a documentação técnica do [OpenBCI EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI — Setting up for EEG](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Riemannian approaches in BCI (HAL PDF)](https://inria.hal.science/hal-01394253/document) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Ang et al. — Filter Bank Common Spatial Pattern (FBCSP) IEEE](https://doi.org/10.1109/IJCNN.2008.4634130) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

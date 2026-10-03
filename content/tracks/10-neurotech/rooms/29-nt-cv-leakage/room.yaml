@@ -48,7 +48,7 @@ tasks:
 
     '
   xp: 16
-  code_template: "def split_blocked(n_trials, n_folds):\n    # TODO\n    ...\n"
+  code_template: "def split_blocked(n_trials, n_folds):\n    # Sua implementação aqui\n    ...\n"
   code_tests: "folds = mod.split_blocked(8, 4)\nassert len(folds) == 4\nfor tr, te in folds:\n    assert not set(tr) & set(te)\nall_te = sorted([i for _, te in folds for i in te])\nassert all_te == list(range(8))\n"
 - id: code-leakage-audit
   type: code

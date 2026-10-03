@@ -27,8 +27,10 @@ Ingestão de Amostras (Stream)
 1. **Deriva Temporal do Loop (Clock Drift):** Usar `time.sleep()` fixo no loop em vez de sincronização baseada no número acumulado de amostras ingeridas, acumulando atraso em relação ao relógio de amostragem de hardware.
 2. **Índices de Janela Fora dos Limites:** Tentar acessar janelas maiores do que as amostras disponíveis no buffer circular durante os primeiros segundos de inicialização do sistema (cold start).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-checkpoint-paper`) formaliza a consolidação do percurso através de um módulo de reprodução e análise crítica de artigo científico seminal de BCI.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-closed-loop-control`) — **Closed-loop como sistema de controle** — modela o usuário e o decodificador como um sistema de controle dinâmico em malha fechada.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo de arquiteturas de BCI online em código aberto, consulte a documentação e código do [BCILAB (Swartz Center for Computational Neuroscience)](https://sccn.ucsd.edu/wiki/BCILAB) e [OpenViBE Online Scenarios](http://openvibe.inria.fr/).
+## Artigos de Apoio e Leituras Recomendadas
+- [SPEC Neurotech](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI Cyton](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Blankertz et al. — The Berlin Brain-Computer Interface (Frontiers OA, PMC5116473)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

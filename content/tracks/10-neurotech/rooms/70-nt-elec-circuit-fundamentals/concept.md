@@ -18,8 +18,8 @@ Para minimizar esse erro abaixo de $1\%$, exige-se estritamente $R_{\text{in}} \
 1. **Impedância de Entrada Insuficiente:** Usar amplificadores operacionais bipolares com correntes de polarização altas e $R_{\text{in}} \approx 1\text{ M}\Omega$ com eletrodos secos de $500\text{ k}\Omega$, resultando em perda de mais de $33\%$ da amplitude de sinal.
 2. **Consumo Excessivo de Potência:** Dimensionar resistores de polarização com valores baixos demais, descarregando rapidamente baterias em dispositivos vestíveis.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-semiconductors`) analisa os componentes semicondutores essenciais para o AFE: diodos de proteção contra descargas eletrostáticas (ESD) e transistores de efeito de campo (MOSFETs).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-elec-semiconductors`) — **Elétrica — Semicondutores e polarização** — estuda a física de junções semicondutoras PN, diodos de proteção ESD e polarização de transistores de entrada de front-ends.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia clássico de circuitos elétricos de [Nilsson & Riedel (Electric Circuits, Pearson)](https://www.pearson.com/) e [Webster (Medical Instrumentation: Application and Design, Wiley)](https://www.wiley.com/).
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet (contexto AFE)](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

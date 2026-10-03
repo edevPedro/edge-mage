@@ -48,7 +48,7 @@ tasks:
     '
   xp: 18
   code_template: "class RingBuffer:\n    def __init__(self, capacity):\n        #\
-    \ TODO\n        ...\n    def push(self, x):\n        ...\n    def latest(self,\
+    # Sua implementação aqui\n        ...\n    def push(self, x):\n        ...\n    def latest(self,\
     \ n):\n        ...\n"
   code_tests: "b=mod.RingBuffer(3)\nfor i in range(5):\n    b.push(i)\nassert b.latest(3)==[2,3,4]\n\
     assert b.latest(10)==[2,3,4]\n"

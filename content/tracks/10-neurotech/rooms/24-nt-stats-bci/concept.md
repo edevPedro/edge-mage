@@ -24,8 +24,9 @@ Em BCI, dados contíguos de EEG violam a premissa de observações independentes
 1. **Comparações sem Ajuste de Tamanho Amostral:** Considerar 70% em 10 ensaios como "superior" a 60% em 200 ensaios.
 2. **Ignorar Dependência Temporal:** Tratar janelas de tempo contíguas do mesmo trial como amostras independentes em testes estatísticos.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-hypothesis-power`) trata do cálculo de poder estatístico ($1 - \beta$), tamanho de efeito de Cohen ($d$) e correção para múltiplos testes (Bonferroni).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-hypothesis-power`) — **Hipótese, potência e múltiplos testes** — ensina o controle de taxa de falsas descobertas (FDR / Bonferroni) e o cálculo do poder estatístico em pipelines multicanais.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo do cálculo formal de chance level em BCI, consulte o clássico de [Müller-Putz et al. (IEEE TBME 2008, Evaluating BCI performance)](https://doi.org/10.1109/TBME.2007.909640) e [Nichols & Holmes (Hum Brain Mapp 2002, Nonparametric permutation tests)](https://doi.org/10.1002/hbm.1058).
+## Artigos de Apoio e Leituras Recomendadas
+- [Lotte et al. JNE 2007 — classification review](https://doi.org/10.1088/1741-2560/4/2/R01) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Schlögl et al. JNE 2005 — κ / 4-class MI](https://doi.org/10.1088/1741-2560/2/4/L02) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

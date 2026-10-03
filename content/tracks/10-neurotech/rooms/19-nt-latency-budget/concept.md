@@ -26,8 +26,10 @@ Existe um conflito matemático inerente entre:
 - **Resolução Espectral:** Janelas temporais longas ($1\text{--}2\text{ s}$) fornecem estimativas de frequência nítidas ($\Delta f = 1/T$), mas injetam latência inaceitável para controle rápido.
 - **Latência de Resposta:** Janelas curtas ($100\text{--}250\text{ ms}$) respondem rapidamente, mas possuem resolução de frequência grosseira e maior variância estocástica.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-online-stub`) integra essas restrições em um loop online completo com dados sintéticos contínuos e medição em tempo real.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-online-stub`) — **Loop online simulado** — integra o loop de simulação online contínuo com janelas temporais deslizantes e emissão assíncrona de predições.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo formal de latência em sistemas de controle por BCI e estabilidade em malha fechada, consulte [Müller-Putz et al. (Front Neurosci 2015, Closed-loop BCI)](https://doi.org/10.3389/fnins.2015.00078).
+## Artigos de Apoio e Leituras Recomendadas
+- [Singh et al. — MI-BCI review (online challenges context, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Ramsey et al. — Brain–computer interfaces in paralysis (review OA via PMC search)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3497935/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI docs](https://docs.openbci.com/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

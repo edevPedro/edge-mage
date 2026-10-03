@@ -23,8 +23,9 @@ $$\tau_g = \frac{N - 1}{2 f_s}$$
 1. **Instabilidade Numérica de Filtros IIR:** Projetar filtros IIR de ordem alta (ex. ordem 8 direta) sem decomposição em seções de segunda ordem (SOS), fazendo os polos colapsarem fora do círculo unitário por erro de quantização de float32.
 2. **Uso de filtfilt em Tempo Real:** Iludir-se com acurácias de filtros de fase zero em testes offline, ignorando que eles são irrealizáveis em hardware de controle contínuo.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-trial-design`) aborda o desenho experimental rigoroso de ensaios, balanceamento de classes e mitigação de viés de ordem temporal.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-artifacts`) — **Artefatos (EOG/EMG/movimento)** — implementa algoritmos de remoção e atenuação de artefatos musculares e oculares que corrompem os traçados corticais.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia clássico de projeto de filtros digitais e implementação de biquads em [Oppenheim & Schafer (Discrete-Time Signal Processing, Prentice Hall)](https://www.pearson.com/) e a documentação do [SciPy Signal SOSfilt](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.sosfilt.html).
+## Artigos de Apoio e Leituras Recomendadas
+- [scipy.signal.firwin](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [TI ADS1299 datasheet (AFE)](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

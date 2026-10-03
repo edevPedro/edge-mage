@@ -21,8 +21,10 @@ Em tarefas de imagética motora (Motor Imagery - MI):
 1. **Confundir Ritmo Alfa Occipital com Ritmo Mu Motor:** Como ambos ocupam a faixa de $8	ext{--}12	ext{ Hz}$, filtros projetados sem referência espacial podem capturar variações no relaxamento visual do voluntário em vez de intenção motora.
 2. **Confundir Banda Gama com Contaminação de EMG:** Atividade acima de $30	ext{ Hz}$ é dominada por contrações musculares da face e do pescoço, levando modelos ingênuos a "aprender" movimentos de mandíbula em vez de modulação cortical.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-filter-bank`) implementa o banco de filtros passa-faixa digital para decompor sinais multicanal nas bandas de frequência e rejeitar interferência de rede em $60	ext{ Hz}$.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-maps`) — **Neurociência — Mapas corticais e 10–20** — mapeia a topografia do homúnculo sensoriomotor de Penfield e a nomenclatura internacional de eletrodos 10-20.
 
-## 5. Ponto de Destrave do Lab
-Para aprofundar na biofísica de sincronização e dessincronização neuronal em BCI, consulte o artigo fundamental de [Pfurtscheller & Lopes da Silva (Clin Neurophysiol 1999)](https://doi.org/10.1016/S1388-2457(99)00141-8) e a revisão de [Padfield et al. (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/).
+## Artigos de Apoio e Leituras Recomendadas
+- [EEG MI — Techniques and Challenges (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. — MI-BCI comprehensive review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Pfurtscheller & Lopes da Silva — Event-related EEG/MEG synchronization (review)](https://doi.org/10.1016/S1388-2457(99)00141-8) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

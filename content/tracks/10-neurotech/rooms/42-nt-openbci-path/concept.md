@@ -28,8 +28,9 @@ $$\text{Escala LSB} = \frac{4.5}{24 \times 8388607} \approx 0.02235\ \mu\text{V}
 1. **Omissão da Extensão de Sinal:** Provoca descontinuidades extremas sempre que o sinal cruza a linha de zero volts, injetando degraus de $16$ milhões de counts no filtro digital.
 2. **Perda de Pacotes por Driver Serial:** Ler o buffer da porta serial sem checagem de integridade de cabeçalho (`0xA0`) e contador de amostras contíguo.
 
-## 5. O que a Próxima Sala Assume
-A próxima fase (`nt-math-vectors`) inicia a espinha dorsal de matemática avançada, formalizando epochs como vetores em espaços de Hilbert e produtos internos como filtragem espacial.
+## O Que a Próxima Sala Assume
+Parabéns! Esta sala conclui integralmente o catálogo de 77 salas da trilha de Neuroengenharia do edge-mage, formando uma ponte sólida e rigorosa entre a engenharia convencional de software e a neurotecnologia aplicada.
 
-## 6. Ponto de Destrave do Lab
-Para as especificações completas de comunicação serial e registradores do ADS1299, consulte o [OpenBCI Cyton Data Format](https://docs.openbci.com/Cyton/CytonDataFormat/) e o datasheet do [TI ADS1299](https://www.ti.com/product/ADS1299).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

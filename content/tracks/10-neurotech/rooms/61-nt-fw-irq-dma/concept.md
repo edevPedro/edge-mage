@@ -22,5 +22,8 @@ Para permitir que o processador consuma dados continuamente enquanto o DMA grava
    - Disparada quando o ponteiro atinge o final $N$ e dá a volta para o início.
    - Sinaliza que o Buffer Pong está pronto para consumo enquanto o DMA volta a gravar no Buffer Ping.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-fw-fixedpoint`) aborda como processar esses blocos dentro do MCU usando aritmética de ponto fixo Q15 sem a sobrecarga de ponto flutuante emulada.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-mcu-filter`) — **MCU pipeline stub (MA/FIR — não filter-bank MI)** — implementa filtragem digital em tempo real diretamente sobre buffers de amostras de microcontrolador.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [ARM Cortex-M generic interrupt model (CMSIS docs hub)](https://www.keil.com/pack/doc/CMSIS/Core/html/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

@@ -25,5 +25,8 @@ $$\Delta = (s_{i+1} - s_i) \pmod M$$
 
 O total de pacotes perdidos em uma transmissão é o somatório de $(\Delta - 1)$ para todas as transições com $\Delta > 1$.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-cs-realtime-testing`) estende a validação automatizada para a medição empírica de jitter e prazos rígidos de streaming.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-realtime-testing`) — **CS — Testes de streaming e tempo real** — avalia a dispersão temporal de amostragem (jitter) e detecta violações de prazos rígidos de processamento.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [pytest documentation](https://docs.pytest.org/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

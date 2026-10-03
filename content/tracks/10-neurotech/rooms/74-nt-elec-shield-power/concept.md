@@ -23,5 +23,9 @@ $$\text{PSRR (dB)} = 20 \log_{10}\left( \frac{\Delta V_{\text{fonte}}}{\Delta V_
 ## 4. O que a Próxima Fase Assume
 A próxima fase (`nt-neuro-neuron-hh`) inicia o módulo aprofundado de neurociência celular e circuitos neurais de Hodgkin-Huxley e sinapses.
 
-## 5. Ponto de Destrave do Lab
-Consulte as notas de aplicação de blindagem ativa e integridade de alimentação biomédica da [Analog Devices (High Impedance Sensors: Driven Shields and Guarding)](https://www.analog.com/) e [Texas Instruments (SBAA206 - Bio-Sensing Front-End Design)](https://www.ti.com/).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-neuron-hh`) — **Neurociência — Neurônio HH (lite)** — inicia o bloco de neurociência celular conectando a física dos canais iônicos de membrana à bioeletricidade dos biopotenciais.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI — EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

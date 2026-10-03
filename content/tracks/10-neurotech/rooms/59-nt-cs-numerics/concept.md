@@ -26,5 +26,9 @@ Efeito espectral: se $\Sigma = V \Lambda V^T$ com autovalores $\sigma_i$, então
 $$\Sigma_{reg} = V (\Lambda + \lambda I) V^T$$
 Todos os autovalores são deslocados por $+\lambda$. Logo, $\sigma_{min}(\Sigma_{reg}) \ge \lambda > 0$, garantindo que a matriz seja estritamente positiva definida e perfeitamente condicionada para inversão.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-cs-harness`) integra esses cuidados matemáticos em baterias automatizadas de testes e detecção de regressão em pipelines neurais.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-harness`) — **CS — Harness de testes do pipeline** — constrói harnesses de teste determinísticos com controle de sementes e detectores de perda de pacotes seriais.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [What Every Computer Scientist Should Know About Floating-Point (Goldberg)](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [numpy floating point notes](https://numpy.org/doc/stable/user/misc.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

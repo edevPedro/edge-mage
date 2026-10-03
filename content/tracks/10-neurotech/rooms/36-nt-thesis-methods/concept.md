@@ -24,8 +24,9 @@ A rotina `validate_methods_spec` atua como um linter de integridade científica,
 1. **Omissão da Direção do Filtro:** Não esclarecer se o filtro foi aplicado de forma causal (unidirecional) ou com `filtfilt` (bidirecional de fase zero).
 2. **Falta de Semente Aleatória:** Omitir a semente de inicialização, fazendo com que cada execução produza acurácias diferentes e impedindo auditoria de terceiros.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-research-project`) exige a execução do miniprojeto prático de pesquisa experimental ponta a ponta sobre dados reais.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-research-project`) — **Mini projeto de pesquisa (ritual)** — executa o projeto prático final de mestrado e confere a cobiçada Runa de Pesquisa (`rune-neuro-research`).
 
-## 5. Ponto de Destrave do Lab
-Consulte as diretrizes formais de submissão da [IEEE Transactions on Biomedical Engineering (TBME Author Guide)](https://tbme.embs.org/) e o checklist de reprodutibilidade da [Nature Portfolio Reporting Standards](https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards).
+## Artigos de Apoio e Leituras Recomendadas
+- [MNE-Python documentation](https://mne.tools/stable/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [sklearn User Guide](https://scikit-learn.org/stable/user_guide.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

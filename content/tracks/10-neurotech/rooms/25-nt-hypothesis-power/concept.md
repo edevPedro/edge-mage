@@ -26,8 +26,9 @@ $$d = \frac{\mu_1 - \mu_2}{s_{\text{pooled}}}, \quad s_{\text{pooled}} = \sqrt{\
 1. **P-Hacking por Seleção Pós-Hoc:** Varrer dezenas de bandas e selecionar apenas a frequência que atingiu $p < 0.05$ sem reportar a quantidade total de tentativas exploratórias.
 2. **Confundir Significância com Utilidade:** Encontrar $p = 0.001$ com um tamanho de efeito minúsculo ($d = 0.05$) em um dataset massivo, descobrindo que o modelo é inútil para controle em tempo real.
 
-## 5. O que a Próxima Sala Assume
-A próxima sala (`nt-dsp-welch`) aprofunda na estimação de densidade espectral de potência (PSD) via método de Welch e na prevenção de vazamento espectral.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-cv-leakage`) — **CV aninhado e vazamento de trial** — previne vazamento de dados (data leakage) e superestimação de desempenho utilizando validação cruzada aninhada.
 
-## 6. Ponto de Destrave do Lab
-Consulte o guia clássico sobre tamanho de efeito e poder estatístico em [Cohen (Statistical Power Analysis for the Behavioral Sciences, 1988)](https://doi.org/10.4324/9780203771587) e [Benjamini & Hochberg (J R Stat Soc B 1995, Controlling the False Discovery Rate)](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x).
+## Artigos de Apoio e Leituras Recomendadas
+- [Combrisson & Jerbi 2015 — statistical testing MEG/EEG](https://doi.org/10.1016/j.jneumeth.2015.03.034) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Belmont Report (OHRP)](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

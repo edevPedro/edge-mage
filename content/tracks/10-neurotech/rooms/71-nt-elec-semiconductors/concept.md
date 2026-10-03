@@ -16,8 +16,8 @@ O maior desafio ao escolher diodos de proteção para EEG é a **corrente de fug
 1. **Omissão de Resistores de Limitação de Corrente em Série:** Colocar diodos de proteção sem um resistor em série ($R_{\text{series}} \approx 1\text{--}10\text{ k}\Omega$), permitindo que a corrente da descarga de ESD queime os próprios diodos de proteção por sobrecorrente térmica.
 2. **Capacitância Parasita Excessiva:** Diodos com capacitância de junção alta ($C_j > 10\text{ pF}$) criam filtros passa-baixas indesejados e degradam o CMRR do sistema em alta frequência.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-ina-drl`) projeta o Amplificador de Instrumentação (INA) de três amplificadores operacionais e o circuito Driven Right Leg (DRL) para supressão ativa de modo comum.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-electrode-snr`) — **Eletrodo, impedância, SNR** — analisa a interface eletroquímica eletrodo-gel-pele e o efeito de atenuação do divisor resistivo formado pela impedância de contato.
 
-## 5. Ponto de Destrave do Lab
-Consulte o guia de proteção contra ESD em biopotenciais da [Texas Instruments (Application Report: Designing an ESD-Resistant Bioelectric Front-End)](https://www.ti.com/) e [Sedra & Smith (Microelectronic Circuits, Oxford University Press)](https://global.oup.com/academic/product/microelectronic-circuits-9780190853464).
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

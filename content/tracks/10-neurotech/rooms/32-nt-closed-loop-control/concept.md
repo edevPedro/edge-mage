@@ -28,8 +28,8 @@ Onde $\alpha \in (0, 1]$ é o fator de suavização:
 1. **Ganho Excessivo no Feedback:** Mover o cursor com velocidade excessiva, fazendo o voluntário ultrapassar o alvo repetidamente (overshoot).
 2. **Ignorar Latência Sensorial:** Assumir que o usuário pode reagir a um erro de classificação antes de 150 milissegundos.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-irb-protocol`) formaliza os procedimentos regulatórios de Comitê de Ética em Pesquisa (IRB) para estudos com voluntários humanos.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-checkpoint-paper`) — **Ritual módulo de paper** — conduz o primeiro checkpoint formal de pesquisa, exigindo a análise metodológica e reprodução crítica de um paper publicado.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo da modelagem de BCI sob a teoria de controle em malha fechada, consulte [Müller-Putz et al. (Front Neurosci 2015, Closed-loop BCI)](https://doi.org/10.3389/fnins.2015.00078) e [Shanechi (Nat Commun 2019, Brain-machine interfaces from motor to mood)](https://doi.org/10.1038/s41467-019-12497-z).
+## Artigos de Apoio e Leituras Recomendadas
+- [Wolpaw & Wolpaw BCI principles (Clin Neurophysiol lineage)](https://doi.org/10.1016/j.clinph.2012.01.010) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

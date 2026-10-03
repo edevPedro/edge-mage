@@ -28,5 +28,8 @@ Padronizado por Herbert Jasper em 1958 para a Federação Internacional de Socie
 ## 3. Limites de Interpretação e Não-Diagnóstico
 A atribuição anatômica de sinais de EEG de superfície é limitada pela condução de volume do crânio. Dizer que um sinal em $C3$ vem exclusivamente de M1 é uma aproximação de engenharia; o eletrodo capta um somatório ponderado de áreas motoras, pré-motoras e sensoriais adjacentes. Nenhum pipeline de BCI experimental substitui imagens de ressonância magnética funcional (fMRI) ou diagnósticos clínicos neurológicos.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-neuro-plasticity`) estuda a neuroplasticidade sináptica e a co-adaptação bidirecional entre o usuário humano e os pesos estatísticos do decodificador.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-plasticity`) — **Neurociência — Plasticidade e co-adaptação** — estuda o aprendizado sináptico hebbiano e a não-estacionariedade dinâmica na co-adaptação entre usuário e decodificador.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Pfurtscheller & Neuper 1997 MI](https://doi.org/10.1016/S0304-3940(97)00889-6) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

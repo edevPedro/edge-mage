@@ -28,5 +28,8 @@ O total de violações é $count_{misses} = \sum_{i=0}^{N-2} \text{miss}_i$.
 - **Distorção Espectral:** Jitter na amostragem equivale a modulação espúria de fase, criando bandas laterais de ruído artificial no espectro do EEG (*sampling jitter noise*).
 - **Instabilidade no Controle:** Atuadores robóticos alimentados com comandos desiguais no tempo sofrem solavancos mecânicos e podem entrar em oscilações instáveis perigosas.
 
-## 5. O Que a Próxima Sala Assume
-A próxima sala (`nt-fw-irq-dma`) estuda a camada de hardware que previne o jitter na origem: as interrupções de hardware e o Direct Memory Access (DMA).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-filter-bank`) — **Banco de filtros EEG** — inicia o processamento digital de sinais estruturando bancos de filtros passa-faixa causais para isolar bandas fisiológicas de interesse.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Varoquaux et al. — CV pitfalls](https://doi.org/10.1016/j.neuroimage.2016.10.038) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

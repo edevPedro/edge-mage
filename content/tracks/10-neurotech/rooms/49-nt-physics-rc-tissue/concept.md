@@ -18,8 +18,9 @@ $$f_c = \frac{1}{2\pi \tau} = \frac{1}{2\pi R C}$$
 1. **Ignorar o Efeito Capacitivo Tecidual:** Supor que biopotenciais em alta frequência se propagam sem perda de fase ou amplitude através do córtex.
 2. **Confundir Capacitância de Membrana com Eletrodo:** A interface eletrodo-gel possui sua própria rede RC de dupla camada eletroquímica, em série com a rede tecidual.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-physics-field-lite`) aborda o decaimento de campo potencial com a distância e a física que faz fontes subcorticais profundas desaparecerem no escalpo.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-spike-lfp`) — **Spike → LFP (intuição)** — diferencia a dinâmica de potenciais de ação unitários extracelulares e potenciais de campo locais gerados por correntes sinápticas dendríticas.
 
-## 5. Ponto de Destrave do Lab
-Consulte o tratamento biofísico clássico de modelos de membrana em [Johnston & Wu (Foundations of Cellular Neurophysiology, MIT Press)](https://mitpress.mit.edu/9780262100532/) e [Nunez & Srinivasan (Electric Fields of the Brain, Oxford University Press)](https://global.oup.com/academic/product/electric-fields-of-the-brain-9780195050387).
+## Artigos de Apoio e Leituras Recomendadas
+- [Einevoll et al. LFP review (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Buzsáki et al. LFP (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

@@ -26,8 +26,9 @@ Ao contrário de uma carga pontual monopolar (que cai com $1/r$), o potencial di
 ## 3. Modo de Falha na Engenharia
 Supor que um eletrodo mede apenas o que está milimetricamente abaixo dele. Se o dipolo estiver orientado tangencialmente (como nas paredes dos sulcos corticais), $\cos(\pi/2) = 0$: o eletrodo diretamente acima da fonte lê potencial zero, enquanto dois eletrodos distantes leem potenciais opostos (dipolo tangencial bipolar).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala do percurso é `nt-physics-rc-tissue` (Physics — Tecido como RC (lite)): τ=RC; passa-baixa do tecido — intuição quantitativa.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-physics-rc-tissue`) — **Physics — Tecido como RC (lite)** — modela os tecidos cranianos e a membrana celular como uma rede resistivo-capacitiva (RC) com constante de tempo característica.
 
-## 5. Ponto de Destrave do Lab
-Para aprofundar na física eletrostática de dipolos e problemas direto/inverso de EEG, consulte a revisão de [Michel & Brunet (PMC6700197)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) e [Padfield et al. (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/).
+## Artigos de Apoio e Leituras Recomendadas
+- [EEG MI techniques (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Michel & Brunet — EEG source imaging (PMC review)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

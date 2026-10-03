@@ -27,8 +27,9 @@ Se $\|w\|_2 = 0$, a projeção colapsa para zero absoluto em todas as dimensões
 1. **Filtro Espacial Não Normalizado:** Se o desenvolvedor projeta pesos espaciais (por exemplo, $w = [12.0, -8.0, 4.0]$) e esquece de normalizar por $\|w\|_2$, o sinal filtrado sofrerá uma amplificação linear descontrolada ($\times \sqrt{224} \approx 14.96$), saturando conversores subsequentes e descalibrando o bias $b$ do classificador linear.
 2. **Canais em Escalas Heterogêneas:** Se um canal estiver medindo em milivolts (eletrooculograma) e outro em microvolts (EEG cortical), o produto interno será totalmente dominado pelo canal de maior magnitude, tornando os demais canais matematicamente invisíveis.
 
-## 4. O que a Próxima Sala Assume
-A sala seguinte (`nt-math-matrices`) assume que você compreende a projeção linear vetorial para organizar sequências de amostras na matriz de dados $X \in \mathbb{R}^{C \times T}$ e calcular a matriz de covariância amostral $\Sigma = \frac{1}{T-1} X X^T$.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-math-matrices`) — **Math — Matrizes e covariância** — estende a representação vetorial para matrizes multicanais e computa a covariância espacial amostral de biopotenciais.
 
-## 5. Ponto de Destrave do Lab
-Consulte a fundamentação geométrica de projeções lineares no [NumPy linalg norm](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html) e [Khan Academy Linear Algebra](https://www.khanacademy.org/math/linear-algebra).
+## Artigos de Apoio e Leituras Recomendadas
+- [Khan Academy — vectors (intuition)](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [numpy.linalg.norm](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

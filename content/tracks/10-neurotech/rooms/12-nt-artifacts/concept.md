@@ -23,8 +23,9 @@ Os sinais cerebrais de escalpo coexistem com fontes biológicas extracerebrais e
 1. **Descarte Excessivo de Dados:** Definir um limiar agressivo demais (ex. $30\ \mu\text{V}$), eliminando ensaios normais de sujeitos com ritmos de grande amplitude.
 2. **Confundir EMG com Ritmo Gama:** Assumir que atividade de $40\text{ Hz}$ observada em voluntários sob estresse é sinal neural, quando se trata de micro-contrações de tensão na testa.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-features-bandpower`) aborda a extração matemática da potência de banda em canais limpos como a principal característica para classificadores lineares.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-mi-paradigm`) — **Imagética motora (paradigma)** — estrutura o desenho temporal de épocas de calibração para tarefas cognitivas de imagética motora bimanual.
 
-## 5. Ponto de Destrave do Lab
-Para estudar métodos formais de rejeição e correção de artefatos em EEG, consulte a revisão de [Urigüen & Garcia-Zapirain (J Neural Eng 2015, PMC4605434)](https://doi.org/10.1088/1741-2560/12/3/031001) e as diretrizes do [MNE-Python Artifact Correction](https://mne.tools/stable/auto_tutorials/preprocessing/20_rejecting_bad_data.html).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Urigüen & Garcia-Zapirain — EEG artifact removal methods (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4462641/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

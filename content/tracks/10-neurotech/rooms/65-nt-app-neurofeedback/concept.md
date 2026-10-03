@@ -20,5 +20,8 @@ $$\text{recompensa} = \max\left(0.0, (P_{atual} - P_{base}) \times \text{escala}
 - Se $P_{atual} > P_{base}$: O usuário recebe uma recompensa proporcional ao ganho acima da referência.
 - Se $P_{atual} \le P_{base}$: O feedback é fixado em zero, evitando penalizações com valores negativos que violariam a dinâmica de condicionamento operante.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-app-hybrid-p300`) analisa o paradigma do P300 Speller e potenciais evocados relacionados a eventos.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-app-hybrid-p300`) — **Aplicação — P300 speller (paradigma publicado)** — implementa o paradigma Oddball de Farwell & Donchin para decodificação de potenciais evocados P300.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Gruzelier neurofeedback review (example OA path)](https://doi.org/10.1016/j.neubiorev.2013.09.015) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

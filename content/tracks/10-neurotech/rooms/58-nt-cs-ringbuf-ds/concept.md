@@ -17,5 +17,9 @@ Em sistemas de telecomunicações comuns, filas de mensagens frequentemente bloq
 ## 3. Acesso ao Elemento Mais Recente (`latest`)
 Em tarefas de decodificação preditiva em malha fechada, os filtros espaciais frequentemente precisam inspecionar o último valor registrado no stream sem precisar percorrer toda a fila. O método `latest()` deve retornar em tempo constante $\mathcal{O}(1)$ o elemento que acabou de ser gravado pelo último comando `push`.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-cs-numerics`) estuda as armadilhas de estabilidade numérica e representação de ponto flutuante que ocorrem quando acumulamos dados biológicos em buffers contínuos.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-numerics`) — **CS — Estabilidade numérica** — trata do cancelamento catastrófico em ponto flutuante e da regularização diagonal (shrinkage) de matrizes de covariância mal-condicionadas.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Wikipedia — Circular buffer](https://en.wikipedia.org/wiki/Circular_buffer) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Python collections.deque](https://docs.python.org/3/library/collections.html#collections.deque) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

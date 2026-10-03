@@ -9,7 +9,6 @@ owners:
 phase: F8-decode
 requires_rooms:
 - nt-cv-leakage
-- nt-ml-linear-classifier
 course: neurotech
 resources:
 - title: Padfield et al. EEG-MI techniques (PMC)
@@ -74,7 +73,7 @@ tasks:
 
     '
   xp: 16
-  code_template: "def predict_lda(x, w, b):\n    # TODO\n    ...\n"
+  code_template: "def predict_lda(x, w, b):\n    # Sua implementação aqui\n    ...\n"
   code_tests: 'assert mod.predict_lda([1.0, 0.0], [1.0, 0.0], -0.5) == 1
 
     assert mod.predict_lda([0.0, 1.0], [1.0, 0.0], -0.5) == 0
@@ -104,7 +103,8 @@ tasks:
 
     '
   xp: 18
-  code_template: "def fit_threshold_lda(class0, class1):\n    # TODO\n    ...\n\ndef cohen_kappa(y_true, y_pred):\n    # TODO\n    ...\n"
+  code_template: "def fit_threshold_lda(class0, class1):\n    # Sua implementação aqui\n    ...\n\n\
+    def cohen_kappa(y_true, y_pred):\n    # Sua implementação aqui\n    ...\n"
   code_tests: 'w, b = mod.fit_threshold_lda([0.0, 0.2], [0.8, 1.0])
 
     assert abs(w - 1.0) < 1e-9
@@ -120,7 +120,19 @@ tasks:
     '
 - id: multivariate-regularized-lda
   type: code
-  prompt: Implemente `fit_regularized_lda_2d(X_train, y_train, shrinkage=0.1)` decodificando ensaios multicanais de Imagética Motora (C3 e C4) do BCI Competition IV. O algoritmo deve calcular as médias de classe mu0, mu1, a dispersão intrabloco Sw, aplicar regularização de shrinkage Sigma_reg = (1-g)*Sigma + g*(trace/2)*I, inverter a matriz e extrair o hiperplano ótimo (w, b).
+  prompt: Implemente `fit_regularized_lda_2d(X_train, y_train, shrinkage=0.1)` decodificando
+    ensaios multicanais de Imagética Motora (C3 e C4) do BCI Competition IV. O algoritmo
+    deve calcular as médias de classe mu0, mu1, a dispersão intrabloco Sw, aplicar
+    regularização de shrinkage Sigma_reg = (1-g)*Sigma + g*(trace/2)*I, inverter a
+    matriz e extrair o hiperplano ótimo (w, b).
   xp: 20
-  code_template: "def fit_regularized_lda_2d(X_train, y_train, shrinkage=0.1):\n    # X_train: lista de [c3_mu_power, c4_mu_power]\n    # y_train: lista de 0 ou 1\n    # retorne (w, b) onde w é lista [w0, w1] e b é float\n    ...\n"
-  code_tests: "\nimport math\nX_tr = [\n    [10.0, 2.0], [9.5, 2.5], [11.0, 1.8], [8.5, 3.0],\n    [2.0, 10.0], [2.5, 9.0], [1.8, 11.2], [3.1, 8.8]\n]\ny_tr = [0, 0, 0, 0, 1, 1, 1, 1]\nw, b = mod.fit_regularized_lda_2d(X_tr, y_tr, shrinkage=0.1)\nassert len(w) == 2\n# Test trials:\n# Left hand (C3 high, C4 low) -> class 0\np0 = 1 if (10.5*w[0] + 2.1*w[1] + b >= 0) else 0\nassert p0 == 0\n# Right hand (C3 low, C4 high) -> class 1\np1 = 1 if (2.2*w[0] + 9.8*w[1] + b >= 0) else 0\nassert p1 == 1\n"
+  code_template: "def fit_regularized_lda_2d(X_train, y_train, shrinkage=0.1):\n \
+    \   # X_train: lista de [c3_mu_power, c4_mu_power]\n    # y_train: lista de 0\
+    \ ou 1\n    # retorne (w, b) onde w é lista [w0, w1] e b é float\n    ...\n"
+  code_tests: "\nimport math\nX_tr = [\n    [10.0, 2.0], [9.5, 2.5], [11.0, 1.8],\
+    \ [8.5, 3.0],\n    [2.0, 10.0], [2.5, 9.0], [1.8, 11.2], [3.1, 8.8]\n]\ny_tr =\
+    \ [0, 0, 0, 0, 1, 1, 1, 1]\nw, b = mod.fit_regularized_lda_2d(X_tr, y_tr, shrinkage=0.1)\n\
+    assert len(w) == 2\n# Test trials:\n# Left hand (C3 high, C4 low) -> class 0\n\
+    p0 = 1 if (10.5*w[0] + 2.1*w[1] + b >= 0) else 0\nassert p0 == 0\n# Right hand\
+    \ (C3 low, C4 high) -> class 1\np1 = 1 if (2.2*w[0] + 9.8*w[1] + b >= 0) else\
+    \ 0\nassert p1 == 1\n"

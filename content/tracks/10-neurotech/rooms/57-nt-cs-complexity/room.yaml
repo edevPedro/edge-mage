@@ -46,9 +46,11 @@ tasks:
   - Belmont falha
 - id: code-budget-check
   type: code
-  prompt: Implemente `within_deadline(n_channels, n_samples, us_per_sample=0.5, deadline_us=1000.0)` verificando se o processamento O(C * T) cabe no deadline.
+  prompt: Implemente `within_deadline(n_channels, n_samples, us_per_sample=0.5, deadline_us=1000.0)`
+    verificando se o processamento O(C * T) cabe no deadline.
   xp: 12
-  code_template: "def within_deadline(n_channels, n_samples, us_per_sample=0.5, deadline_us=1000.0):\n    ...\n"
+  code_template: "def within_deadline(n_channels, n_samples, us_per_sample=0.5, deadline_us=1000.0):\n\
+    \    ...\n"
   code_tests: '
 
     assert mod.within_deadline(8, 200, 0.5, 1000.0) is True
@@ -59,4 +61,3 @@ tasks:
 order: 31
 requires_rooms:
 - nt-neuro-systems-bci
-- nt-cs-c-basics

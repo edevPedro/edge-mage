@@ -16,8 +16,10 @@ Um protocolo formal para aprovação ética deve conter:
 1. **Coleta Clandestina:** Iniciar experimentos com pessoas antes da emissão formal do parecer consubstanciado de aprovação do comitê de ética. Dados coletados sem aprovação são legalmente nulos e cientificamente imprestáveis.
 2. **Omissão de Conflito de Interesses:** Não declarar vínculos com empresas que pretendem comercializar os algoritmos resultantes da pesquisa acadêmica.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-paper-critique`) ensina a avaliar criticamente artigos científicos de BCI, identificando red flags metodológicas e afirmações sem suporte de dados.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-paper-critique`) — **Leitura crítica de papers BCI** — exercita a leitura crítica e identificação de falhas metodológicas, vazamento de dados e alegações infladas na literatura.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo detalhado das diretrizes éticas em pesquisa humana, consulte as normas do [US Department of Health & Human Services (HHS - 45 CFR 46 / Common Rule)](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/index.html) e as diretrizes do [Conselho Nacional de Saúde (Resolução CNS 466/12)](https://conselho.saude.gov.br/resolucoes/2012/Reso466.pdf).
+## Artigos de Apoio e Leituras Recomendadas
+- [Belmont Report (OHRP)](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Ienca & Andorno 2017 — neurorights](https://doi.org/10.1186/s40504-017-0050-1) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [UNESCO Recommendation on AI Ethics](https://unesdoc.unesco.org/ark:/48223/pf0000381137) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

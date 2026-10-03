@@ -32,5 +32,8 @@ O engenheiro que conclui esta jornada possui a formação completa para:
 - Atuar na indústria global de dispositivos médicos e interfaces cérebro-computador (como Kernel, Neuralink, Paradromics, g.tec, OpenBCI).
 - Liderar o desenvolvimento de firmware de alta confiabilidade para instrumentação médica e controle em tempo real.
 
-## 4. Ponto de Destrave do Lab
-Consulte o marco final do SPEC em [docs/SPEC-neurotech-course.md](file:///Users/epedro/eCodes/edevs/edge-mage/docs/SPEC-neurotech-course.md) e as diretrizes globais do currículo em [content/CURRICULUM.md](file:///Users/epedro/eCodes/edevs/edge-mage/content/CURRICULUM.md).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-ssvep-elective`) — **Eletivo: SSVEP paradigm** — abre os módulos eletivos avançados explorando a decodificação de potenciais evocados visuais de estado estacionário (SSVEP).
+
+## Artigos de Apoio e Leituras Recomendadas
+- [SPEC Neurotech — Supremo path](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

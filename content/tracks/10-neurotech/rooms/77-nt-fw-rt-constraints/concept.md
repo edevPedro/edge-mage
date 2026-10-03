@@ -23,5 +23,8 @@ $$t_{seguro} \le t_{deadline}$$
 
 Se $t_{seguro} > t_{deadline}$, o sistema é classificado como inseguro (*unsafe*), exigindo otimização de código, redução da taxa de amostragem ou adoção de hardware mais veloz.
 
-## 4. O Que a Próxima Sala Assume
-Esta sala encerra os fundamentos de firmware e conecta-se diretamente com os casos práticos e aplicações clínicas do percurso.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-latency-budget`) — **Orçamento de latência closed-loop** — quantifica o atraso ponta-a-ponta da malha de controle fechada desde a aquisição neural até o acionamento físico.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

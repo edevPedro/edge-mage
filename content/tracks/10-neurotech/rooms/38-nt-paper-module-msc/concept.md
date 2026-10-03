@@ -16,8 +16,10 @@ A rotina `verify_paper_reproduction(paper_meta, observed_metrics)` compara as m�
 1. **Omissão da Discussão de Limitações:** Apresentar resultados como perfeitos sem apontar o impacto de fadiga do voluntário, artefatos residuais e restrições de generalização entre dias.
 2. **Citação sem DOI Válido:** Fornecer links quebrados ou referências bibliográficas incompletas sem identificador persistente.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-mago-supremo`) é o clímax final do percurso de neuroengenharia: o ritual do Mago Supremo pela rota neural.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-mago-supremo`) — **Boss Mago Supremo (rota Neurotech)** — coroa a especialização com a auditoria rigorosa de todas as runas, artefatos e pipelines construídos ao longo do curso.
 
-## 5. Ponto de Destrave do Lab
-Consulte os padrões de redação de artigos em neuroengenharia de [Lotte et al. (J Neural Eng 2018, A review of classification algorithms for EEG-based BCI)](https://doi.org/10.1088/1741-2552/aab2f2).
+## Artigos de Apoio e Leituras Recomendadas
+- [Yger et al. Riemannian review (HAL)](https://inria.hal.science/hal-01394253/document) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Barachant et al. DOI](https://doi.org/10.1109/TBME.2011.2172210) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. DOI](https://doi.org/10.3390/s21062173) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

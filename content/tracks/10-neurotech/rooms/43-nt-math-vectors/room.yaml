@@ -34,21 +34,17 @@ tasks:
   tolerance: 0.01
 - id: code
   type: code
-  prompt: 'Implemente `dot(a,b)`, `l2(a)` e `normalize_spatial_filter(w)` que retorna o vetor normalizado w tal que ||w_norm||_2 == 1.0. Se ||w||_2 == 0, levante ValueError.'
+  prompt: Implemente `dot(a,b)`, `l2(a)` e `normalize_spatial_filter(w)` que retorna
+    o vetor normalizado w tal que ||w_norm||_2 == 1.0. Se ||w||_2 == 0, levante ValueError.
   xp: 14
-  code_template: "def dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\ndef l2(a):\n    return sum(x * x for x in a) ** 0.5\n\ndef normalize_spatial_filter(w):\n    # normaliza vetor de pesos espaciais pela norma euclidiana\n    ...\n"
-  code_tests: |
-    assert abs(mod.dot([1, 2], [3, 4]) - 11) < 1e-9
-    assert abs(mod.l2([3, 4]) - 5) < 1e-9
-    wn = mod.normalize_spatial_filter([3.0, 4.0])
-    assert abs(mod.l2(wn) - 1.0) < 1e-7
-    assert abs(wn[0] - 0.6) < 1e-7 and abs(wn[1] - 0.8) < 1e-7
-    try:
-        mod.normalize_spatial_filter([0.0, 0.0])
-        assert False, "Deveria levantar ValueError para norma zero"
-    except ValueError:
-        pass
+  code_template: "def dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\n\
+    def l2(a):\n    return sum(x * x for x in a) ** 0.5\n\ndef normalize_spatial_filter(w):\n\
+    \    # normaliza vetor de pesos espaciais pela norma euclidiana\n    ...\n"
+  code_tests: "assert abs(mod.dot([1, 2], [3, 4]) - 11) < 1e-9\nassert abs(mod.l2([3,\
+    \ 4]) - 5) < 1e-9\nwn = mod.normalize_spatial_filter([3.0, 4.0])\nassert abs(mod.l2(wn)\
+    \ - 1.0) < 1e-7\nassert abs(wn[0] - 0.6) < 1e-7 and abs(wn[1] - 0.8) < 1e-7\n\
+    try:\n    mod.normalize_spatial_filter([0.0, 0.0])\n    assert False, \"Deveria\
+    \ levantar ValueError para norma zero\"\nexcept ValueError:\n    pass\n"
 order: 3
 requires_rooms:
 - nt-ethics-consent
-- nt-found-calculus

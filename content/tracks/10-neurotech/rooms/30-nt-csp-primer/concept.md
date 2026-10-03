@@ -25,8 +25,10 @@ Tipicamente, selecionam-se os $m$ primeiros e os $m$ últimos autovetores ($2m$ 
 1. **Vazamento Espacial de Treino:** Ajustar os filtros CSP sobre todos os ensaios da sessão antes de dividir os folds da validação cruzada. Como o CSP é supervisionado, isso produz acurácias espúrias de mais de 90% em dados onde só existe ruído puro!
 2. **Matrizes de Covariância Mal-Condicionadas:** Em montagens com muitos eletrodos ($C > 32$) e poucos ensaios, $\Sigma_1$ e $\Sigma_2$ tornam-se singulares. É obrigatório aplicar regularização de encolhimento (Shrinkage) nas matrizes de covariância antes de resolver o CSP (Regularized CSP - RCSP).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-ml-neural`) avalia modelos de aprendizado de máquina para dados neurais, comparando abordagens lineares clássicas (CSP+LDA) contra redes neurais compactas (EEGNet).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-riemann-primer`) — **Primer Riemanniano (SPD toy)** — mapeia matrizes de covariância para a variedade riemanniana de matrizes simétricas positivas definidas (SPD) com métrica afim-invariante.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo da formulação matemática formal do CSP e suas variantes regulares, consulte a revisão clássica de [Blankertz et al. (IEEE Signal Process Mag 2008, Optimizing Spatial filters)](https://doi.org/10.1109/MSP.2008.4408441) e [Ramoser et al. (IEEE Trans Rehabil Eng 2000)](https://doi.org/10.1109/86.895946).
+## Artigos de Apoio e Leituras Recomendadas
+- [Ramoser et al. IEEE TNSRE 2000 — CSP](https://doi.org/10.1109/86.895946) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Ang et al. FBCSP IJCNN 2008](https://doi.org/10.1109/IJCNN.2008.4634130) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Barachant et al. Riemannian MDM](https://doi.org/10.1109/TBME.2011.2172210) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

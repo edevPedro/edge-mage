@@ -27,5 +27,8 @@ Engenheiros convencionais frequentemente cometem o erro de buscar picos de poten
 2. **Decaimento Espacial:** O spike axonal atua como um quadrupolo elétrico de corrente, cujo potencial decai com $1/r^3$. A $2\text{--}3\text{ cm}$ de distância no escalpo, sua amplitude cai para menos de nano-volts.
 3. **Origem do Macropotencial:** O EEG reflete potenciais pós-sinápticos (PSPs), que duram de $10\text{ a }100\text{ ms}$ (banda $<100\text{ Hz}$) e geram dipolos de corrente abertos que decaem apenas com $1/r^2$.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-neuro-synapse`) explora a transição da condutância celular para o potencial pós-sináptico (PSP) e o potencial de campo local (LFP).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-synapse`) — **Neurociência — Sinapses e PSP** — transita da excitação celular axonal para a dinâmica lenta dos potenciais pós-sinápticos (PSPs) que originam o sinal de EEG.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Hodgkin & Huxley 1952](https://doi.org/10.1113/jphysiol.1952.sp004764) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

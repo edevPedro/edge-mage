@@ -27,5 +27,10 @@ $$V(r) \approx V_0 \cdot \left(\frac{r_0}{r}\right)^2 \quad (\text{para } r \ge 
 1. **Confundir LFP com Spike Filtrado**: Supor que o LFP é apenas uma média móvel de potenciais de ação. Na realidade, potenciais de ação de neurônios vizinhos são assíncronos e sofrem cancelamento destrutivo quase total. O LFP reflete a somação espacial de potenciais pós-sinápticos excitatórios e inibitórios (EPSPs/IPSPs) orientados espacialmente ao longo dos dendritos apicais paralelos das células piramidais corticais.
 2. **Prometer Spike Sorting no Escalpo**: Desenvolvedores convencionais frequentemente tentam subir a taxa de amostragem de um EEG de escalpo para $10\text{ kHz}$ acreditando que vão "pegar spikes individuais de neurônios". A física do meio e a atenuação geométrica tornam spikes de neurônios únicos indetectáveis no escalpo, não importando a taxa de amostragem do ADC.
 
-## 3. O que a Próxima Sala Assume
-A sala seguinte (`nt-volume-blur` (Condução de volume e borrão espacial)) assume que você compreende que os potenciais captados no escalpo são somações de dipolos de corrente síncronos (LFPs macroscópicos). Ela estuda como esses dipolos sofrem dispersão lateral e filtragem espacial ao atravessar as diferentes camadas condutoras da cabeça (LCR, osso craniano de alta resistividade e pele).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-volume-blur`) — **Condução de volume e borrão espacial** — investiga a difusão lateral de correntes no crânio e a função de espalhamento de ponto (PSF) que borra espacialmente o EEG de escalpo.
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Buzsáki et al. — The origin of extracellular fields (PMC4907333)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Einevoll et al. — Modelling and analysis of LFP (PMC3884846)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Singh et al. — MI-BCI review context (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

@@ -25,5 +25,8 @@ O acoplamento humano-computador em BCI forma um sistema de aprendizado dinâmico
 
 Re-calibrações periódicas documentadas e métodos de adaptação de domínio (*domain adaptation*) são procedimentos padrão e metodologicamente honestos na literatura de neuroengenharia para mitigar a perda de calibração entre sessões.
 
-## 4. O Que a Próxima Sala Assume
-A próxima sala (`nt-neuro-systems-bci`) integra os componentes celulares, sinápticos e corticais no cálculo formal da dessincronização relacionada a eventos (ERD/ERS).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-systems-bci`) — **Neuro — Sistemas e circuitos para BCI** — sintetiza a malha sensoriomotora e formaliza a métrica de dessincronização relacionada a eventos (ERD/ERS).
+
+## Artigos de Apoio e Leituras Recomendadas
+- [Wolpaw & Wolpaw BCI principles](https://doi.org/10.1016/j.clinph.2012.01.010) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

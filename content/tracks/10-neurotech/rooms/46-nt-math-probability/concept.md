@@ -20,8 +20,8 @@ A variância de uma variável Bernoulli com $p = 0.5$ é $\text{Var} = p(1 - p) 
 1. **Desvio-Padrão Nulo ou Negativo:** Tentar avaliar a densidade com $\sigma \le 0$, provocando divisão por zero.
 2. **Dados Fortemente Assimétricos:** Ajustar uma gaussiana em potências lineares brutas sem transformação logarítmica prévia, distorcendo os limiares de decisão bayesiana.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-math-estimation`) estuda a estimação não-viesada de parâmetros, erro padrão da média e matrizes de covariância.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-math-estimation`) — **Math — Estimação e erro-padrão** — ensina o cálculo de intervalos de confiança e erro-padrão da média (SEM) em ensaios eletrofisiológicos com variância biológica.
 
-## 5. Ponto de Destrave do Lab
-Consulte o tratamento clássico de teoria estatística em [Papoulis & Pillai (Probability, Random Variables, and Stochastic Processes, McGraw-Hill)](https://www.mheducation.com/).
+## Artigos de Apoio e Leituras Recomendadas
+- [Schlögl et al. κ in BCI](https://doi.org/10.1088/1741-2560/2/4/L02) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

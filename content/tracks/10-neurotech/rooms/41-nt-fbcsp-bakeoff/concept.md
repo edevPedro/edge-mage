@@ -18,8 +18,10 @@ A comparação justa e reprodutível de pipelines de aprendizado de máquina (Ba
 1. **Hiperparâmetros Otimizados no Teste:** Otimizar as sub-bandas do FBCSP olhando a pontuação do conjunto de teste, gerando overfitting e superioridade artificial sobre o modelo rival.
 2. **Diferenças Ocultas de Pré-Processamento:** Usar filtros de ordens diferentes ou intervalos temporais desiguais entre os dois modelos.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-openbci-path`) é a eletiva de integração prática com o hardware de código aberto OpenBCI Cyton.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-openbci-path`) — **Eletivo: caminho OpenBCI (stub)** — aprofunda o protocolo de comunicação serial, decodificação de pacotes binários de 24 bits e montagem de bancada com OpenBCI Cyton.
 
-## 5. Ponto de Destrave do Lab
-Consulte o bake-off abrangente de algoritmos de BCI na biblioteca aberta [MOABB (Jayaram & Barachant, J Neural Eng 2018)](https://doi.org/10.1088/1741-2552/aae107) e [Ang et al. (IEEE IJCNN 2008)](https://doi.org/10.1109/IJCNN.2008.4634130).
+## Artigos de Apoio e Leituras Recomendadas
+- [Ang et al. FBCSP](https://doi.org/10.1109/IJCNN.2008.4634130) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Barachant et al. Riemannian MDM](https://doi.org/10.1109/TBME.2011.2172210) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Yger et al. HAL review](https://inria.hal.science/hal-01394253/document) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

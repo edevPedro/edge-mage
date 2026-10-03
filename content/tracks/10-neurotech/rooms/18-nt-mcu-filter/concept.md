@@ -22,8 +22,11 @@ Ao multiplicar dois números Q15, o resultado é um número Q30 com dois bits de
 1. **Overflow Sem Saturação:** Em aritmética modular padrão, $32000 + 2000 = -31536$. Em um sinal de biopotencial, isso inverte bruscamente a polaridade da onda, gerando uma espícula de alta frequência artificial que dispara falsos alarmes no decodificador.
 2. **Excesso de Taps no Filtro:** Projetar um filtro FIR com 256 coeficientes em um MCU de 64 MHz amostrando a 1 kHz consome 256 ciclos de clock por canal a cada milissegundo, sobrecarregando o orçamento térmico e a bateria do dispositivo.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-latency-budget`) formaliza o orçamento de latência ponta a ponta (aquisição $\to$ filtragem $\to$ decodificação $\to$ atuação) contra deadlines rígidos de controle em tempo real.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-fw-fixedpoint`) — **Firmware — Fixed-point Q15** — converte coeficientes e sinais para aritmética inteira de ponto fixo Q15 com proteção contra saturação.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo da biblioteca oficial de processamento de sinais em ARM Cortex-M, consulte a documentação do [CMSIS-DSP Filtering Functions](https://arm-software.github.io/CMSIS_5/DSP/html/group__groupFilters.html).
+## Artigos de Apoio e Leituras Recomendadas
+- [CMSIS-NN (Arm)](https://github.com/ARM-software/CMSIS-NN) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [AAPCS64](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [CMSIS-DSP (Arm)](https://github.com/ARM-software/CMSIS-DSP) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI Cyton — streaming context](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

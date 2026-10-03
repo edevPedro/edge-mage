@@ -18,8 +18,9 @@ Um buffer circular é uma área de memória contígua de capacidade estática $N
 1. **Buffer Overrun:** O algoritmo de inferência demora mais para processar do que o intervalo de novas amostras, forçando o ponteiro de escrita a atropelar o ponteiro de leitura e corrompendo a continuidade temporal do sinal.
 2. **Buffer Underrun:** Tentar disparar a inferência antes que o buffer contenha o número mínimo de amostras para preencher a janela temporal, gerando predições com dados incompletos ou zeros residuais.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-mcu-filter`) implementa a execução de filtros digitais sobre esses buffers dentro do ambiente restrito de um microcontrolador ARM Cortex-M.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-fw-irq-dma`) — **Firmware — IRQ curta e DMA** — configura controladores de Direct Memory Access com double-buffering ping-pong para desonerar a CPU na aquisição.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo de padrões de streaming de dados em tempo real e arquitetura SPSC lock-free em C/Python, consulte a documentação técnica do [Lab Streaming Layer (LSL)](https://labstreaminglayer.readthedocs.io/) e [OpenBCI Data Format](https://docs.openbci.com/).
+## Artigos de Apoio e Leituras Recomendadas
+- [OpenBCI Cyton stream context](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [LSL — Lab Streaming Layer docs](https://labstreaminglayer.readthedocs.io/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

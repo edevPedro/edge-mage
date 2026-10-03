@@ -19,8 +19,10 @@ O total de parâmetros de uma EEGNet típica varia entre 1.500 e 3.000 pesos —
 1. **Complexidade Algorítmica Desproporcional:** Utilizar redes neurais profundas de milhões de parâmetros para resolver problemas binários simples de imagética motora onde CSP + Regularized LDA entrega acurácia superior com latência milissegunda em microcontroladores.
 2. **Avaliação no Mesmo Bloco:** Validar modelos profundos sem teste rigoroso entre dias (inter-session) ou entre sujeitos (cross-subject).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-closed-loop-control`) estuda BCI sob a ótica de sistemas de controle em malha fechada, atrasos de feedback sensorial e suavização exponencial (EMA).
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-stream-buffer`) — **Stream sintético e ring buffer** — retorna à camada de sistemas conectando geradores contínuos de sinal ao buffer circular de streaming.
 
-## 5. Ponto de Destrave do Lab
-Para o estudo da arquitetura canônica e código de redes compactas para EEG, consulte o artigo fundamental de [Lawhern et al. (J Neural Eng 2018, EEGNet)](https://doi.org/10.1088/1741-2552/aace8c) e o repositório oficial [EEGNet no GitHub](https://github.com/vlawhern/arl-eegmodels).
+## Artigos de Apoio e Leituras Recomendadas
+- [Lotte et al. classification review](https://doi.org/10.1088/1741-2560/4/2/R01) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Alzahab et al. Brain Sci. hDL-BCI (OA)](https://doi.org/10.3390/brainsci11010075) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [sklearn LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

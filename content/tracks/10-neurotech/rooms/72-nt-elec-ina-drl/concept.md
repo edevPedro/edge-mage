@@ -22,8 +22,9 @@ Reduz a interferência de modo comum no corpo em 30 a 50 dB adicionais antes de 
 1. **Desconexão do Eletrodo DRL:** Se o eletrodo DRL se soltar da pele, a malha de realimentação se abre e os canais saturam imediatamente em 60 Hz.
 2. **Ganho Excessivo no INA com Offset DC:** Ajustar ganho $\times 1000$ em um estágio analógico único sem desacoplamento DC, fazendo com que o potencial de meia-célula do eletrodo ($\approx 300\text{ mV}$) sature o amplificador na tensão máxima de alimentação ($300\text{ V}$ teóricos contra trilho de $3.3\text{ V}$).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-elec-pcb-emc`) aborda o projeto de placa de circuito impresso (PCB), roteamento para sinais de microvolts e mitigação de loops de indução magnética.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-adc-bio`) — **ADC e escala µV** — formaliza a quantização digital em microvolts e o dimensionamento da resolução do conversor analógico-digital de 24 bits.
 
-## 5. Ponto de Destrave do Lab
-Consulte o artigo seminal do circuito DRL em [Winter & Webster (IEEE TBME 1983, Driven-right-leg circuit design)](https://doi.org/10.1109/TBME.1983.325158) e o manual de AFE da [Analog Devices ADAS1000](https://www.analog.com/).
+## Artigos de Apoio e Leituras Recomendadas
+- [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [OpenBCI — Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

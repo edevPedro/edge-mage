@@ -17,8 +17,9 @@ Para garantir separabilidade estrita:
 1. **Fit de Scaler Global:** Ajustar `StandardScaler` sobre a matriz inteira antes de dividir os folds.
 2. **Treinar e Testar no Mesmo Ponto de Baseline:** Usar o início do próprio trial de teste para normalizar o teste sem protocolo causal.
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-csp-primer`) introduz o método clássico de Common Spatial Patterns (CSP), onde o vazamento de dados por ajuste global é particularmente fatal.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-decode-mvp`) — **Decode MVP (labels → LDA → κ)** — integra o primeiro pipeline completo de decodificação supervisionada com classificador Linear Discriminant Analysis (LDA).
 
-## 5. Ponto de Destrave do Lab
-Para o estudo do impacto de vazamento temporal e boas práticas de validação cruzada em BCI, consulte [Varoquaux (NeuroImage 2018, Cross-validation failure in predictive neuroimaging)](https://doi.org/10.1016/j.neuroimage.2017.06.061) e [Lemm et al. (NeuroImage 2011, Introduction to machine learning for BCI)](https://doi.org/10.1016/j.neuroimage.2010.11.004).
+## Artigos de Apoio e Leituras Recomendadas
+- [Lotte et al. JNE 2007](https://doi.org/10.1088/1741-2560/4/2/R01) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Varoquaux et al. 2017 — assessing prediction](https://doi.org/10.1016/j.neuroimage.2016.10.038) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

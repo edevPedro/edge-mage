@@ -25,8 +25,9 @@ A taxa de convergência geométrica depende da razão de separação entre os do
 1. **Autovalores Iguais ou Próximos (Espectro Degenerado):** Se $\lambda_1 \approx \lambda_2$, a convergência torna-se lenta, exigindo aceleradores de Chebyshev ou algoritmos de decomposição QR.
 2. **Vetor Inicial no Núcleo:** Escolher um vetor inicial perfeitamente ortogonal ao autovetor dominante (probabilidade quase nula com inicialização estocástica).
 
-## 4. O que a Próxima Sala Assume
-A próxima sala (`nt-math-probability`) introduz o cálculo de probabilidades, distribuições gaussianas e a probabilidade de acerto ao acaso em tarefas de decisão.
+## O Que a Próxima Sala Assume
+A próxima sala (`nt-math-probability`) — **Math — Probabilidade e chance level** — formaliza os limites estocásticos de classificação, calculando o nível de acaso empírico e o coeficiente Kappa de Cohen para validação estatística.
 
-## 5. Ponto de Destrave do Lab
-Consulte o tratamento formal de decomposição espectral em [Golub & Van Loan (Matrix Computations, Johns Hopkins University Press)](https://jhupbooks.press.jhu.edu/title/matrix-computations).
+## Artigos de Apoio e Leituras Recomendadas
+- [numpy.linalg.eig](https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
+- [Ramoser et al. CSP](https://doi.org/10.1109/86.895946) — *Artigo Científico*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.
