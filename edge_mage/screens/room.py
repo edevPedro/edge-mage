@@ -78,7 +78,7 @@ class RoomScreen(MageScreen):
                 "TAREFAS — j/k · Enter/l  ·  Ctrl+w  ·  M mastery (sala limpa)",
                 classes="panel-title",
             )
-            yield OptionList(*self._task_options(), id="task-list")
+            yield OptionList(*self._task_options(), id="task-list", markup=False)
 
     def _task_options(self) -> list[Option]:
         store = self.app.store  # type: ignore[attr-defined]
@@ -98,10 +98,10 @@ class RoomScreen(MageScreen):
                 "code": "CODE",
                 "ritual": "RITUAL",
             }.get(t.type, t.type.upper())
-            label = (
-                f"{mark}  [{kind}]  {t.prompt[:70]}"
-                f"{'…' if len(t.prompt) > 70 else ''}  (+{t.xp} XP)"
-            )
+            # Prompt inteiro: a lista quebra linha e rola. O corte em 70
+            # partia o enunciado no meio da frase.
+            one_line = " ".join(t.prompt.split())
+            label = f"{mark}  [{kind}]  {one_line}  (+{t.xp} XP)"
             options.append(Option(label, id=t.id))
         if store.is_room_done(self.track.id, self.room.id):
             m = store.mastery_count(self.track.id, self.room.id)
@@ -126,6 +126,7 @@ class RoomScreen(MageScreen):
             pass
         self._apply_content_visibility()
         self.set_focused_pane("story")
+        self.call_after_refresh(self._fit_anim_column)
         if self.anim_kind != "none":
             self.call_after_refresh(self._autoplay)
 
@@ -180,7 +181,43 @@ class RoomScreen(MageScreen):
                     )
                 except Exception:
                     pass
+        self._fit_anim_column()
 
+    def on_resize(self, event) -> None:  # type: ignore[no-untyped-def]
+        self._fit_anim_column()
+
+    def _fit_anim_column(self) -> None:
+        """Não deixa a animação de 42 colunas esmagar história/conceito/desafio.
+
+        Em terminal estreito o painel some enquanto se lê; no foco ANIM ele
+        ocupa a faixa. Em terminal largo segue ao lado, na largura ajustável.
+        """
+        if self.anim_kind == "none":
+            return
+        try:
+            anim = self.query_one("#anim-panel")
+        except Exception:
+            return
+        width = self.size.width
+        if width < 20:
+            return
+        side_ok = width >= 96
+        if self.focused_pane == "anim" and not side_ok:
+            anim.remove_class("-hidden")
+            anim.styles.width = max(24, width - 4)
+            for key in ("story", "concept", "desafio"):
+                try:
+                    self.query_one(f"#pane-{key}").add_class("-hidden-pane")
+                except Exception:
+                    pass
+            return
+        # leitura, ou ANIM ao lado quando cabe: restaura a aba de texto
+        self._apply_content_visibility()
+        if side_ok:
+            anim.remove_class("-hidden")
+            anim.styles.width = self._anim_width
+        else:
+            anim.add_class("-hidden")
 
     def _tab_label(self) -> str:
         marks = []
@@ -223,6 +260,7 @@ class RoomScreen(MageScreen):
         if pane in {"story", "concept", "desafio"}:
             self._content_tab = pane
         self._apply_content_visibility()
+        self._fit_anim_column()
 
     def _autoplay(self) -> None:
         try:
@@ -230,6 +268,8 @@ class RoomScreen(MageScreen):
         except Exception:
             return
         panel.play(self.anim_kind)
+        # play() mostra o painel; em tela estreita a leitura volta a largura cheia
+        self._fit_anim_column()
 
     def toggle_animation(self, kind: str | None = None) -> None:
         if self.anim_kind == "none" and not kind:

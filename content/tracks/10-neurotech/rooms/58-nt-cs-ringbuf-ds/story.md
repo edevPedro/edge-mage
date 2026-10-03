@@ -1,9 +1,19 @@
-# História — O último valor, não a janela
+# História — A Fila que Não Podia Alocar
 
-Esta sala é a estrutura, não o stream de neuro. `Ring` com capacidade 3. O guardião empurra 1, depois 2, depois 3, depois 4. `latest()` devolve um escalar: o último valor escrito, que é 4.
+No laboratório de instrumentação de BCI, a equipe estava testando um driver em Python para capturar pacotes de 8 canais de EEG vindos via porta serial a 250 Hz. Nos primeiros trinta segundos, o streaming funcionava perfeitamente. De repente, a cada dez segundos, o sistema engasgava por 80 milissegundos, perdendo dezenas de amostras consecutivas.
 
-Não é a lista `[2, 3, 4]`. Isso seria o `latest(n)` da sala de stream. Aqui a API é `push` e `latest` sem argumento de contagem. O 1 foi sobrescrito quando o quarto push chegou — política overwrite, a palavra do fill. Se `latest` devolver 1, você leu o slot mais antigo. Se devolver `[4]`, errou o tipo.
+O desenvolvedor de firmware conectou um analisador lógico e chamou o programador de software:
 
-Capacidade fixa: o índice depois de `capacity − 1` volta a zero. Desenhe os três slots `[2, 3, 4]` e o cursor no 4. A conta é essa. Buffer infinito não existe no MCU didático, e não há amostra biológica nestes inteiros.
+— "Sua aplicação está pausando a thread de leitura serial. O que está acontecendo no seu código a cada dez segundos?"
 
-Fase F5, nt-cs-ringbuf-ds: latest() depois de push 1,2,3,4 numa capacidade 3 é o escalar 4. A política do fill é overwrite. Lista de três elementos é a API da outra sala de stream.
+O programador abriu o editor:
+
+— "Eu criei uma lista dinâmica simples: `buffer.append(sample)`. Quando o tamanho da janela atinge o limite, eu faço `buffer.pop(0)` para remover o mais antigo."
+
+O engenheiro de firmware respirou fundo:
+
+— "Em ciência da computação de sistemas em tempo real, `pop(0)` em uma lista encadeada ou array dinâmico é uma das piores operações possíveis: ela tem complexidade $\mathcal{O}(N)$, exigindo que todos os elementos subsequentes sejam copiados na memória. Pior ainda: o interpretador aloca e desaloca blocos de memória dinamicamente no heap, forçando o coletor de lixo (*garbage collector*) a congelar a execução para limpar os objetos órfãos. É esse congelamento que estoura o buffer serial do chip."
+
+O engenheiro puxou um bloco de notas e desenhou um círculo com ponteiros:
+
+— "Para biosinais de streaming, você nunca aloca memória no caminho crítico. Você pré-aloca um array de capacidade fixa e utiliza aritmética modular de ponteiros de leitura e escrita: um *ring buffer* (buffer circular). Quando novos dados chegam e o buffer está cheio, a política padrão de biopotenciais é o descarte do dado mais antigo (*overwrite*), mantendo sempre os dados mais recentes acessíveis em $\mathcal{O}(1)$ sem nenhuma alocação de memória."

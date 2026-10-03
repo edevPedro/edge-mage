@@ -1,11 +1,13 @@
-# História — O espelho dual-use
+# História — A Fronteira Inegociável
 
-No corredor do círculo Neural, um mercador desdobra um cartaz luminoso: *“Leia mentes. Controle remoto. Diagnóstico instantâneo.”* Três aprendizes avançam. O guardião levanta a mão — e o cartaz apaga.
+Durante uma reunião de alinhamento com a diretoria de produtos de uma startup de inteligência artificial, a equipe comercial apresenta um plano agressivo: aproveitar os registros de eletroencefalografia coletados em testes de usabilidade de um jogo de reabilitação motora para treinar um modelo corporativo de "monitoramento de fadiga e engajamento em tempo real para empregados de home office".
 
-No espelho ao lado da porta, cada um vê o próprio reflexo *e* uma sombra possível: o mesmo pipeline de EEG usado para treinar um decoder offline, usado sem consentimento para classificar estados de um trabalhador; o mesmo paper de MI citado em pitch de startup que promete “pensamentos em texto”.
+A bioengenheira responsável pela bancada de aquisição levanta a mão imediatamente:
+— O termo de consentimento livre e esclarecido assinado pelos voluntários previa estritamente o uso dos dados para o estudo de decodificação motora. Utilizar esses mesmos biopotenciais para vigilância no trabalho ou inferência comportamental sem autorização prévia viola frontalmente o princípio de Respeito pelas Pessoas do Relatório Belmont.
 
-O guardião não ensina a construir a sombra. Ensina a **nomeá-la**.
+Um dos gestores tenta contornar a questão:
+— Mas os registros já estão anonimizados no nosso banco de dados. Qual é o problema prático?
 
-— Antes da Sala — diz — três selos: **respeito pelas pessoas** (consentimento), **beneficência** (não exagerar benefício nem risco), **justiça** (quem carrega o risco, quem lucra). Dual-use literacy: saber que a ferramenta *pode* ser abusada **sem** entregar receita de abuso. Overclaim não é “marketing criativo”; é mentira pedagógica.
+— Não existe anonimização perfeita em séries temporais de alta densidade neural — responde a bioengenheira, projetando um estudo de reidentificação biométrica. — Assinaturas espectrais de repouso, morfologia de potenciais evocados e conectividade funcional constituem biometria neural única. Além disso, prometer "detecção instantânea de foco e atenção" a clientes corporativos com eletrodos secos em ambiente não controlado é puro overclaim pseudocientífico. O sinal está saturado de artefatos de mastigação e impedância oscilante. Vender ruído como métrica de produtividade humana é desonestidade técnica com graves consequências éticas e trabalhistas.
 
-O mercador some. O espelho fica. Só então a porta da ética se abre — e o MVP do círculo aponta para dados **sintéticos** e datasets abertos citados, não para cirurgia caseira nem vigilância.
+A sala silencia. A proposta é vetada por unanimidade técnica. Na neuroengenharia rigorosa, a ética não é um anexo regulatório preenchido por formalidade; é a linha mestra que separa a biotecnologia legítima do charlatanismo invasivo.

@@ -1,84 +1,29 @@
-# Conceito — Paradigma de imagética motora (MI)
+# Conceito — Paradigmas de Imagética Motora e Sincronização Temporal
 
-## Definição
+A decodificação de biopotenciais depende criticamente da relação temporal entre eventos experimentais externos (estímulos visuais, auditivos ou táteis) e a dinâmica eletrofisiológica do córtex.
 
-**Imagética motora (MI):** imaginar movimento (ex. mão esquerda/direita) sem necessariamente executá-lo. Em EEG de escalpo, marcadores clássicos envolvem ritmos **sensorimotores** (µ/β):
+## 1. O Paradigma Clássico de Graz (Motor Imagery)
+O protocolo padronizado de Imagética Motora divide cada ensaio (trial) em fases estritas:
+1. **Fixação / Baseline ($t = 0\text{ s}$):** Uma cruz na tela indica ao sujeito para relaxar e focar a atenção, estabelecendo o nível de referência espectral.
+2. **Estímulo / Cue ($t = 2\text{--}3\text{ s}$):** Uma seta indica a classe a ser imaginada (mão direita, mão esquerda, pés ou língua).
+3. **Período de Imagética Ativa ($t = 3\text{--}7\text{ s}$):** O participante imagina a cinestesia do movimento (a sensação tátil e proprioceptiva de mover o membro, não apenas a imagem visual).
+4. **Intervalo Inter-Ensaios (ITI):** Pausa aleatória ($1\text{--}3\text{ s}$) para evitar fadiga e desincronizar respostas antecipatórias.
 
-- **ERD↓** durante a imagética (dessincronização / queda de potência — convenção deste curso)
-- possível **ERS↑** (rebound) após
+## 2. Fatiamento Temporal de Epochs
+Um epoch é o recorte do sinal contínuo multicanal em um intervalo semiaberto de amostras centrado em um marcador temporal (trigger):
+$$\text{epoch} = X[\text{trigger} - \text{pre} : \text{trigger} + \text{post}]$$
+Onde $\text{pre}$ é o número de amostras antes do evento e $\text{post}$ é o número de amostras após o evento. O comprimento total do epoch em amostras é $\text{pre} + \text{post}$.
 
-Isto **não** é diagnóstico clínico nem leitura de conteúdo semântico do pensamento.
+## 3. Lateralidade Cortical e o Ritmo Sensoriomotor
+- **Contralateralidade:** A imagética da mão direita desincroniza (ERD) o córtex motor esquerdo (eletrodo $C3$). A imagética da mão esquerda desincroniza o córtex motor direito (eletrodo $C4$).
+- **Sincronização Ipsilateral (ERS):** Concomitantemente, o hemisfério que controla a mão inativa pode exibir um aumento relativo de sincronização.
 
-## Timing de trial (esqueleto pedagógico)
+## 4. Modos de Falha na Prática de Engenharia
+1. **Mistura de Janelas Temporais:** Incluir o potencial evocado visual inicial (respostas P100 e N200 causadas pelo estímulo da tela) dentro da janela de decodificação motora, fazendo o modelo classificar o reflexo óptico em vez da imagética intencional.
+2. **Jitter de Sincronismo de Hardware:** Se a placa de aquisição e o software de estímulo tiverem atrasos variáveis na marcação de triggers, os epochs ficarão desalinhados no tempo, destruindo a consistência das características espectrais.
 
-```text
-ITI / baseline → cue → imagética (janela de interesse) → (rest / rebound) → ITI
-```
+## 5. O que a Próxima Sala Assume
+A próxima sala (`nt-artifacts`) trata da identificação e rejeição de artefatos de piscada ocular (EOG) e contrações musculares (EMG) que contaminam esses epochs.
 
-| Segmento | Papel |
-|----------|--------|
-| Baseline | referência de potência |
-| Cue | indica classe (L/R); cuidado com artefato visual |
-| MI window | onde se estimam features |
-| ITI | evita sobreposição; balanceamento |
-
-Durações variam (papers: tipicamente poucos segundos de MI). O importante: **definir a janela antes** de minerar o teste.
-
-## Lateralidade (aproximação 10–20)
-
-- Imagética mão **direita** ↔ córtex motor esquerdo ≈ **C3**
-- Imagética mão **esquerda** ↔ ≈ **C4**
-
-Volume conduction e montagem misturam sinais — não espere separação perfeita canal-a-canal.
-
-## Synth honesty
-
-Contraste sintético de band-energy **não** é ERD de Pfurtscheller. Use synth para pipeline; cite papers para fisiologia.
-
-## Fontes
-
-- Pfurtscheller & Neuper DOI [10.1016/S0304-3940(97)00889-6](https://doi.org/10.1016/S0304-3940(97)00889-6)
-- Pfurtscheller & Lopes da Silva DOI [10.1016/S1388-2457(99)00141-8](https://doi.org/10.1016/S1388-2457(99)00141-8)
-- Padfield [PMC6471241](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/); Singh [PMC8003721](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/)
-
-
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Profundidade full (espinha / EE avançada)
-
-### Estudo dirigido (40–60 min)
-1. Releia a tabela/equações do conceito e feche o arquivo; reescreva de memória.
-2. Faça o lab numérico duas vezes com parâmetros diferentes (`fs`, banda, N).
-3. Escreva um parágrafo ligando esta sala a **ética** (overclaim) e a **CV/leak** ou **SNR**, conforme couber.
-4. Se houver paper DOI/PMC na sala, copie a frase Methods que você operacionaliza no MVP synth.
-
-### Entregável de caderno
-- Diagrama de 1 página (ASCII ok)
-- 3 números com unidade
-- 3 honesty bullets
-- 1 pergunta para journal club
-
-Isto eleva a sala do modo “trivia” para modo MSc-prep auditável.
-
+## 6. Ponto de Destrave do Lab
+Para o estudo do protocolo clássico de Graz e parâmetros de modulação sensoriomotora, consulte o trabalho seminal de [Pfurtscheller & Neuper (NeuroImage 2001)](https://doi.org/10.1006/nimg.2001.0856) e [Padfield et al. (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/).

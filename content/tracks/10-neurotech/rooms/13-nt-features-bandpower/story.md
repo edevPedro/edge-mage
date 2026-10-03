@@ -1,19 +1,16 @@
-# História — O Vetor que Revelou o Movimento
+# História — Do Domínio do Tempo à Energia do Sinal
 
-Na bancada de análise de dados de um ensaio de Imagética Motora, dois pesquisadores tentavam treinar um classificador linear simples para distinguir entre a imaginação do movimento da mão direita e da mão esquerda. Os sinais de EEG dos eletrodos C3 e C4 haviam passado com sucesso pelos filtros biquads na faixa do ritmo mu, entre oito e doze hertz.
+No laboratório de machine learning neural, um programador tenta treinar um classificador linear alimentando diretamente os valores instantâneos de tensão em microvolts amostrados no tempo dos eletrodos $C3$ e $C4$. A cada ensaio, a série temporal oscila rapidamente em torno de zero, e os pesos do classificador oscilam sem convergir: ora um ponto tem valor positivo, ora negativo, dependendo da fase instantânea da onda no momento do corte do epoch.
 
-Contudo, ao plotar a potência pura $P$ calculada como a média dos quadrados das amostras em cada ensaio, o classificador linear apresentava convergência errática e uma taxa de acerto que oscilava aleatoriamente em torno de cinquenta por cento.
+O pesquisador de neurocomputação senta-se ao lado do programador e abre o gráfico de dispersão das amostras temporais brutas:
 
-"A potência nos dois canais varia de zero vírgula um microvolt ao quadrado até dez mil microvolts ao quadrado toda vez que o voluntário pisca ou ajusta a postura," explicava o programador, mostrando um gráfico de dispersão com caudas pesadas e outliers extremos que puxavam a fronteira de decisão para longe da região útil.
+— Se você alimentar valores de amplitude instantânea $x[n]$, o classificador tentará ajustar hiperplanos baseando-se na fase da oscilação — explica o pesquisador. — Mas o cérebro humano não modula a fase absoluta de cada ciclo da onda senoidal de $10\text{ Hz}$; ele modula a *energia média* da população neuronal disparando em sincronia. O que define a intenção motora é a variância da oscilação ao longo de uma janela temporal de observação.
 
-A cientista de dados sênior sentou-se ao terminal e abriu o artigo clássico de Fabien Lotte sobre classificação de sinais de EEG.
+O pesquisador orienta o desenvolvedor a calcular a potência média de banda: elevar cada amostra filtrada ao quadrado, computar a média na janela de tempo e aplicar a transformação logarítmica:
+$$P = \frac{1}{N} \sum_{n=0}^{N-1} x[n]^2, \quad f = \log_{10}(P)$$
 
-"A potência espectral em biopotenciais segue uma distribuição assimétrica exponencial," explicou ela. "Um classificador linear baseado em dispersão gaussiana sofre horrores com distribuições de cauda longa. Você precisa aplicar a transformação logarítmica $\log_{10}(P)$ para comprimir a faixa dinâmica e simetrizar a distribuição."
+Quando os dois novos valores escalares $[f_{C3}, f_{C4}]$ são plotados no plano cartesiano bidimensional, a nuvem de pontos correspondente à imagética da mão direita separa-se com limpidez da classe da mão esquerda:
+- Na mão direita, $C3$ apresenta queda acentuada de energia (ERD contralateral), deslocando os pontos para a esquerda do gráfico.
+- Na mão esquerda, $C4$ apresenta queda de energia, deslocando os pontos para a parte inferior do gráfico.
 
-Ela pegou os dados de um ensaio de mão direita: em C3, a potência era de dez microvolts ao quadrado; em C4, a potência era de cem microvolts ao quadrado.
-
-"Calcule as coordenadas," pediu ela. O programador calculou: $\log_{10}(10) = 1.0$ e $\log_{10}(100) = 2.0$. No ensaio de mão esquerda, o inverso acontecia: $\log_{10}(100) = 2.0$ e $\log_{10}(10) = 1.0$.
-
-Ao projetar os pares bidimensionais $[\log_{10}(P_{C3}), \log_{10}(P_{C4})]$, as duas classes separaram-se nitidamente em dois agrupamentos gaussianos compactos através da diagonal principal.
-
-"A física da dessincronização neuronal agora virou geometria linear tratável," concluiu a pesquisadora. "Sem o logaritmo, os outliers governam seu modelo. Com o logaritmo, a fisiologia do córtex motor governa a fronteira."
+— A potência de banda transforma uma forma de onda senoidal de média zero e fase caótica em um ponto estável em um espaço de características estritamente separável — conclui o pesquisador.

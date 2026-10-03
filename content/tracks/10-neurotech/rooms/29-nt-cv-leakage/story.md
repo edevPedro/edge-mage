@@ -1,19 +1,17 @@
-# História — O Milagre do Ruído Branco
+# História — O Pecado Capital do Split Aleatório
 
-Na apresentação de encerramento do trimestre em uma aceleradora de tecnologia neural, um jovem cientista de dados subiu ao palco para mostrar os resultados de um pipeline automatizado de aprendizado de máquina para decodificação de intenção motora em sinais de EEG.
+Em uma competição acadêmica de decodificação neural, um participante submeteu um pipeline baseado em Support Vector Machines (SVM) que obteve 94% de acurácia em um dataset público de quatro classes de imagética motora. O participante utilizou a função padrão do Scikit-Learn `K-Fold(shuffle=True)` com 5 folds sobre o array de janelas processadas.
 
-"Nosso modelo alcançou noventa e quatro por cento de acurácia em um banco de quarenta ensaios," anunciou ele, exibindo matrizes de confusão quase diagonais. "A técnica foi capaz de selecionar as melhores frequências cerebrais de forma completamente autônoma."
+Ao rodar a validação cruzada do competidor em uma sessão independente do mesmo voluntário gravada no dia seguinte, a acurácia colapsou para 27%.
 
-No fundo da plateia, um professor sênior de estatística e neuroengenharia pediu acesso ao repositório de código e abriu a função de pré-processamento. Ele notou que a rotina calculava a correlação de Pearson entre as centenas de variáveis espectrais e os rótulos de classe antes da linha que chamava a divisão de treino e teste.
+O comitê técnico do benchmark convocou o participante e demonstrou a causa da catástrofe analítica:
+— Seu dataset continha 100 ensaios, mas você fatiou cada ensaio em 10 janelas temporais de 1 segundo com 80% de sobreposição — explicou o examinador. — Ao usar `shuffle=True`, você espalhou janelas que compartilham 800 milissegundos dos mesmos dados cerebrais entre o conjunto de treino e o conjunto de teste. O classificador decorou a microestrutura do ruído de fundo daquele segundo específico. Isso não é generalização; é o mais descarado vazamento de ensaio (trial leakage)!
 
-O professor pediu o teclado, gerou uma matriz de números puramente aleatórios usando uma distribuição normal padrão e atribuiu rótulos de zero e um por sorteio de cara ou coroa. Ele rodou exatamente o mesmo script sobre o ruído puro.
+O examinador explicou a regra de ouro da validação cruzada em neuroengenharia:
+— A unidade indivisível de particionamento é o **ensaio completo** (ou o bloco de gravação / run), nunca a janela ou a amostra temporal! As amostras de um mesmo ensaio devem pertencer *integralmente* ao treino ou *integralmente* ao teste.
 
-Em segundos, o terminal imprimiu: acurácia no teste de oitenta e oito por cento.
+Ele introduziu o particionamento em blocos contíguos (`split_blocked_cv`) e a rotina de auditoria de vazamento (`audit_leakage`):
+1. Verificar se a interseção entre os índices de treino e teste é estritamente vazia.
+2. Garantir que nenhuma janela derivada de um trial de teste esteja presente nos folds de treino.
 
-"Você acaba de decodificar o futuro usando ruído térmico aleatório," disse o professor em tom solene. "Isso se chama vazamento de dados ou análise circular. Ao selecionar as variáveis usando a base de dados inteira antes de separar o teste, você permite que flutuações estatísticas do teste contaminem o modelo de treino. O modelo não aprendeu neurofisiologia motora; ele decorou o ruído do teste."
-
-O professor então reescreveu a rotina usando partição contígua em blocos e forçou a seleção de variáveis a acontecer exclusivamente dentro dos folds de treino.
-
-A acurácia sobre o ruído despencou imediatamente para cinquenta por cento — exatamente o nível do acaso.
-
-"A validação cruzada não é um botão para inflar métricas e agradar investidores," concluiu o pesquisador. "É uma barreira de integridade científica. Se o teste vazar para o treino, seu código mente para você."
+Com o particionamento em blocos independentes implementado, a acurácia real ajustada foi de 63% — livre de qualquer vazamento de dados e totalmente consistente com o desempenho em sessões futuras.

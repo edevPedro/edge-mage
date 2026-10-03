@@ -1,6 +1,6 @@
-# Lição — Impedância de Eletrodos e Divisor de Entrada
+# Desafio — Impedância de Eletrodos e Divisor de Entrada
 
-## 1. Contexto Operacional
+## 1. Objetivo do Desafio
 O biopotencial de EEG é uma fonte de tensão com altíssima impedância de saída ($Z_{\text{electrode}}$). Se o front-end analógico não possuir uma impedância de entrada ($R_{\text{in}}$) ordens de magnitude maior, a interface sofre atenuação resistiva e distorção espectral severa.
 
 ## 2. Passo a Passo Matemático

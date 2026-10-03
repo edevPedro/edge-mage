@@ -3,7 +3,6 @@
 Em neuroengenharia computacional, um vetor $x \in \mathbb{R}^C$ representa uma amostra instantânea capturada simultaneamente através de $C$ canais de eletrodos (por exemplo, $[C_3, C_z, C_4]$ em microvolts, $\mu\text{V}$) ou um vetor de potências de banda espectral extraído de uma janela temporal.
 
 ## 1. O Fundamento Matemático do Lab
-
 ### Produto Interno como Filtragem Espacial
 A operação fundamental que conecta eletrofisiologia a aprendizado de máquina é o produto interno $\langle w, x \rangle = w^T x = \sum_{i=1}^C w_i x_i$.
 Geometricamente, essa operação projeta o vetor multicanal $x$ sobre a direção definida pelo vetor de pesos espaciais $w$:
@@ -29,7 +28,7 @@ Se $\|w\|_2 = 0$, a projeção colapsa para zero absoluto em todas as dimensões
 2. **Canais em Escalas Heterogêneas:** Se um canal estiver medindo em milivolts (eletrooculograma) e outro em microvolts (EEG cortical), o produto interno será totalmente dominado pelo canal de maior magnitude, tornando os demais canais matematicamente invisíveis.
 
 ## 4. O que a Próxima Sala Assume
-A sala seguinte ([`nt-math-matrices`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/44-nt-math-matrices/room.yaml)) assume que você compreende a projeção linear vetorial para organizar sequências de amostras na matriz de dados $X \in \mathbb{R}^{C \times T}$ e calcular a matriz de covariância amostral $\Sigma = \frac{1}{T-1} X X^T$.
+A sala seguinte (`nt-math-matrices`) assume que você compreende a projeção linear vetorial para organizar sequências de amostras na matriz de dados $X \in \mathbb{R}^{C \times T}$ e calcular a matriz de covariância amostral $\Sigma = \frac{1}{T-1} X X^T$.
 
 ## 5. Ponto de Destrave do Lab
-Se a sua implementação falhar na normalização com divisões por zero ou dimensões incompatíveis, consulte a documentação oficial da álgebra linear de arrays no [NumPy linalg norm](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html) e a fundamentação geométrica de projeções lineares no [Khan Academy Vectors and Spaces](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces).
+Consulte a fundamentação geométrica de projeções lineares no [NumPy linalg norm](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html) e [Khan Academy Linear Algebra](https://www.khanacademy.org/math/linear-algebra).

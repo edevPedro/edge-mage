@@ -1,20 +1,14 @@
-# Lição — Hipótese e potência (lite MSc)
+# Desafio — Cálculo do Tamanho de Efeito ($d$ de Cohen)
 
-## Pipeline honesto
+## 1. Objetivo do Desafio
+Implementar a rotina de cálculo do tamanho de efeito padronizado $d$ de Cohen entre dois grupos amostrais, compreendendo sua independência em relação ao tamanho total da amostra.
 
-1. Pré-registre paradigma, métrica primária, N alvo.
-2. Estime potência (mesmo que grosso).
-3. Corrija múltiplos testes *ou* reduza a família a priori.
+## 2. Especificação Técnica e Formulação
+Dadas as médias $\mu_1$ e $\mu_2$ e os desvios-padrão amostrais $s_1$ e $s_2$ de dois conjuntos de ensaios independentes:
+- Implemente a função `cohens_d(m1, s1, m2, s2)`:
+  $$s_{\text{pooled}} = \sqrt{\frac{s_1^2 + s_2^2}{2}}$$
+  $$d = \frac{m1 - m2}{s_{\text{pooled}}}$$
 
-## Bonferroni (intuição)
-
-Para m testes independentes, α' = α/m.
-
-Para destravar o lab, abra [Combrisson & Jerbi 2015 — statistical testing MEG/EEG](https://doi.org/10.1016/j.jneumeth.2015.03.034) e leia o critério de Combrisson e Jerbi para acurácia acima do acaso em N pequeno, para o Bonferroni e o d de Cohen não virarem overclaim.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Se $s_{\text{pooled}} = 0$, trate a divisão por zero retornando zero ou tratando a igualdade de médias.
+- Lembre-se: em projetos de pesquisa sérios, todo relato de acurácia ou modulação de ERD deve vir acompanhado do tamanho de efeito $d$ correspondente.

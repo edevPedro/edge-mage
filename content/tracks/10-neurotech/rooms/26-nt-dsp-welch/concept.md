@@ -1,65 +1,35 @@
-# Conceito — Estimação espectral para EEG
+# Conceito — Densidade Espectral de Potência (PSD), Método de Welch e Vazamento Espectral
 
-- **FFT curta** → resolução Δf ≈ 1/T pobre; vazamento se a janela não for periódica.
-- **Welch:** médias de periodogramas com overlap → menor variância.
-- **Trade-off:** janela longa = melhor Δf, pior resolução temporal (ruim para ERD rápido).
+A estimação do conteúdo espectral de séries temporais biológicas não-estacionárias requer compromissos matemáticos entre resolução de frequência e redução de variância.
 
+## 1. O Problema do Periodograma Bruto
+Dado um sinal discreto $x[n]$ com $N$ amostras, o periodograma clássico é:
+$$P_{xx}(f) = \frac{1}{N} \left| \sum_{n=0}^{N-1} x[n] e^{-j 2\pi f n} \right|^2$$
+Para processos estocásticos estacionários, a variância do periodograma bruto não converge para zero quando $N \to \infty$: $\text{Var}(P_{xx}(f)) \approx P_{xx}^2(f)$. A estimativa é ruidosa e inconsistente.
 
-## Extensão MSc-prep (foundation → advanced)
+## 2. O Método de Welch (Averaged Modified Periodogram)
+O método proposto por Peter Welch divide o sinal de comprimento $N$ em $K$ segmentos de comprimento $L$, com sobreposição de $D$ amostras (geralmente 50%, $D = L/2$):
+1. Cada segmento $x_k[n]$ é multiplicado por uma janela temporal $w[n]$ (ex. Hanning ou Hamming):
+   $$\tilde{x}_k[n] = x_k[n] w[n], \quad n = 0, \dots, L-1$$
+2. Calcula-se o periodograma modificado de cada segmento:
+   $$I_k(f) = \frac{1}{L U} |\text{FFT}(\tilde{x}_k)|^2, \quad U = \frac{1}{L} \sum_{n=0}^{L-1} w^2[n]$$
+3. A densidade espectral final é a média aritmética através dos $K$ segmentos:
+   $$S_{xx}(f) = \frac{1}{K} \sum_{k=1}^K I_k(f)$$
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+A média reduz a variância da estimativa por um fator proporcional a $1/K$, proporcionando um espectro suave e estatisticamente confiável.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
+## 3. O Trade-Off de Resolução Espectral
+A resolução em frequência de cada segmento é inversamente proporcional à sua duração temporal $T_{\text{seg}} = L / f_s$:
+$$\Delta f = \frac{1}{T_{\text{seg}}} = \frac{f_s}{L}$$
+- Segmentos longos (ex. $2\text{ s}$ a $250\text{ Hz}$, $L = 500$): Alta resolução ($\Delta f = 0.5\text{ Hz}$), mas poucos segmentos para mediar (maior variância).
+- Segmentos curtos (ex. $0.5\text{ s}$, $L = 125$): Resolução mais grosseira ($\Delta f = 2\text{ Hz}$), mas muitos segmentos (baixa variância).
 
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
+## 4. Modos de Falha na Prática de Engenharia
+1. **Janela Retangular Implícita:** Usar FFT direta sem função de janelamento, provocando vazamento espectral severo onde harmônicos de rede elétrica vazam para a banda beta.
+2. **Segmentos Excessivamente Curtos:** Usar janelas de 100 ms para estimar ondas delta (1 Hz), violando o critério fundamental de que a janela deve conter múltiplos ciclos completos da menor frequência de interesse.
 
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
+## 5. O que a Próxima Sala Assume
+A próxima sala (`nt-filter-design-depth`) aborda o projeto detalhado de filtros causais IIR e FIR, distorção de fase e atraso de grupo.
 
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 6. Ponto de Destrave do Lab
+Para o estudo formal da técnica de estimativa espectral, consulte o artigo clássico de [Welch (IEEE Trans Audio Electroacoust 1967)](https://doi.org/10.1109/TAU.1967.1161901) e a documentação do [SciPy Signal Welch](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html).

@@ -1,30 +1,25 @@
-# Lição — Fixed-point
+# Desafio — Conversão de Ponto Flutuante para Q15 com Saturação
 
-## Objetivos
-Dominar Q15 o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a rotina fundamental de conversão de números fracionários em ponto flutuante para a representação inteira em ponto fixo Q15 com sinal de 16 bits, aplicando proteção estrita de saturação aritmética para evitar descontinuidades de sinal por *wrap-around*.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `float_to_q15(x)`:
+- Multiplique o valor float $x$ pelo fator de escala fracionário $32768.0$ e converta para inteiro arredondado (ou truncado conforme a convenção inteira padrão):
+  $$\text{raw} = \text{int}(x \times 32768.0)$$
+- Aplique saturação rígida aos limites da faixa de 16 bits com sinal:
+  - Se $\text{raw} > 32767$, retorne `32767`.
+  - Se $\text{raw} < -32768$, retorne `-32768`.
+  - Caso contrário, retorne $\text{raw}$.
 
-## Lab
-Explique em 6–10 linhas como Q15 aparece num pipeline MI offline ou online.
+## 3. Exemplos Canônicos de Validação
+```python
+assert float_to_q15(0.5) == 16384
+assert float_to_q15(-1.0) == -32768
+assert float_to_q15(1.5) == 32767      # Saturação positiva
+assert float_to_q15(-2.0) == -32768    # Saturação negativa
+```
 
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [CMSIS-DSP fixed-point overview](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) e leia a convenção Q15 do CMSIS-DSP (15 bits de fração, saturação no int16) para float_to_q15 mapear 0,5 em 16384 e grampear acima de 1.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Garanta que qualquer valor float $\ge 1.0$ sature rigorosamente em `32767`.
+- O valor retornado deve ser um tipo inteiro (`int`).

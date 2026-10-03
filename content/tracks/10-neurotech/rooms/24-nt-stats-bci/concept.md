@@ -1,56 +1,31 @@
-# Conceito — Stats para BCI (MSc)
+# Conceito — Estatística Inferencial em BCI, Chance Level e Testes de Permutação
 
-## Unidade de análise
+A avaliação da performance em neurotecnologia exige rigor inferencial: pequenos tamanhos de amostra e não-estacionariedade dos biopotenciais tornam testes paramétricos convencionais (como t-Student não pareado) frequentemente inválidos.
 
-Trial / sessão / sujeito — não misture níveis ao reportar “acurácia média”.
+## 1. O Nível de Acaso (Chance Level) Binomial
+Em experimentos com número finito de ensaios $N$, o nível de acaso empírico não é a probabilidade teórica $1/K$. A probabilidade de obter $k$ acertos por puro acaso em $N$ ensaios com probabilidade basal $p = 1/K$ segue a distribuição binomial:
+$$P(X = k) = \binom{N}{k} p^k (1 - p)^{N - k}$$
 
-## Chance level
+O limiar de significância estatística ao nível $\alpha$ (tipicamente $0.05$) é o menor valor $k_{\text{crit}}$ tal que:
+$$P(X \ge k_{\text{crit}}) = \sum_{k=k_{\text{crit}}}^N \binom{N}{k} p^k (1 - p)^{N - k} \le \alpha$$
+- Para $N = 20$ e $K = 2$, o limiar de significância a $5\%$ é $75\%$ de acurácia.
+- Para $N = 100$ e $K = 2$, o limiar cai para $\approx 58\%$.
+- Apenas quando $N \to \infty$, o limiar converge para $50\%$.
 
-2 classes equilibradas: acurácia esperada ≈ 0,5. Com desbalanceamento, calcule `p_e` da confusão esperada. **κ** (Schlögl) corrige acordo por acaso: `(p_o−p_e)/(1−p_e)`.
+## 2. Testes de Permutação Não-Paramétricos
+Em BCI, dados contíguos de EEG violam a premissa de observações independentes e identicamente distribuídas (i.i.d.). O teste de permutação constrói a distribuição nula empírica diretamente a partir dos dados:
+1. Calcula-se a estatística observada $T_{\text{obs}} = \bar{S}_A - \bar{S}_B$.
+2. Agrupam-se todas as observações e, a cada iteração, sorteiam-se aleatoriamente os rótulos de grupo.
+3. Calcula-se a estatística permutada $T_p$.
+4. O valor-p empírico é a fração das permutações onde $T_p \ge T_{\text{obs}}$:
+   $$p = \frac{1 + \sum_{i=1}^P \mathbb{I}(T_i \ge T_{\text{obs}})}{1 + P}$$
 
-## Por que accuracy mente
+## 3. Modos de Falha na Prática de Engenharia
+1. **Comparações sem Ajuste de Tamanho Amostral:** Considerar 70% em 10 ensaios como "superior" a 60% em 200 ensaios.
+2. **Ignorar Dependência Temporal:** Tratar janelas de tempo contíguas do mesmo trial como amostras independentes em testes estatísticos.
 
-- Classes desbalanceadas
-- N pequeno (sorte)
-- Leak inflando o número
-- Múltiplas comparações (canais×bandas×clf) sem correção
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-hypothesis-power`) trata do cálculo de poder estatístico ($1 - \beta$), tamanho de efeito de Cohen ($d$) e correção para múltiplos testes (Bonferroni).
 
-## Incerteza
-
-Reporte N, preferencialmente IC ou erro-padrão / distribuição de folds — não só o ponto.
-
-## Combrisson & Jerbi
-
-Stats em MEG/EEG: cuidado com testes e chance; DOI na sala. Use como freio ao overclaim.
-
-## Ligação
-
-`nt-hypothesis-power`, `nt-metrics-offline`, decode MVP.
-
-## κ — interpretação rápida
-
-| κ | Leitura pedagógica |
-|---|--------------------|
-| ≤0 | ≤ chance |
-| 0.2–0.4 | fraco/moderado (contexto) |
-| alto com N=10 | suspeito |
-
-Não use cortes mágicos como verdade clínica — use como linguagem compartilhada + IC.
-
-## Múltiplas comparações
-20 canais × 6 bandas × 3 clf sem correção ≈ pesca. Pré-registre ou corrija / nested.
-
-## Trabalhado: κ
-
-p_o = 0.80, p_e = 0.50 → κ = (0.3)/(0.5) = 0.60.
-Se p_e = 0.70 (desbalanceamento severo) e p_o=0.75 → κ = 0.05/0.30 ≈ 0.17 — accuracy “bonita” vira κ fraco.
-
-## Bootstrap lite (ideia)
-Resample trials, recalcule κ, reporte percentis — honesty melhor que ponto único. Não obrigatório na Sala, mas MSc-ready.
-
-## Síntese em 4 bullets
-- Ensina a reportar κ = (p_o − p_e)/(1 − p_e) e o p de permutação (1 + quantos nulos ≥ observado)/(1 + N), sem misturar trial, sessão e sujeito.
-- A unidade é adimensional: com p_o = 0,65 e p_e = 0,5, κ = 0,30; observado 0,85 contra quatro nulos dá p = 2/5.
-- Honesty: acurácia bonita com N pequeno, leak ou desbalanceamento não é efeito; κ ≤ 0 fica no acaso e não vira claim clínico.
-- A sala seguinte no order é `nt-hypothesis-power`.
-
+## 5. Ponto de Destrave do Lab
+Para o estudo do cálculo formal de chance level em BCI, consulte o clássico de [Müller-Putz et al. (IEEE TBME 2008, Evaluating BCI performance)](https://doi.org/10.1109/TBME.2007.909640) e [Nichols & Holmes (Hum Brain Mapp 2002, Nonparametric permutation tests)](https://doi.org/10.1002/hbm.1058).

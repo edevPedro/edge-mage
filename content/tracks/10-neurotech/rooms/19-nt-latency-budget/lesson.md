@@ -1,21 +1,19 @@
-# Lição — Orçamento de Latência Closed-Loop e Restrições Hard Real-Time
+# Desafio — Verificação de Orçamento de Latência (Latency Budget)
 
-## 1. O Pipeline Sense → Decide → Act
-Para garantir feedback em tempo real sem latência perceptível pelo córtex motor ($<50\text{--}100\text{ ms}$):
-1. **Estágio Sense (Ingestão)**:
-   $$T_{\text{ingest}} = \frac{N_{\text{packet}}}{f_s} \times 1000 \quad (\text{ms})$$
-2. **Estágio Decide (Cálculo)**:
-   $$T_{\text{compute}} = T_{\text{filtros}} + T_{\text{inferência}}$$
-3. **Estágio Act (Exibição)**:
-   $$T_{\text{display}} \approx \frac{1000}{\text{refresh\_hz}} \quad (\approx 16.6\text{ ms em 60 Hz})$$
+## 1. Objetivo do Desafio
+Implementar rotinas para auditar os estágios temporais de um pipeline de BCI e simular o impacto de parâmetros de amostragem, ordem de filtros e clock de hardware contra deadlines de tempo real.
 
-## 2. Prevenção de Estouro de Buffer (Buffer Overrun)
-O intervalo de avanço da janela deslizante (*hop interval*) determina o tempo disponível para cálculo:
-$$T_{\text{hop}} = \frac{N_{\text{hop}}}{f_s} \times 1000 \quad (\text{ms})$$
-Se $T_{\text{compute}} > T_{\text{hop}}$, a taxa de produção de dados supera a taxa de consumo, provocando perda de amostras (*buffer overrun*) e jitter severo.
+## 2. Especificação Técnica e Formulação
+1. **Checagem Direta de Latência:** Implemente `total_latency_check(stages, deadline)` que recebe uma lista de latências em milissegundos `[t_sense, t_decide, t_act]` e um `deadline`:
+   $$t_{\text{total}} = \sum t_i$$
+   Retorna um dicionário `{"total_ms": t_total, "miss": t_total > deadline}`.
+2. **Simulação Completa de Pipeline:** Implemente `simulate_bci_pipeline_latency(window_len_ms, filter_taps, sampling_rate_hz, compute_cycles, mcu_clock_mhz, actuator_delay_ms, deadline_ms)`:
+   - $t_{\text{filter}} = ((\text{filter\_taps} - 1) / 2) \times (1000 / \text{sampling\_rate\_hz})$ (atraso de grupo linear em ms).
+   - $t_{\text{compute}} = (\text{compute\_cycles} / (\text{mcu\_clock\_mhz} \times 10^6)) \times 1000$ (em ms).
+   - $t_{\text{sense}} = \text{window\_len\_ms} + t_{\text{filter}}$.
+   - $t_{\text{decide}} = t_{\text{compute}}$.
+   - $t_{\text{act}} = \text{actuator\_delay\_ms}$.
 
-## 3. As Funções de Laboratório Desta Sala
-- `total_latency_check(stages_ms, max_allowed_ms)`: Soma os estágios e avalia contra o limite global.
-- `simulate_bci_pipeline_latency(fs, packet_samples, hop_samples, n_channels, biquad_sections, classifier_time_ms, display_refresh_ms, deadline_ms)`: Simula todos os estágios do pipeline closed-loop, detectando estouro de buffer e quebra de prazo fatal sensorial.
-
-Para destravar o lab, abra [Singh et al. — MI-BCI review (online challenges context, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) e leia os desafios de tempo real no review de Singh (deadline de janela, não só κ offline) para somar os estágios do orçamento em ms.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que todas as unidades intermediárias sejam rigorosamente convertidas para milissegundos antes da soma.
+- Lembre-se: em filtros FIR simétricos causais, o atraso de grupo é exatamente metade da ordem do filtro: $(N - 1) / (2 f_s)$.

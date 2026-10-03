@@ -1,78 +1,29 @@
-# Conceito — Plasticidade
-Hebbian / adaptação com feedback. Usuário+decoder co-adaptam (Wolpaw). Overclaim: “rewiring” sem evidência.
+# Conceito — Neuroplasticidade, Regra de Hebb e Não-Estacionariedade em BCI
 
-## Por que está no caminho MSc-prep
-Este tópico (Plasticidade) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. A Hipótese de Hebb (1949)
+Donald Hebb formulou o postulado biofísico da potenciação sináptica de longa duração (LTP):
+> *"Quando um axônio da célula A excita repetidamente a célula B, participando de seu disparo, ocorre algum processo de crescimento ou alteração metabólica em uma ou ambas as células, aumentando a eficiência com que A dispara B."*
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+Informalmente: *"Neurons that fire together, wire together."*
 
-## Exercícios mentais
-- Defina treino BCI em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+A formulação matemática elementar para a atualização dos pesos sinápticos $w_{ij}$ entre uma ativação pré-sináptica $x_i$ e pós-sináptica $y_j$ com taxa de aprendizado $\eta$ é dada por:
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+$$\Delta w_{ij} = \eta \cdot x_i \cdot y_j$$
+$$w_{ij}^{(t+1)} = w_{ij}^{(t)} + \Delta w_{ij}$$
 
+## 2. A Quebra da Premissa i.i.d. em Neurotecnologia
+Em ciência da computação tradicional, assume-se frequentemente que as amostras de treino e teste são variáveis aleatórias independentes e identicamente distribuídas (i.i.d.). Em interfaces cérebro-computador, essa suposição é categoricamente falsa:
 
-## Extensão MSc-prep (foundation → advanced)
+1. **Variações Fisiológicas:** Atenção, fadiga, estresse e nível de alerta modulam continuamente a potência de base dos ritmos corticais.
+2. **Deriva Eletroquímica:** A impedância na interface eletrodo-pele altera-se com a secagem gradual do gel condutor e microperspiração.
+3. **Aprendizado do Voluntário:** O cérebro reorganiza a representação neural através de feedback proprioceptivo e visual, mudando os padrões de ativação espacial e espectral ao longo de dias e semanas.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+## 3. Co-Adaptação e Protocolos de Calibração
+O acoplamento humano-computador em BCI forma um sistema de aprendizado dinâmico de dois nós:
+- **Nó 1 (Biológico):** O cérebro aprende estratégias cognitivas para acionar o decodificador com menor esforço e maior sinal-ruído.
+- **Nó 2 (Sintético):** O decodificador computacional ajusta seus filtros espaciais e hiperplanos de separação para maximizar a separabilidade estatística.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
+Re-calibrações periódicas documentadas e métodos de adaptação de domínio (*domain adaptation*) são procedimentos padrão e metodologicamente honestos na literatura de neuroengenharia para mitigar a perda de calibração entre sessões.
 
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-systems-bci`) integra os componentes celulares, sinápticos e corticais no cálculo formal da dessincronização relacionada a eventos (ERD/ERS).

@@ -1,20 +1,14 @@
-# Lição — Probabilidade e Limiar de Chance em BCI
+# Desafio — Função Densidade de Probabilidade Gaussiana (PDF)
 
-## 1. Contexto Operacional
-Na literatura científica de neurociência e BCI, nunca se avalia a acurácia de um decodificador de forma isolada do número de testes $N$. Em amostras pequenas, a variância do estimador amostral de acurácia é tão grande que altas taxas de acerto ocorrem frequentemente por puro ruído estocástico.
+## 1. Objetivo do Desafio
+Implementar a função densidade de probabilidade (PDF) da distribuição normal univariada em Python puro sem dependências externas.
 
-## 2. Passo a Passo Matemático
+## 2. Especificação Técnica e Formulação
+Dado um ponto escalar $x$, a média $\mu$ e o desvio-padrão $\sigma > 0$:
+- Implemente a função `gaussian_pdf(x, mu, sigma)`:
+  $$\text{pdf} = \frac{1}{\sigma \sqrt{2\pi}} \exp\left( -\frac{(x - \mu)^2}{2\sigma^2} \right)$$
+- Utilize as constantes matemáticas `math.pi` e a função `math.exp`.
 
-### Função Densidade Gaussiana 1D
-$$f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left( -\frac{(x - \mu)^2}{2\sigma^2} \right)$$
-Em Python, use `math.exp`, `math.sqrt` e `math.pi`.
-
-### Limiar de Chance Binomial (Aproximação Normal)
-Para $n$ trials e probabilidade base de acaso $p_{\text{chance}} = 0.5$ com nível de significância de $95\%$ ($\alpha = 0.05$ e $z = 1.645$):
-1. Valide se $n_{\text{trials}} > 0$. Se não for, levante `ValueError`.
-2. Calcule o desvio-padrão da proporção amostral:
-   $$\sigma_p = \sqrt{\frac{p_{\text{chance}}(1 - p_{\text{chance}})}{n_{\text{trials}}}}$$
-3. O limiar mínimo para rejeitar a hipótese nula é:
-   $$\text{threshold} = p_{\text{chance}} + 1.645 \times \sigma_p$$
-
-Para destravar o lab, abra [Schlögl et al. κ in BCI](https://doi.org/10.1088/1741-2560/2/4/L02) e leia como Schlögl separa acurácia de κ no dado de MI, para o limiar binomial do lab não ser lido como prova de decodificação.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que $\sigma > 0$. Se $\sigma \le 0$, levante `ValueError("sigma deve ser positivo")`.
+- Para $x = 0, \mu = 0, \sigma = 1$, o retorno deve ser aproximadamente $0.398942$.

@@ -1,67 +1,27 @@
-# Conceito — Ética, consentimento e limites do BCI educacional
+# Conceito — Ética em Neurotecnologia, Belmont e Dual-Use
 
-Este círculo ensina literacia e labs seguros. **Não** ensina produto clínico, “leitura da mente”, implant DIY nem vigilância.
+A manipulação de dados neurais impõe responsabilidades éticas superiores à da engenharia de software tradicional, pois biopotenciais refletem intimamente o funcionamento do sistema nervoso central de indivíduos.
 
-## Belmont (âncora prática)
+## 1. O Fundamento Ético: O Relatório Belmont
+Publicado em 1979 após violações históricas em pesquisas biomédicas, o Relatório Belmont estabelece três princípios fundamentais:
+1. **Respeito pelas Pessoas:** Exige autonomia total dos participantes, garantida através de consentimento livre, esclarecido e revogável a qualquer momento. Sujeitos vulneráveis exigem salvaguardas adicionais.
+2. **Beneficência:** Maximizar os benefícios reais da tecnologia enquanto se minimizam os riscos físicos, psicológicos e de privacidade (princípio da não-maleficência).
+3. **Justiça:** Distribuição equitativa dos ônus e dos benefícios da pesquisa, evitando que grupos vulneráveis assumam os riscos experimentais enquanto outros se apropriam dos ganhos.
 
-O [Belmont Report](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html) resume três princípios que o curso traduz para BCI educacional:
+## 2. Riscos de Dual-Use e Neurodireitos
+A mesma tecnologia de filtragem espacial desenvolvida para restaurar a comunicação de pacientes com tetraplegia (uso terapêutico legítimo) pode ser desviada para monitoramento invasivo de trabalhadores ou extração não autorizada de estados cognitivos (uso abusivo).
 
-| Princípio | Em BCI / EEG | Pergunta de checklist |
-|-----------|--------------|------------------------|
-| **Respeito pelas pessoas** | Autonomia + proteção de quem tem autonomia reduzida | Houve consentimento informado *antes* de gravar? Pode recusar sem castigo? |
-| **Beneficência** | Maximizar benefício / minimizar dano; honestidade sobre incerteza | O benefício prometido é proporcional à evidência? Riscos (cansaço, estigma, leak de dados) foram ditos? |
-| **Justiça** | Distribuição equitativa de riscos e benefícios | Quem treina o modelo? Quem é classificado? Quem lucra com o pitch? |
+Diretrizes centrais de governança neural:
+- **Privacidade Mental:** Proteção contra inferências de estados internos sem consentimento explícito.
+- **Identidade e Agência:** Garantia de que sistemas de malha fechada não alterem a percepção de autonomia e tomada de decisão do usuário.
+- **Proteção contra Overclaim:** Nunca divulgar um sistema educacional ou experimental como dispositivo médico diagnóstico sem certificação formal de órgãos regulatórios (como ANVISA ou FDA).
 
-Belmont **não** é um protocolo IRB completo — é o vocabulário mínimo antes de qualquer sala com “sujeito humano” eletivo.
+## 3. Modos de Falha Ética na Prática
+1. **Reutilização Não Autorizada de Dados:** Coletar dados sob um protocolo experimental e reutilizá-los em aplicações comerciais sem novo consentimento aprovado por comitê de ética.
+2. **Venda de Pseudociência:** Vender produtos de consumo prometendo "leitura de pensamentos", ignorando que o EEG de escalpo mede apenas médias populacionais de potenciais pós-sinápticos com baixíssima relação sinal-ruído.
 
-## Consentimento informado (template mental)
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-dipole-scalp`) inicia o percurso da física eletrostática, ensinando como os neurônios geram campos de dipolo e por que esses potenciais decaem com o quadrado da distância até o escalpo.
 
-Antes de EEG humano *eletivo* (não obrigatório neste MVP), o sujeito deve entender, em linguagem clara:
-
-1. **O quê** será medido (EEG de escalpo; canais; duração aproximada).
-2. **Para quê** (treino educacional / pesquisa definida — não “ler pensamentos”).
-3. **Riscos** razoáveis (desconforto do gel/cap, fadiga, possível identificação se dados forem mal anonimizados).
-4. **Benefícios** honestos (aprendizado; contribuição a dataset *se* acordado) — sem milagre terapêutico.
-5. **Voluntariedade** e direito de parar.
-6. **Dados**: quem guarda, por quanto tempo, se há partilha, como anonimizar.
-7. **Contacto** para dúvidas (responsável do lab / curso).
-
-MVP do círculo: preferir **dados sintéticos** ou **datasets abertos citados** (ex. competições / papers OA) até haver contexto ético real.
-
-## Neurorights e overclaim
-
-Ienca & Andorno ([PMC5447102](https://pmc.ncbi.nlm.nih.gov/articles/PMC5447102/), DOI [10.1186/s40504-017-0050-1](https://doi.org/10.1186/s40504-017-0050-1)) discutem direitos emergentes na era da neurotecnologia (privacidade mental, liberdade cognitiva, etc.). Para este curso, a tradução operacional é:
-
-- **Não** vender EEG de escalpo como acesso ao conteúdo semântico do pensamento.
-- **Não** treinar pipelines para vigilância não consentida (RH, salas de aula sem opt-in, etc.).
-- **Sim** discutir limites: MI/ERD ≠ “ler intenção verbal”; κ alto em synth ≠ desempenho clínico.
-
-**Overclaim** = afirmar capacidade que o sinal / o desenho experimental / a validação **não** sustentam. Exemplos proibidos no discurso do círculo:
-
-- “Lê pensamentos / memórias / mentiras.”
-- “Diagnostica doença X a partir do MVP estudantil.”
-- “Controle remoto do cérebro” via filtro-banco didático.
-
-## Dual-use literacy (sem receita)
-
-Alfabetização dual-use aqui significa:
-
-- Reconhecer que interfaces neurais e classificadores *podem* ser desviados (perfilamento, coerção, weaponização em sentido amplo).
-- Discutir salvaguardas: consentimento, minimização de dados, transparência de limites, revisão ética.
-- **Zero** procedimentos ofensivos, zero “como burlar consentimento”, zero design de arma.
-
-UNESCO — *Recommendation on the Ethics of AI* (2021) reforça proporcionalidade, privacidade e supervisão humana; use como leitura de contexto, não como checklist clínico.
-
-## Offline vs online e responsabilidade
-
-- **Offline**: replay / treino — ainda exige ética se dados forem humanos; synth reduz risco.
-- **Online**: latência e feedback fecham o laço com a pessoa — erro + overclaim = dano psicossocial potencial (frustração, falsa esperança). Orçamento de latência não des Culpa ética.
-
-## O que este curso *é* e *não é*
-
-| É | Não é |
-|---|--------|
-| Literacia MSc-prep + labs com emuladores | Curso de certificação clínica |
-| Papers abertos / DOI como âncora | Reprodução bit-a-bit de produto comercial |
-| Dual-use *awareness* | Manual de abuso |
-| Rota Neural a Mago Supremo | Atalho sem Estuda |
+## 5. Ponto de Destrave do Lab
+Para estudar os fundamentos dos neurodireitos e ética em neuroengenharia, consulte o artigo seminal de [Yuste et al. (Nature 2017, Four ethical priorities for neurotechnologies)](https://doi.org/10.1038/551159a) e as diretrizes do [Relatório Belmont](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html).

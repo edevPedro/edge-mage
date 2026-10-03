@@ -1,6 +1,6 @@
-# Lição — Campo de Dipolo e Atenuação com a Distância
+# Desafio — Campo de Dipolo e Atenuação com a Distância
 
-## 1. Contexto Operacional
+## 1. Objetivo do Desafio
 O potencial elétrico no escalpo é gerado por correntes pós-sinápticas em populações neuronais alinhadas. O modelo biofísico clássico de primeira aproximação é o dipolo elétrico de corrente.
 
 ## 2. Passo a Passo Matemático

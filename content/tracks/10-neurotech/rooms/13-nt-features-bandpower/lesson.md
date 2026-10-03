@@ -1,20 +1,13 @@
-# Lição — Potência de Banda (Bandpower) e Extração de Features
+# Desafio — Cálculo da Potência Média de Banda (Bandpower)
 
-## 1. Do Sinal Filtrado às Características Discriminantes
-1. **Potência Média de Janela**:
-   $$P = \frac{1}{N} \sum_{n=0}^{N-1} x[n]^2$$
-   Representa a energia média por amostra na banda isolada pelo filtro biquad.
+## 1. Objetivo do Desafio
+Implementar a rotina de cálculo da potência média de banda espectral para uma janela discreta de amostras filtradas de EEG, compreendendo sua equivalência com a variância de um sinal com média zero.
 
-2. **Compressão Logarítmica de Faixa Dinâmica**:
-   $$f = \log_{10}(P)$$
-   Simetriza a distribuição e aproxima o espaço de features da hipótese de normalidade multivariada necessária para o classificador LDA.
+## 2. Especificação Técnica e Formulação
+Dado um array ou lista de amostras discretas $X = [x_0, x_1, \dots, x_{N-1}]$ correspondentes a um sinal filtrado na banda de interesse:
+- Implemente a função `bandpower(xs)` que retorna a média da soma dos quadrados das amostras:
+  $$\text{bandpower}(X) = \frac{1}{N} \sum_{i=0}^{N-1} x_i^2$$
 
-3. **Assimetria Contralateral em Imagética Motora**:
-   - Imagética da Mão Direita $\implies$ Ativação do córtex motor esquerdo $\implies$ Dessincronização do ritmo mu em C3 ($P_{C3} \downarrow \implies \log P_{C3} < \log P_{C4}$).
-   - Imagética da Mão Esquerda $\implies$ Ativação do córtex motor direito $\implies$ Dessincronização do ritmo mu em C4 ($P_{C4} \downarrow \implies \log P_{C4} < \log P_{C3}$).
-
-## 2. As Funções de Laboratório Desta Sala
-- `bandpower(xs)`: Computa a média dos quadrados das amostras em um ensaio.
-- `log_bandpower_2ch(trial_c3, trial_c4)`: Extrai o vetor de features normalizado $[\log_{10}(P_{C3}), \log_{10}(P_{C4})]$, validando a positividade estrita da energia para evitar colapso numérico.
-
-Para destravar o lab, abra [Padfield et al. (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) e leia como Padfield trata bandpower de MI (mu/beta, janela versus baseline) para fechar a feature antes do classificador.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de tratar a divisão pelo número de amostras $N = \text{len}(xs)$. Se o array estiver vazio, a função deve levantar exceção ou retornar zero conforme o contrato.
+- A potência de banda é estritamente não-negativa ($P \ge 0$). Qualquer valor negativo indica erro de sinal na implementação.

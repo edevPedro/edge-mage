@@ -1,90 +1,29 @@
-# Conceito — BCI Competition IV (literacia de challenge)
+# Conceito — Benchmarking Padronizado, BCI Competition IV e Matriz de Confusão
 
-## Fonte âncora
+## 1. O Legado da BCI Competition IV (Tangermann et al., 2012)
+As quatro edições da BCI Competition (2000 a 2012) formaram a espinha dorsal de validação algorítmica da neuroengenharia moderna:
+- **Padronização:** Forneceu conjuntos de dados abertos e amplamente documentados (como os datasets de Graz de 4 classes de imagética motora: mão esquerda, mão direita, pés e língua).
+- **Separação Rígida:** Os dados de calibração continham rótulos para treinamento, enquanto os dados de teste tinham os rótulos retidos pelos organizadores para avaliação cega (*blind evaluation*).
+- **Métrica Oficial:** Adoção de métricas ajustadas ao acaso, como o Coeficiente Kappa de Cohen ($\kappa$), para penalizar classificadores desbalanceados ou triviais.
 
-Tangermann et al., *Review of the BCI Competition IV*  
-DOI [10.1088/1741-2560/9/2/025009](https://doi.org/10.1088/1741-2560/9/2/025009)
+## 2. A Estrutura da Matriz de Confusão Binária
+Para avaliar formalmente as predições de um modelo supervisionado contra o gabarito verdadeiro (*ground truth*):
+Sejam $y_{true} \in \{0, 1\}$ os rótulos reais e $y_{pred} \in \{0, 1\}$ as predições geradas:
 
-Competições BCI (IIIa/IIIb/IV, etc.) padronizam **dados + tarefas + métricas** para comparar algoritmos com menos ambiguidade que demos isoladas.
+| | Predito = 1 | Predito = 0 |
+| :--- | :--- | :--- |
+| **Real = 1** | **Verdadeiro Positivo (TP)** | **Falso Negativo (FN)** |
+| **Real = 0** | **Falso Positivo (FP)** | **Verdadeiro Negativo (TN)** |
 
-## Por que importa no MSc-prep
+### Contagens Fundamentais:
+- **Verdadeiro Positivo (TP):** $y_{true} == 1$ e $y_{pred} == 1$.
+- **Falso Negativo (FN):** $y_{true} == 1$ e $y_{pred} == 0$ (o modelo errou por omissão).
+- **Falso Positivo (FP):** $y_{true} == 0$ e $y_{pred} == 1$ (o modelo errou por falso alarme).
+- **Verdadeiro Negativo (TN):** $y_{true} == 0$ e $y_{pred} == 0$.
 
-1. Ensina a ler **task definitions** (o que prever, de que sinais, com que atraso).
-2. Força métricas explícitas (não “deu certo no lab”).
-3. Expõe diversidade de paradigmas (MI, P300, etc. — dependendo do dataset).
-4. Âncora datasets abertos citáveis para o seu decode MVP.
+## 3. Honestidade Intelectual em Benchmarks Públicos
+- Reproduzir um pipeline sobre dados sintéticos ou dados públicos abertos é uma emulação didática (*reproduction lite*).
+- É terminantemente vedado reivindicar colocações oficiais em leaderboards ou superar concorrentes históricos sem submeter-se ao protocolo original de avaliação cega em tempo real.
 
-## Mapa challenge → MVP do aluno
-
-| Elemento do challenge | Pergunta que você responde | MVP neurotech |
-|-----------------------|----------------------------|---------------|
-| Dataset / sujeitos | De onde vêm os trials? | synth ou open data citado |
-| Tarefa | Classes? Contínuo? | MI 2-classes toy |
-| Features permitidas | Há restrição temporal? | bandpower / CSP primer |
-| Métrica oficial | κ? acurácia? ITR? | κ + chance level + CV |
-| Avaliação | Split oficial? | trial/subject split sem leak |
-| Leaderboard | O que os top fizeram? | ideias — não copiar cegamente |
-
-## Armadilhas
-
-- Treinar no conjunto de avaliação do challenge.
-- Reportar acurácia sem a métrica pedida.
-- Misturar paradigmas (P300 speller ≠ MI ERD) no mesmo claim.
-- Ignorar desbalanceamento de classes.
-
-## Honesty
-
-Walkthrough pedagógico ≠ reenvio oficial à competição. Cite Tangermann; declare limites do seu lab.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
-
-## Profundidade full (espinha / EE avançada)
-
-### Estudo dirigido (40–60 min)
-1. Releia a tabela/equações do conceito e feche o arquivo; reescreva de memória.
-2. Faça o lab numérico duas vezes com parâmetros diferentes (`fs`, banda, N).
-3. Escreva um parágrafo ligando esta sala a **ética** (overclaim) e a **CV/leak** ou **SNR**, conforme couber.
-4. Se houver paper DOI/PMC na sala, copie a frase Methods que você operacionaliza no MVP synth.
-
-### Entregável de caderno
-- Diagrama de 1 página (ASCII ok)
-- 3 números com unidade
-- 3 honesty bullets
-- 1 pergunta para journal club
-
-Isto eleva a sala do modo “trivia” para modo MSc-prep auditável.
-
+## 4. O Que a Próxima Sala Assume
+Esta sala conclui a trilha de aplicações e casos emulados, preparando o engenheiro para os desafios de síntese metodológica do clímax do curso.

@@ -1,15 +1,21 @@
 # História — O Clímax do Mago Supremo
 
-Na grande biblioteca central do ecossistema e-mage, onde as runas de conhecimento brilhavam em pilares de mármore e silício, o aprendiz aproximou-se do portal máximo. Durante anos, a rota convencional para o título de Mago Supremo exigia compiladores LLVM, otimizações matriciais profundas em assembly AArch64 e aceleração on-device de redes neurais.
+No pináculo da torre de engenharia de sistemas e biocomputação, as duas grandes rotas de especialização convergem diante do conselho de arquitetos: à esquerda, o caminho do Systems & Edge ML Mage, forjado em compiladores, aceleração vetorial e inferência em silício on-device; à direita, a rota alternativa de Neurotech, forjada na biofísica de potenciais transmembrana, circuitos de microvolts, processamento digital de sinais em tempo real e rigor de pesquisa em neurociência.
 
-Hoje, porém, as antigas portas reconheciam um segundo caminho de igual magnitude e glória: a Rota Neural de Neurotecnologia.
+Ambos os caminhos conduzem rigorosamente ao mesmo ápice de maestria global: o título de **Mago Supremo**.
 
-Diante do console dourado de consagração, o sistema solicitou a apresentação das quatro runas de poder: a runa da aquisição analógica que domou os microvolts no front-end ADS1299; a runa da decodificação espacial que separou intenções motoras na variedade de covariâncias; a runa do streaming em tempo real que manteve o atraso de malha fechada abaixo de quarenta milissegundos; e a runa da pesquisa experimental que blindou a integridade científica contra o vazamento de dados.
+O engenheiro aproxima-se da mesa de homologação e apresenta o pacote completo de evidências do percurso neural:
+1. O selo do **Mago Base** (Fundamentos matemáticos e algorítmicos concluídos).
+2. As três runas fundamentais do percurso:
+   - `rune-neuro-acq`: Domínio da aquisição de biopotenciais, interface eletrodo-pele e filtragem de ruído.
+   - `rune-neuro-decode`: Domínio da decodificação linear, regularização de covariância e geometria Riemanniana.
+   - `rune-neuro-online`: Domínio do loop em tempo real com buffer circular e orçamento rígido de latência.
+3. O marco de **Neuro Mage** plenamente validado.
+4. A **Runa de Pesquisa Neural** (`rune-neuro-research`) e a defesa formal do módulo de dissertação de mestrado (`neuro-paper-module-msc`).
 
-O mestre guardião dos dois caminhos colocou as mãos sobre os ombros do candidato.
+O conselho de arquitetos executa o script formal de verificação do pacote de evidências (`verify_supremo_pack`). Cada asserção de teste, cada limite ético, cada métrica Kappa e cada deadline de tempo real são auditados com sucesso em nanossegundos.
 
-"Você começou esta jornada como um programador convencional que enxergava o mundo em números inteiros, strings e modelos de caixa preta," relembrou o mestre. "Hoje, você compreende a física do dipolo no meio condutor, o filtro passa-baixa tecidual da membrana celular, a geometria das esferas concêntricas do crânio, a matemática dos autovetores de dispersão e os dilemas éticos dos neuroritos. Você não é apenas um usuário de código; você é um neuroengenheiro."
+O presidente do conselho levanta-se e pronuncia a fórmula de consagração:
+— Você não é mais um programador convencional que trata dados biológicos como matrizes abstratas em notebooks desconectados da realidade. Você domina a cadeia que vai do dipolo eletrostático de um neurônio piramidal ao firmware de baixíssima potência de um microcontrolador em tempo real. Você comprovou competência de engenharia e integridade ética perante a ciência e a sociedade.
 
-O candidato depositou o artefato memorial `study-log/artifacts/neuro-supremo.md` na câmara de verificação. O avaliador automatizado conferiu o checklist supremo: dados identificados, Kappa de Cohen de zero vírgula setenta e dois, latência rigorosamente contida em trinta e dois vírgula cinco milissegundos e limites éticos declarados.
-
-Um estrondo silencioso de energia ressoou pelo terminal. A insígnia máxima de Mago Supremo acendeu-se no topo da árvore de habilidades, brilhando com o mesmo prestígio e autoridade da rota tradicional. A especialização estava consumada.
+O título de **Mago Supremo** é conferido. O ciclo de preparação para o mestrado e especialização profissional em neuroengenharia atinge sua completude com honra e excelência técnica.

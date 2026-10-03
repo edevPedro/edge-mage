@@ -1,86 +1,32 @@
-# Conceito — Banco de filtros para EEG / MI
+# Conceito — Bancos de Filtros Espectrais e Filtragem Notch
 
-## Ideia
+O sinal de EEG bruto é um somatório de oscilações biológicas, ruídos fisiológicos e interferência eletromagnética ambiental. O banco de filtros (Filter Bank) é a primeira linha de defesa analítica para isolar os componentes relevantes.
 
-Um **filter bank** aplica vários passa-banda (ex. mu 8–12 Hz, beta 16–24 Hz) e extrai energia/potência (ou covariância) por canal e por banda. É a ponte entre *ritmos nomeados* e *vetor de features*.
+## 1. O Fundamento de DSP em Neuroengenharia
+Um banco de filtros consiste em um conjunto de filtros passa-faixa paralelos que decompõem o sinal $x[n]$ em múltiplos sub-sinais $x_k[n]$, cada um restrito a uma banda de interesse:
+$$x_k[n] = h_k[n] * x[n]$$
 
-## Nyquist e honestidade elétrica
+Onde $h_k$ representa a resposta ao impulso do filtro para a $k$-ésima banda (por exemplo, sub-bandas de $4	ext{ Hz}$ de largura cobrindo de $4	ext{ a }32	ext{ Hz}$, como no algoritmo FBCSP).
 
-Dado `fs`, a frequência de Nyquist é `fs/2`. Bandas acima disso não são legais; perto de Nyquist, antialias (sala EE) importa. Escolher 40–80 Hz com `fs=100` sem filtro adequado é teatro.
+### Filtragem Notch (Rejeita-Faixa)
+A rede elétrica induz correntes capacitivas no corpo humano que geram potenciais de $50	ext{ Hz}$ (Europa/Ásia) ou $60	ext{ Hz}$ (Américas). O filtro notch é projetado com zeros no círculo unitário em $\omega_0 = 2\pi f_0 / f_s$ para introduzir atenuação profunda ($> 40	ext{ dB}$) em uma vizinhança estreita sem distorcer as frequências vizinhas.
 
-## Separação de responsabilidades
+### O Limite de Nyquist-Shannon
+A taxa de amostragem $f_s$ impõe o limite superior estrito para o conteúdo de frequência sem aliasing:
+$$f_{\text{Nyquist}} = \frac{f_s}{2}$$
+Para $f_s = 250\text{ Hz}$, nenhuma frequência útil ou ruído acima de $125\text{ Hz}$ pode ser processada digitalmente sem causar rebatimento espectral destrutivo.
 
-| Etapa | Faz | Não faz |
-|-------|-----|---------|
-| Filter bank / pré-proc | isola bandas; reduz linha 50/60 | classificar rótulos |
-| Features | bandpower / cov | decidir hiperparâmetros no teste |
-| Classificador | LDA / etc. | “consertar” leak do pré-proc |
+## 2. Unidades e Ordens de Grandeza
+- **Frequência de amostragem ($f_s$):** $250\text{ Hz}$ (padrão comum em OpenBCI e sistemas móveis).
+- **Interferência de rede:** $50\text{ ou } 60\text{ Hz}$ (amplitudes de $50\text{ a } 500\ \mu\text{V}$).
+- **Largura típica de bandas de BCI:** $\Delta f = 2\text{--}4\text{ Hz}$ para filtros sub-banda.
 
-**Anti-leak:** estatísticas de filtro/normalização estimadas só no treino (ou com nested CV). Usar o teste para sintonizar cortes de banda invalida o número.
+## 3. Modos de Falha na Prática de Engenharia
+1. **Filtro com Fator Q Excessivamente Alto:** Pode causar oscilação prolongada (ringing no domínio do tempo) após transientes abruptos, gerando artefatos artificiais.
+2. **Ignorar Nyquist em Amostragem Subsequente:** Tentar subamostrar o sinal (downsampling) sem aplicar um filtro passa-baixas anti-aliasing prévio, causando distorção irreversível das bandas sensoriomotoras.
 
-## Notch ≠ feature neural
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-mi-paradigm`) contextualiza a dinâmica temporal dos ensaios de imagética motora e a técnica de fatiamento de janelas temporais de interesse.
 
-Notch 50/60 Hz trata artefato de linha. Remover linha é higiene; reportar “descoberta neural em 60 Hz” é erro.
-
-## Synth lab
-
-`synth_eeg_stream` pode injetar contraste de energia por banda. Use para validar que o banco *isola* o que você pediu — **não** para afirmar ERD fisiológico.
-
-## Runa
-
-Esta sala dropa **`rune-neuro-acq`**. Cadeia eletrodo→terra→ADC completa pode conceder a mesma runa se o filter-bank ainda estiver aberto (ver SPEC).
-
-Animação alvo: `filter_freq_response` — ganho na banda útil, atenuação fora.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
-
-## Profundidade full (espinha / EE avançada)
-
-### Estudo dirigido (40–60 min)
-1. Releia a tabela/equações do conceito e feche o arquivo; reescreva de memória.
-2. Faça o lab numérico duas vezes com parâmetros diferentes (`fs`, banda, N).
-3. Escreva um parágrafo ligando esta sala a **ética** (overclaim) e a **CV/leak** ou **SNR**, conforme couber.
-4. Se houver paper DOI/PMC na sala, copie a frase Methods que você operacionaliza no MVP synth.
-
-### Entregável de caderno
-- Diagrama de 1 página (ASCII ok)
-- 3 números com unidade
-- 3 honesty bullets
-- 1 pergunta para journal club
-
-Isto eleva a sala do modo “trivia” para modo MSc-prep auditável.
-
+## 5. Ponto de Destrave do Lab
+Para o estudo fundamental do algoritmo Filter Bank Common Spatial Pattern (FBCSP), consulte o artigo seminal de [Ang et al. (IEEE IJCNN 2008, FBCSP)](https://doi.org/10.1109/IJCNN.2008.4634130) e a documentação técnica do [OpenBCI EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/).

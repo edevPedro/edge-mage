@@ -1,78 +1,35 @@
-# Conceito — OpenBCI path
-Cyton GS + EEG setup. Ética + consentimento. Hardware eletivo; MVP continua synth/OA.
+# Conceito — Protocolo OpenBCI Cyton e Decodificação de Inteiros de 24 Bits com Sinal
 
-## Por que está no caminho MSc-prep
-Este tópico (OpenBCI path) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+O hardware OpenBCI Cyton utiliza o front-end analógico ADS1299 da Texas Instruments, padrão-ouro para biopotenciais não-invasivos.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 1. O Pacote de Dados Padrão do Cyton (33 Bytes)
+A placa transmite pacotes de tamanho fixo a 250 Hz:
+- **Byte 0:** Byte de cabeçalho (`0xA0`).
+- **Byte 1:** Contador de amostras (0 a 255 com wrap-around).
+- **Bytes 2 a 25:** 8 canais de EEG (3 bytes por canal = 24 bits em complemento de dois, big-endian).
+- **Bytes 26 a 31:** Dados auxiliares (acelerômetro de 3 eixos ou marcadores de trigger digital).
+- **Byte 32:** Byte de rodapé (stop byte).
 
-## Exercícios mentais
-- Defina HW eletivo em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 2. Decodificação de Inteiros de 24 Bits com Extensão de Sinal
+Dada uma trinca de bytes `(b0, b1, b2)` em ordem big-endian:
+1. Concatenação dos bytes:
+   $$\text{raw} = (b_0 \ll 16) \mid (b_1 \ll 8) \mid b_2$$
+2. Verificação do bit de sinal (bit 23):
+   $$\text{Se } (\text{raw} \;\&\; 0x800000) \ne 0: \quad \text{valor} = \text{raw} - 2^{24}$$
+   $$\text{Caso contrário}: \quad \text{valor} = \text{raw}$$
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+## 3. Conversão para Volts / Microvolts
+Para converter o inteiro decodificado em volts reais:
+$$\text{Tensão (V)} = \text{valor} \times \left( \frac{V_{\text{ref}}}{\text{Ganho} \times (2^{23} - 1)} \right)$$
+Com $V_{\text{ref}} = 4.5\text{ V}$ e ganho padrão de $\times 24$:
+$$\text{Escala LSB} = \frac{4.5}{24 \times 8388607} \approx 0.02235\ \mu\text{V} / \text{count}$$
 
+## 4. Modos de Falha na Prática de Engenharia
+1. **Omissão da Extensão de Sinal:** Provoca descontinuidades extremas sempre que o sinal cruza a linha de zero volts, injetando degraus de $16$ milhões de counts no filtro digital.
+2. **Perda de Pacotes por Driver Serial:** Ler o buffer da porta serial sem checagem de integridade de cabeçalho (`0xA0`) e contador de amostras contíguo.
 
-## Extensão MSc-prep (foundation → advanced)
+## 5. O que a Próxima Sala Assume
+A próxima fase (`nt-math-vectors`) inicia a espinha dorsal de matemática avançada, formalizando epochs como vetores em espaços de Hilbert e produtos internos como filtragem espacial.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 6. Ponto de Destrave do Lab
+Para as especificações completas de comunicação serial e registradores do ADS1299, consulte o [OpenBCI Cyton Data Format](https://docs.openbci.com/Cyton/CytonDataFormat/) e o datasheet do [TI ADS1299](https://www.ti.com/product/ADS1299).

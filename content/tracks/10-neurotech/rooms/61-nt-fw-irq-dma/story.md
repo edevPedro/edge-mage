@@ -1,9 +1,13 @@
-# História — Meia volta não é volta inteira
+# História — A Tempestade de Interrupções
 
-A ISR não processa a janela. O DMA escreve, e `check_dma_irq(write, prev, half, full)` só diz se cruzou metade ou o fim. Buffer de 1024, metade em 512.
+A bancada de testes de firmware de uma touca de biopotenciais estava operando em alta carga. Uma placa microcontroladora ARM Cortex-M4 recebia dados de um front-end analógico ADS1299 configurado para 8 canais a 1000 amostras por segundo. A cada milissegundo, o pino de Data Ready (`/DRDY`) do conversor caía para nível lógico baixo, disparando uma linha de interrupção externa (EXTI).
 
-Primeiro par: ponteiro anterior 500, agora 520. Cruzou 512, não cruzou o wrap. HT verdadeiro, TC falso. Quem marca os dois porque “passou de 512” acorda a tarefa errada.
+O firmware havia sido escrito por um programador de aplicações: dentro da rotina de interrupção (ISR), o código executava um loop SPI para ler 27 bytes, convertia os inteiros de 24 bits para float e aplicava um filtro notch digital.
 
-Segundo par: anterior 1020, agora 10. O ponteiro deu a volta pelo tamanho 1024. Isso é TC. HT não substitui essa leitura. A ISR que faz feature aqui dentro estoura jitter; a transferência ADC→memória sem CPU por amostra é o DMA do fill. Os inteiros são contadores de bancada, não amostras de uma pessoa. Errar HT/TC duplica bloco ou pula bloco — o ring downstream não perdoa.
+O engenheiro sênior de sistemas embarcados conectou uma sonda de osciloscópio no pino de debug e observou o sinal:
 
-Fase F9, nt-fw-irq-dma: (520, 500) é HT sem TC; (10, 1020) é TC. Half=512 e full=1024. A ISR longa é o jitter do MCQ; a conta aqui é só qual limiar o ponteiro cruzou.
+— "Sua CPU passa 85% do tempo presa dentro da rotina de interrupção. A pilha de rádio Bluetooth perdeu pacotes de conexão porque o handler da UART foi preempcionado indefinidamente. Cada amostra individual gera uma tempestade de contexto (*context switch*), salvando e restaurando registradores do núcleo dezenas de milhares de vezes por segundo."
+
+O arquiteto de firmware puxou o manual do controlador de DMA (Direct Memory Access):
+
+— "Em aquisição de biossinais, uma ISR nunca processa dados pesados. Nós configuramos o periférico SPI em modo escravo ou mestre com DMA em buffer circular (*ping-pong double buffer*). O hardware de DMA transfere os bytes do ADC diretamente para a memória SRAM sem intervenção do processador. O microcontrolador só é interrompido duas vezes por bloco: na metade da transferência (Half Transfer - HT) para processar o bloco 'ping', e no término do buffer (Transfer Complete - TC) para processar o bloco 'pong'. A CPU fica livre para o processamento de sinais e o jitter cai a zero."

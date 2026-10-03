@@ -1,36 +1,27 @@
-# Conceito — Blindagem Eletrostática, Layout para Sinais de Microvolts e Power Integrity
+# Conceito — Blindagem Ativa (Driven Shield), Integridade de Alimentação e PSRR
 
-## 1. Integridade de Potência (Power Integrity) e Rejeição de Fonte (PSRR)
-Sinais de EEG possuem amplitudes típicas na faixa de $10\text{--}100\ \mu\text{V}$. Fontes de alimentação chaveadas (conversores buck ou boost DC-DC) introduzem ondulação de tensão (*ripple*) e ruído de chaveamento de alta frequência ($100\text{ kHz}\text{--}2\text{ MHz}$) com amplitudes típicas de $10\text{--}50\text{ mV}_{\text{pico}}$.
+A proteção de biopotenciais frágeis exige controle de ruídos induzidos no cabeamento e isolamento estrito contra ondulações da fonte de alimentação.
 
-A capacidade de um circuito integrado de front-end analógico (como o [TI ADS1299](https://www.ti.com/lit/ds/symlink/ads1299.pdf)) de isolar suas saídas analógicas de perturbações presentes nos trilhos de alimentação é medida pela **Razão de Rejeição de Fonte de Alimentação (PSRR - Power Supply Rejection Ratio)**:
+## 1. O Princípio da Blindagem Ativa (Driven Shield / Guard Ring)
+Em cabos de eletrodos de biopotenciais de alta impedância:
+- **Blindagem Aterrada Simples:** A capacitância parasita cabo-terra ($C_{\text{parasita}}$) forma um divisor capacitivo que atenua o sinal biológico e desequilibra o CMRR em frequências acima de 10 Hz.
+- **Blindagem Ativa (Driven Shield):** Um amplificador buffer polariza a malha metálica externa com a média de modo comum do sinal interno:
+  $$V_{\text{guard}} = V_{\text{CM}}$$
+  Pela equação da carga capacitiva $Q = C (V_{\text{sinal}} - V_{\text{guard}})$, como $\Delta V \approx 0$, a corrente capacitiva é anulada ($I = C \frac{dV}{dt} = 0$). Isso cancela o efeito de carga capacitiva do cabo e bloqueia a indução de ruído externo.
 
-$$\text{PSRR (dB)} = 20 \log_{10}\left(\frac{V_{\text{ripple, in}}}{V_{\text{ripple, out}}}\right)$$
+## 2. Taxa de Rejeição de Fonte de Alimentação (PSRR)
+Fontes de alimentação chaveadas (DC-DC converters) operam com frequências de comutação de centenas de quilohertz, gerando ondulações de tensão (ripple) nos trilhos de alimentação.
+O PSRR quantifica a capacidade do amplificador de impedir que variações nos trilhos de energia vazem para a saída do biopotencial:
+$$\text{PSRR (dB)} = 20 \log_{10}\left( \frac{\Delta V_{\text{fonte}}}{\Delta V_{\text{saída, ruído}}} \right)$$
+- Um PSRR de $80\text{ dB}$ atenua uma ondulação de fonte de $100\text{ mV}$ para apenas $10\ \mu\text{V}$ na saída.
+- Para biopotenciais de escalpo, exige-se regulação linear pós-chaveamento com reguladores LDO de ultra-baixo ruído e PSRR $> 70\text{ dB}$.
 
-O fator de atenuação linear do ruído é:
-$$\text{Fator} = 10^{\frac{\text{PSRR (dB)}}{20}}$$
+## 3. Modos de Falha na Prática de Engenharia
+1. **Alimentar Front-End Diretamente com USB:** Conectar o conversor ADS1299 diretamente à linha de $+5\text{ V}$ do barramento USB de um computador, injetando milivolts de ruído de clock de placa-mãe diretamente no conversor de 24 bits.
+2. **Curto-Circuito em Guard Rings:** Ligar anéis de guarda de PCB na terra do sistema em vez do nó de blindagem ativa, transformando o anel em um capacitor parasita indesejado.
 
-E a tensão de ripple injetada diretamente no canal analógico é:
-$$V_{\text{injected}} = \frac{V_{\text{ripple, in}} \times 1000}{\text{Fator}} \quad (\text{em }\mu\text{V})$$
+## 4. O que a Próxima Fase Assume
+A próxima fase (`nt-neuro-neuron-hh`) inicia o módulo aprofundado de neurociência celular e circuitos neurais de Hodgkin-Huxley e sinapses.
 
-### O Perigo do Regulador Chaveado Direto
-Embora o PSRR de amplificadores operacionais e AFEs seja muito alto em corrente contínua ($>100\text{ dB}$ em $0\text{ Hz}$), ele decai progressivamente com a frequência:
-- Se alimentarmos o AFE diretamente com um conversor chaveado com $V_{\text{ripple}} = 30\text{ mV}$ em uma frequência onde o PSRR do chip é de apenas $50\text{ dB}$:
-  $$\text{Fator} = 10^{50/20} = 10^{2.5} \approx 316.2$$
-  $$V_{\text{injected}} = \frac{30.000\ \mu\text{V}}{316.2} \approx 94.87\ \mu\text{V}$$
-  Para um sinal EEG biológico de $10\ \mu\text{V}$:
-  $$\text{SNR} = \frac{10.0}{94.87} \approx 0.105 \implies \text{SNR (dB)} \approx -19.5\text{ dB}$$
-  O ruído de ripple da fonte é dez vezes maior que o sinal cerebral! O conversor analógico-digital digitaliza apenas o chaveamento da fonte.
-
-- Com topologia adequada: inserção de um regulador linear LDO de ultra-baixo ruído e alto PSRR (ex: TI TPS7A47 ou LP5907) em cascata após o chaveador, o ripple é reduzido para $10\text{ mV}$ e o PSRR combinado do sistema atinge $90\text{ dB}$ ($\text{fator} \approx 31.622,8$):
-  $$V_{\text{injected}} = \frac{10.000\ \mu\text{V}}{31.622,8} \approx 0.316\ \mu\text{V} \le 1.0\ \mu\text{V}$$
-  $$\text{SNR} = \frac{10.0}{0.316} \approx 31.6 \implies +30.0\text{ dB}$$
-  O sinal de microvolts emerge límpido sobre o piso de ruído.
-
-## 2. Blindagem e Layout de Placa de Circuito Impresso (PCB)
-No design físico para biopotenciais, seguir as diretrizes da documentação da [OpenBCI (EEG Hardware Setup)](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) é obrigatório:
-1. **Particionamento de Domínios**: Separar fisicamente a seção analógica quieta ($AVDD/AGND$) da seção digital ruidosa ($DVDD/DGND$). Não rotear sinais de clock SPI sob as entradas diferenciais do AFE.
-2. **Blindagem Ativa (Driven Shield / Guard Ring)**: O cabo do eletrodo é envolvido por uma malha condutora polarizada exatamente com a mesma tensão de modo comum do sinal (usando um buffer seguidor de ganho unitário). Como não há diferença de potencial entre o condutor central e a malha, a corrente capacitiva de fuga é anulada ($I = C \frac{dV}{dt} = 0$).
-
-## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-rhythms`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/09-nt-rhythms/room.yaml)) assume que a cadeia de hardware (eletrodos, proteção, amplificação diferencial, terra e alimentação limpa) entrega um sinal analógico estável de microvolts, permitindo iniciar o processamento espectral dos ritmos cerebrais endógenos ($\delta, \theta, \alpha, \beta, \gamma$).
+## 5. Ponto de Destrave do Lab
+Consulte as notas de aplicação de blindagem ativa e integridade de alimentação biomédica da [Analog Devices (High Impedance Sensors: Driven Shields and Guarding)](https://www.analog.com/) e [Texas Instruments (SBAA206 - Bio-Sensing Front-End Design)](https://www.ti.com/).

@@ -1,26 +1,17 @@
-# Lição — Sistemas → BCI
+# Desafio — Cálculo Numérico de ERD/ERS
 
-## Objetivos
+## 1. Objetivo do Desafio
+Implementar a rotina de quantificação da Dessincronização Relacionada a Eventos (ERD) e Sincronização Relacionada a Eventos (ERS) a partir das potências médias de banda obtidas em épocas de linha de base e de tarefa motora.
 
-Ligar HH/synapse/maps/rhythms a um sistema sensorimotor; situar EEG como sinal populacional.
+## 2. Especificação Técnica
+Implemente a função `erd_ers_percent(baseline_power, task_power)`:
+- Calcule a variação percentual relativa conforme a convenção de Pfurtscheller:
+  $$\text{resultado} = \left( \frac{P_{baseline} - P_{task}}{P_{baseline}} \right) \times 100$$
+- Onde:
+  - `baseline_power`: Potência espectral média na janela de repouso ($P_{base} > 0$).
+  - `task_power`: Potência espectral média na janela ativa de imagética motora ($P_{task} \ge 0$).
+- Retorne o valor numérico em ponto flutuante.
 
-## Passos
-
-1. Diagrama: intenção MI → M1/S1 → SMR → eletrodo → decoder → feedback.
-2. Escreva por que single-unit ≠ feature do MVP escalpo.
-3. Cite Singh/Wolpaw em uma frase de motivação.
-
-## Checklist
-
-- [ ] Escalas
-- [ ] SMR/sistema
-- [ ] Pronto para CS/DSP espinha
-
-Para destravar o lab, abra [Singh et al. — MI-BCI review (PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) e leia como Singh descreve ERD/ERS de população no MI, para erd_ers_percent sair positivo na queda de potência e negativo no rebound.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que potências de tarefa menores que a baseline resultem em valores estritamente positivos (ERD).
+- Quando a potência na tarefa for superior à da baseline, o resultado deve ser naturalmente negativo (ERS).

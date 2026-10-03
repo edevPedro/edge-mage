@@ -1,30 +1,25 @@
-# Lição — P300 hybrid
+# Desafio — Detecção do Pico P300 em Épocas de ERP
 
-## Objetivos
-Dominar literacia o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a rotina de detecção de pico de amplitude positiva para o potencial evocado P300, localizando o valor máximo do sinal de EEG dentro da janela temporal canônica de 250 a 450 milissegundos pós-estímulo.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `p300_peak(erp_signal, fs=250, start_ms=250, end_ms=450)`:
+- Converta os tempos de início e fim da janela de interesse para índices da lista utilizando a frequência de amostragem `fs`:
+  $$i_{start} = \text{int}\left(\frac{start\_ms}{1000} \times fs\right)$$
+  $$i_{end} = \text{int}\left(\frac{end\_ms}{1000} \times fs\right)$$
+- Extraia a fatia do sinal correspondente ao intervalo $[i_{start}, i_{end}]$ (inclusive ou conforme indexação padrão de fatiamento).
+- Retorne o valor máximo escalar (float) encontrado nessa fatia temporal.
 
-## Lab
-Explique em 6–10 linhas como literacia aparece num pipeline MI offline ou online.
+## 3. Exemplo de Referência
+```python
+# Sinal de 200 amostras a fs=250 Hz (1 amostra a cada 4 ms)
+# 250 ms -> índice 62; 450 ms -> índice 112
+sig = [0.0] * 200
+sig[75] = 12.5  # Pico em 300 ms (75 * 4 ms = 300 ms)
+assert abs(p300_peak(sig, fs=250, start_ms=250, end_ms=450) - 12.5) < 1e-5
+```
 
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [Farwell & Donchin 1988 P300 speller](https://doi.org/10.1016/0013-4694(88)90149-6) e leia a janela do componente positivo no speller de Farwell e Donchin, para p300_peak procurar o máximo só entre 250 e 450 ms.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de que a busca ocorra estritamente dentro da janela solicitada.
+- Retorne o valor numérico da voltagem de pico (float).

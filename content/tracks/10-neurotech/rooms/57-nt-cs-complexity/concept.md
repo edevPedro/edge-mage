@@ -1,45 +1,29 @@
-# Conceito — Complexidade em BCI
-Sliding window O(W) por update; cov O(C²) ou pior se ingênuo; CSP eigensolve O(C³) típico didático; nested CV multiplica por folds×params.
-## Por que importa
-Online: budget ms. Offline research: nested CV em grid enorme = tempo de parede.
+# Conceito — Complexidade Computacional e Orçamento de Tempo Real em BCI
 
-## Por que está no caminho MSc-prep
-Este tópico (Complexidade) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. O Trade-Off Fundamental: Resolução Espacial vs. Custo Computacional
+Em interfaces cérebro-computador multicanal, o número de canais $C$ e o tamanho da janela temporal $W$ (em amostras) determinam a carga algorítmica:
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+| Operação | Complexidade Temporal | Impacto em Tempo Real |
+| :--- | :--- | :--- |
+| Filtragem Temporal IIR | $\mathcal{O}(C)$ por amostra | Muito leve; linear no número de canais |
+| Filtragem Temporal FIR | $\mathcal{O}(C \cdot L)$ ($L = \text{taps}$) | Moderado; paralelizado via SIMD |
+| Covariância Espacial ($X X^T$) | $\mathcal{O}(C^2 W)$ por bloco | Quadrático em $C$; crítico em alta densidade |
+| Inversão de Matriz / CSP / LDA | $\mathcal{O}(C^3)$ | Cúbico em $C$; proibitivo calcular a cada amostra |
 
-## Exercícios mentais
-- Defina Big-O de pipelines BCI em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+Reduzir o número de canais $C$ selecionando subconjuntos anatômicos (ex: apenas $C3, Cz, C4$ para imagética motora) reduz o custo de covariância com o quadrado da redução: passar de 64 para 8 canais reduz a complexidade da covariância por um fator de $(64/8)^2 = 64\times$.
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+## 2. O Orçamento de Latência (Latency Budget)
+Em um sistema de malha fechada, cada amostra ou bloco de amostras possui um prazo estrito (*deadline*) para ser adquirido, filtrado, decodificado e transformado em ação motora ou estimulação:
 
+$$T_{total} = T_{acq} + T_{filter} + T_{feature} + T_{decode} + T_{actuation} \le T_{deadline}$$
 
-## Extensão MSc-prep (foundation → advanced)
+Se a taxa de amostragem é $f_s = 1000\text{ Hz}$, uma nova amostra chega a cada $1000\ \mu\text{s}$. Se o algoritmo demorar $1500\ \mu\text{s}$ para processar cada amostra, o buffer de entrada acumula atraso continuamente até o esgotamento de memória (*buffer overflow*).
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+## 3. Modo de Falha Típico: Jitter Cumulativo e Queda de Pacotes
+Quando o tempo de processamento por amostra excede o período de amostragem, o sistema entra em colapso temporal:
+- A latência ponta-a-ponta cresce linearmente com o tempo de sessão.
+- O feedback ao usuário dessincroniza do estado cognitivo atual.
+- A thread de aquisição é bloqueada ou descarta pacotes no driver.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-ringbuf-ds`) implementa a estrutura de dados canônica para desacoplar a taxa de aquisição da taxa de consumo: o buffer circular (*ring buffer*).

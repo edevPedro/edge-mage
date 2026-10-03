@@ -34,7 +34,7 @@ $$V_{\text{diff}} = |V_1 - V_2| = V_{cm} \left| \frac{R_{\text{in}}}{Z_1 + R_{\t
 Acreditar que o filtro notch digital de $60\text{ Hz}$ resolve tudo. Se o ruído diferencial convertido for de $500\ \mu\text{V}$ e o ganho do pré-amplificador for $G = 100$, a saída atinge $50\text{ mV}$ ou satura o ADC, ceifando a forma de onda de forma não linear antes que o DSP digital receba qualquer amostra.
 
 ## 4. O que a Próxima Sala Assume
-A sala seguinte ([`nt-adc-bio`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/08-nt-adc-bio/room.yaml)) assume que você compreende as escalas de tensão analógica na entrada para calcular a resolução LSB do conversor digital.
+A próxima sala do percurso é `nt-elec-opamp-noise` (Elétrica — Op-amp, ruído e CMRR): Ruído de entrada, ganho e CMRR no AFE bio.
 
 ## 5. Ponto de Destrave do Lab
 Para entender a interação crítica entre impedância de escalpo e rejeição de modo comum em estudos clínicos, consulte o clássico de [Ferree et al. (DOI 10.1016/S1388-2457(00)00533-2)](https://doi.org/10.1016/S1388-2457(00)00533-2) e as práticas de aterramento e bias da [OpenBCI EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/).

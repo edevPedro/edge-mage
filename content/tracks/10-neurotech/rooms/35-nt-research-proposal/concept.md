@@ -1,50 +1,24 @@
-# Conceito — Research proposal (gate MSc-prep)
+# Conceito — Formulação de Proposta de Pesquisa Científica em BCI (MSc-Prep)
 
-Uma proposal neste círculo é um **contrato científico curto**, não um pitch. Deve caber numa página (ou 1–2) e responder: o que pergunta, com que dados, com que métrica, com que ética, em quanto tempo.
+A proposta de pesquisa formal é o contrato acadêmico que estabelece a viabilidade, a metodologia e o rigor experimental de um projeto de pós-graduação.
 
-## Rubrica (SPEC gate)
+## 1. Estrutura Canônica de uma Proposta de Pesquisa
+Uma proposta técnica de alto nível deve articular com precisão:
+1. **Declaração do Problema e Hipótese Científica:** Definição da lacuna de conhecimento e a previsão quantitativa a ser testada experimentalmente.
+2. **Especificação dos Dados:** Nome do dataset aberto, identificador permanente (DOI/URL), número de participantes, canais de registro e montagem de referência.
+3. **Pipeline Metodológico:** Filtros digitais de pré-processamento, algoritmos de extração de características e classificadores matemáticos com hiperparâmetros declarados.
+4. **Métricas de Desempenho e Hipótese Nula:** Definição da métrica primária (Cohen's Kappa $\kappa$, ITR de Wolpaw) e o teste inferencial não-paramétrico (teste de permutação ou Wilcoxon pareado) para rejeição da hipótese nula com nível $\alpha = 0.05$.
+5. **Declaração Ética e Limites:** Esclarecimento de que a pesquisa opera sobre dados de acesso aberto desidentificados, sem pretensões de diagnóstico clínico humano sem certificação regulatória.
 
-| Bloco | Obrigatório | Falha típica |
-|-------|-------------|--------------|
-| **Pergunta** | 1 frase falsificável | “Explorar BCI” sem variável |
-| **Hipótese** | Direção esperada (mesmo fraca) | Hipótese = método |
-| **Dados** | synth / OA citado / humano+consent | HW sem ética |
-| **Pipeline** | features + clf + split | “usar deep learning” sem CV |
-| **Métrica** | κ + chance level (ou métrica do challenge) | só accuracy |
-| **Ética** | Belmont lite + dual-use literacy | overclaim clínico |
-| **Timeline** | semanas realistas | 2 dias para N=40 sujeitos |
+## 2. O Papel do Artefato de Proposta
+A criação do arquivo `study-log/artifacts/research-proposal.md` consolida o gate de maturidade da fase de pesquisa, exigindo a declaração formal de hipótese, métricas e cronograma de trabalho.
 
-## Template mental (IMRaD-prep)
+## 3. Modos de Falha em Propostas de Pesquisa
+1. **Proposta Tautológica:** Formular hipóteses óbvias que não admitem falseamento experimental (ex. "redes neurais podem aprender padrões").
+2. **Omissão do Plano de Validação:** Descrever extensivamente a arquitetura do modelo mas não especificar como os dados serão divididos para prevenir vazamento de ensaios.
 
-```text
-Intro (motivo + gap) → Methods plan → Expected Results → Risks/Ethics → Timeline
-```
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-thesis-methods`) exige a redação formal e a validação computacional da seção de Métodos da dissertação, no padrão exigido por periódicos internacionais como IEEE Transactions e Journal of Neural Engineering.
 
-## Exemplos bons vs ruins
-
-**Ruim:** “Vou ler pensamentos com EEG e 99%.”  
-**Bom:** “Em MI 2-classes (C3/C4, mu/beta log-bandpower, LDA), κ offline com CV por trial em synth/OA será > chance; reporto IC e leak checks.”
-
-## Ligação
-
-`nt-paper-critique` → proposal → `nt-thesis-methods` → project → paper MSc. Casos Berlin/Comp IV servem de âncora de escopo.
-
-## Exemplo preenchido (synth MI)
-
-**Pergunta:** Em dados sintéticos com contraste mu/beta em C3/C4, um LDA em log-bandpower obtém κ significativamente acima de chance com CV trial-wise?
-
-**Hipótese:** κ médio cross-validated > 0 (acima de p_e=0.5 em accuracy) com N≥80 trials balanceados.
-
-**Dados:** `synth_eeg_stream` seed fixa; opcionalmente 1 dataset OA citado (Comp IV / Berlin literacy).
-
-**Methods plan:** epoch → bank (8–12,16–24) → log-var → LDA → κ; nested só se tunar bandas.
-
-**Ética:** sem sujeitos; dual-use literacy no texto; proibido overclaim clínico.
-
-**Timeline:** 2 semanas pipeline + 1 semana escrita critique/proposal polish.
-
-## Anti-padrões
-- Proposal que é só lista de papers.
-- Métrica “accuracy” sem chance.
-- Timeline de tese completa numa sala.
-
+## 5. Ponto de Destrave do Lab
+Consulte o guia de elaboração de projetos de pós-graduação em engenharia de [Booth et al. (The Craft of Research, University of Chicago Press)](https://press.uchicago.edu/ucp/books/book/chicago/C/bo198544976.html).

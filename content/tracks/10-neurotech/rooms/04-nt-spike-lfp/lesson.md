@@ -1,6 +1,9 @@
-# Lição — Spike → PSP → LFP
+# Desafio — Spike → PSP → LFP
 
-## 1. As Três Escalas da Bioeletricidade
+## 1. Objetivo do Desafio
+Analisar as três escalas fundamentais da bioeletricidade e realizar a auditoria biofísica de detectabilidade extracelular.
+
+## 2. As Três Escalas da Bioeletricidade
 1. **Potencial de Ação (Spike)**:
    - Duração: $\sim 1\text{ ms}$.
    - Banda espectral: $300\text{--}3000\text{ Hz}$.

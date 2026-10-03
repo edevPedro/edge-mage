@@ -1,65 +1,32 @@
-# Conceito — CSP (primer)
+# Conceito — Padrões Espaciais Comuns (Common Spatial Patterns - CSP) e Log-Variância
 
-- Estima covariâncias por classe → autoproblema generalizado → filtros espaciais.
-- Features típicas: log-variância nas projeções extremas.
-- **FBCSP** (eletivo): CSP por sub-banda + seleção.
+O algoritmo Common Spatial Patterns (CSP) é a técnica clássica de filtragem espacial supervisionada mais bem-sucedida em interfaces cérebro-computador baseadas em Imagética Motora.
 
+## 1. O Princípio Matemático do CSP
+Dadas duas classes de ensaios de EEG multicanal com matrizes médias de covariância normalizada $\Sigma_1$ e $\Sigma_2 \in \mathbb{R}^{C \times C}$:
+O CSP busca filtros espaciais lineares $w$ que maximizam a razão de variâncias (quociente de Rayleigh generalizado):
+$$J(w) = \frac{w^T \Sigma_1 w}{w^T \Sigma_2 w}$$
+Isso é resolvido pelo problema de autovalores generalizados:
+$$\Sigma_1 w = \lambda \Sigma_2 w$$
+Ou, equivalentemente, diagonalizando simultaneamente a covariância combinada $\Sigma_c = \Sigma_1 + \Sigma_2$ através de branqueamento espacial (whitening).
 
-## Extensão MSc-prep (foundation → advanced)
+## 2. Extração de Características por Log-Variância
+Dado um ensaio multicanal $X \in \mathbb{R}^{C \times T}$ e um vetor de filtro espacial $w \in \mathbb{R}^C$:
+1. O sinal filtrado espacialmente unidimensional é:
+   $$s[t] = w^T X[t] = \sum_{c=1}^C w_c X[c, t]$$
+2. A variância do sinal projetado ao longo de $T$ amostras é calculada:
+   $$\text{Var}(s) = \frac{1}{T - 1} \sum_{t=1}^T (s[t] - \bar{s})^2$$
+3. Aplica-se a transformação logarítmica para gaussianizar a distribuição da característica:
+   $$f = \log_{10}(\text{Var}(s))$$
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+Tipicamente, selecionam-se os $m$ primeiros e os $m$ últimos autovetores ($2m$ filtros espaciais, usualmente $m = 2$ ou $3$), formando um vetor de características compacto de dimensão $2m$.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
+## 3. Modos de Falha na Prática de Engenharia
+1. **Vazamento Espacial de Treino:** Ajustar os filtros CSP sobre todos os ensaios da sessão antes de dividir os folds da validação cruzada. Como o CSP é supervisionado, isso produz acurácias espúrias de mais de 90% em dados onde só existe ruído puro!
+2. **Matrizes de Covariância Mal-Condicionadas:** Em montagens com muitos eletrodos ($C > 32$) e poucos ensaios, $\Sigma_1$ e $\Sigma_2$ tornam-se singulares. É obrigatório aplicar regularização de encolhimento (Shrinkage) nas matrizes de covariância antes de resolver o CSP (Regularized CSP - RCSP).
 
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-ml-neural`) avalia modelos de aprendizado de máquina para dados neurais, comparando abordagens lineares clássicas (CSP+LDA) contra redes neurais compactas (EEGNet).
 
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 5. Ponto de Destrave do Lab
+Para o estudo da formulação matemática formal do CSP e suas variantes regulares, consulte a revisão clássica de [Blankertz et al. (IEEE Signal Process Mag 2008, Optimizing Spatial filters)](https://doi.org/10.1109/MSP.2008.4408441) e [Ramoser et al. (IEEE Trans Rehabil Eng 2000)](https://doi.org/10.1109/86.895946).

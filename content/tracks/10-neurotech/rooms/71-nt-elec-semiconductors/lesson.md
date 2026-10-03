@@ -1,19 +1,17 @@
-# Lição — Semicondutores, Proteção ESD e Polarização
+# Desafio — Grampeamento de Tensão por Diodos de Proteção ESD
 
-## 1. Diodos de Proteção e Correntes de Fuga
-1. **O Mecanismo de Clamping ESD**:
-   Para limitar sobretensões destrutivas induzidas no corpo humano ou nos cabos de eletrodo, diodos conectam a entrada analógica a $V_{DD}$ e $V_{SS}$:
-   $$V_{\text{clamp, max}} = V_{DD} + V_{\text{diodo}}$$
-   $$V_{\text{clamp, min}} = V_{SS} - V_{\text{diodo}}$$
+## 1. Objetivo do Desafio
+Implementar a rotina analítica de grampeamento de tensão de entrada (ESD Clamp) simulando o comportamento de corte de diodos semicondutores ideais conectados aos trilhos de alimentação.
 
-2. **A Corrente de Fuga Reversa ($I_{\text{leak}}$)**:
-   Diodos em bloqueio conduzem uma corrente reversa finita $I_{\text{leak}}$.
-   Ao fluir através da resistência de contato da pele $R_{\text{pele}}$, essa corrente gera um offset DC espúrio:
-   $$V_{\text{offset}} = I_{\text{leak}} \cdot R_{\text{pele}}$$
-   Em circuitos integrados de instrumentação dedicados (TI ADS1299), $I_{\text{leak}} \le 200\text{ pA}$, mantendo o offset DC abaixo de $5\ \mu\text{V}$. Diodos discretos convencionais ($I_{\text{leak}} \ge 20\text{ nA}$) produzem offsets na casa de milivolts, saturando os estágios de ganho subsequentes.
+## 2. Especificação Técnica e Formulação
+Dados a tensão transitória de entrada `v_in`, a tensão do trilho positivo `v_pos_rail`, a tensão do trilho negativo `v_neg_rail` e a queda de condução direta do diodo `v_diode` (todas em Volts):
+- Implemente a função `esd_clamp(v_in, v_pos_rail, v_neg_rail, v_diode)`:
+  - Limite superior: $V_{\max} = v_{\text{pos\_rail}} + v_{\text{diode}}$.
+  - Limite inferior: $V_{\min} = v_{\text{neg\_rail}} - v_{\text{diode}}$.
+  - Se $v_{\text{in}} > V_{\max}$: retorne $V_{\max}$.
+  - Se $v_{\text{in}} < V_{\min}$: retorne $V_{\min}$.
+  - Caso contrário: retorne $v_{\text{in}}$.
 
-## 2. As Funções de Laboratório Desta Sala
-- `esd_clamp(v_in, v_pos, v_neg, v_diode)`: Modela a saturação não-linear dos diodos de proteção contra sobretensões transitórias.
-- `audit_diode_leakage_offset(i_leak_na, r_skin_kohm, max_offset_uv)`: Calcula numericamente a tensão contínua induzida pela corrente de fuga através da impedância de pele, auditando se o offset gerado permanece dentro do orçamento de segurança ($\le 500\ \mu\text{V}$).
-
-Para destravar o lab, abra [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) e leia o que o datasheet do ADS1299 fixa sobre proteção de entrada e fuga, para a tensão de offset do diodo não passar do teto da auditoria.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que $V_{\text{pos}} > V_{\text{neg}}$ e $V_{\text{diode}} \ge 0$.
+- Para trilhos de $+2.5\text{ V}$ e $-2.5\text{ V}$ com diodo de $0.7\text{ V}$, qualquer surto de $10.000\text{ V}$ deve ser rigorosamente grampeado em $+3.2\text{ V}$.

@@ -1,65 +1,30 @@
-# Conceito — Artefatos
+# Conceito — Artefatos Fisiológicos e Rejeição por Limiar
 
-EOG (piscar/olhos), EMG (músculo), movimento e linha elétrica contaminam EEG de escalpo.
+Os sinais cerebrais de escalpo coexistem com fontes biológicas extracerebrais e ruídos ambientais cuja amplitude supera com frequência os biopotenciais corticais em várias ordens de magnitude.
 
-Micro-exemplo: um blink injeta deflexão lenta frontal que vaza para bandas se o filtro for ingênuo — o decoder aprende o olho, não a imagética.
+## 1. As Principais Fontes de Contaminação
+1. **Eletrooculograma (EOG - Piscadas e Movimentos Oculares):**
+   - O olho funciona como um dipolo elétrico eletrostático permanente ($pprox 100\text{ mV}$).
+   - Movimentos oculares e piscadas geram deflexões lentas ($0.5\text{--}4\text{ Hz}$) com amplitudes de $100\text{ a } 400\ \mu\text{V}$, concentradas nos canais frontais ($Fp1, Fp2, Fz$), mas irradiando até as regiões centrais.
+2. **Eletromiograma (EMG - Atividade Muscular Craniana e Facial):**
+   - Contrações de mandíbula, deglutição e tensão nos músculos temporal e occipital.
+   - Espectro de alta frequência ($20\text{ a } >100\text{ Hz}$), com amplitudes que chegam a milivolts ($> 1000\ \mu\text{V}$), contaminando diretamente a banda beta e gama.
+3. **Eletrocardiograma (ECG - Batimento Cardíaco):**
+   - O complexo QRS do coração pode acoplar capacitivamente no escalpo, especialmente em eletrodos referenciados na orelha ou mastoide, gerando picos periódicos de $\approx 1\text{ Hz}$.
+4. **Interferência Eletromagnética de Rede (50/60 Hz):**
+   - Ruído harmônico de acoplamento capacitivo com a fiação do ambiente.
 
+## 2. Estratégias de Rejeição de Artefatos
+- **Rejeição por Limiar de Amplitude:** Ensaios cujo valor absoluto máximo exceda um limiar fisiológico (por exemplo, $|x| > 100\ \mu\text{V}$) são descartados imediatamente da calibração.
+- **Detecção Estatística (Kurtosis / Variância):** Detecção de outliers em que a distribuição temporal se afasta de uma gaussiana estacionária.
+- **Decomposição em Componentes Independentes (ICA):** Separação cega de fontes para subtrair o componente espacial do EOG preservando os canais cerebrais.
 
-## Extensão MSc-prep (foundation → advanced)
+## 3. Modos de Falha na Prática de Engenharia
+1. **Descarte Excessivo de Dados:** Definir um limiar agressivo demais (ex. $30\ \mu\text{V}$), eliminando ensaios normais de sujeitos com ritmos de grande amplitude.
+2. **Confundir EMG com Ritmo Gama:** Assumir que atividade de $40\text{ Hz}$ observada em voluntários sob estresse é sinal neural, quando se trata de micro-contrações de tensão na testa.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-features-bandpower`) aborda a extração matemática da potência de banda em canais limpos como a principal característica para classificadores lineares.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 5. Ponto de Destrave do Lab
+Para estudar métodos formais de rejeição e correção de artefatos em EEG, consulte a revisão de [Urigüen & Garcia-Zapirain (J Neural Eng 2015, PMC4605434)](https://doi.org/10.1088/1741-2560/12/3/031001) e as diretrizes do [MNE-Python Artifact Correction](https://mne.tools/stable/auto_tutorials/preprocessing/20_rejecting_bad_data.html).

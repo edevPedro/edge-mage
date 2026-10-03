@@ -1,9 +1,23 @@
-# História — O anel que sobrescreveu o começo
+# História — O Gargalo do Produtor e do Consumidor
 
-O decoder online pede as últimas amostras enquanto o produtor não para. O guardião instancia `RingBuffer` com capacidade 3 e empurra, em ordem, 0, 1, 2, 3 e 4. A aprendiz lê `latest(10)` e espera os cinco valores.
+Na bancada de integração de um sistema de BCI portátil, um desenvolvedor conecta um conversor ADS1299 a um microcontrolador via barramento SPI. O conversor dispara interrupções de amostragem determinísticas a 250 Hz, enviando um novo pacote de biopotenciais a cada quatro milissegundos. No computador hospedeiro, uma rotina em Python consome os dados para extrair características de potência de banda em janelas de 1 segundo (250 amostras).
 
-Não cabem. A política é overwrite: 0 e 1 já saíram. Os três mais recentes, do mais antigo ao mais novo, são `[2, 3, 4]`. `latest(3)` devolve a mesma lista; `latest(10)` não inventa amostra que o anel não guarda.
+Nas primeiras horas de teste, o sistema trava subitamente ou apresenta atrasos bizarros de até dez segundos na resposta motora.
 
-Underrun é o outro erro — pedir 500 quando só há 120 — mas nesta bancada o buffer está cheio e a falha é achar que capacidade cresce. Ordem antiga→nova importa: `[4, 3, 2]` quebra o filtro que vem depois. Unidade: amostra no anel, não milissegundo. O synth não é um sujeito esperando na cadeira.
+O engenheiro de software sênior abre o monitor de recursos e inspeciona o código de recepção:
+```python
+# Ingestão ingênua com alocação dinâmica em loop
+buffer = []
+while True:
+    sample = read_sample()
+    buffer.append(sample)
+    if len(buffer) >= 250:
+        predict(buffer[-250:])
+```
 
-Fase F9, nt-stream-buffer: depois de cinco push numa capacidade 3, tanto latest(3) quanto latest(10) valem [2, 3, 4]. Capacidade não estica, e a ordem antiga→nova é parte do contrato do anel.
+— Observem a alocação dinâmica contínua — aponta o engenheiro sênior. — O array cresce indefinidamente na memória, forçando o coletor de lixo do Python a paralisar o processo periodicamente para desalocar blocos de memória antigos. Além disso, a rotina de predição leva 30 milissegundos para executar; enquanto ela processa uma janela, as interrupções de novas amostras são enfileiradas de forma caótica no driver serial, acumulando um atraso crescente (drift de latência).
+
+Ele desenha a solução canônica de tempo real: o Buffer Circular (Ring Buffer) com ponteiros de leitura e escrita pré-alocados em memória contígua fixa:
+— Em sistemas de streaming bioelétrico, nunca alocamos memória durante o ciclo de amostragem. O produtor (a interrupção de hardware) escreve amostras na posição do ponteiro `head`. O consumidor (o classificador de janelas deslizantes) lê blocos a partir de `tail`. Quando o índice atinge a capacidade máxima $C$, ele retorna a zero via aritmética modular ($i \pmod C$).
+
+O desenvolvedor constrói a classe `RingBuffer` com capacidade fixa e métodos determinísticos `push`, `is_full` e extração de janelas deslizantes. O consumo de memória estabiliza-se em uma linha plana perfeita, o garbage collector cessa suas pausas, e a latência de ponta a ponta volta a respeitar o relógio em tempo real.

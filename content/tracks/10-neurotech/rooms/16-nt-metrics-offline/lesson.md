@@ -1,24 +1,15 @@
-# Lição — Acurácia, Cohen's Kappa e Information Transfer Rate (ITR)
+# Desafio — Avaliação Estatística: Cohen's Kappa e Wolpaw ITR
 
-## 1. Por que Acurácia Bruta Não Basta
-1. **O Desbalanceamento de Classes**:
-   Quando as classes possuem proporções diferentes no conjunto de teste, um classificador nulo que prevê exclusivamente a classe majoritária obtém acurácia elevada, mas utilidade zero.
+## 1. Objetivo do Desafio
+Implementar a Taxa de Transferência de Informação de Wolpaw (ITR) e o cálculo formal do coeficiente Kappa de Cohen a partir de rótulos verdadeiros e preditos, garantindo a avaliação livre de viés de classificadores neurais.
 
-2. **O Coeficiente Kappa de Cohen ($\kappa$)**:
-   $$\kappa = \frac{p_o - p_e}{1 - p_e}$$
-   - $p_o$: Acurácia observada global.
-   - $p_e$: Concordância marginal esperada puramente pelo acaso.
-   - $\kappa = 1.0$: Concordância perfeita.
-   - $\kappa = 0.0$: Desempenho equivalente ao chute aleatório ou predição cega da classe majoritária.
-   - $\kappa < 0$: Desempenho inferior ao acaso (inversão sistemática de rótulos).
+## 2. Especificação Técnica e Formulação
+1. **Fórmula de Wolpaw ITR:** Implemente `wolpaw_itr(n_classes, accuracy, trials_per_min)`. Se $\text{accuracy} = 1.0$, o retorno é simplesmente $M \cdot \log_2(N)$. Caso contrário, aplique a entropia condicional clássica de canal simétrico.
+2. **Cálculo de Kappa:** Implemente `calculate_cohen_kappa(y_true, y_pred)` calculando:
+   - $p_o$: Acurácia observada (fração de acertos).
+   - $p_e$: Concordância esperada ao acaso pela multiplicação das frequências marginais de cada classe.
+   - $\kappa = (p_o - p_e) / (1 - p_e)$. Se $p_e = 1.0$, retorne zero.
 
-3. **Information Transfer Rate (ITR) de Wolpaw**:
-   $$B = \log_2(N) + P \log_2(P) + (1-P)\log_2\left(\frac{1-P}{N-1}\right) \quad (\text{bits/ensaio})$$
-   $$\text{ITR} = B \times M \quad (\text{bits/minuto})$$
-   Permite comparação objetiva entre diferentes tecnologias de BCI (P300, SSVEP, Imagética Motora) levando em conta o número de escolhas possíveis e o tempo necessário para emitir cada decisão.
-
-## 2. As Funções de Laboratório Desta Sala
-- `wolpaw_itr(n_classes, accuracy, trials_per_min)`: Computa a capacidade de canal e a taxa de transferência em bits por minuto segundo a formulação de Wolpaw.
-- `calculate_cohen_kappa(y_true, y_pred)`: Avalia o coeficiente Kappa a partir dos vetores de rótulos reais e preditos, ajustando com rigor metodológico pelo acaso marginal.
-
-Para destravar o lab, abra [Schlögl et al. — Characterization of four-class MI EEG (JNE 2005; κ in BCI)](https://doi.org/10.1088/1741-2560/2/4/L02) e leia a definição de κ de Schlögl, (p_o − p_e)/(1 − p_e), para a métrica offline não ficar só em accuracy.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que se o modelo sempre previr a mesma classe fixa para dados balanceados, o Kappa colapsa estritamente para zero ($0.0$).
+- Lembre-se: em avaliações offline honestas, o pré-processamento e o treino nunca devem acessar dados do fold de teste.

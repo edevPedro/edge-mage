@@ -1,83 +1,35 @@
-# Conceito — Neurociência de sistemas para BCI
+# Conceito — Ritmos Sensoriomotores (SMR), ERD e ERS
 
-## Escalas
+## 1. O Complexo Sensorimotor (S1/M1) e Alças Talamocorticais
+O córtex sensoriomotor exibe oscilações eletroencefalográficas características em repouso, conhecidas genericamente como Ritmos Sensoriomotores (*Sensorimotor Rhythms* - SMR):
+- **Ritmo $\mu$ (Mu):** Centrado na faixa de $8\text{--}12\text{ Hz}$, originado na área somatossensorial primária (S1) e córtex motor (M1).
+- **Ritmo $\beta$ (Beta):** Centrado na faixa de $13\text{--}30\text{ Hz}$, associado à estabilidade postural e inibição motora corticoespinhal.
 
-| Escala | Sinal típico | Nota |
-|--------|--------------|------|
-| Single-unit | spike | raro no escalpo |
-| População / LFP | mesoescala | ponte |
-| EEG escalpo | sincronia de grandes populações | nosso MVP |
+Esses ritmos refletem a atividade de alças oscilatórias de retroalimentação entre o tálamo (núcleo ventral lateral e ventral póstero-lateral) e as camadas piramidais corticais.
 
-## Circuitos relevantes a MI
+## 2. Dessincronização e Sincronização Relacionadas a Eventos
+Conforme estabelecido pela literatura pioneira de Pfurtscheller & Lopes da Silva (1999):
 
-- Córtex motor/sensorial (M1/S1), ritmos mu/beta
-- Loops com tálamo / gânglios da base (contexto)
-- Plasticidade com feedback (sala plasticity + online)
+1. **ERD (Event-Related Desynchronization):**
+   - Redução da potência espectral em uma banda de frequência específica associada à ativação funcional ou planejamento motor.
+   - Ocorre no córtex contralateral à parte do corpo imaginada ou movida.
+2. **ERS (Event-Related Synchronization):**
+   - Aumento da potência espectral em uma banda de frequência, associado à desativação ou inibição ativa de uma área cortical.
+   - Tipicamente observado após o término de um movimento (*beta rebound*).
 
-## BCI como sistema
+## 3. Formulação Matemática Padrão do ERD/ERS
+A variação percentual de potência relativa à potência de uma época de repouso (*baseline*) é formalmente definida como:
 
-Usuário + decoder + feedback = laço adaptativo (Wolpaw). κ offline é só uma fatia.
+$$\text{ERD}\% = \left( \frac{P_{baseline} - P_{task}}{P_{baseline}} \right) \times 100$$
 
-## Honesty
+Convenção adotada:
+- **$\text{ERD}\% > 0$:** Dessincronização (a potência na tarefa $P_{task}$ é menor que na linha de base $P_{baseline}$).
+- **$\text{ERD}\% < 0$:** Sincronização (a potência na tarefa superou a linha de base).
+- Se $P_{task} = P_{baseline}$, a variação é $0\%$.
+- Se a banda for completamente atenuada ($P_{task} = 0$), o ERD atinge seu limite máximo de $+100\%$.
 
-Mapas simplificados ≠ atlas clínico; não diagnosticamos.
+## 4. O Sistema em Malha Fechada
+O EEG de escalpo reflete o somatório populacional de correntes corticais. Em um BCI funcional de imagética motora, o usuário recebe feedback visual ou tátil derivado dessa estimativa de ERD, permitindo que o sistema biológico e o decodificador computacional convirjam gradualmente para um controle robusto.
 
-
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 5. O Que a Próxima Sala Assume
+Esta sala fundamenta as bases de sinal das salas de caso prático (`nt-case-berlin-mi`) e de aprendizado de máquina (`nt-decode-mvp`, `nt-csp-primer`).

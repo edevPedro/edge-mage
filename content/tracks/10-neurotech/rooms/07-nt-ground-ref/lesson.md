@@ -1,6 +1,6 @@
-# Lição — Rejeição de Modo Comum e Desbalanceamento de Impedância
+# Desafio — Rejeição de Modo Comum e Desbalanceamento de Impedância
 
-## 1. Contexto Operacional
+## 1. Objetivo do Desafio
 O sinal de EEG é diferencial: medido entre um eletrodo explorador e um eletrodo de referência. O potencial do corpo humano em relação à terra do circuito flutua fortemente devido ao acoplamento com a rede de alimentação de $50/60\text{ Hz}$.
 
 ## 2. Passo a Passo Matemático

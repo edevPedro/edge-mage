@@ -1,13 +1,16 @@
-# Lição — Ritual fatia de projeto
+# Desafio — Registro Estruturado de Checkpoint de Projeto
 
-Ligue ao CP-Filter bank, CP-Decoder MVP ou CP-Firmware (SPEC §7).
-Boss exige online + (paper **ou** este projeto).
+## 1. Objetivo do Desafio
+Documentar e validar a execução de uma fatia funcional de engenharia de software de BCI (aquisição, filtragem ou firmware stub), consolidando a evidência de projeto testável.
 
-Para destravar o lab, abra [OpenBCI Cyton](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) e leia o fluxo de aquisição do Cyton Getting Started, para nomear qual fatia o mage emu exercita quando não há placa.
+## 2. Especificação Técnica e Formulação
+Crie ou preencha o artefato em `study-log/artifacts/checkpoint-project.md` contendo:
+- `paper_or_project: project`
+- `url: <URL do repositório ou referência de documentação>`
+- `what_reproduced: <Descrição da fatia de código implementada e testada>`
+- `metrics: <Métrica observada: latência em ms, acurácia ou taxa de erro>`
+- `limits: <Declaração de ambiente experimental educacional>`
 
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de executar o comando de emulador correspondente no CLI (`mage emu synth` ou similar) antes de submeter o ritual.
+- Garanta que todos os campos obrigatórios estejam preenchidos no artefato em markdown.

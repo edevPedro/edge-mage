@@ -1,13 +1,19 @@
-# História — A Forja da Runa de Pesquisa
+# História — A Execução do Pipeline Experimental
 
-No laboratório de instrumentação e processamento neural, o aprendiz reuniu os blocos construídos ao longo de meses de estudo rigoroso. A cadeia completa estava conectada: a matemática das matrizes de covariância, a física dos campos volumétricos, a elétrica dos amplificadores de instrumentação e o rigor da validação cruzada em blocos.
+No laboratório de computação de alto desempenho, um pesquisador prepara a execução automatizada de seu miniprojeto de pesquisa quantitativo. Meses de estudo de fundamentos biofísicos, circuitos analógicos, processamento digital de sinais e machine learning convergem para este instante: rodar o pipeline completo ponta a ponta sobre a base aberta de BCI e gerar o relatório experimental consolidado.
 
-Diante do console, o protocolo final de teste executava a pipeline experimental ponta a ponta sobre os doze ensaios calibrados de imagética motora. O script particionou os blocos em dois terços para treino e um terço para teste independente, calculou as médias de classe, aplicou o encolhimento de dez por cento na covariância e extraiu o vetor de pesos e o limiar de decisão.
+Ele abre o script de execução e conecta os módulos integrados:
+1. **Módulo de Ingestão:** Carregamento de dados de múltiplos voluntários do PhysioNet EEGBCI.
+2. **Módulo de Filtragem:** Filtro passa-faixa causal Butterworth de 4ª ordem ($8\text{--}30\text{ Hz}$) com filtro notch em 60 Hz.
+3. **Módulo Espacial e Decodificação:** Decomposição em Padrões Espaciais Comuns (CSP) com 4 filtros espaciais, acoplada ao Discriminante Linear com regularização de encolhimento de Ledoit-Wolf.
+4. **Validação Cruzada Hermética:** 5-fold em blocos de ensaios completos (`BlockKFold`), garantindo zero vazamento de dados.
 
-"Os quatro ensaios de teste foram classificados com acurácia de cem por cento e Kappa de Cohen igual a um vírgula zero," anunciou o aprendiz, observando a matriz de confusão impressa no terminal.
+O pesquisador executa o pipeline através da função `run_bci_pipeline_eval`:
+O console processa centenas de ensaios de calibração e teste. Ao final da execução, o relatório de telemetria exibe os resultados consolidados:
+- Acurácia média observada: $78.4\%$.
+- Coeficiente Kappa de Cohen médio: $\kappa = 0.568$ (rejeição categórica da hipótese nula com $p < 0.001$).
+- Latência média de decisão por janela: $4.2\text{ ms}$.
+- Concessão da Runa de Pesquisa (`rune-neuro-research`).
 
-O mestre pesquisador aproximou-se da tela e examinou os gráficos de dispersão e o log de execução.
-
-"O algoritmo é elegante e a matemática é sólida," disse ele. "Mas um projeto de pesquisa só ganha vida quando é documentado com honestidade irrevogável. Registre o artefato `study-log/artifacts/neuro-research-project.md`: nomeie a fonte dos dados, a métrica exata de concordância, o teto de latência em milissegundos e as fronteiras éticas que delimitam esta tecnologia como uma ferramenta assistiva não-invasiva."
-
-O aprendiz redigiu o memorial completo com todos os parâmetros exigidos. Ao submeter o artefato, o ambiente respondeu com um brilho azulado no terminal: a `rune-neuro-research` estava forjada e gravada em seu inventário. O caminho para a dissertação e para o clímax do Mago Supremo estava ao alcance das mãos.
+A coordenadora científica revisa os logs e assina a homologação:
+— Este é o padrão de excelência da neuroengenharia real. Você não apenas desenhou uma proposta teórica; você implementou, testou, auditou e comprovou que seu sistema é computacionalmente determinístico e estatisticamente inatacável.

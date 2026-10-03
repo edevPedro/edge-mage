@@ -1,30 +1,14 @@
-# Lição — Paradigma MI
+# Desafio — Fatiamento Temporal de Ensaios (Epoch Slicing)
 
-## Objetivos
+## 1. Objetivo do Desafio
+Implementar a rotina fundamental de fatiamento temporal de epochs a partir de uma série contínua de amostras e um índice de trigger, garantindo que as janelas pré e pós-evento preservem a integridade de índices para a análise de ERD/ERS.
 
-Desenhar um trial MI left/right com janelas claras; ligar a C3/C4 e ERD; declarar limites do synth.
+## 2. Especificação Técnica e Formulação
+Dado um array unidimensional ou lista de amostras `signal`, um índice inteiro `trigger`, e as durações `pre` e `post` em número de amostras:
+- Implemente a função `slice_epoch(signal, trigger, pre, post)` que retorna o sub-array correspondente ao intervalo semiaberto:
+  $$\text{resultado} = \text{signal}[\text{trigger} - \text{pre} : \text{trigger} + \text{post}]$$
+- O comprimento retornado deve ser exatamente $\text{pre} + \text{post}$ amostras.
 
-## Passos
-
-1. Esboce timeline: ITI → cue → MI (ex. 3–4 s) → rest.
-2. Marque onde calcula bandpower (só MI? MI − baseline?).
-3. Associe classes L/R a C3/C4 (contralateral).
-4. Leia Pfurtscheller (DOI na sala): uma figura mental de ERD.
-5. Escreva honesty: *synth ≠ ERD*.
-
-## Labs
-
-**Design.** 2 classes, 40 trials/classe, ITI ≥ 1 s. Qual o risco se todos os left vêm na 1ª metade da sessão?
-
-**Numeric.** Se MI window = 2.0 s a `fs=250`, quantas amostras por trial por canal?
-
-**Fill mental.** “ERD em MI significa tipicamente ___ de potência em mu/beta.” → *queda/redução*.
-
-Para destravar o lab, abra [Padfield et al. EEG-MI (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) e leia uma figura de paradigma MI / ERD em Padfield para cravar pre e post do slice_epoch em torno do trigger, sem misturar com a sessão inteira.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de respeitar o indexamento zero da linguagem.
+- Em pipelines reais de produção, verifique sempre se $\text{trigger} - \text{pre} \ge 0$ e $\text{trigger} + \text{post} \le \text{len}(\text{signal})$ para evitar exceções de limites de buffer (IndexError).

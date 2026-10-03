@@ -1,9 +1,17 @@
-# História — A métrica que a proposta esqueceu
+# História — A Formulação da Pergunta Científica
 
-A proposta mínima não é o título do boss. O guardião conta os campos em voz alta: pergunta, hipótese, dados, métrica primária, ética. Faltar um devolve o artefato. Dados, nesta bancada, apontam para conjunto aberto ou sintético — MOABB está no resource como mapa de datasets, não como atalho para um resultado.
+Na sala de reuniões de um programa de pós-graduação em neuroengenharia, um estudante senta-se diante de sua orientadora com uma proposta inicial de dissertação de mestrado. O documento traz um título genérico: "Uso de Inteligência Artificial Avançada para Decodificar Ondas Cerebrais".
 
-A métrica que o fill exige, além da acurácia, é κ (kappa). Escrever “accuracy alta” no campo primário falha. Não há valor de κ para inventar: a proposta declara a métrica e o critério, não um paciente nem um percentual clínico.
+A orientadora coloca o rascunho de lado com um sorriso paciente:
+— Este não é um projeto de pesquisa científica; é uma declaração de intenções tecnológicas vagas — explica a orientadora. — A ciência não avança com perguntas abertas como "o que acontece se jogarmos um modelo gigante em cima de dados de EEG". Uma proposta de mestrado rigorosa requer uma **pergunta científica precisa**, uma **hipótese nula testável**, uma **métrica quantitativa de desfecho** e um **protocolo metodológico estrito**.
 
-Ética entra como limite do que o estudo educacional não cobre — consentimento se houver pessoa, honesty se for só synth. A conta é a lista fechada de campos e a palavra κ no lugar certo. SPEC da sala diz o ritual; não substitui a métrica por XP.
+Ela orienta o estudante a estruturar a proposta em cinco seções fundamentais:
+1. **Pergunta de Pesquisa:** "A regularização de covariância por contração de Ledoit-Wolf melhora significativamente a estabilidade do decodificador CSP+LDA em conjuntos de calibração ultra-curtos ($N \le 20$ ensaios) em comparação à matriz empírica?"
+2. **Dataset e Amostra:** PhysioNet EEG Motor Movement/Imagery Dataset (109 sujeitos, 64 canais, protocolo aberto de acesso público).
+3. **Métrica Primária:** Coeficiente Kappa de Cohen ($\kappa$) avaliado por validação cruzada 5-fold aninhada em blocos de ensaios completos.
+4. **Governança Ética:** Pesquisa exclusivamente educacional/não-clínica sobre dados desidentificados de repositório público com termo de uso compatível.
+5. **Cronograma Realista:** Três meses de benchmarking offline, dois meses de validação em firmware de tempo real e um mês para redação da dissertação.
 
-Ordem seguinte ao critique, nt-research-proposal: cinco campos, e a métrica primária de MI binário nesta sala é κ, não a accuracy sozinha. MOABB aponta dados abertos; não inventa o número do estudo.
+— Quando sua pergunta é cirúrgica, o experimento pode ser executado, os resultados podem ser auditados e a resposta contribui com um tijolo real para o conhecimento da comunidade — conclui a orientadora.
+
+O estudante reescreve a proposta em formato estruturado no diretório de artefatos (`study-log/artifacts/research-proposal.md`). O projeto é aprovado pelo colegiado acadêmico, autorizando o início formal do desenvolvimento da pesquisa.

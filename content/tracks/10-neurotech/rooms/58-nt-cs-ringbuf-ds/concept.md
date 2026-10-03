@@ -1,47 +1,21 @@
-# Conceito — Ring buffer (DS)
-Buffer circular: head/tail mod N. `push` sobrescreve se cheio (política: drop oldest vs block). `latest(n)` para janela online.
-## Falhas
-underrun (consumer pede o que não há), overrun (perde amostras), data race sem sync.
-## Ligação
-`nt-stream-buffer`, `nt-cs-realtime-testing`.
+# Conceito — Estrutura de Dados Ring Buffer (Buffer Circular)
 
-## Por que está no caminho MSc-prep
-Este tópico (Ring buffer) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. Princípio de Funcionamento
+Um buffer circular (*ring buffer*) é uma estrutura de dados de tamanho fixo alocada contiguamente na memória que opera conceitualmente como se as extremidades estivessem conectadas:
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+- **Capacidade ($N$):** Quantidade máxima de elementos que a estrutura armazena.
+- **Ponteiro de Escrita (`write_ptr` ou `head`):** Índice do próximo slot onde uma nova amostra será inserida.
+- **Avanço Modular:** Ao atingir o final do array, o índice retorna a zero através da operação de módulo:
+  $$\text{head}_{next} = (\text{head} + 1) \pmod N$$
 
-## Exercícios mentais
-- Defina estrutura circular para stream EEG em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 2. Política de Sobrescrita (*Overwrite*) vs. Bloqueio
+Em sistemas de telecomunicações comuns, filas de mensagens frequentemente bloqueiam o produtor quando estão cheias. Em interfaces cérebro-computador e streaming eletrofisiológico:
+- O produtor (conversor analógico-digital ou DMA do microcontrolador) nunca pode ser bloqueado; a biologia não espera o processador.
+- Se o consumidor de processamento atrasar, o buffer circular adota a política de sobrescrita (*overwrite*): a amostra mais antiga é descartada em favor da amostra recém-chegada.
+- Isso garante que a janela de análise temporal reflita sempre o estado neural mais recente do usuário.
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+## 3. Acesso ao Elemento Mais Recente (`latest`)
+Em tarefas de decodificação preditiva em malha fechada, os filtros espaciais frequentemente precisam inspecionar o último valor registrado no stream sem precisar percorrer toda a fila. O método `latest()` deve retornar em tempo constante $\mathcal{O}(1)$ o elemento que acabou de ser gravado pelo último comando `push`.
 
-
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-numerics`) estuda as armadilhas de estabilidade numérica e representação de ponto flutuante que ocorrem quando acumulamos dados biológicos em buffers contínuos.

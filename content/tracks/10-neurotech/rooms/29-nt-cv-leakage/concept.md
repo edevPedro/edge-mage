@@ -1,33 +1,24 @@
-# Conceito — Validação Cruzada em Blocos e a Ilusão do Vazamento de Dados (Data Leakage)
+# Conceito — Validação Cruzada em Blocos (Blocked CV) e Auditoria Anti-Vazamento
 
-## 1. Fundamento Metodológico: A Barreira Epistêmica de Treino
-Na decodificação de séries temporais biológicas (EEG), o erro metodológico mais devastador e comum em machine learning é o **vazamento de dados (*data leakage*)**, também denominado na literatura científica de análise circular ou *double dipping*.
+A natureza contínua e autocorrelacionada no tempo dos sinais de EEG torna a validação cruzada ingênua uma das maiores fontes de publicações não-reproduzíveis em neurotecnologia.
 
-O problema foi formalizado por [Gael Varoquaux et al. (NeuroImage 2017)](https://doi.org/10.1016/j.neuroimage.2016.10.038) e detalhado para BCIs por [Lotte et al. (DOI 10.1088/1741-2560/4/2/R01)](https://doi.org/10.1088/1741-2560/4/2/R01).
+## 1. O Mecanismo do Vazamento por Sobreposição Temporal
+Se janelas temporais deslizantes de tamanho $W$ e passo $S < W$ forem divididas aleatoriamente:
+$$\text{Sobreposição} = \frac{W - S}{W} \times 100\%$$
+Uma janela no conjunto de teste compartilha quase todas as suas amostras físicas com uma janela no conjunto de treino. O classificador atinge acurácia artificialmente inflacionada porque atua como uma tabela de consulta (lookup table) de ruído correlacionado.
 
-### O Mecanismo da Ilusão de Acerto em Ruído Puro
-Considere um experimento sintético com $N = 40$ ensaios de ruído gaussiano puramente aleatório $\mathcal{N}(0, 1)$ contendo $D = 15$ features irrelevantes, rotulados aleatoriamente com classes $y \in \{0, 1\}$ (20 ensaios por classe). Como os dados são ruído puro, qualquer classificador honesto DEVE obter acurácia ao acaso ($\sim 50\%$).
+## 2. Validação Cruzada em Blocos (Blocked / Group CV)
+Para garantir separabilidade estrita:
+1. **Split por Ensaios Inteiros (Trial-Level Split):** Todas as janelas pertencentes ao ensaio $k$ são mantidas no mesmo fold.
+2. **Split por Blocos de Sessão (Run-Level Split / Leave-One-Run-Out):** Se o protocolo gravou 4 blocos de 10 minutos, o modelo é treinado em 3 blocos e testado no bloco restante, expondo o algoritmo à deriva real de impedância e estado cognitivo.
+3. **Validação Aninhada (Nested CV):** Otimização de hiperparâmetros (como penalidade $C$ do SVM ou regularização de covariância) deve ocorrer exclusivamente dentro de uma malha interna de validação cruzada (inner fold).
 
-Entretanto, observe o que acontece se o pipeline cometer **vazamento por seleção circular de features**:
-1. O desenvolvedor seleciona as melhores features calculando a correlação ou separabilidade com os rótulos $y$ usando **todos os 40 ensaios** (treino e teste combinados).
-2. Ele descobre, por mera flutuação estatística aleatória, duas variáveis que correlacionam ligeiramente com os rótulos.
-3. Ele então separa os 10 ensaios de teste e treina um classificador linear nos outros 30 usando as features pré-selecionadas.
-4. **Resultado**: O modelo atinge acurácia inflada de $80\%\text{--}90\%$ no teste! O teste não era independente: os rótulos do teste já haviam influenciado a escolha das variáveis no passo 1.
+## 3. Modos de Falha na Prática de Engenharia
+1. **Fit de Scaler Global:** Ajustar `StandardScaler` sobre a matriz inteira antes de dividir os folds.
+2. **Treinar e Testar no Mesmo Ponto de Baseline:** Usar o início do próprio trial de teste para normalizar o teste sem protocolo causal.
 
-### O Princípio da Barreira de Treino e Split em Blocos
-Para garantir validade científica e reprodutibilidade:
-1. **Split Primeiro**: O conjunto de teste $\mathcal{D}_{\text{test}}$ é isolado imediatamente antes de qualquer cálculo estatístico.
-2. **Transformações Estritamente no Treino**:
-   Qualquer parâmetro $\theta$ (média, desvio padrão, ranking de features, matrizes espaciais CSP) é estimado unicamente em $\mathcal{D}_{\text{train}}$:
-   $$\theta_{\text{train}} = f(\mathcal{D}_{\text{train}})$$
-   E aplicado de forma puramente determinística sobre $\mathcal{D}_{\text{test}}$:
-   $$\hat{x}_{\text{test}} = g(x_{\text{test}}; \theta_{\text{train}})$$
-3. **Divisão em Blocos Contíguos (*Blocked Cross-Validation*)**:
-   Em EEG contínuo, ensaios adjacentes compartilham autocorrelação temporal e estados lentos de impedância e fadiga. A divisão aleatória tradicional (*Random K-Fold*) vaza dependência temporal entre amostras vizinhas. Deve-se empregar partição contígua em blocos de ensaios inteiros (*Blocked Split*).
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-csp-primer`) introduz o método clássico de Common Spatial Patterns (CSP), onde o vazamento de dados por ajuste global é particularmente fatal.
 
-## 2. Modos de Falha Operacionais
-1. **Fatiar uma Época Contínua em Janelas de 500 ms e Aplicar K-Fold Aleatório**: Se um ensaio de 4 segundos de imagética motora for fatiado em 8 janelas de 500 ms com overlap de $50\%$, e essas janelas forem embaralhadas aleatoriamente no K-Fold, janelas idênticas do mesmo ensaio cairão simultaneamente no treino e no teste. A acurácia sobe para $>95\%$, mas o sistema colapsa completamente para $50\%$ em tempo real com novos sujeitos.
-2. **Otimizar Regularização no Fold de Teste**: Selecionar o parâmetro de encolhimento (*shrinkage*) $\gamma$ do LDA olhando para a acurácia do fold de teste externo. A seleção de hiperparâmetros requer validação cruzada aninhada (*Nested CV*) estritamente no loop interno.
-
-## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-decode-mvp`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/14-nt-decode-mvp/room.yaml)) assume que você sabe particionar ensaios em blocos de treino e teste blindados contra vazamento, e utiliza os vetores de features bidimensionais $[\log_{10}(P_{C3}), \log_{10}(P_{C4})]$ de treino para calcular o hiperplano ótimo do Discriminante Linear Regularizado de Fisher (Shrinkage LDA).
+## 5. Ponto de Destrave do Lab
+Para o estudo do impacto de vazamento temporal e boas práticas de validação cruzada em BCI, consulte [Varoquaux (NeuroImage 2018, Cross-validation failure in predictive neuroimaging)](https://doi.org/10.1016/j.neuroimage.2017.06.061) e [Lemm et al. (NeuroImage 2011, Introduction to machine learning for BCI)](https://doi.org/10.1016/j.neuroimage.2010.11.004).

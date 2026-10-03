@@ -1,78 +1,25 @@
-# Conceito — P300 / híbridos
-Oddball → P300; speller Farwell & Donchin. Híbridos combinam MI+P300. DOI âncora na sala.
+# Conceito — Potenciais Evocados, Paradigma Oddball e o P300 Speller
 
-## Por que está no caminho MSc-prep
-Este tópico (P300 hybrid) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. O Paradigma Oddball de Farwell & Donchin (1988)
+O P300 Speller é uma das interfaces cérebro-computador mais robustas e historicamente consagradas da neuroengenharia:
+- **Estímulos Frequentes (Não-Alvo):** Flashes de linhas/colunas que não contêm o símbolo desejado pelo usuário (probabilidade $\sim 83\%$, ou $5/6$). Não provocam deflexões consistentes na média.
+- **Estímulos Raros (Alvo):** Flashes da linha ou coluna contendo o símbolo alvo (probabilidade $\sim 17\%$, ou $1/6$).
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 2. A Onda P300 (P3b)
+O componente P300 é uma deflexão positiva (*P* de positiva) endógena do sinal de EEG com as seguintes propriedades:
+- **Latência:** Ocorre aproximadamente $300\text{ ms}$ após o estímulo sensorial, tipicamente distribuída no intervalo de $250\text{ a }450\text{ ms}$ dependendo da idade e atenção do sujeito.
+- **Topografia:** Distribuição máxima sobre áreas parietais e centrais ao longo da linha média craniana ($Pz, Cz$).
+- **Significado Cognitivo:** Reflete a atualização da memória operacional (*context updating*) e o reconhecimento de um evento relevante esperado.
 
-## Exercícios mentais
-- Defina literacia em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 3. Algoritmo de Extração de Pico em Épocas de ERP
+Para um sinal de EEG segmentado relativo ao início do estímulo ($t = 0\text{ ms}$):
+1. **Conversão de Tempo para Índices de Amostra:**
+   Dado que a taxa de amostragem é $f_s$ (amostras/segundo):
+   $$idx_{start} = \text{int}\left(\frac{start\_ms}{1000.0} \times f_s\right)$$
+   $$idx_{end} = \text{int}\left(\frac{end\_ms}{1000.0} \times f_s\right)$$
+2. **Busca do Máximo Positivo:**
+   Na janela temporal $[idx_{start}, idx_{end}]$, determina-se o valor de amplitude máxima:
+   $$V_{peak} = \max_{i = idx_{start}}^{idx_{end}} s[i]$$
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
-
-
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-case-berlin-mi`) conecta a decodificação de ritmos aos casos históricos publicados, explorando o benchmark Berlin BCI.

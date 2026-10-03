@@ -1,7 +1,14 @@
-# História — O protocolo que não tinha sujeito
+# História — A Submissão ao Comitê de Ética
 
-Não há paciente na sala. Há um rascunho de protocolo educacional, dados sintéticos ou abertos, e um guardião que recusa frase solta. Ele pede os três princípios Belmont pelo nome: respeito às pessoas, beneficência e justiça. Faltar um é falhar o eixo, mesmo com código bonito na sala ao lado.
+Em uma manhã no comitê de ética em pesquisa institucional (Institutional Review Board - IRB), uma pesquisadora e um engenheiro de software biomédico apresentam o protocolo formal de um novo experimento de estimulação visual com voluntários saudáveis. O experimento visa avaliar a taxa de transferência de informação de um speller de P300.
 
-No consentimento, a conta é qualitativa e fechada: informação, compreensão e voluntariedade. O fill pede a palavra `consentimento` — participação exige consentimento informado, não um checkbox escondido. “Open-source obrigatório” não substitui isso.
+O presidente da mesa de revisão examina minuciosamente a pasta do protocolo:
+— O termo de consentimento livre e esclarecido precisa declarar de forma cristalina todos os desconfortos e riscos reais envolvidos no procedimento — pontua o presidente. — A preparação eletrolítica da pele com pasta abrasiva para reduzir a impedância abaixo de $5\text{ k}\Omega$ pode causar leve irritação dérmica; a estimulação estroboscópica na tela exige triagem prévia obrigatória para exclusão de voluntários com histórico pessoal ou familiar de epilepsia fotossensível.
 
-Dual-use, aqui, é reconhecer risco de uso indevido sem escrever receita de dano. Ienca e a recomendação da UNESCO estão nos resources para esse limite, não para inventar um caso clínico. A aprendiz numera os três princípios e os três elementos do consentimento no artefato; sem essa lista, o portão de IRB não abre.
+O engenheiro de software apresenta o plano de segurança e custódia digital de dados:
+— Os registros brutos de biopotenciais serão desidentificados com códigos alfanuméricos criptografados antes do armazenamento. Os servidores locais não têm conexão externa durante as sessões de coleta, e nenhum dado neural será disponibilizado sem termo de cessão específico.
+
+O presidente da banca acena afirmativamente:
+— A pesquisa com seres humanos apoia-se nos três pilares inegociáveis do Relatório Belmont: Respeito pelas Pessoas (autonomia do consentimento que pode ser revogado a qualquer instante sem qualquer prejuízo), Beneficência (maximização do valor do conhecimento com risco mínimo de dano físico ou de privacidade) e Justiça (distribuição equitativa e seleção transparente de participantes). Sem a aprovação prévia do protocolo pelo comitê, nenhuma linha de dados pode ser gravada.
+
+O protocolo é aprovado com louvor sob o número de registro oficial. Com a governança ética plenamente satisfeita, a equipe recebe a autorização legal para iniciar o recrutamento de voluntários.

@@ -1,42 +1,33 @@
-# Conceito — Métricas Offline: Cohen's Kappa ($\kappa$) e Taxa de Transferência de Informação de Wolpaw (ITR)
+# Conceito — Métricas Rigorosas de BCI, Anti-Vazamento e Taxa de Wolpaw
 
-## 1. Fundamento Matemático: Além da Acurácia Ingênua
-Na avaliação de interfaces cérebro-computador (BCI), a acurácia percentual simples ($P = \frac{\text{acertos}}{N}$) é uma métrica frágil e frequentemente enganosa quando há desbalanceamento de classes ou comparações entre paradigmas com números distintos de classes.
+A avaliação offline de classificadores neurais exige protocolos de validação herméticos contra vazamento de dados e métricas ajustadas pelo nível de chance probabilístico.
 
-A literatura canônica estabelece duas métricas rigorosas: o coeficiente Kappa de Cohen ($\kappa$), estabelecido por [Schlögl et al. (JNE 2005, DOI 10.1088/1741-2560/2/4/L02)](https://doi.org/10.1088/1741-2560/2/4/L02), e a Taxa de Transferência de Informação (ITR) de [Wolpaw et al. (DOI 10.1016/j.clinph.2012.01.010)](https://doi.org/10.1016/j.clinph.2012.01.010).
+## 1. Vazamento de Dados (Data Leakage) em BCI
+Ocorre vazamento de dados sempre que qualquer informação estatística do conjunto de teste contamina a fase de calibração ou treino. Principais manifestações:
+1. **Vazamento por Pré-Processamento Global:** Calcular média, desvio-padrão, filtros espaciais (CSP) ou ICA utilizando a sessão inteira antes da separação de folds.
+2. **Vazamento por Sobreposição Temporal:** Embaralhar janelas deslizantes (sliding windows) de forma que janelas contíguas com dados compartilhados caiam simultaneamente no treino e no teste.
+3. **Vazamento por Deslocamento de Baseline:** Treinar e testar no mesmo bloco de poucos minutos, ignorando a não-estacionariedade e deriva eletroquímica de impedância entre blocos.
 
-### O Coeficiente Kappa de Cohen ($\kappa$)
-O coeficiente $\kappa$ desconta a probabilidade de acerto esperado puramente por acaso ($p_e$):
-
+## 2. Coeficiente Kappa de Cohen ($\kappa$)
+Mede a concordância inter-observador ajustada pela probabilidade de acerto ao acaso:
 $$\kappa = \frac{p_o - p_e}{1 - p_e}$$
+Onde $p_o$ é a acurácia observada e $p_e = \sum_{k=1}^K P(y=k) P(\hat{y}=k)$ é a probabilidade esperada de concordância aleatória. Em problemas balanceados com $K$ classes, $p_e = 1/K$.
 
+## 3. Taxa de Transferência de Informação (Wolpaw ITR)
+A métrica canônica proposta por Jonathan Wolpaw quantifica a velocidade de transmissão de informação útil em bits por minuto (bpm):
+$$B = \log_2(N) + P \log_2(P) + (1 - P) \log_2\left(\frac{1 - P}{N - 1}\right)$$
+$$\text{ITR} = B \times M$$
 Onde:
-- $p_o$ é a acurácia observada (proporção de concordância entre predições e rótulos reais).
-- $p_e$ é a concordância marginal esperada pelo acaso sob independência estatística:
-  $$p_e = \sum_{k=1}^K P(\text{real} = k) \cdot P(\text{pred} = k)$$
+- $N$: Número de classes de escolha.
+- $P$: Acurácia do decodificador ($0 < P < 1$). Se $P = 1$, $B = \log_2(N)$.
+- $M$: Número de decisões ou ensaios por minuto ($M = 60 / T_{\text{trial}}$).
 
-Em um problema binário balanceado ($p_e = 0.50$):
-- Se $p_o = 0.80$:
-  $$\kappa = \frac{0.80 - 0.50}{1.0 - 0.50} = \frac{0.30}{0.50} = 0.60$$
-- Se um classificador degenerado prever sempre a Classe 0 em uma base desbalanceada contendo $80\%$ de Classe 0 e $20\%$ de Classe 1:
-  $$p_o = 0.80, \quad p_e = (0.80 \times 1.0) + (0.20 \times 0.0) = 0.80$$
-  $$\kappa = \frac{0.80 - 0.80}{1.0 - 0.80} = 0.0$$
-  O $\kappa$ colapsa exatamente para zero, expondo que o classificador não extraiu nenhuma informação neural útil!
+## 4. Modos de Falha na Prática de Engenharia
+1. **Comparações sem Nível de Acaso Declarado:** Relatar 60% de acurácia em 20 ensaios como "resultado significativo", ignorando que pela distribuição binomial exata o limiar de significância a $\alpha = 0.05$ é superior a 70%.
+2. **Ignorar Custo Temporal no ITR:** Obter 95% de acurácia com janelas de 10 segundos ($M = 6\text{ ensaios/min}$) gerando um ITR muito inferior a um sistema com 80% de acurácia operando a cada 1.5 segundo ($M = 40\text{ ensaios/min}$).
 
-### A Taxa de Transferência de Informação de Wolpaw (ITR)
-Para comparar sistemas com diferentes números de classes $N$ e velocidades de emissão de comandos ($M$ ensaios por minuto), calcula-se a capacidade de canal em bits por ensaio ($B$):
+## 5. O que a Próxima Sala Assume
+A próxima sala (`nt-stream-buffer`) passa da análise offline para a engenharia de tempo real, construindo a estrutura de dados de buffer circular (ring buffer) para suportar fluxos contínuos de dados.
 
-$$B = \log_2(N) + P \log_2(P) + (1 - P) \log_2\left(\frac{1 - P}{N - 1}\right) \quad (\text{bits/ensaio})$$
-
-E a taxa líquida em bits por minuto:
-$$\text{ITR} = B \times M \quad (\text{bits/minuto})$$
-
-Se $P = 1.0$ (acerto perfeito em $N = 4$ classes com $M = 10\text{ ensaios/min}$):
-$$B = \log_2(4) = 2.0\text{ bits/ensaio} \implies \text{ITR} = 2.0 \times 10 = 20.0\text{ bits/min}$$
-
-## 2. Modos de Falha Operacionais
-1. **Publicar Acurácia sem Declarar a Distribuição Marginal das Classes**: Apresentar "acurácia de $75\%$" sem informar que o sujeito executou três vezes mais repetições de repouso do que de imagética ativa. Em classes desbalanceadas, a única métrica admissível em bancas de pós-graduação e revisões científicas é o Kappa de Cohen ou a matriz de confusão normalizada por classe.
-2. **Comparar Acurácias entre Paradigmas Diferentes**: Comparar um sistema de P300 com matriz de 36 caracteres com um sistema de imagética motora binária (2 classes) usando acurácia bruta. Uma acurácia de $60\%$ em 36 classes (onde o acaso é de apenas $2.78\%$) representa uma ITR altíssima ($>40\text{ bits/min}$), enquanto $60\%$ em 2 classes (onde o acaso é de $50\%$) representa um $\kappa = 0.20$ medíocre.
-
-## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-latency-budget`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/19-nt-latency-budget/room.yaml)) assume que você tem um decodificador com métricas offline validadas ($\kappa > 0.60$), e introduz as restrições temporais determinísticas de malha fechada (*closed-loop*), onde o processamento matemático completo (aquisição, filtragem, extração de features, inferência e renderização) deve obedecer a um prazo fatal de latência (*deadline*).
+## 6. Ponto de Destrave do Lab
+Para a formulação da métrica ITR e avaliação padronizada de BCI, consulte o trabalho clássico de [Wolpaw et al. (IEEE TBME 2000)](https://doi.org/10.1109/10.841380) e [Schlögl et al. (J Neural Eng 2005, Characterization of four-class MI)](https://doi.org/10.1088/1741-2560/2/4/L02).

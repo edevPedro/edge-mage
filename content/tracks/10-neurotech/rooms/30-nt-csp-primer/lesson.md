@@ -1,19 +1,18 @@
-# Lição — CSP primer
+# Desafio — Filtragem Espacial e Cálculo de Log-Variância (CSP Feature)
 
-## Pipeline
+## 1. Objetivo do Desafio
+Implementar a rotina de projeção espacial de um ensaio multicanal de EEG através de um vetor de filtro espacial e computar a log-variância resultante como característica discriminante.
 
-epochs → band-pass → cov por classe → CSP → log-var → LDA/SVM
+## 2. Especificação Técnica e Formulação
+Dado um ensaio multicanal `epoch` representado como um array bidimensional com $C$ linhas (canais) e $T$ colunas (amostras temporais), e um vetor de pesos espaciais $w$ de comprimento $C$:
+- Implemente a função `spatial_filter_logvar(epoch, w)`:
+  1. Calcule a projeção linear temporal: $s[t] = \sum_{c=0}^{C-1} w[c] \times \text{epoch}[c, t]$ para cada instante $t = 0, \dots, T-1$.
+  2. Calcule a variância amostral de $s$:
+     $$V = \frac{1}{T} \sum_{t=0}^{T-1} (s[t] - \bar{s})^2$$
+  3. Retorne a log-variância na base 10:
+     $$f = \log_{10}(V + 10^{-10})$$
+     (Onde $10^{-10}$ atua como piso de regularização para prevenir $\log(0)$).
 
-## Armadilhas
-
-- CSP overfitting com poucos trials
-- Fit CSP só no treino (vazamento se usar teste)
-
-Para destravar o lab, abra [Ramoser et al. IEEE TNSRE 2000 — CSP](https://doi.org/10.1109/86.895946) e leia a feature log-variância depois do filtro espacial em Ramoser, para spatial_filter_logvar usar o piso 1e-6 quando a projeção é constante.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de subtrair a média do sinal projetado $\bar{s}$ antes de elevar os desvios ao quadrado.
+- A dimensionalidade de $w$ deve ser rigorosamente igual ao número de canais $C$ da matriz de entrada.

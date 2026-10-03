@@ -1,54 +1,31 @@
-# Conceito — Neurônio e Hodgkin–Huxley (fundação)
+# Conceito — Dinâmica Celular de Membrana e a Escala Populacional
 
-## Mensagem central
+## 1. O Modelo Biofísico de Hodgkin-Huxley
+Em 1952, Alan Hodgkin e Andrew Huxley formalizaram a geração do potencial de ação (*action potential* - AP) através de equações diferenciais acopladas representando a membrana neuronal como um circuito elétrico equivalente:
 
-O potencial de ação (AP) emerge de correntes iônicas (Na⁺, K⁺, …) na membrana. O modelo HH (1952) formaliza condutâncias e threshold. **EEG de escalpo não é um AP isolado**: é sincronia de grandes populações filtrada pelo volume condutor.
+$$C_m \frac{dV}{dt} = - g_{Na}(V, m, h)(V - E_{Na}) - g_K(V, n)(V - E_K) - g_L(V - E_L) + I_{inj}$$
 
-## HH pedagógico
+Onde:
+- $C_m \approx 1\ \mu\text{F/cm}^2$: Capacitância da bicamada lipídica.
+- $g_{Na}$: Condutância ativa de sódio, responsável pela despolarização rápida e regenerativa (*upstroke* positivo).
+- $g_K$: Condutância de potássio dependente de voltagem, responsável pela repolarização e hiperpolarização.
+- $g_L$: Condutância de vazamento passivo (*leakage*), mantendo o potencial de repouso ($V_{rest} \approx -70\text{ mV}$).
 
-| Ideia | Intuição |
-|-------|----------|
-| Capacitância de membrana | integra corrente → V |
-| Canais Na | sobem V (upstroke) |
-| Canais K | repolarizam |
-| Threshold | ponto em que regeneração explode |
+## 2. A Abstração Leaky Integrate-and-Fire (LIF)
+Para processamento computacional em larga escala e simulação em tempo real, aproxima-se a dinâmica sub-limiar por um circuito RC linear com mecanismo explícito de reset:
 
-## Escala → BCI
+$$\tau_m \frac{dV}{dt} = -(V - V_{rest}) + R_m I_{inj}$$
 
-Single-unit / patch ≠ feature do MVP. Ponte: HH → sinapse/PSP → LFP (`nt-spike-lfp`) → ritmos populacionais → eletrodo.
+Integrando por Euler explícito com passo de tempo $\Delta t$:
+$$V(t + \Delta t) = V(t) + \frac{\Delta t}{\tau_m} \left( -(V(t) - V_{rest}) + R_m I_{inj}(t) \right)$$
 
-## Honesty
+Se $V(t + \Delta t) \ge V_{thresh}$, o neurônio emite um spike ($fire = \text{True}$) e o potencial é forçado instantaneamente de volta ao repouso: $V(t + \Delta t) \leftarrow V_{rest}$.
 
-Não simulamos HH completo nesta Sala; fixamos o modelo mental e o limite de interpretação do EEG.
+## 3. Por Que o EEG de Escalpo Não Enxerga o Spike Celular
+Engenheiros convencionais frequentemente cometem o erro de buscar picos de potencial de ação no EEG superficial:
+1. **Duração Temporal:** O spike dura $\sim 1\text{ ms}$ ($300\text{--}3000\text{ Hz}$). A dispersão de condução axonal faz com que spikes vizinhos ocorram assincronamente, cancelando-se por interferência destrutiva.
+2. **Decaimento Espacial:** O spike axonal atua como um quadrupolo elétrico de corrente, cujo potencial decai com $1/r^3$. A $2\text{--}3\text{ cm}$ de distância no escalpo, sua amplitude cai para menos de nano-volts.
+3. **Origem do Macropotencial:** O EEG reflete potenciais pós-sinápticos (PSPs), que duram de $10\text{ a }100\text{ ms}$ (banda $<100\text{ Hz}$) e geram dipolos de corrente abertos que decaem apenas com $1/r^2$.
 
-## Fonte
-
-Hodgkin & Huxley DOI clássico (resources).
-
-## Do HH ao eletrodo (cadeia)
-
-```text
-canais iônicos → AP → PSP sináptico → população → LFP → volume → escalpo µV → AFE
-```
-
-Cada seta perde informação espacial/temporal. Por isso MI usa ritmos populacionais, não spikes HH.
-
-## O que memorizar para a Sala
-- AP regenerativo Na/K
-- EEG ≠ single-unit
-- DOI HH como âncora histórica
-
-## Limites do modelo HH no curso
-- Sem geometria 3D de neurônio completo
-- Sem redes HH acopladas
-- Sem farmacologia
-
-## Por que ainda é pilar
-Sem excitabilidade, “ritmo” vira epifenômeno mágico. HH ancora a biofísica; ritmos/maps fecham o BCI.
-
-## Síntese em 4 bullets
-- Ensina o passo de Euler do LIF, v ← v + (dt/τ)(−(v − v_rest) + R I), e o modelo mental HH (Na/K e limiar) como fundação, não como EEG.
-- A unidade é mV por passo de 1 ms (τ = 20 ms, R = 10): em −70 mV com I = 0 não há spike; em −56 mV com I = 10 o passo cruza −55 mV e a Sala devolve o reset.
-- Honesty: não há HH completo nem geometria 3D; EEG de escalpo não é um potencial de ação isolado.
-- A sala seguinte no order é `nt-neuro-synapse`.
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-synapse`) explora a transição da condutância celular para o potencial pós-sináptico (PSP) e o potencial de campo local (LFP).

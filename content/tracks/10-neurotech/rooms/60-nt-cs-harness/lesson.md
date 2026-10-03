@@ -1,30 +1,22 @@
-# Lição — Harness
+# Desafio — Detector de Perda de Pacotes por Sequenciamento
 
-## Objetivos
-Dominar testes do decode pipeline o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a rotina de auditoria de integridade de transporte de pacotes eletrofisiológicos, calculando com precisão o número total de pacotes perdidos a partir de uma série temporal de identificadores de sequência sujeitos a estouro de contador (*wrap-around* modular).
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `detect_drops(seqs, max_seq=256)`:
+- Receba uma lista de inteiros `seqs` contendo a sequência recebida de números de pacote.
+- Se a lista contiver menos de 2 elementos, retorne `0`.
+- Para cada par consecutivo de elementos $(s_i, s_{i+1})$:
+  - Calcule o avanço modular:
+    $$\Delta = (s_{i+1} - s_i) \pmod{max\_seq}$$
+  - Se $\Delta > 1$, acumule $(\Delta - 1)$ pacotes perdidos.
+- Retorne o número total acumulado de pacotes perdidos (inteiro).
 
-## Lab
-Explique em 6–10 linhas como testes do decode pipeline aparece num pipeline MI offline ou online.
+## 3. Casos de Teste de Referência
+- `detect_drops([0, 1, 2, 3])` $	o$ `0` (sequência contínua).
+- `detect_drops([0, 2, 3])` $	o$ `1` (o pacote 1 foi perdido).
+- `detect_drops([255, 1], max_seq=256)` $	o$ `1` (o contador deu a volta e o pacote 0 foi perdido).
 
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [pytest documentation](https://docs.pytest.org/) e leia o modelo de assert do pytest (falha explícita, não print) para detect_drops contar o buraco inclusive no wrap de sequência.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de aplicar a operação módulo `max_seq` corretamente em linguagens ou ambientes onde diferenças negativas possam ocorrer.

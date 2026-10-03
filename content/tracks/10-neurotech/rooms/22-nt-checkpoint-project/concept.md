@@ -1,64 +1,21 @@
-# Conceito
+# Conceito — Consolidação de Projeto e Arquitetura de Software em BCI
 
-Checkpoint **project** = fatia real (filter/decoder/firmware) com evidência.
-Proibido: estimulação DIY humana / jailbreak clínico.
+A consolidação de projetos em neurotecnologia requer uma separação modular limpa entre aquisição de hardware, estruturas de bufferização, filtragem de sinais e interface de controle.
 
+## 1. As Três Fatias Típicas de Projeto
+1. **Fatia de Aquisição e Streaming:** Gerador determinístico de sinais, buffer circular lock-free e protocolo de empacotamento com CRC.
+2. **Fatia de DSP e Banco de Filtros:** Implementação de seções de segunda ordem (Biquad), filtros FIR/IIR causais e cálculo de potências de banda espectral.
+3. **Fatia de Firmware e Baixa Potência:** Pipeline em microcontrolador com aritmética de ponto fixo Q15 e orçamento estrito de ciclos de clock.
 
-## Extensão MSc-prep (foundation → advanced)
+## 2. O Artefato de Checkpoint de Projeto
+O ritual exige a criação do artefato em `study-log/artifacts/checkpoint-project.md`, documentando a execução do emulador correspondente (`synth`, `artifact`, `cortex` ou `all`), a latência observada e as asserções de teste automatizado satisfeitas.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+## 3. Modos de Falha na Prática de Engenharia
+1. **Acoplamento Monolítico:** Escrever o código de captura de porta serial diretamente misturado com o algoritmo de machine learning, inviabilizando testes unitários automatizados.
+2. **Dependência de Hardware Físico sem Mocks:** Não fornecer geradores de dados sintéticos determinísticos (emuladores), impedindo a integração contínua (CI) e a depuração de regressões algorítmicas.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-neuro-mage`) é o grande marco integrador (Boss intermediário), exigindo a comprovação de evidências de código e métricas para a conquista do título de Neuro Mage.
 
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 5. Ponto de Destrave do Lab
+Consulte os padrões de arquitetura de software para biossinais no repositório de código aberto do [OpenBCI GitHub](https://github.com/OpenBCI) e a documentação do [Brainflow Library](https://brainflow.org/).

@@ -1,20 +1,15 @@
-# Lição — Welch / vazamento
+# Desafio — Média de Periodogramas pelo Método de Welch
 
-## Parâmetros
+## 1. Objetivo do Desafio
+Implementar a rotina de agregação e média espectral do método de Welch sobre segmentos temporais pré-janelados, reduzindo a variância da densidade espectral de potência (PSD).
 
-- `nperseg` / duração do segmento → Δf
-- `noverlap` → estabilidade vs independência
-- janela Hann/Hamming reduz vazamento
+## 2. Especificação Técnica e Formulação
+Dada uma matriz ou lista de listas `segments`, onde cada linha contém o espectro de potência estimado de um segmento individual de EEG com $B$ bins de frequência:
+- Implemente a função `welch_average_psd(segments)`:
+  $$S_{\text{avg}}[j] = \frac{1}{K} \sum_{k=0}^{K-1} \text{segments}[k][j]$$
+  para cada bin de frequência $j = 0, \dots, B-1$.
+- A função deve retornar uma lista com $B$ valores flutuantes contendo a densidade espectral média.
 
-## Em lab
-
-`synth_eeg_stream` + band-energy probes; **não** reivindique fisiologia.
-
-Para destravar o lab, abra [scipy.signal.welch](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html) e leia os parâmetros nperseg e a média de segmentos na documentação de scipy.signal.welch, para welch_average e o Δf ≈ 1/T.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que todos os segmentos possuam rigorosamente o mesmo número de bins de frequência $B$.
+- Se a lista de segmentos estiver vazia, retorne lista vazia `[]`.

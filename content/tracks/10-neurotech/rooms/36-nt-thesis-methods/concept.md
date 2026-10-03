@@ -1,19 +1,31 @@
-# Conceito — Módulo de Métodos Reproduzíveis (Padrão MSc / Journal)
+# Conceito — Redação de Métodos Reproduzíveis em Nível de Dissertação (IEEE/Nature Standard)
 
-## 1. O Padrão de Reprodutibilidade em Neuroengenharia
-A seção de **Métodos (*Methods*)** de uma dissertação de mestrado ou artigo científico em neurotecnologia deve ser redigida para um revisor cético e hostil: qualquer pesquisador independente no mundo deve conseguir replicar os resultados numéricos exatos a partir da descrição textual.
+A seção de Métodos (Methodology) é a espinha dorsal de qualquer manuscrito científico ou relatório técnico em engenharia biomédica.
 
-### Os Componentes Obrigatórios do Artefato (`study-log/artifacts/neuro-thesis-methods.md`)
-O validador automatizado do curso audita a presença rigorosa dos seguintes campos estruturados:
-1. **Dados (`data`)**: Especificação exata do dataset (ex: *BCI Competition IV Dataset 2a*, 9 sujeitos, 22 canais de EEG em $250\text{ Hz}$).
-2. **Métricas (`metrics`)**: Coeficiente Kappa de Cohen ($\kappa$) e acurácia observada por sujeito, acompanhados da matriz de confusão e do cálculo da Taxa de Transferência de Informação de Wolpaw (ITR em bits/min).
-3. **Limites e Salvaguardas Éticas (`limits`)**: Critérios objetivos de exclusão de ensaios com artefatos de amplitude ($>100\ \mu\text{V}$), limites de saturação e declaração de consentimento institucional/IRB.
-4. **Número Derivado do Fundamento Físico**: Parâmetro quantitativo com unidade SI explícita (ex: taxa de amostragem $f_s = 250\text{ Hz}$, banda passante do biquad $8\text{--}12\text{ Hz}$, ou latência de inferência $T_{\text{inferência}} = 12.5\text{ ms}$).
-5. **Reprodutibilidade Estrita (`reproducibility`)**: Sementes determinísticas de geradores pseudoaleatórios (`seed=42`), esquemas de particionamento contíguo em blocos (`split_blocked`) e versões das bibliotecas ([MNE-Python](https://mne.tools/stable/index.html) e [scikit-learn](https://scikit-learn.org/stable/user_guide.html)).
+## 1. O Padrão de Reprodução Total
+Para que a seção de Métodos seja considerada completa e reproduzível, ela deve especificar cumulativamente:
+1. **Origem dos Dados e População:** Descrição dos participantes, dataset aberto utilizado (com link permanente/DOI) e aprovação ética de comitê institucional.
+2. **Cadeia de Pré-Processamento:**
+   - Frequência de amostragem ($f_s$).
+   - Tipo de filtro (FIR ou IIR), ordem matemática, frequências de corte inferior e superior, e garantia de causalidade.
+   - Algoritmo de remoção ou rejeição de artefatos com limiares numéricos exatos.
+3. **Extração de Características e Modelagem:**
+   - Formulação matemática completa (ex. formulação de covariâncias, CSP regularizado ou variedades Riemannianas).
+   - Equações do classificador e função de perda.
+4. **Protocolo de Validação Cruzada:**
+   - Estratégia exata de particionamento (Leave-One-Run-Out ou Blocked K-Fold).
+   - Garantia de isolamento estrito entre treino e teste.
+5. **Reprodutibilidade Computacional:** Sementes pseudoaleatórias fixadas e versões de ambiente de software.
 
-## 2. Modos de Falha Operacionais
-1. **Ocultar Sementes e Parâmetros de Filtro**: Descrever "o sinal foi filtrado e classificado" sem especificar a ordem do filtro, as frequências de corte de 3 dB, a topologia (ex: Chebyshev vs Butterworth vs FIR linear-phase) e a semente de particionamento. Sem esses dados, o experimento é cientificamente irreprodutível.
-2. **Reivindicar Validação Causal com Filtros Acausais**: Afirmar na metodologia que o algoritmo foi projetado para uso em tempo real enquanto o código executa `filtfilt` bidirecional ou normalização z-score com a média global da sessão inteira.
+## 2. O Validador de Especificação de Métodos
+A rotina `validate_methods_spec` atua como um linter de integridade científica, verificando se o checklist obrigatório contém todos os campos requeridos: `data`, `preprocessing`, `features_model`, `validation`, `seeds_versions` e `limits`.
 
-## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-research-project`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/37-nt-research-project/room.yaml)) assume que a metodologia está blindada e formalizada, executando o pipeline experimental completo para gerar os resultados que destravam a runa de pesquisa (`rune-neuro-research`).
+## 3. Modos de Falha em Métodos Científicos
+1. **Omissão da Direção do Filtro:** Não esclarecer se o filtro foi aplicado de forma causal (unidirecional) ou com `filtfilt` (bidirecional de fase zero).
+2. **Falta de Semente Aleatória:** Omitir a semente de inicialização, fazendo com que cada execução produza acurácias diferentes e impedindo auditoria de terceiros.
+
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-research-project`) exige a execução do miniprojeto prático de pesquisa experimental ponta a ponta sobre dados reais.
+
+## 5. Ponto de Destrave do Lab
+Consulte as diretrizes formais de submissão da [IEEE Transactions on Biomedical Engineering (TBME Author Guide)](https://tbme.embs.org/) e o checklist de reprodutibilidade da [Nature Portfolio Reporting Standards](https://www.nature.com/nature-portfolio/editorial-policies/reporting-standards).

@@ -1,30 +1,26 @@
-# Lição — Assistive BCI
+# Desafio — Integrador Probabilístico com Dwell Accumulator
 
-## Objetivos
-Dominar literacia de aplicação o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar um integrador de evidência temporal (*dwell accumulator*) que processa um fluxo contínuo de probabilidades de decodificação neural, acumulando a evidência passo a passo até atingir ou ultrapassar o limiar de decisão estipulado.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `dwell_accumulate(prob_stream, threshold=3.0)`:
+- Receba uma lista ou iterável de probabilidades de ponto flutuante `prob_stream`.
+- Mantenha um somatório acumulado inicializado em `0.0`.
+- Percorra a sequência de probabilidades amostra a amostra:
+  - Adicione a probabilidade atual ao somatório acumulado.
+  - Se o somatório acumulado for maior ou igual ao `threshold`, retorne imediatamente o número de passos decorridos (1-indexado, ou seja, a quantidade de amostras processadas até o disparo).
+- Se a sequência terminar sem atingir o limiar, retorne o total de amostras da lista (ou o comprimento processado).
 
-## Lab
-Explique em 6–10 linhas como literacia de aplicação aparece num pipeline MI offline ou online.
+## 3. Exemplo de Validação
+```python
+probs = [0.5, 0.8, 0.9, 0.9]
+# Passo 1: soma = 0.5
+# Passo 2: soma = 0.5 + 0.8 = 1.3
+# Passo 3: soma = 1.3 + 0.9 = 2.2
+# Passo 4: soma = 2.2 + 0.9 = 3.1 >= 3.0 -> Dispara no passo 4!
+assert dwell_accumulate(probs, threshold=3.0) == 4
+```
 
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [Singh et al. MI-BCI Sensors 2021](https://doi.org/10.3390/s21062173) e leia os limites de uso assistivo no review de Singh (usabilidade e ética, sem certificação) para o dwell acumular até o limiar sem claim médico.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de retornar um número inteiro representando o número exato de amostras avaliadas até a condição de disparo.

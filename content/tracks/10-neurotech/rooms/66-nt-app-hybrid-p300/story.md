@@ -1,9 +1,17 @@
-# História — O máximo dentro da janela, não no vetor
+# História — O Flash do Alvo Raro
 
-Oddball: estímulo raro entre frequentes. A Sala não reproduz o speller de Farwell e Donchin; pede o pico positivo num vetor sintético. Duzentos zeros. No índice 75, o valor 12,5. `fs = 250`, janela de 250 ms a 450 ms.
+Em uma sala de experimentos cognitivos de 1988 reproduzida na bancada moderna, um voluntário encarava uma tela CRT com uma matriz 6×6 contendo as 26 letras do alfabeto e os números de 0 a 9. O objetivo do participante era concentrar-se na letra "G".
 
-Índice 75 em 250 Hz é `75/250 * 1000 = 300 ms`, dentro da janela. O máximo nesse intervalo é 12,5. Um pico fora, mesmo maior, não conta. Devolver o índice 75 em vez do valor falha. Devolver 0 porque “a média é zero” ignora a deflexão.
+A cada cem milissegundos, uma linha ou coluna da matriz piscava em brilho intenso em ordem pseudoaleatória. A imensa maioria dos flashes iluminava letras que não interessavam ao participante. Mas, a cada ciclo, a linha contendo a letra "G" brilhava subitamente.
 
-12,5 é amplitude do vetor de bancada, não um µV de pessoa nem um diagnóstico de atenção. A janela 250–450 ms é a do código, alinhada ao clássico, não uma medida sua. Sem oddball declarado, o pico nem tem paradigma. A honesty: emulação educacional, não um speller clínico.
+O desenvolvedor observava o osciloscópio conectado ao eletrodo parietal Pz:
 
-Fase F11, nt-app-hybrid-p300: o pico na janela 250–450 ms, índice 75, vale 12,5. O fill do paradigma é oddball. Fora da janela o máximo não entra, e o vetor não é um speller de sujeito.
+— "Nas amostras individuais de um único flash, eu só enxergo ruído caótico de eletroencefalografia. Como é possível detectar se o voluntário prestou atenção ao flash?"
+
+O neurocientista acionou o script de média sincronizada por eventos (*Event-Related Potential* - ERP):
+
+— "Você acabou de presenciar o clássico paradigma Oddball de Farwell & Donchin. O cérebro humano ignora estímulos previsíveis e irrelevantes. Mas quando um evento raro e atencionalmente relevante ocorre — o flash da linha alvo —, o córtex parietal e estruturas límbicas disparam uma deflexão positiva colossal cerca de trezentos milissegundos após o estímulo: a onda P300."
+
+Ele sobrepôs a curva média de 15 repetições sobre a tela:
+
+— "Veja a beleza da biofísica: enquanto os flashes irrelevantes se cancelam para uma média plana próxima de zero, os flashes do alvo somam-se coerentemente, revelando um pico positivo inconfundível de mais de dez microvolts centrado na janela de 250 a 450 milissegundos. Para decodificar o caractere digitado, seu algoritmo precisa varrer essa janela temporal exata e extrair a maior amplitude positiva da época."

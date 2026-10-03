@@ -27,7 +27,7 @@ Ao contrário de uma carga pontual monopolar (que cai com $1/r$), o potencial di
 Supor que um eletrodo mede apenas o que está milimetricamente abaixo dele. Se o dipolo estiver orientado tangencialmente (como nas paredes dos sulcos corticais), $\cos(\pi/2) = 0$: o eletrodo diretamente acima da fonte lê potencial zero, enquanto dois eletrodos distantes leem potenciais opostos (dipolo tangencial bipolar).
 
 ## 4. O que a Próxima Sala Assume
-A sala seguinte ([`nt-spike-lfp`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/04-nt-spike-lfp/room.yaml)) assume que você compreende por que o dipolo reflete potenciais de campo locais (LFP) lentos em vez de spikes neuronais rápidos de alta frequência.
+A próxima sala do percurso é `nt-physics-rc-tissue` (Physics — Tecido como RC (lite)): τ=RC; passa-baixa do tecido — intuição quantitativa.
 
 ## 5. Ponto de Destrave do Lab
 Para aprofundar na física eletrostática de dipolos e problemas direto/inverso de EEG, consulte a revisão de [Michel & Brunet (PMC6700197)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) e [Padfield et al. (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/).

@@ -1,15 +1,17 @@
-# História — O Cabo Fantasma
+# História — O Divisor de Tensão que Esmagava o Sinal
 
-No teste de bancada de um sistema vestível de EEG de baixa densidade, a equipe enfrentava um comportamento desconcertante. Nos testes com simulador sintético e cabos curtos de dez centímetros, o sinal analógico de microvolts era digitalizado com fidelidade impecável pelo chip ADS1299.
+Em um ensaio de bancada eletrônica, um desenvolvedor conecta um simulador de biopotenciais ajustado para emitir $50\ \mu\text{V}$ com impedância de saída de $50\text{ k}\Omega$ (simulando um eletrodo seco mal acoplado sobre a pele) à entrada de um amplificador analógico de testes.
 
-Entretanto, quando o desenvolvedor conectava o chicote final de cabos de um metro e meio para alcançar a touca com eletrodos secos, a amplitude das ondas beta despencava pela metade e o ruído de rede elétrica de sessenta hertz subia exponencialmente.
+Para sua frustração, o osciloscópio na saída registra apenas $25\ \mu\text{V}$ — metade exata da amplitude original do sinal.
 
-"A resistência de entrada do chip é de um giga-ohm em corrente contínua," argumentava o desenvolvedor de software, com o multímetro na mão. "A pele do sujeito tem dois mega-ohms. O divisor de tensão em DC deveria transferir mais de noventa e nove por cento da voltagem. O problema só pode ser um bug no firmware do microcontrolador."
+O engenheiro sênior de hardware analisa as especificações da placa de testes e desenha o circuito equivalente no quadro:
+— Você esqueceu de considerar a Lei de Ohm e a impedância de entrada do seu circuito ($R_{\text{in}}$) — ensina o sênior. — A interface entre o eletrodo e o amplificador forma um **divisor de tensão**:
+$$V_{\text{medido}} = V_{\text{fonte}} \times \left( \frac{R_{\text{in}}}{R_{\text{fonte}} + R_{\text{in}}} \right)$$
 
-A engenheira eletrônica sênior pegou uma ponte LCR de precisão e mediu a capacitância entre o condutor central do cabo e a malha externa aterrada. O display indicou mil picofarads — um nanofarad.
+Ele aponta para o esquemático da placa:
+— A placa que você utilizou tem uma impedância de entrada de apenas $50\text{ k}\Omega$. Quando a impedância do eletrodo ($R_{\text{fonte}} = 50\text{ k}\Omega$) é igual à impedância do amplificador, a tensão medida é dividida exatamente por dois! Metade do sinal do cérebro é perdida no próprio contato da pele antes de qualquer processamento!
 
-"Seu multímetro mede em zero hertz," disse ela calmamente. "Mas o EEG é um sinal alternado. A sessenta hertz, a reatância capacitiva desse cabo de um nanofarad é de apenas dois vírgula seis mega-ohms. Essa reatância fica em paralelo com a entrada do chip, formando um divisor de tensão AC direto com a resistência de dois mega-ohms do seu eletrodo seco."
+O engenheiro sênior explica o princípio de casamento de impedância de instrumentação:
+— Para biopotenciais de microvolts, nunca buscamos casamento de potência conjugada ($R_{\text{in}} = R_S$); buscamos **transferência máxima de tensão**. Para que o erro do divisor seja inferior a $0.1\%$, a impedância de entrada do amplificador operacional deve ser pelo menos mil vezes maior do que a impedância de contato do eletrodo: $R_{\text{in}} > 1000 \times R_{\text{fonte}}$. Front-ends modernos utilizam transistores de efeito de campo CMOS/JFET com impedâncias de entrada na casa de gigaohms ($> 1\text{ G}\Omega$).
 
-O desenvolvedor calculou a impedância equivalente e viu que a tensão medida no pino do conversor caía mais de vinte por cento, além de introduzir defasagem severa.
-
-"Sem um buffer seguidor de tensão ativo colado diretamente na base do eletrodo," concluiu a engenheira, "a capacitância distribuída do cabo devora o microvolt antes mesmo de ele chegar à placa. Circuitos reais não obedecem apenas à lei de Ohm em DC; eles obedecem à impedância reativa em frequência."
+O desenvolvedor implementa a função `measured_voltage` para simular o efeito do divisor. Ao substituir a placa por um amplificador de alta impedância ($R_{\text{in}} = 1\text{ G}\Omega$), a tensão medida recupera $99.995\%$ de sua amplitude original.

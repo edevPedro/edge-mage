@@ -1,16 +1,14 @@
-# Lição
+# Desafio — Distância Riemanniana em Matrizes Diagonais
 
-- SPD: simétrica definida positiva.
-- Distância Riemanniana ≠ “só Frobenius”.
-- Toy 2×2 **conceitual** na sala (MCQ/fill); papers reais nos resources.
-- **Honestidade de ferramenta:** `spd_toy` no SPEC é conceito — **não há emulador shipped** (como `impedance_probe`). Use Yger/Congedo/Barachant + raciocínio SPD.
-- Decode MVP (LDA) já passou — aqui é o salto geométrico opcional mas recomendado.
+## 1. Objetivo do Desafio
+Compreender a natureza não-euclidiana do espaço de covariâncias e implementar o cálculo da distância geodésica Riemanniana AIRM restrita a matrizes diagonais estritamente positivas.
 
-Para destravar o lab, abra [Barachant et al. — Multiclass brain–computer interface classification by Riemannian geometry (IEEE)](https://doi.org/10.1109/TBME.2011.2172210) e leia a distância em covariâncias SPD em Barachant (não a diferença euclidiana) para fechar riemann_diag_dist nas diagonais positivas.
+## 2. Especificação Técnica e Formulação
+Dadas duas listas ou vetores diagonais de variâncias estritamente positivas $d_1 = [a_0, a_1, \dots, a_{C-1}]$ e $d_2 = [b_0, b_1, \dots, b_{C-1}]$:
+- Implemente a função `riemann_diag_dist(d1, d2)` calculando a métrica:
+  $$\text{dist}(d_1, d_2) = \sqrt{\sum_{i=0}^{C-1} \left(\ln\left(\frac{a_i}{b_i}\right)\right)^2}$$
 
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de utilizar o logaritmo natural (`math.log`).
+- Verifique que se $d_1 = d_2$, a distância resultante deve ser estritamente zero ($0.0$).
+- Lembre-se: em matrizes reais, todas as variâncias devem ser estritamente positivas ($a_i > 0, b_i > 0$).

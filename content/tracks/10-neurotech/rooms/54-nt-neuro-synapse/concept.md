@@ -1,78 +1,28 @@
-# Conceito — Sinapse
-PSP soma temporal/espacial → população → LFP. Ponte para `nt-spike-lfp`. Transmissor ≠ bit de decoder.
+# Conceito — Transmissão Sináptica, Funções de Condutância e Geração de LFP
 
-## Por que está no caminho MSc-prep
-Este tópico (Sinapse) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. Potenciais Pós-Sinápticos (PSPs) vs. Potenciais de Ação
+Enquanto os potenciais de ação são eventos puramente axônicos, digitais (tudo-ou-nada) e ultra-rápidos ($\sim 1\text{ ms}$), os potenciais pós-sinápticos são analógicos, graduados e temporalmente extensos ($10\text{ a }100\text{ ms}$):
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+- **EPSP (Excitatory Postsynaptic Potential):** Despolarização da membrana pós-sináptica, tipicamente mediada por receptores ionotrópicos glutamatérgicos (AMPA, NMDA) que promovem influxo de íons $Na^+$ e $Ca^{2+}$.
+- **IPSP (Inhibitory Postsynaptic Potential):** Hiperpolarização da membrana, gerada por influxo de $Cl^-$ via receptores $\text{GABA}_A$ ou efluxo de $K^+$ via receptores $\text{GABA}_B$.
 
-## Exercícios mentais
-- Defina PSP → população → LFP em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 2. A Função Alfa de Condutância Sináptica
+A evolução temporal da condutância pós-sináptica $g_{syn}(t)$ após a chegada de um spike é classicamente modelada pela função alfa de Rall:
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+$$g_{syn}(t) = g_{peak} \cdot \left(\frac{t}{\tau_{syn}}\right) \cdot \exp\left(1 - \frac{t}{\tau_{syn}}\right), \quad t \ge 0$$
 
+Propriedades fundamentais:
+- No instante $t = \tau_{syn}$, a condutância atinge seu pico exato: $g_{syn}(\tau_{syn}) = g_{peak} \cdot (1) \cdot e^0 = g_{peak}$.
+- Para $t < 0$, $g_{syn}(t) = 0.0$.
+- O decaimento assintótico reflete o fechamento dos canais iônicos e a recaptação do neurotransmissor da fenda sináptica.
 
-## Extensão MSc-prep (foundation → advanced)
+## 3. Da Sinapse ao LFP e ao EEG
+Neurônios piramidais nas camadas corticais III e V possuem árvores dendríticas apicais longas e orientadas perpendicularmente à superfície cortical. Quando uma sinapse excitatória despolariza o dendrito apical, íons positivos entram na célula criando um *sink* de corrente local no espaço extracelular. A conservação de carga elétrica exige que correntes passem pelo citoplasma e saiam pelo corpo celular (*source*).
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+Esse par sink-source separado espacialmente forma um dipolo de corrente primário:
+$$V_{LFP}(r) = \frac{1}{4 \pi \sigma} \sum_i \frac{I_i}{|r - r_i|}$$
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
+Por terem duração prolongada ($10\text{--}50\text{ ms}$), os PSPs somam-se linearmente no tempo e no espaço, dando origem ao Potencial de Campo Local (LFP) intracortical e, após atravessar crânio e tecidos, ao EEG de escalpo.
 
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-neuro-maps`) investiga como as populações neuronais se organizam topograficamente no córtex e como mapeamos essas regiões via sistema internacional 10-20.

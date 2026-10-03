@@ -1,56 +1,24 @@
-# Conceito — Rubrica de paper critique
+# Conceito — Avaliação Crítica de Literatura em BCI e Detecção de Red Flags
 
-Leitura crítica MSc-prep — não resumo passivo.
+A capacidade de avaliar criticamente a literatura científica internacional é o pré-requisito indispensável para evitar desperdício de meses de pesquisa tentando replicar alegações espúrias.
 
-## Rubrica (6 eixos)
+## 1. As Principais "Red Flags" Metodológicas em BCI
+Ao analisar qualquer publicação na área de interfaces cérebro-computador, audite imediatamente:
+1. **Vazamento de Dados por Sobreposição Temporal:** Particionamento aleatório (`shuffle=True`) de janelas deslizantes contíguas, inflacionando artificialmente a acurácia.
+2. **Normalização Pré-Split:** Aplicação de Z-score, PCA ou ICA sobre o conjunto de dados completo antes da divisão dos folds de treino e teste.
+3. **Falta de Reprodutibilidade:** Ausência de link permanente com identificador de objeto digital (DOI) para dados abertos e código-fonte documentado.
+4. **Overclaims de Generalização:** Afirmações bombásticas de "leitura da mente" ou "controle universal sem calibração" baseadas em apenas 3 a 5 participantes sem validação cruzada entre sessões (cross-session).
+5. **Métricas Não-Ajustadas:** Reportar apenas acurácia simples sem informar o coeficiente Kappa de Cohen ($\kappa$) ou a concordância esperada pelo acaso para classes desbalanceadas.
 
-1. **Pergunta** — clara? falsificável?
-2. **Dados** — N, sujeitos, open?, consentimento mencionado?
-3. **CV / validação** — split adequado? nested? leak visível?
-4. **Métrica** — κ/chance/ITR? só accuracy?
-5. **Limites** — autores admitem? generalização?
-6. **Ética** — overclaim? dual-use? clínico indevido?
+## 2. A Ficha Estruturada de Leitura Crítica
+Uma crítica técnica estruturada deve registrar:
+- **DOI / URL Permanente:** Referência imutável do estudo analisado.
+- **Tamanho da Amostra e Tarefa:** Número de voluntários, canais de EEG e paradigma (MI, P300, SSVEP).
+- **Pipeline Declarado:** Algoritmos exatos de filtragem, extração de features e classificação.
+- **Pontos Fortes e Fraquezas Metodológicas:** O que o artigo comprova legitimamente e quais alegações carecem de suporte experimental.
 
-## Como usar DOI
+## 3. O que a Próxima Sala Assume
+A próxima sala (`nt-research-proposal`) desafia o estudante a formular sua própria proposta formal de pesquisa de mestrado baseada em uma pergunta científica legítima e testável.
 
-Abra o paper da sala/resources; preencha a rubrica com citações de secção (Methods/Results). Casos Berlin/Comp IV são treino; critique aplica a *qualquer* paper do gate.
-
-## Ligação
-
-Critique → proposal → Methods → project → paper module.
-
-## Exemplo de veredito (fictício pedagógico)
-
-| Eixo | Nota |
-|------|------|
-| Pergunta | Clara (MI L/R) |
-| Dados | N=9, OA parcial |
-| CV | LOSO ok; sem nested no grid |
-| Métrica | accuracy só — pedimos κ |
-| Limites | admitidos na Discussion |
-| Ética | sem overclaim clínico |
-
-**Ação:** aceitar com major revision Methods (κ + nested).
-
-## Protocolo de 45 minutos
-
-1. Abstract (3 min) — pergunta em 1 frase sua
-2. Figures (10 min) — o que cada figura prova?
-3. Methods (15 min) — dados, split, métrica
-4. Results (10 min) — número principal + incerteza
-5. Discussion (7 min) — limites vs overclaim
-
-## Frases proibidas no critique
-- “Os autores são ruins”
-- “Deep learning resolveria” sem evidência
-- “κ alto = pronto para clínica”
-
-## Entregável nota
-Rubrica 6×(0–2) = score /12 + parágrafo ético.
-
-## Síntese em 4 bullets
-- Ensina a criticar o paper em seis eixos (pergunta, dados, CV, métrica, limites, ética), com citação de secção, não um resumo do abstract.
-- O número a carregar é o score da rubrica, 6 × (0–2) sobre 12, junto com o DOI ou a URL estável da ficha.
-- Honesty: “ler pensamentos” e lie detection são overclaim; κ alto no PDF não autoriza uso clínico.
-- A sala seguinte no order é `nt-research-proposal`.
-
+## 4. Ponto de Destrave do Lab
+Consulte as diretrizes internacionais de transparência e reprodutibilidade em neuroimagem de [Poldrack et al. (Nature 2017)](https://doi.org/10.1038/s41562-016-0017) e o manifesto de [Ioannidis (PLoS Med 2005, Why most published research findings are false)](https://doi.org/10.1371/journal.pmed.0020124).

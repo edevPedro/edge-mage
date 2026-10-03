@@ -29,7 +29,7 @@ $$\text{LSB}_{\mu\text{V}} = \frac{V_{\text{ref}}}{2^{N-1} \times \text{PGA}} \t
 Alimentar a entrada de um ADC de 10 ou 12 bits diretamente com o sinal do eletrodo sem um pré-amplificador analógico de alto ganho ($G \ge 1000$). O firmware compila, o código lê valores inteiros do registrador, mas o desenvolvedor está amostrando apenas ruído de quantização e offset térmico.
 
 ## 4. O que a Próxima Sala Assume
-A sala seguinte ([`nt-rhythms`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/09-nt-rhythms/room.yaml)) assume que você dispõe de uma série temporal digitalizada com resolução de microvolts para decompor ritmos cerebrais (delta, theta, alpha, mu, beta).
+A próxima sala do percurso é `nt-elec-antialias` (Elétrica — Nyquist e anti-alias): fs>2fmax; filtro antes do ADC — lab quantitativo.
 
 ## 5. Ponto de Destrave do Lab
 Para analisar a arquitetura de modulação Delta-Sigma de 24 bits e taxas de oversampling em biopotenciais, consulte o datasheet oficial do [Texas Instruments ADS1299](https://www.ti.com/lit/ds/symlink/ads1299.pdf) e a documentação do módulo [OpenBCI Cyton](https://docs.openbci.com/GettingStarted/Boards/CytonGS/).

@@ -1,43 +1,13 @@
-# Lição — Filter bank para EEG
+# Desafio — Decomposição Espectral e Máscara de Bandas
 
-## Objetivos
+## 1. Objetivo do Desafio
+Compreender o papel dos bancos de filtros na isolação de ritmos sensoriomotores, dominar o critério de Nyquist para frequências máximas e implementar a função de mascaramento booleano de frequências.
 
-1. Dado `fs`, respeitar Nyquist ao escolher bandas.
-2. Montar um banco toy mu/beta para MI.
-3. Separar pré-processamento de classificação; evitar trial leak.
-4. Correr o emulador synth e inspecionar potência por banda.
+## 2. Especificação Técnica e Formulação
+Considere um vetor de frequências de interesse $F = [f_1, f_2, \dots, f_m]$:
+- Desenvolva a função `band_mask(freqs, lo, hi)` que recebe uma lista de frequências e retorna uma lista booleana com o mesmo comprimento, contendo `True` se $lo \le f < hi$ e `False` caso contrário:
+  $$\text{mask}[i] = (lo \le freqs[i] < hi)$$
 
-## Passos
-
-1. Calcule Nyquist para `fs ∈ {128, 250, 512}`.
-2. Proponha banco: `(8–12)`, `(16–24)`, opcional `(24–30)`. Justifique com ritmos.
-3. Escreva a ordem: raw → (notch?) → bandpass_i → power_i → concat features.
-4. Liste 2 jeitos de vazar informação no pré-proc (ex.: z-score global com teste; escolher banda olhando labels do teste).
-5. Rode o emulador (abaixo) e anote um número de potência por banda.
-
-Para destravar o lab, abra [Ang et al. — Filter Bank Common Spatial Pattern (FBCSP) IEEE](https://doi.org/10.1109/IJCNN.2008.4634130) e leia a construção do filter bank no FBCSP de Ang (sub-bandas antes do CSP) para escolher o banco toy (8–12) e (16–24) Hz.
-
-## Labs
-
-**Numeric.** `fs=250`. Qual a máxima frequência teórica representável? Se o banco inclui 70–90 Hz, o que falta na cadeia EE?
-
-**Code (sandbox / mental).** Pseudo:
-
-```text
-for band in [(8,12), (16,24)]:
-  y = bandpass(x, fs, *band)
-  feat.append(log(var(y) + eps))
-```
-
-Compare `feat` entre canais C3/C4 em duas classes synth.
-
-## Runa
-
-Limpar esta sala dropa **`rune-neuro-acq`**.
-
-## Emulador
-
-```bash
-python -m edge_mage.emulators synth
-mage emu synth
-```
+## 3. Critérios de Validação e Armadilhas
+- Atenção ao intervalo semiaberto: o limite inferior $lo$ é inclusivo, e o limite superior $hi$ é exclusivo.
+- Verifique que frequências fora dos limites de Nyquist ($f > f_s / 2$) não sejam consideradas válidas em projetos de filtros.

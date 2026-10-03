@@ -55,17 +55,19 @@ class TaskScreen(MageScreen):
                 classes="muted",
             )
             with VerticalScroll(classes="panel", id="pane-prompt", can_focus=True):
-                yield Static(self.quest.prompt)
+                # markup=False: colchetes de verdade (E[X], [A], kernel=[...])
+                # não são tags e não comem metade da alternativa.
+                yield Static(self.quest.prompt, markup=False)
                 if self.quest.type == "mcq" and self.quest.choices:
                     lines = [""]
                     for i, c in enumerate(self.quest.choices):
                         letter = chr(ord("A") + i)
-                        lines.append(f"  [{letter}]  {c}")
+                        lines.append(f"  {letter})  {c}")
                     lines.append("")
-                    yield Static("\n".join(lines), classes="accent")
+                    yield Static("\n".join(lines), markup=False, classes="accent")
 
                 if self.quest.hint:
-                    yield Static(f"Dica: {self.quest.hint}", classes="muted")
+                    yield Static(f"Dica: {self.quest.hint}", markup=False, classes="muted")
                 if self.quest.type == "ritual":
                     yield Static(
                         f"Artefato: study-log/artifacts/{self.quest.ritual_id or self.quest.id}.md",
@@ -99,6 +101,7 @@ class TaskScreen(MageScreen):
                 Option("✎  Editar resposta (INSERT)", id="edit"),
                 Option("←  Voltar", id="back"),
                 id="task-actions",
+                markup=False,
             )
 
     def on_mount(self) -> None:

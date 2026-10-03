@@ -1,33 +1,32 @@
-# Conceito — Discriminante Linear de Fisher, Shrinkage e o Decodificador MVP
+# Conceito — Classificação Linear (LDA), Regularização de Covariância e Cohen's Kappa
 
-## 1. Fundamento Matemático: O Critério de Fisher e a Fronteira Bayesiana
-O Discriminante Linear de Fisher (LDA) é o classificador de referência e cavalo de batalha na literatura de interfaces cérebro-computador não-invasivas (BCI), conforme documentado por [Lotte et al. (DOI 10.1088/1741-2560/4/2/R01)](https://doi.org/10.1088/1741-2560/4/2/R01) e na documentação do [scikit-learn LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html).
+O Discriminante Linear de Fisher (LDA) é o padrão-ouro de eficiência computacional e robustez em BCI não-invasivo de baixa latência.
 
-### O Critério de Fisher e a Matriz de Dispersão Intra-Classes
-Dados os vetores de características $\mathbf{x} \in \mathbb{R}^D$ (por exemplo, as potências logarítmicas dos canais C3 e C4) rotulados em duas classes $y \in \{0, 1\}$ com médias $\boldsymbol{\mu}_0$ e $\boldsymbol{\mu}_1$:
-1. A matriz de dispersão inter-classes é:
-   $$\mathbf{S}_b = (\boldsymbol{\mu}_1 - \boldsymbol{\mu}_0)(\boldsymbol{\mu}_1 - \boldsymbol{\mu}_0)^T$$
-2. A matriz de dispersão intra-classes combinada (*pooled within-class covariance*) com $N_0$ e $N_1$ ensaios é:
-   $$\mathbf{S}_w = \frac{1}{N - 2} \left[ \sum_{i \in C_0} (\mathbf{x}_i - \boldsymbol{\mu}_0)(\mathbf{x}_i - \boldsymbol{\mu}_0)^T + \sum_{j \in C_1} (\mathbf{x}_j - \boldsymbol{\mu}_1)(\mathbf{x}_j - \boldsymbol{\mu}_1)^T \right]$$
+## 1. O Discriminante Linear de Fisher (LDA)
+Dado um vetor de características $x \in \mathbb{R}^D$ (por exemplo, potências de banda logarítmicas), o LDA busca um vetor de projeção $w \in \mathbb{R}^D$ e um escalar de viés $b \in \mathbb{R}$ tais que a regra de decisão seja:
+$$\hat{y} = \begin{cases} 1, & \text{se } w^T x + b \ge 0 \\ 0, & \text{se } w^T x + b < 0 \end{cases}$$
 
-O vetor de projeção ideal $\mathbf{w}$ que maximiza o quociente de Rayleigh $J(\mathbf{w}) = \frac{\mathbf{w}^T \mathbf{S}_b \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$ é a solução direta:
-$$\mathbf{w} = \mathbf{S}_w^{-1} (\boldsymbol{\mu}_1 - \boldsymbol{\mu}_0)$$
+Onde os pesos ótimos sob premissa de covariância comum $\Sigma$ entre as classes são dados por:
+$$w = \Sigma^{-1} (\mu_1 - \mu_0)$$
+$$b = -w^T \left(\frac{\mu_1 + \mu_0}{2}\right) + \ln\left(\frac{P(y=1)}{P(y=0)}\right)$$
 
-E o limiar de decisão bayesiano ótimo $b$ para classes equiprováveis é o ponto médio projetado:
-$$b = -\frac{1}{2} \mathbf{w}^T (\boldsymbol{\mu}_1 + \boldsymbol{\mu}_0)$$
-A predição para um novo ensaio $\mathbf{x}$ é dada pelo sinal do hiperplano linear:
-$$\hat{y} = \begin{cases} 1, & \text{se } \mathbf{w}^T \mathbf{x} + b \ge 0 \\ 0, & \text{se } \mathbf{w}^T \mathbf{x} + b < 0 \end{cases}$$
+## 2. Regularização de Encolhimento (Shrinkage de Ledoit-Wolf)
+Em BCI, o número de ensaios de calibração $N$ é tipicamente da mesma ordem de grandeza da dimensionalidade $D$ ($N \approx D$ ou $N < D$). A estimativa empírica de covariância amostral $\Sigma$ torna-se mal-condicionada ou singular.
 
-### Regularização por Encolhimento (Shrinkage Regularization)
-Em calibrações de BCI com poucos ensaios ($N$ pequeno) e alta dimensionalidade $D$, a estimativa amostral empírica $\mathbf{S}_w$ é mal-condicionada ou singular ($|\mathbf{S}_w| \approx 0$). Inverter uma matriz quase singular amplifica drasticamente o ruído e gera pesos $\mathbf{w}$ com variância aberrante.
+A regularização de encolhimento substitui $\Sigma$ por uma combinação convexa com um alvo estruturado (matriz identidade escalada pelo traço):
+$$\Sigma_{\text{reg}} = (1 - \gamma) \Sigma + \gamma \cdot \frac{\text{tr}(\Sigma)}{D} \mathbf{I}$$
+Com $\gamma \in (0, 1]$. Isso condiciona a matriz, garante inversibilidade estrita e reduz dramaticamente a variância dos pesos estimados em amostras pequenas.
 
-Para estabilizar a inversão, aplicamos a regularização de Ledoit-Wolf / shrinkage:
-$$\boldsymbol{\Sigma}_{\text{reg}} = (1 - \gamma) \mathbf{S}_w + \gamma \left(\frac{\text{tr}(\mathbf{S}_w)}{D}\right) \mathbf{I}$$
-Onde $\gamma \in [0, 1]$ é o parâmetro de encolhimento. Ao adicionar uma fração da matriz identidade ponderada pelo traço médio, os autovalores de $\boldsymbol{\Sigma}_{\text{reg}}$ são afastados de zero, garantindo que a inversa $\boldsymbol{\Sigma}_{\text{reg}}^{-1}$ exista e seja numericamente estável.
+## 3. Métrica Cohen's Kappa ($\kappa$)
+A acurácia percentual simples é enganosa em classes desbalanceadas ou com poucos ensaios. O coeficiente Kappa de Cohen desconta a concordância esperada pelo acaso:
+$$\kappa = \frac{p_o - p_e}{1 - p_e}$$
+- $p_o$: Acurácia observada (proporção de acertos).
+- $p_e$: Concordância esperada ao acaso ($p_e = 0.5$ em problema binário perfeitamente balanceado).
+- $\kappa = 0$: Desempenho equivalente ao lançamento de uma moeda honesta.
+- $\kappa = 1$: Classificação perfeita.
 
-## 2. Modos de Falha Operacionais
-1. **Inversão de Covariância Singular sem Shrinkage**: Treinar um LDA em poucos ensaios sem regularização. Se dois canais apresentarem correlação espúria próxima de 1 ou se o número de ensaios for inferior ao número de variáveis ($N < D$), a matriz de covariância torna-se não-invertível, disparando erros de ponto flutuante `LinAlgError` ou produzindo predições degeneradas.
-2. **Ignorar o Desbalanceamento de Classes no Bias $b$**: Se a classe 0 tiver 80 ensaios e a classe 1 tiver apenas 20 ensaios, usar o bias puramente equidistante $b = -0.5 \mathbf{w}^T(\boldsymbol{\mu}_0 + \boldsymbol{\mu}_1)$ causa viés de predição sistemático. O bias bayesiano correto requer o termo de log-prior $\ln(N_1 / N_0)$.
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-riemann-primer`) estuda a geometria não-euclidiana de matrizes de covariância em variedades Riemannianas.
 
-## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-metrics-offline`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/16-nt-metrics-offline/room.yaml)) assume que você obteve um vetor de predições $\hat{y}$ do classificador LDA no conjunto de teste independente e necessita avaliar o desempenho real usando métricas que descontam o nível de acerto ao acaso (Cohen's Kappa $\kappa$) e calculam a taxa de transferência de informação (Wolpaw ITR).
+## 5. Ponto de Destrave do Lab
+Para o estudo clássico de regularização em BCI e Discriminante Linear com shrinkage, consulte [Blankertz et al. (NeuroImage 2011, The Berlin Brain-Computer Interface)](https://doi.org/10.1016/j.neuroimage.2011.01.057) e [Ledoit & Wolf (J Multivar Anal 2004)](https://doi.org/10.1016/S0047-259X(03)00096-4).

@@ -1,16 +1,13 @@
-# Lição — Artefatos no pipeline
+# Desafio — Detecção e Sinalização de Artefatos de Amplitude
 
-1. Nomeie fontes: EOG, EMG, movimento, linha 50/60 Hz.
-2. Separe *detecção/rejeição* de trial vs *robustez* do modelo.
-3. Micro-exemplo: `artifact_inject` com `kind=line` eleva potência ~60 Hz — compare com `detect_line_power`.
-4. Em MI, rejeitar trials com blink extremo é comum; fingir que não existem não é.
-5. Estuda → Sala: rode `mage emu artifact` antes de culpar o classificador.
+## 1. Objetivo do Desafio
+Implementar um algoritmo de triagem de artefatos por limiar de amplitude absoluta para identificar amostras contaminadas por piscadas de olhos (EOG), saturação de eletrodo ou picos de ruído de rede.
 
-Para destravar o lab, abra [Urigüen & Garcia-Zapirain — EEG artifact removal methods (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4462641/) e leia a taxonomia de remoção de artefato de Urigüen (EOG, EMG, linha) para decidir o limiar de flag_artifacts em vez de chamar o pico de ritmo.
+## 2. Especificação Técnica e Formulação
+Dado um array ou lista de amostras de sinal contínuo $S = [s_0, s_1, \dots, s_{N-1}]$ e um limiar escalar positivo `threshold` (em microvolts):
+- Implemente a função `flag_artifacts(samples, threshold)` que retorna uma lista booleana com o mesmo número de elementos, onde cada posição é `True` se $|s_i| > \text{threshold}$ e `False` caso contrário:
+  $$\text{flags}[i] = (|s_i| > \text{threshold})$$
 
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Utilize sempre o valor absoluto da amplitude $|s_i|$, pois artefatos de piscada e eletrodo solto produzem deflexões tanto positivas quanto negativas.
+- Lembre-se: em sinais biológicos de escalpo em repouso, amplitudes acima de $100\ \mu\text{V}$ são fortíssimas indicadoras de contaminação não-neural.

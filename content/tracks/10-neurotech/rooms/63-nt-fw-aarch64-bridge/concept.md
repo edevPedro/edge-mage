@@ -1,78 +1,26 @@
-# Conceito — Ponte AArch64 / Edge
-Por que firmware Edge importa para on-device; Neurotech offline não exige AArch64. Bridge = literacia, não bloqueio do decode MVP.
+# Conceito — Arquitetura AArch64, Instruções SIMD Neon e Stubs de Prototipagem
 
-## Por que está no caminho MSc-prep
-Este tópico (AArch64 bridge) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. O Papel dos Stubs Didáticos vs. Silício de Produção
+No desenvolvimento de produtos de neurotecnologia:
+- **Ambiente de Prototipagem (Host):** Linguagens de alto nível (Python, C++) executadas em computadores de desenvolvimento permitem rápida iteração algorítmica, verificação estatística e criação de harnesses de teste. O `cortex_m_stub` ou módulos de simulação didática deste curso servem para fixar o modelo mental de registradores e fluxo de dados sem a complexidade de compilação cruzada ou configuração de emuladores ciclo-acurados (como QEMU).
+- **Ambiente de Borda (Target Edge):** Microcontroladores ARM Cortex-M e microprocessadores ARM AArch64 (Cortex-A53, A72) exigem execução nativa de baixo nível para respeitar deadlines rigorosos de tempo real com eficiência energética milimétrica.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 2. Acelerando Álgebra Linear com SIMD Neon (AArch64)
+Em tarefas de decodificação neural (como projeção de Common Spatial Patterns ou filtros de média móvel espacial):
+- Em processamento escalar convencional (SISD):
+  $$y = \sum_{i=0}^{3} a_i \cdot b_i = a_0 b_0 + a_1 b_1 + a_2 b_2 + a_3 b_3$$
+  O processador executa quatro instruções de multiplicação e três instruções de soma sequencialmente.
+- Em arquitetura vetorial SIMD Neon (128 bits):
+  - Um registrador Neon de 128 bits armazena um vetor de quatro floats de 32 bits (`float32x4_t`).
+  - O hardware multiplica as 4 vias (*lanes*) em paralelo em um único ciclo de clock:
+    $$[a_0, a_1, a_2, a_3] \odot [b_0, b_1, b_2, b_3] = [a_0 b_0, a_1 b_1, a_2 b_2, a_3 b_3]$$
+  - Uma instrução de redução horizontal ou acumulação soma os quatro produtos, entregando o resultado final com aceleração de até $4\times$.
 
-## Exercícios mentais
-- Defina ponte Edge em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 3. A Checklist da Ponte Embedded
+Ao transitar um algoritmo validado em notebook para um dispositivo embarcado:
+1. Validar se os tipos de dados float32 não sofrem perda de precisão frente a float64.
+2. Garantir alinhamento de memória em múltiplos de 16 bytes (128 bits) para evitar falhas de barramento nas cargas vetoriais (`LDP`/`STP`).
+3. Declarar explicitamente as limitações do modelo de simulação do host antes da integração em bancada física.
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
-
-
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-fw-rt-constraints`) estabelece as restrições temporais de interrupções e margens de segurança para execução estável de firmwares de BCI.

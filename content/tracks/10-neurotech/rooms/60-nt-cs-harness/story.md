@@ -1,9 +1,17 @@
-# História — O buraco na sequência
+# História — A Fraude Involuntária dos 99%
 
-O harness não discute estilo: conta pacote perdido. `detect_drops(seqs, max_seq=256)` olha saltos. Lista `[0, 1, 2, 3]` não tem buraco: 0. Lista `[0, 2, 3]` saltou o 1: um drop.
+A sala de reuniões estava em euforia. Uma equipe recém-formada de ciência de dados apresentava os resultados de um modelo de aprendizado profundo aplicado a um conjunto de dados de eletroencefalografia motora:
 
-O caso que pega o novato é o wrap: `[255, 1]` com `max_seq = 256`. De 255 o próximo esperado é 0, depois 1. Chegar em 1 implica que 0 não apareceu: um drop, não “sequência válida porque 1 é pequeno”. Tratar como inteiros sem módulo conta `1 − 255` e inventa um buraco absurdo, ou conta zero e esconde a perda.
+— "Alcançamos 99,4% de acurácia na decodificação de intenção de movimento. Nosso modelo supera todos os trabalhos publicados na literatura internacional!"
 
-Zero drops no primeiro vetor é tão obrigatório quanto o um nos outros. Cada drop é amostra que o ring não vai reconstruir. Não é métrica de κ. Seed e assert continuam sendo o contrato: se o PR aumenta drop no synth, o teste quebra de propósito.
+O engenheiro de confiabilidade e QA (Quality Assurance) olhou para os gráficos com ceticismo profissional:
 
-Fase F5, nt-cs-harness: drops valem 0, 1 e 1 nos três ensaios, e o wrap 255→1 com max_seq 256 conta o 0 ausente. Assert que ignora módulo esconde perda de pacote.
+— "Com sinais de EEG de escalpo e relação sinal-ruído de $-10\text{ dB}$? Isso não é avanço científico; é vazamento de dados (*data leakage*) ou falha no harness de testes."
+
+Ele pediu para inspecionar o código de avaliação. Não demorou cinco minutos para encontrar os problemas:
+
+— "Vejam aqui: primeiro, vocês não fixaram a semente do gerador de números pseudoaleatórios (`seed`). Cada execução gerava um resultado estocástico diferente. Segundo, vocês normalizaram o dataset inteiro antes de fazer a divisão de treino e teste. Terceiro, o stream serial perdeu pacotes durante a aquisição, e em vez de detectar a descontinuidade temporal nos números de sequência, o código simplesmente concatenou os blocos como se o tempo fosse contínuo."
+
+O engenheiro abriu o terminal e iniciou a construção de um harness automatizado:
+
+— "Em engenharia séria, nós não confiamos em 'prints' no console ou demonstrações manuais. Nós construímos *test harnesses* determinísticos com sementes fixas, asserções matemáticas rigorosas e detectores automáticos de anomalias no fluxo de dados. Se um pacote serial com contador de sequência saltar de 5 para 8, seu pipeline precisa acusar imediatamente que 2 pacotes foram perdidos. Se um teste falhar após uma alteração no código, isso é uma regressão que impede o deploy. Sem um harness confiável, sua pesquisa é apenas ilusão estocástica."

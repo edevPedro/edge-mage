@@ -1,9 +1,19 @@
-# História — O jitter médio e o único miss
+# História — O Mistério dos Comandos Fantasmas
 
-Tempo real se testa com relógio, não com esperança. Carimbos `[0, 0,004, 0,008, 0,014]` segundos. Alvo `0,004 s`, miss se `|dt − alvo| > 0,001`.
+Em uma exibição pública de uma cadeira de rodas motorizada controlada por imagética motora em tempo real, a equipe de engenharia enfrentava uma situação desconcertante. Nos relatórios médios de telemetria, o pipeline parecia operar com folga: a taxa de amostragem era de 250 Hz (intervalo alvo de 4 milissegundos entre amostras) e o tempo médio de execução do classificador era de apenas 2,1 milissegundos.
 
-Intervalos: `0,004`, `0,004` e `0,006`. Desvios absolutos: `0`, `0` e `0,002`. A média é `(0 + 0 + 0,002) / 3 = 0,002/3`. Misses: só o terceiro passa de 1 ms, então `m = 1`. Contar os três intervalos como miss, ou dividir por quatro carimbos em vez de três deltas, quebra o assert.
+No entanto, o usuário da cadeira relatava uma sensação constante de travamento e perda de controle:
 
-`0,002/3` segundos é jitter médio, não latência de ponta a ponta. Deadline segue sendo o nome do orçamento sense→decide→act. Um miss neste harness é o teste útil de loop; não é evidência de que um device real segurou o prazo. Varoquaux, no resource, freia outro vazamento — o de validação — para você não “consertar” o jitter vazando o teste.
+— "De vez em quando, a cadeira não responde ao comando no momento certo, e um segundo depois ela dá dois solavancos seguidos."
 
-Fase F5, nt-cs-realtime-testing: um miss e jitter médio 0,002/3 s. O fill do orçamento chama-se deadline. Dividir pelos carimbos em vez dos intervalos dilui o erro e o teste deixa de pegar o atraso.
+O engenheiro de sistemas de tempo real conectou uma sonda de rastreamento de timestamps na saída da thread de inferência:
+
+— "Médias escondem os piores casos. Em sistemas de tempo real críticos, a métrica que importa não é o tempo médio, mas o pior caso de execução (*Worst-Case Execution Time* - WCET) e a dispersão temporal (*jitter*)."
+
+Ele colocou o histograma na tela:
+
+— "Vejam: 99% das amostras chegam com intervalos perfeitos de 4 milissegundos. Mas, exatamente a cada 100 amostras, a thread gráfica da interface do usuário trava o processador para redesenhar o espectrograma na tela. O intervalo entre duas amostras consecutivas salta subitamente para 14 milissegundos! Isso é um jitter absurdo de 10 milissegundos contra um alvo de 4."
+
+O engenheiro virou-se para a equipe:
+
+— "Enquanto a thread gráfica bloqueia a CPU, o buffer de entrada do ADC sofre quase um *underrun*, e quando o processador é liberado, duas inferências são processadas em rajada sem respeitar a dinâmica biológica do cérebro. Para certificar um sistema em tempo real, nós precisamos medir o jitter médio real de cada intervalo temporal e contar exatamente quantas vezes a tolerância máxima foi violada. Esse é o teste que separa um brinquedo acadêmico de um dispositivo real."

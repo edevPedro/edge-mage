@@ -1,9 +1,14 @@
-# História — O pico que escolhe a frequência
+# História — A Luz que Faz o Córtex Cantar
 
-Eletivo, não portão do Supremo. Três frequentes de estímulo, 10, 12 e 15 Hz, e um espectro de bancada com potências `[2,0, 18,5, 3,0]` nos mesmos bins. O guardião pede `ssvep_detect`: entre os alvos, a frequência cuja potência é máxima.
+Em uma sala escura de experimentação visual, um voluntário senta-se diante de uma tela onde quatro alvos piscam simultaneamente em frequências ópticas rigorosamente distintas: 10 Hz, 12 Hz, 13.5 Hz e 15 Hz. Sobre o couro cabeludo na região occipital ($Oz, O1, O2$), eletrodos de cloreto de prata capturam as oscilações cerebrais.
 
-18,5 é o maior dos três; o bin correspondente é 12 Hz. Devolver 18,5 é entregar potência, não frequência. Devolver 15 porque “é o maior Hz” ignora a potência. A resposta da Sala é `12.0`.
+O desenvolvedor júnior observa o espectro na tela enquanto o voluntário fixa o olhar no alvo de 12 Hz:
+— Olha o que está acontecendo em 12 Hz — diz o desenvolvedor. — Não há necessidade de o voluntário imaginar movimento algum ou aprender modulação cinestésica! Uma espícula espectral afiada e potente eleva-se exatamente em 12 Hz, acompanhada de um segundo harmônico perfeitamente visível em 24 Hz!
 
-SSVEP é resposta evocada em frequência de flicker, outro paradigma — não é ERD de imagética e não é leitura de intenção clínica. Se duas potências empatam, a função precisa de regra estável; aqui não há empate. O review de Zhu está no resource para a definição do paradigma, não para colar um ITR de paper neste vetor de três números.
+O engenheiro de visão computacional e biossinais do laboratório explica o fenômeno:
+— Este é o paradigma dos Potenciais Evocados Visuais de Estado Estável (SSVEP) — ensina o especialista. — Quando a retina recebe pulsos de luz em uma taxa repetitiva, as populações neuronais do córtex visual primário (área V1) são arrastadas pela estimulação e passam a disparar em fase, ressoando na mesma frequência do estímulo e em seus harmônicos inteiros.
 
-Eletivo nt-ssvep-elective: ssvep_detect devolve 12.0, a frequência, não 18.5. Potência máxima no alvo errado troca o comando do flicker; este vetor não é um ITR publicado.
+Ele detalha a arquitetura do detector:
+— Enquanto a imagética motora exige treinamento do voluntário para aprender a desincronizar ritmos, o SSVEP é um paradigma de alta taxa de transferência de informação (ITR) quase imediata. Para decodificar qual alvo o usuário está olhando, nós não precisamos de redes profundas: basta verificar se a densidade espectral no canal $Oz$ na frequência do estímulo ultrapassa um limiar estrito em relação à banda vizinha (`ssvep_detect`), ou aplicar Análise de Correlação Canônica (CCA).
+
+A equipe testa o detector: ao desviar o olhar para o alvo de 15 Hz, a espícula de 12 Hz apaga-se e o pico de 15 Hz ergue-se com precisão instantânea, ativando o comando na tela em menos de meio segundo.

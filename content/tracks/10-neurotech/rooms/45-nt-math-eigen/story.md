@@ -1,9 +1,16 @@
-# História — O Eixo Dominante do Córtex Motor
+# História — O Eixo da Maior Variância
 
-Na bancada de calibração de um receptor portátil de EEG, dois canais ($C3$ e $C4$) monitoram voluntários realizando tarefas de imagética motora. O algoritmo de redução de dimensionalidade precisa projetar os sinais em tempo real sobre o eixo de maior variância antes de alimentar a rede neural embarcada no microcontrolador.
+No laboratório de inteligência artificial biomédica, um pesquisador analisa a matriz de covariância espacial $2 \times 2$ gerada por dois eletrodos centrais adjacentes: $C3$ e $Cz$. Os dados covariam intensamente devido à condução de volume craniana: quando $C3$ sobe, $Cz$ também sobe, gerando uma nuvem elíptica inclinada no plano cartesiano.
 
-O microcontrolador Cortex-M não possui memória suficiente para linkar bibliotecas completas de álgebra linear numérica como LAPACK. O desenvolvedor decide implementar um algoritmo leve: o método das potências (power iteration). Ele precisa extrair o autovetor dominante de uma matriz de covariância $2 \times 2$ calculada a partir de uma janela de sincronização motora.
+O pesquisador quer encontrar a direção espacial na qual o sinal exibe a maior oscilação de potência, para posicionar um filtro espacial ideal sem testar ângulos manualmente.
 
-No primeiro teste com a matriz $\Sigma = \begin{bmatrix} 4.0 & 0.0 \\ 0.0 & 1.0 \end{bmatrix}$, o desenvolvedor itera sem normalizar o vetor a cada passo. Em poucas multiplicações, os números estouram a representação de ponto flutuante de precisão simples. O engenheiro de firmware intervém: a cada passo de multiplicação matriz-vetor, o resultado deve ser rigorosamente dividido por sua norma euclidiana $\|Av\|_2$.
+O professor de matemática aplicada abre o conceito de autovalores e autovetores:
+— A equação fundamental da mecânica e do processamento de sinais é $A v = \lambda v$ — ensina o professor. — Quando uma matriz de covariância opera sobre a maioria dos vetores, ela altera tanto o comprimento quanto a direção do vetor. Mas existem direções especiais no espaço vetorial — os autovetores $v$ — que, ao serem transformados pela matriz, sofrem apenas um escalonamento linear puro pelo fator escalar $\lambda$ (o autovalor), sem mudar de direção!
 
-Aplicando a normalização iterativa e o quociente de Rayleigh $\lambda = v^T \Sigma v$, a rotina isola instantaneamente o autovalor dominante de $4.0\ \mu\text{V}^2$ no canal $C3$, fornecendo ao classificador o filtro espacial ótimo sem sobrecarregar a CPU embarcada.
+Ele demonstra o clássico método computacional da Iteração de Potência (Power Iteration):
+1. Iniciar com um vetor aleatório $b_0$.
+2. Multiplicar repetidamente pela matriz de covariância: $b_{k+1} = A b_k / \|A b_k\|_2$.
+3. A cada iteração, as componentes ortogonais decaem proporcionalmente à razão de autovalores $(\lambda_2 / \lambda_1)^k$, e o vetor colapsa de forma matematicamente inevitável sobre o autovetor dominante associado ao maior autovalor $\lambda_1$.
+4. O autovalor correspondente é extraído pelo quociente de Rayleigh: $\lambda = v^T A v$.
+
+O pesquisador implementa a iteração de potência (`power_iteration`). Em menos de dez multiplicações matriciais, o vetor converge para o eixo maior da elipse de covariância. Essa direção revela o autovetor principal que fundamenta a Análise de Componentes Principais (PCA) e a decomposição espacial de CSP.

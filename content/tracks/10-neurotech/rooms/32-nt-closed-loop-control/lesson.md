@@ -1,16 +1,14 @@
-# Lição — Closed-loop control lite
+# Desafio — Suavização Exponencial de Comandos de Controle (EMA)
 
-## Cadeia
+## 1. Objetivo do Desafio
+Implementar a rotina de suavização exponencial adaptativa (Exponential Moving Average) para amortecer flutuações estocásticas de decodificadores neurais em malha fechada.
 
-sense (window) → decide (feature+clf) → act (feedback) → usuário adapta
+## 2. Especificação Técnica e Formulação
+Dado o estado atual suavizado `current` ($y[t-1]$), a nova predição bruta emitida pelo decodificador `target` ($x[t]$), e o fator de suavização $\alpha \in (0, 1]$:
+- Implemente a função `ema_update(current, target, alpha)`:
+  $$y[t] = \alpha \times \text{target} + (1.0 - \alpha) \times \text{current}$$
+- A função deve retornar o novo valor flutuante suavizado $y[t]$.
 
-Meça latência end-to-end; declare no artefato.
-
-Para destravar o lab, abra [Wolpaw & Wolpaw BCI principles (Clin Neurophysiol lineage)](https://doi.org/10.1016/j.clinph.2012.01.010) e leia o ciclo sense–decide–act nos princípios de Wolpaw, para a EMA com alfa 0,2 amortecer o comando em vez de copiar o label cru.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que se $\alpha = 1.0$, o retorno seja estritamente igual a `target`.
+- Se $\alpha = 0.0$, o retorno deve ser estritamente igual a `current`.

@@ -1,51 +1,30 @@
-# Conceito — Numerics para pipelines BCI
-## Problemas clássicos
-- **log(0)** / log(bandpower≈0) → -inf → NaN a jusante
-- float32 vs float64: acumular cov 64×64 em float32 pode degradar
-- divisão por norma ~0 em whitening
-- RNG seeds não fixos → “não reproduz”
-## Defesas
-eps em log(var+eps); checar isfinite; testes golden; documentar dtype.
-## Ligação
-harness + decode MVP + MCU Q15 (outra sala).
+# Conceito — Estabilidade Numérica, Aritmética de Ponto Flutuante e Regularização
 
-## Por que está no caminho MSc-prep
-Este tópico (Numerics) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. Aritmética de Ponto Flutuante e Cancelamento Catastrófico
+Em processadores digitais de sinais e computadores padrão (IEEE 754):
+- Números em `float32` possuem apenas 24 bits de mantissa (aproximadamente 7 dígitos decimais de precisão).
+- **Cancelamento Catastrófico:** Quando dois números muito próximos são subtraídos, os dígitos mais significativos se cancelam, expondo o ruído de arredondamento nos bits menos significativos:
+  $$x = 1.0000001, \quad y = 1.0000000 \implies x - y = 0.0000001$$
+  Se esse valor for posteriormente usado como divisor em um filtro IIR ou inversão matricial, os erros propagam-se exponencialmente.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 2. O Problema da Amostragem Pequena ($N \ll C$) em Covariância
+Ao estimar a matriz de covariância espacial $\Sigma \in \mathbb{R}^{C \times C}$ a partir de $N$ amostras:
+- Se $N < C$, o posto da matriz $\text{rank}(\Sigma) \le N < C$. A matriz é estritamente singular e não invertível.
+- Mesmo quando $N > C$, se $N$ não for pelo menos uma ordem de magnitude maior que $C$, os autovalores menores são sistematicamente subestimados e os maiores superestimados (fenômeno de Marchenko-Pastur).
+- O número de condição $\kappa(\Sigma) = \frac{\sigma_{max}}{\sigma_{min}}$ atinge valores astronômicos ($> 10^8$), tornando a solução do sistema linear $w = \Sigma^{-1} (\mu_1 - \mu_2)$ extremamente sensível a flutuações infinitesimais de ruído.
 
-## Exercícios mentais
-- Defina float32/64, log(0), NaN em bandpower em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 3. Regularização de Tikhonov / Diagonal Loading
+A estratégia canônica de estabilização numérica consiste em adicionar uma identidade escalonada à matriz de covariância:
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+$$\Sigma_{reg} = \Sigma + \lambda \cdot I_C$$
 
+Onde:
+- $\lambda > 0$ é o parâmetro de regularização (*shrinkage* / carga diagonal).
+- $I_C$ é a matriz identidade $C \times C$.
 
-## Extensão MSc-prep (foundation → advanced)
+Efeito espectral: se $\Sigma = V \Lambda V^T$ com autovalores $\sigma_i$, então:
+$$\Sigma_{reg} = V (\Lambda + \lambda I) V^T$$
+Todos os autovalores são deslocados por $+\lambda$. Logo, $\sigma_{min}(\Sigma_{reg}) \ge \lambda > 0$, garantindo que a matriz seja estritamente positiva definida e perfeitamente condicionada para inversão.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-harness`) integra esses cuidados matemáticos em baterias automatizadas de testes e detecção de regressão em pipelines neurais.

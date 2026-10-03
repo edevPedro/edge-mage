@@ -1,18 +1,16 @@
-# Lição — CV Aninhado, Vazamento de Dados e Splits em Blocos
+# Desafio — Particionamento em Blocos e Auditoria de Vazamento de Folds
 
-## 1. A Anatomia do Vazamento de Dados (Data Leakage)
-1. **Seleção Circular de Features (Double Dipping)**:
-   A seleção de variáveis ou normalização (z-score, min-max) deve ocorrer **estritamente dentro do conjunto de treino**. Se o teste entrar no cômputo da média ou correlação, as métricas tornam-se epistemicamente inválidas.
+## 1. Objetivo do Desafio
+Implementar a rotina de particionamento de validação cruzada em blocos contíguos de ensaios e construir um auditor automático de vazamento de índices entre conjuntos de treino e teste.
 
-2. **Autocorrelação Temporal e Split em Blocos**:
-   Dividir amostras aleatoriamente (Shuffle K-Fold) em dados contínuos de séries temporais vaza dependência temporal entre janelas consecutivas. A divisão deve ser realizada em blocos contíguos de ensaios completos (`split_blocked`).
+## 2. Especificação Técnica e Formulação
+1. **Split em Blocos:** Implemente `split_blocked_cv(n_trials, n_blocks)`:
+   - Divide $N$ ensaios em $K$ blocos temporais contíguos disjuntos.
+   - Retorna uma lista de $K$ tuplas `(train_indices, test_indices)`, onde no $k$-ésimo fold, o $k$-ésimo bloco é o teste e os demais formam o treino.
+2. **Auditoria de Vazamento:** Implemente `audit_leakage(train_idx, test_idx)`:
+   - Verifica se a interseção de índices entre treino e teste é vazia: $\text{set}(\text{train}) \cap \text{set}(\text{test}) = \emptyset$.
+   - Retorna uma tupla `(True, "Split limpo sem vazamento")` se não houver sobreposição, ou `(False, "Vazamento detectado: índices compartilhados")` caso contrário.
 
-3. **Validação Cruzada Aninhada (Nested Cross-Validation)**:
-   - Outer Loop: Mede o desempenho de generalização do sistema.
-   - Inner Loop: Realiza a escolha e ajuste de hiperparâmetros (como coeficientes de regularização $\gamma$).
-
-## 2. As Funções de Laboratório Desta Sala
-- `split_blocked(n_trials, n_folds)`: Realiza a partição determinística de ensaios em blocos contíguos disjuntos, garantindo que nenhum índice de treino sobreponha o teste.
-- `audit_leakage_effect(X, y, train_idx, test_idx)`: Demonstra numericamente o colapso epistemológico gerado pelo vazamento em dados de ruído branco puro contra uma pipeline metodologicamente blindada.
-
-Para destravar o lab, abra [Varoquaux et al. 2017 — assessing prediction](https://doi.org/10.1016/j.neuroimage.2016.10.038) e leia as pegadinhas de cross-validation de Varoquaux (split por trial, não por janela correlacionada) para o lab de vazamento.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que a união de todos os conjuntos de teste cubra exatamente todos os ensaios originais de $0$ a $N-1$ sem repetições.
+- Lembre-se: em ciência de dados biomédicos, o particionamento deve sempre respeitar a integridade de blocos temporais.

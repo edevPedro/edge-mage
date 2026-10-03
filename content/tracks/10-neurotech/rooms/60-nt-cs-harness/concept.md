@@ -1,80 +1,29 @@
-# Conceito — Harness de testes
-Unit: bandpower, κ, LDA score. Golden files: vetor de features conhecido. Integration: synth → features → label.
-## Anti-padrões
-testar só accuracy sem chance level; seeds soltos; treinar no teste dentro do “teste”.
+# Conceito — Harness de Testes, Reprodutibilidade e Integridade de Transporte
 
-## Por que está no caminho MSc-prep
-Este tópico (Harness) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. O Papel do Test Harness em Sistemas Neurais
+Um *test harness* é um ambiente de execução controlado que submete pipelines de processamento a dados sintéticos conhecidos ou gravações canônicas com respostas de referência (*ground truth*) pré-estabelecidas.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+Pilares de confiabilidade em software de neuroengenharia:
+1. **Controle Estrito de Sementes (`seed`):** Todos os processos estocásticos (geração de ruído, inicialização de pesos, divisão de folds de validação cruzada) devem utilizar geradores pseudoaleatórios com sementes fixadas para permitir reprodução determinística bit-a-bit.
+2. **Asserções Automatizadas (`assert`):** Verificações lógicas contínuas sobre invariantes de domínio (ex: amplitudes de EEG dentro de $\pm 500\ \mu\text{V}$, matrizes estritamente positivas definidas, latência de inferência abaixo do deadline).
+3. **Detecção Imediata de Regressão:** Qualquer alteração no código que reduza a acurácia de referência ou estoure limites temporais deve falhar a suíte de testes de integração contínua (CI).
 
-## Exercícios mentais
-- Defina testes do decode pipeline em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 2. Integridade de Transporte e Numeração de Sequência
+Em dispositivos físicos de aquisição eletrofisiológica (como OpenBCI, placas ADS1299 ou encoders BLE):
+- Cada pacote de dados transmitido por UART, SPI ou Bluetooth contém um cabeçalho com um número de sequência inteiro de tamanho fixo (frequentemente 8 bits: $0\text{ a }255$).
+- O contador é incrementado monotonicamente a cada amostra e reinicia em zero após atingir o valor máximo ($255 \to 0$).
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+## 3. Algoritmo de Detecção de Pacotes Perdidos (*Drop Detector*)
+Dada uma sequência de contadores $[s_0, s_1, s_2, \dots, s_{k-1}]$ com módulo $M = max\_seq$:
+Para cada par consecutivo $(s_i, s_{i+1})$, a diferença modular de passos decorridos é:
 
+$$\Delta = (s_{i+1} - s_i) \pmod M$$
 
-## Extensão MSc-prep (foundation → advanced)
+- Se $\Delta == 1$: Nenhum pacote foi perdido; a transmissão foi perfeita.
+- Se $\Delta > 1$: Ocorreu a perda de $(\Delta - 1)$ pacotes.
+- Se $\Delta == 0$: Pacote duplicado.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+O total de pacotes perdidos em uma transmissão é o somatório de $(\Delta - 1)$ para todas as transições com $\Delta > 1$.
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-cs-realtime-testing`) estende a validação automatizada para a medição empírica de jitter e prazos rígidos de streaming.

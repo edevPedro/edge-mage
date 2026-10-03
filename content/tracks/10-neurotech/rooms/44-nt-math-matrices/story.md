@@ -1,9 +1,12 @@
-# História — O Offset que Cegou a Covariância
+# História — A Geometria das Conexões Corticais
 
-Em um protótipo experimental de decodificação motora de dois canais ($C3$ e $C4$), um engenheiro de software precisa gerar matrizes de covariância para classificar epochs de repouso contra epochs de movimento imaginado. O algoritmo deve estimar a matriz $\Sigma$ para cada janela de 1 segundo adquirida a 250 Hz.
+No centro de processamento de dados cerebrais, um pesquisador analisa uma matriz contendo 8 canais de biopotenciais gravados ao longo de 1000 amostras temporais ($X \in \mathbb{R}^{8 \times 1000}$). Para verificar a sincronização de fase e a integridade da gravação, ele precisa calcular a matriz de covariância espacial amostral $\Sigma = \frac{1}{T - 1} X X^T$.
 
-O desenvolvedor escreve uma rotina direta que multiplica o buffer bruto por sua transposta, dividindo por $T-1$. Quando o gráfico da matriz de covariância é renderizado no dashboard de telemetria, todos os valores aparecem na casa dos milhares de microvolts ao quadrado, e as diagonais são praticamente idênticas em repouso e durante a tarefa motora.
+O pesquisador executa um loop em Python aninhado de três níveis para calcular os produtos: o script demora vários segundos por época e consome ciclos excessivos de memória.
 
-O líder de instrumentação eletrofisiológica inspeciona o sinal e detecta um potencial de offset contínuo de eletrodo de $+45\ \mu\text{V}$ em $C3$ e $-30\ \mu\text{V}$ em $C4$, causado pela interface química gel-pele. Sem a subtração da média temporal antes da multiplicação matricial, o produto não calculava a covariância do sinal cerebral, mas sim o quadrado estático da tensão de polarização galvânica dos eletrodos.
+O arquiteto de algoritmos numéricos senta-se ao terminal e abre a formulação matricial:
+— Em computação neural, matrizes não são meras listas de listas; são operadores de transformação linear espacial — ensina o arquiteto. — A multiplicação de matriz por vetor $y = A x$ mapeia uma configuração instantânea de potenciais de eletrodos em um novo espaço de sensores virtuais. A multiplicação de matrizes $X X^T$ integra instantaneamente a correlação cruzada de todos os pares de canais ao longo do tempo.
 
-O desenvolvedor precisa implementar uma rotina robusta: calcular a média temporal de cada canal, centrar os dados no zero e, somente então, computar a matriz de dispersão $\frac{1}{T-1}\tilde{X}\tilde{X}^T$, revelando a verdadeira dinâmica espectral do córtex motor.
+Ele demonstra a equivalência matricial: a diagonal principal da matriz de covariância contém a variância (energia) individual de cada eletrodo, enquanto os elementos fora da diagonal contêm a covariância mútua gerada pela condução de volume e pelo acoplamento neural.
+
+O pesquisador implementa a rotina vetorizada de multiplicação matriz-vetor (`matvec`) e a estimativa de covariância amostral sem viés (`sample_covariance`). A matriz resultante é estritamente simétrica e positiva semi-definida, pavimentando o caminho para os algoritmos de autovalores de CSP e filtragem espacial ótima.

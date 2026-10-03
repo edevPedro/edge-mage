@@ -1,78 +1,24 @@
-# Conceito — Neurofeedback
-Feedback de banda/ritmo ao usuário. Não afirmar terapia clínica neste círculo; discutir placebo/controle e ética.
+# Conceito — Paradigma de Neurofeedback em Malha Fechada e Recompensa Retificada
 
-## Por que está no caminho MSc-prep
-Este tópico (Neurofeedback) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. O Laço de Neurofeedback (Closed-Loop BCI)
+O neurofeedback consiste em um circuito cibernético de retroalimentação operante contínua:
+1. **Aquisição:** O sinal de EEG é captado em tempo real sobre áreas corticais específicas (ex: $O1/O2$ para ritmo alfa occipital, ou $C3/C4$ para ritmo sensoriomotor).
+2. **Extração de Característica:** A potência espectral da banda alvo ($P_{atual}$) é estimada em janelas deslizantes contínuas.
+3. **Mapeamento de Feedback:** O desvio da potência em relação a uma linha de base calibrada ($P_{base}$) é convertido em reforço sensorial (tamanho de um círculo na tela, volume de uma música suave, pontuação de um jogo).
+4. **Modulação Cognitiva:** O usuário utiliza estratégias mentais (relaxamento atencional, foco visual) para manter a potência acima do patamar alvo.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 2. A Literatura Crítica de John Gruzelier
+Conforme documentado nas revisões de Gruzelier (2014):
+- O neurofeedback exige controles metodológicos estritos: grupos controle com feedback falso (*sham feedback*), protocolos duplo-cegos e validação estatística de transferência comportamental.
+- Prescrever terapias clínicas sem respaldo médico homologado viola as diretrizes de ética biomédica. O escopo da engenharia é fornecer instrumentação e algoritmos de alta fidelidade e latência determinística.
 
-## Exercícios mentais
-- Defina literacia em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 3. Função de Recompensa Linear Retificada
+Para treinar a autorregulação sem gerar confusão cognitiva, a função de recompensa deve ser monotônica crescente para valores acima da baseline e nula para valores inferiores (retificação de meia-onda):
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+$$\text{recompensa} = \max\left(0.0, (P_{atual} - P_{base}) \times \text{escala}\right)$$
 
+- Se $P_{atual} > P_{base}$: O usuário recebe uma recompensa proporcional ao ganho acima da referência.
+- Se $P_{atual} \le P_{base}$: O feedback é fixado em zero, evitando penalizações com valores negativos que violariam a dinâmica de condicionamento operante.
 
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-app-hybrid-p300`) analisa o paradigma do P300 Speller e potenciais evocados relacionados a eventos.

@@ -1,78 +1,26 @@
-# Conceito — BCI assistivo
-Comunicação/controle publicados (Wolpaw etc.). Honesty: MVP synth ≠ dispositivo clínico. Ética e overclaim.
+# Conceito — BCI Assistivo, Métricas de Usabilidade e Acumuladores de Decisão
 
-## Por que está no caminho MSc-prep
-Este tópico (Assistive BCI) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+## 1. Princípios de Wolpaw para BCI Assistivo
+Interfaces cérebro-computador assistivas têm como objetivo restaurar comunicação e controle para indivíduos com deficiências motoras severas (ex: ELA, lesões medulares completas, síndrome do encarceramento):
+- O sistema não lê "pensamentos íntimos"; ele detecta intenções motoras ou atencionais voluntárias previamente acordadas.
+- **Métricas Chave de Desempenho:**
+  - **Taxa de Transferência de Informação (ITR):** Medida em bits/minuto ou caracteres/minuto, combinando acurácia, número de classes e tempo de seleção.
+  - **Latência de Decisão:** O tempo necessário para acumular evidência neural suficiente para confirmar um comando.
+  - **Fadiga e Carga Cognitiva:** Protocolos que exigem esforço atencional extenuante tornam-se inutilizáveis após poucos minutos de uso contínuo.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 2. Limites Éticos e Proibição de Alegações Médicas
+Projetos experimentais, protótipos acadêmicos e códigos deste curso são estritamente ferramentas educacionais e de pesquisa:
+- **Proibição de Claims Clínicos:** Não é permitido rotular algoritmos ou hardwares prototipais como "dispositivos médicos certificados" sem os devidos ensaios clínicos aprovados por Comitês de Ética em Pesquisa (IRB/CEP) e homologação formal de agências sanitárias.
+- O consentimento livre e esclarecido e a transparência metodológica são mandatórios em qualquer protocolo com participantes humanos.
 
-## Exercícios mentais
-- Defina literacia de aplicação em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 3. O Acumulador de Evidência Temporal (Dwell Accumulator)
+Para prevenir falsos disparos provocados por contrações musculares (EMG) ou ruído estocástico, utiliza-se a integração probabilística temporal:
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+$$S_t = \sum_{i=0}^t P_i$$
 
+- A cada passo temporal $i$, o classificador fornece a probabilidade $P_i$ de que o usuário deseja confirmar o comando.
+- O sistema acumula as probabilidades sequencialmente até que $S_t \ge \theta$ (*threshold*).
+- O número de passos $t+1$ necessários para atingir o limiar define o tempo de permanência (*dwell time*). Se o sinal for ruído passageiro, o acumulador não atinge o limiar.
 
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-app-neurofeedback`) explora como fechar o laço de retroalimentação em tempo real através do neurofeedback.

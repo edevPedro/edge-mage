@@ -1,30 +1,15 @@
-# Lição — FBCSP bakeoff
+# Desafio — Extração de Características Multibanda (FBCSP Features)
 
-## Objetivos
-Dominar comparar métodos o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a rotina de extração de características multibanda do algoritmo FBCSP, projetando sinais filtrados em múltiplas bandas de frequência através de pesos espaciais dedicados.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica e Formulação
+Dada uma lista de matrizes de epochs `band_epochs` (onde cada elemento $X_b$ tem dimensões $C \times T$ correspondentes a uma sub-banda) e uma lista de matrizes de filtros espaciais `spatial_weights` (onde cada elemento $W_b$ tem dimensões $K \times C$ com os vetores de filtro nas linhas):
+- Implemente a função `fbcsp_features(band_epochs, spatial_weights)`:
+  - Para cada sub-banda $b$, projete o sinal: $S_b = W_b X_b$.
+  - Calcule a variância de cada linha filtrada e aplique $\log_{10}(\text{Var} + 10^{-10})$.
+  - Concatene todas as características das sub-bandas em uma lista unidimensional de floats.
 
-## Lab
-Explique em 6–10 linhas como comparar métodos aparece num pipeline MI offline ou online.
-
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [Ang et al. FBCSP](https://doi.org/10.1109/IJCNN.2008.4634130) e leia a feature log das sub-bandas no FBCSP de Ang, para fbcsp_features aplicar ln(p + 1e-6) em cada banco antes de comparar métodos.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que o número total de características retornadas seja exatamente $\text{número de bandas} \times K$.
+- Lembre-se: esta sala é uma matéria eletiva e não bloqueia a progressão obrigatória para o Mago Supremo.

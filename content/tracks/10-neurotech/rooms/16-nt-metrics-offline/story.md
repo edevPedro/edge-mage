@@ -1,17 +1,24 @@
-# História — O Campeão das Classes Desiguais
+# História — A Autópsia do Vazamento de Dados
 
-Em uma competição interna de modelos de processamento de sinais neurais, um time de aprendizado supervisionado comemorava o primeiro lugar no ranking de liderança. O modelo de floresta aleatória que haviam submetido alcançara oitenta e cinco por cento de acurácia global na predição de eventos de intenção motora versus estado de repouso.
+Em uma conferência internacional de engenharia biomédica, um artigo submetido por uma equipe acadêmica causou alvoroço ao relatar 96% de acurácia em um decodificador de quatro classes motoras usando um dataset público complexo do PhysioNet. No entanto, quando outros pesquisadores tentaram reproduzir o pipeline com os scripts disponibilizados no GitHub, a acurácia despencou para 26% — praticamente o nível de acaso puro ($1/4 = 25\%$).
 
-"Bateram o classificador linear com facilidade," elogiava o gerente do laboratório, observando a pontuação na tela. "Oitenta e cinco por cento é o maior valor que já vimos nesse conjunto de dados."
+O comitê de reprodutibilidade convocou os autores para uma revisão do código-fonte.
 
-O auditor de métodos sentou-se ao computador e abriu o script de avaliação e o arquivo com a contagem de amostras da base. Ele notou imediatamente que, dos cem ensaios gravados durante a sessão experimental, oitenta e cinco correspondiam a intervalos de repouso passivo e apenas quinze correspondiam a ensaios de imagética motora ativa.
+O auditor técnico abriu o notebook de pré-processamento e localizou duas linhas fatais:
+```python
+# Normalização Z-score aplicada antes do split de validação cruzada
+X_normalized = (X - X.mean(axis=0)) / X.std(axis=0)
+X_train, X_test, y_train, y_test = train_test_split(X_normalized, y, shuffle=True)
+```
 
-O auditor olhou para as predições geradas pelo modelo campeão: para todos os cem ensaios da base de teste, o modelo previa rigorosamente a classe zero — o repouso.
+— Observem o que aconteceu aqui — explicou o auditor. — Em primeiro lugar, ao calcular a média e o desvio-padrão de todo o dataset antes da divisão entre treino e teste, a distribuição do conjunto de teste vazou para dentro do conjunto de treino (data leakage). Em segundo lugar, e ainda mais grave: ao utilizar `shuffle=True` sobre amostras de janelas deslizantes sobrepostas de 2 segundos com deslocamento de 100 milissegundos, janelas adjacentes com 95% de sobreposição temporal foram sorteadas simultaneamente no treino e no teste.
 
-"O seu classificador não encontrou um único padrão de dessincronização neuronal," explicou o auditor com serenidade. "Ele simplesmente percebeu que chutar sempre repouso garantia oitenta e cinco por cento de acerto pela mera distribuição estatística do protocolo."
+Ele desenhou no quadro o mecanismo da ilusão:
+— O modelo de vocês não aprendeu a decodificar intenções motoras; ele aprendeu a memorizar fatias quase idênticas do mesmo epoch temporal que estavam presentes nos dois conjuntos. Quando testado em um ensaio verdadeiramente independente de uma sessão futura, o classificador falhou por completo.
 
-Ele pegou uma folha e calculou o Kappa de Cohen: a acurácia observada era de zero vírgula oitenta e cinco, e o acerto esperado pelo acaso marginal era exatamente de zero vírgula oitenta e cinco.
+O auditor destacou que em BCI de avaliação offline:
+1. A validação cruzada deve ser estritamente aninhada e agrupada por blocos de ensaios completos (`GroupKFold` ou split por runs).
+2. Qualquer normalização ou seleção de canais deve ser ajustada *exclusivamente* com os dados do fold de treino.
+3. A métrica de avaliação não pode ser apenas a acurácia ingênua, mas o coeficiente Kappa de Cohen ($\kappa$) descontando o acaso, acompanhado da Taxa de Transferência de Informação de Wolpaw (ITR em bits por minuto).
 
-"O Kappa de Cohen deste modelo é exatamente zero," declarou ele no quadro. "Em um BCI honesto, uma acurácia de oitenta e cinco por cento com Kappa zero significa que o dispositivo é um tijolo inútil que nunca responderá ao comando voluntário do usuário."
-
-O time refez a métrica e substituiu a acurácia bruta pelo Kappa e pela taxa de transferência de informação em bits por minuto de Wolpaw. Só então o ranking passou a refletir engenharia real, e não manipulação de desbalanceamento.
+Os autores recolheram o manuscrito para correção. A métrica autêntica do pipeline revelou-se $\kappa = 0.58$ com ITR de $14.2\text{ bits/min}$ — um resultado modesto, porém cientificamente real e reproduzível.

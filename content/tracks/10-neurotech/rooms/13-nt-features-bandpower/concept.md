@@ -1,30 +1,29 @@
-# Conceito — Potência de Banda (Bandpower) e Distribuição Logarítmica de Features
+# Conceito — Potência de Banda (Bandpower) e Espaço de Características
 
-## 1. Fundamento Matemático: Da Oscilação à Energia de Banda
-Após a filtragem passa-banda causal realizada pelo estágio biquad, a extração de características em interfaces cérebro-computador baseadas em Imagética Motora (MI-BCI) baseia-se na quantificação da energia espectral instantânea nos canais do córtex sensório-motor primário (eletrodos C3 e C4 do sistema 10-20).
+Em sinais eletrofisiológicos oscilatórios, a amplitude temporal instantânea possui média próxima de zero e fase instável. A potência média de banda (Bandpower) é a representação canônica que quantifica a energia rítmica para decodificação.
 
-### A Potência Média no Tempo
-Para uma janela de tempo de $N$ amostras discretas $x[n]$ filtradas na banda de interesse (ex: ritmo $\mu$ de $8\text{--}12\text{ Hz}$):
+## 1. Formulação Matemática da Potência de Banda
+Após o sinal ter sido processado por um filtro passa-faixa centrado na banda de interesse (por exemplo, ritmo $\mu$ de $8\text{--}12\text{ Hz}$), a potência média em uma janela de $N$ amostras é a variância do sinal com média zero:
 $$P = \frac{1}{N} \sum_{n=0}^{N-1} x[n]^2$$
 
-Como a energia de um sinal oscilatório é quadrática, a potência $P$ é estritamente não-negativa ($P \ge 0$).
+### A Transformação Logarítmica $\log(P)$
+A distribuição das potências estimadas no tempo tende a ser assimétrica e de cauda longa (distribuição qui-quadrado). A aplicação do logaritmo:
+$$f = \log_{10}(P) \quad \text{ou} \quad f = \ln(P)$$
+produz duas vantagens matemáticas cruciais:
+1. **Gaussianização dos Dados:** Aproxima a distribuição das características de uma normal multivariada, satisfazendo a premissa fundamental do Discriminante Linear de Fisher (LDA).
+2. **Homogeneização de Variâncias:** Estabiliza a dispersão entre sujeitos com amplitudes basais muito diferentes.
 
-### A Necessidade da Transformação Logarítmica
-Na eletrofisiologia cerebral, as amplitudes espectrais do EEG seguem uma distribuição assimétrica fortemente inclinada à direita (distribuição log-normal ou $\chi^2$ com poucos graus de liberdade). Classificadores lineares como o Discriminante Linear de Fisher (LDA) assumem que as características de cada classe são distribuídas normalmente (gaussianas multivariadas) com matrizes de dispersão compartilhadas.
+## 2. Unidades e Ordens de Grandeza
+- **Sinal de entrada ($x$):** Microvolts ($\mu\text{V}$).
+- **Potência de banda ($P$):** Microvolts ao quadrado ($\mu\text{V}^2$).
+- **Característica logarítmica ($f$):** Adimensional (escala logarítmica / decibéis relativos).
 
-Para estabilizar a variância e simetrizar a distribuição, aplicamos a transformação logarítmica:
-$$f = \log_{10}(P)$$
+## 3. Modos de Falha na Prática de Engenharia
+1. **Janela Temporal Curta Demais:** Calcular bandpower em janelas menores que 250 ms (para um ritmo de 10 Hz, isso representa menos de 2.5 ciclos), resultando em estimativas de variância instáveis e ruidosas.
+2. **Logaritmo de Zero:** Se um canal saturar em zero constante, $\log(0) = -\infty$, quebrando a rotina de classificação numérica. Deve-se garantir um piso de estabilidade $\log(P + \epsilon)$ com $\epsilon = 10^{-10}$.
 
-Para um ensaio (*trial*) multicanal com os eletrodos contralaterais C3 (representação do membro superior direito) e C4 (representação do membro superior esquerdo), o vetor de características bidimensional é:
-$$\mathbf{x} = \begin{bmatrix} \log_{10}(P_{C3}) \\ \log_{10}(P_{C4}) \end{bmatrix}$$
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-decode-mvp`) conecta os vetores de potência de banda a um classificador linear LDA para calcular o hiperplano de separação e a métrica Cohen's Kappa.
 
-Durante a imagética motora da mão direita, ocorre dessincronização relacionada a evento (ERD - Event-Related Desynchronization) no córtex motor esquerdo (C3), reduzindo a potência mu em C3 em relação a C4 ($P_{C3} < P_{C4} \implies \log_{10}(P_{C3}) < \log_{10}(P_{C4})$). Na imagética da mão esquerda, o inverso ocorre no hemisfério direito (C4).
-
-Essa formulação canônica foi revisada por [Padfield et al. (PMC6471241)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) e [Lotte et al. (DOI 10.1088/1741-2560/4/2/R01)](https://doi.org/10.1088/1741-2560/4/2/R01).
-
-## 2. Modos de Falha Operacionais
-1. **Entrada de Potência Nula ou Negativa no Logaritmo**: Se um canal estiver desconectado, contiver zeros contínuos ou ocorrer um artefato de saturação matemática onde $P \le 0$, a função $\log_{10}(P)$ colapsa para $-\infty$ ou gera erro de domínio `ValueError`. Em pipelines robustos de produção, deve-se validar $P > 0$ ou utilizar um piso de estabilização $\epsilon$ ($P + \epsilon$).
-2. **Normalização Prévia com Vazamento de Dados (Leakage)**: Calcular média e desvio padrão globais sobre todo o banco de ensaios (treino e teste combinados) para normalizar os vetores de features antes de entregá-los ao classificador. Essa prática viola a causalidade estatística e infla artificialmente os resultados de acurácia.
-
-## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-cv-leakage`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/29-nt-cv-leakage/room.yaml)) assume que você dispõe de vetores de features de potência logarítmica $\mathbf{x} \in \mathbb{R}^2$ para cada ensaio rotulado, e estuda como realizar a partição em blocos temporais independentes (Blocked Cross-Validation) para impedir vazamento de correlação entre janelas vizinhas.
+## 5. Ponto de Destrave do Lab
+Para fundamentar o uso de bandpower e log-variância em BCI, consulte o trabalho de [Müller-Gerking et al. (Electroencephalogr Clin Neurophysiol 1999)](https://doi.org/10.1016/S0013-4694(98)00115-9).

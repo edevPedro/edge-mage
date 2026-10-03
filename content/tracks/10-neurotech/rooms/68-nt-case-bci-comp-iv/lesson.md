@@ -1,28 +1,31 @@
-# Lição — BCI Competition IV case
+# Desafio — Cálculo da Matriz de Confusão Binária
 
-## Objetivo
+## 1. Objetivo do Desafio
+Implementar a rotina de avaliação de desempenho de classificadores binários através da contagem determinística dos elementos da matriz de confusão: Verdadeiros Positivos (TP), Falsos Positivos (FP), Verdadeiros Negativos (TN) e Falsos Negativos (FN).
 
-Usar Tangermann et al. (2012) como âncora para mapear **tasks / datasets / métricas** da Competition IV ao seu decode MVP — com CV e chance level honestos.
+## 2. Especificação Técnica
+Implemente a função `calc_confusion(y_true, y_pred)`:
+- Receba duas listas ou iteráveis de mesmo comprimento contendo rótulos binários discretos ($0$ ou $1$): `y_true` (valores reais) e `y_pred` (predições do modelo).
+- Inicialize contadores inteiros para `tp`, `fp`, `tn`, `fn` em zero.
+- Para cada par $(y_t, y_p)$ correspondente:
+  - Se $y_t == 1$ e $y_p == 1$: incremente `tp`.
+  - Se $y_t == 1$ e $y_p == 0$: incremente `fn`.
+  - Se $y_t == 0$ e $y_p == 1$: incremente `fp`.
+  - Se $y_t == 0$ e $y_p == 0$: incremente `tn`.
+- Retorne um dicionário Python com a estrutura exata:
+  `{'tp': tp, 'fp': fp, 'tn': tn, 'fn': fn}`
 
-## Passos
+## 3. Exemplo de Referência
+```python
+y_true = [1, 1, 0, 0]
+y_pred = [1, 0, 0, 1]
+cm = calc_confusion(y_true, y_pred)
+# Par 1: (1, 1) -> tp = 1
+# Par 2: (1, 0) -> fn = 1
+# Par 3: (0, 0) -> tn = 1
+# Par 4: (0, 1) -> fp = 1
+assert cm['tp'] == 1 and cm['fn'] == 1 and cm['tn'] == 1 and cm['fp'] == 1
+```
 
-1. Abra Tangermann et al. [10.1088/1741-2560/9/2/025009](https://doi.org/10.1088/1741-2560/9/2/025009) no protocolo de avaliação da BCI Competition IV (métrica e split, não o ranking): é esse resultado que o lab compara ao κ do MVP.
-2. Liste ≥2 datasets/tarefas mencionados (nomes + paradigma em uma linha cada).
-3. Para **uma** tarefa MI-like: escreva a métrica que *você* usaria no MVP (κ + `p_e`) e por quê.
-4. Desenhe o fluxo: `dados → epochs → features → clf → métrica oficial vs sua métrica`.
-5. Declare honesty: não é submissão à competição; é literacia de avaliação.
-
-## Lab
-
-**Entregável:**
-
-- Tabela 4 colunas: Dataset/Task | Paradigma | Métrica (paper/challenge) | Analogia MVP
-- 1 parágrafo: como um leak de trial destruiria a comparação justa numa competição
-- 1 pergunta de journal club sobre generalização entre sujeitos
-
-## Checklist
-
-- [ ] DOI Tangermann citado
-- [ ] Pelo menos 2 tasks nomeadas
-- [ ] Métrica do MVP alinhada a κ/chance level
-- [ ] Sem claim de “venci a Comp IV”
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de que todas as 4 chaves estejam presentes no dicionário retornado (`'tp'`, `'fp'`, `'tn'`, `'fn'`).

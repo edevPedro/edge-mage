@@ -1,28 +1,25 @@
-# Lição — RT firmware
+# Desafio — Validação de Margem de Segurança em Tempo Real (RT-Safe)
 
-## Objetivos
+## 1. Objetivo do Desafio
+Implementar a rotina de certificação temporal para sistemas de tempo real estrito, verificando se o tempo de execução medido de uma tarefa neural embarcada atende ao prazo máximo estipulado mesmo após a inclusão de uma margem de segurança de engenharia (*headroom*).
 
-1. Desenhar ISR magra + deferred filter.
-2. Definir overrun/underrun no MCU path.
-3. Declarar limites do stub.
+## 2. Especificação Técnica
+Implemente a função `rt_safe(measured_us, max_deadline_us, headroom_pct=20.0)`:
+- Calcule o tempo projetado com a margem de headroom:
+  $$t_{proj} = measured\_us \times \left(1 + \frac{headroom\_pct}{100.0}\right)$$
+- Retorne um booleano indicando se a execução é segura:
+  - `True`: se $t_{proj} \le max\_deadline\_us$.
+  - `False`: se $t_{proj} > max\_deadline\_us$.
 
-## Passos
+## 3. Casos de Teste de Referência
+```python
+# 700 us + 20% = 840 us <= 1000 us -> True
+assert rt_safe(700.0, 1000.0, 20.0) is True
 
-1. Timeline: DRDY → DMA → ringbuf → task FIR → UART.
-2. Calcule: fs=250, budget=4 ms; se FIR leva 3 ms média e às vezes 5 ms, o que falha?
-3. Honesty note no caderno.
+# 900 us + 20% = 1080 us > 1000 us -> False
+assert rt_safe(900.0, 1000.0, 20.0) is False
+```
 
-## Checklist
-
-- [ ] ISR magra
-- [ ] Buffer strategy
-- [ ] Stub ≠ QEMU
-
-Para destravar o lab, abra [TI ADS1299 datasheet](https://www.ti.com/lit/ds/symlink/ads1299.pdf) e leia a taxa de amostragem e o relógio de dados do ADS1299 para rt_safe aplicar a folga de 20% sobre o deadline em µs.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de que a comparação utilize a relação menor ou igual ($\le$).
+- O parâmetro `headroom_pct` deve ser interpretado como porcentagem (ex: 20.0 significa 20%, ou fator multiplicativo de 0.20).

@@ -1,9 +1,17 @@
-# História — O dwell que só fecha no quarto passo
+# História — A Linha Vermelha do Dispositivo Médico
 
-Comunicação assistiva, nesta sala, é literacia de interface, não dispositivo médico. O guardião proíbe claim de certificação — o fill é `proíbe`. Com humanos reais, o caminho seria consentimento e revisão, não um deploy de fim de semana.
+Em uma reunião com investidores de uma startup de neurotecnologia assistiva, o diretor de marketing exibiu um slide chamativo: *"Nosso decodificador de EEG é um dispositivo médico revolucionário capaz de ler os pensamentos de pacientes com esclerose lateral amiotrófica (ELA) e traduzir frases completas instantaneamente."*
 
-A conta é `dwell_accumulate` num fluxo sintético de probabilidades `[0,5, 0,8, 0,9, 0,9]`, limiar 3,0. Some até atingir ou passar o limiar e devolva quantos passos levou. `0,5`; depois `1,3`; depois `2,2`; depois `3,1`. Cruza 3 no quarto passo. Resposta: 4. Parar em 2,2 porque “está perto” entrega 3 e falha.
+O diretor de assuntos regulatórios e bioengenharia levantou-se imediatamente e interrompeu a apresentação:
 
-4 não é um ITR e não é a fala de ninguém. É o acumulador de dwell do soletrador didático. Sem o limiar explícito, a UI “clica” em ruído. Ética da sala: reconhecer o que falta para uso humano sem transformar o exercício em receita clínica.
+— "Remova esse slide agora mesmo. Este curso, as boas práticas de engenharia e os órgãos regulatórios (como Anvisa e FDA) proíbem categoricamente alegações de dispositivo médico certificado para protótipos de pesquisa. EEG não lê pensamentos ou frases inteiras; EEG capta pequenas modulações estatísticas de biopotenciais no couro cabeludo."
 
-Fase F11, nt-app-assistive-bci: o dwell fecha em 4 passos quando a soma passa de 3. O fill do claim é proíbe. Quatro passos não são um dispositivo certificado nem a frase de um usuário.
+Ele puxou o quadro branco e reescreveu os objetivos técnicos com rigor:
+
+— "Em interfaces assistivas reais para pessoas com perda severa de controle motor (como o clássico trabalho de Wolpaw), o que nós medimos não é milagre: é latência de seleção, taxa de transferência de informação (Information Transfer Rate - ITR em bits por minuto) e carga cognitiva suportável pelo usuário. Ninguém quer um teclado virtual que cometa erros catastróficos a cada piscada."
+
+O engenheiro de software da equipe perguntou:
+
+— "Como evitamos seleções involuntárias provocadas por ruído momentâneo?"
+
+— "Com integração temporal por acumulador de permanência (*dwell accumulator*)", explicou o regulador. "Em vez de disparar uma tecla na primeira amostra em que a probabilidade do classificador for alta, nós acumulamos as probabilidades ao longo do tempo. O comando só é confirmado quando a soma atinge um limiar seguro (*threshold*). Isso filtra picos espúrios de ruído e devolve ao usuário o controle da interface com segurança ética e usabilidade real."

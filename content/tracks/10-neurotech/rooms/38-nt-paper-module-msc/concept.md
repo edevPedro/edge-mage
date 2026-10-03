@@ -1,21 +1,23 @@
-# Conceito — Módulo de Artigo Científico Padrão Mestrado (Paper Module MSc)
+# Conceito — O Módulo de Artigo Científico em Nível de Mestrado (MSc Paper Module)
 
-## 1. O Padrão de Reprodução e Crítica Científica
-O módulo de artigo científico de nível de mestrado (*Paper Module MSc*) estabelece o patamar de maturidade acadêmica do estudante de neuroengenharia: ir além da aceitação passiva das conclusões de um artigo publicado e dissecar sua cadeia metodológica, reproduzindo quantitativamente seus resultados e identificando suas fragilidades técnicas.
+O módulo de artigo científico de mestrado (MSc Paper Module) é o artefato acadêmico que consolida a transição do desenvolvedor de software para um pesquisador e especialista autônomo em neuroengenharia.
 
-### Os Campos Obrigatórios do Artefato (`study-log/artifacts/neuro-paper-module-msc.md`)
-O validador automatizado do sistema exige a presença explícita dos seguintes pilares estruturados:
-1. **Identificador Estável (`doi`)**: O DOI oficial do artigo selecionado da lista canônica da especificação (ex: [Barachant et al. 2012, DOI 10.1109/TBME.2011.2172210](https://doi.org/10.1109/TBME.2011.2172210) sobre geometria Riemanniana, ou [Singh et al. 2021, DOI 10.3390/s21062173](https://doi.org/10.3390/s21062173) sobre desafios online).
-2. **Dados (`data`)**: Descrição da base experimental (ex: *BCI Competition IV Dataset 2a*, sujeitos, canais e condições experimentais).
-3. **Métricas (`metrics`)**: Comparação quantitativa explícita entre a métrica reportada pelos autores originais e o valor reproduzido no código independente:
-   $$\Delta = \text{Métrica}_{\text{reproduzida}} - \text{Métrica}_{\text{publicada}}$$
-4. **Limites e Crítica Estruturada (`limits` e `critique`)**: Exame de potenciais armadilhas (risco de vazamento de dados, complexidade computacional para hardware embarcado, generalização inter-sujeitos e limites éticos de consentimento).
-5. **Fatia de Métodos (`methods_slice`)**: Transcrição concisa e código correspondente do núcleo algorítmico reproduzido.
-6. **Número Derivado do Fundamento**: Tolerância de reprodução numérica rigorosa (ex: $|\Delta| \le 0.05$) e parâmetros de amostragem/latência.
+## 1. Diferença entre Checkpoint e Paper Module MSc
+Enquanto os checkpoints anteriores focam na replicação de um aspecto específico do pipeline:
+- O **Paper Module MSc** exige a síntese completa: citação de artigo com DOI formal de acesso aberto, reprodução quantitativa de métricas, análise crítica de fraquezas e discussão aprofundada de limitações biofísicas e de engenharia.
 
-## 2. Modos de Falha Operacionais
-1. **Submeter URL Genérica sem DOI Permanente**: Inserir links para posts de blog ou repositórios efêmeros em vez do identificador persistente de publicação revisada por pares (DOI).
-2. **Afirmar "Reprodução Idêntica" sem Declarar a Variação $\Delta$**: Declarar que o modelo atingiu "o mesmo resultado" sem calcular o desvio numérico e a tolerância aceitável decorrente de variações estocásticas de inicialização ou otimização.
+## 2. A Função de Verificação de Reprodução
+A rotina `verify_paper_reproduction(paper_meta, observed_metrics)` compara as métricas reportadas no artigo original contra as métricas observadas na replicação local:
+- Calcula o desvio percentual relativo de acurácia e Kappa de Cohen:
+  $$\text{erro\_relativo} = \frac{|\text{métrica\_observada} - \text{métrica\_reportada}|}{\text{métrica\_reportada}}$$
+- Exige que o desvio permaneça dentro de uma margem aceitável de tolerância experimental (tipicamente $\le 15\%$) decorrente de diferenças de inicialização e sementes estocásticas.
 
-## 3. O que a Próxima Sala Assume
-A sala final do curso ([`nt-mago-supremo`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/39-nt-mago-supremo/room.yaml)) assume que você dominou a literatura canônica, concluiu a dissertação metodológica e possui todas as evidências para invocar o ritual de consagração de Mago Supremo pela rota neural.
+## 3. Modos de Falha no Módulo de Mestrado
+1. **Omissão da Discussão de Limitações:** Apresentar resultados como perfeitos sem apontar o impacto de fadiga do voluntário, artefatos residuais e restrições de generalização entre dias.
+2. **Citação sem DOI Válido:** Fornecer links quebrados ou referências bibliográficas incompletas sem identificador persistente.
+
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-mago-supremo`) é o clímax final do percurso de neuroengenharia: o ritual do Mago Supremo pela rota neural.
+
+## 5. Ponto de Destrave do Lab
+Consulte os padrões de redação de artigos em neuroengenharia de [Lotte et al. (J Neural Eng 2018, A review of classification algorithms for EEG-based BCI)](https://doi.org/10.1088/1741-2552/aab2f2).

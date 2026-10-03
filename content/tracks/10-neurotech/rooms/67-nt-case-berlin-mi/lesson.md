@@ -1,31 +1,27 @@
-# Lição — Berlin BCI case (walkthrough)
+# Desafio — Razão de Dessincronização do Paradigma Berlin BCI
 
-## Objetivo
+## 1. Objetivo do Desafio
+Implementar a regra de decisão de classificação de imagética motora lateralizada inspirada no paradigma clássico do Berlin BCI, calculando a razão de potência entre os eletrodos sensoriomotores contralaterais $C3$ e $C4$.
 
-Mapear o paper Blankertz et al. (Frontiers / PMC5116473) para o seu pipeline educacional e declarar explicitamente o que **não** é reprodução bit-a-bit.
+## 2. Especificação Técnica
+Implemente a função `berlin_erd_ratio(c3_mu, c4_mu)`:
+- Calcule a razão de potência espectral:
+  $$\text{ratio} = \frac{c3\_mu}{c4\_mu}$$
+- Determine a classe predita com base na dominância hemisférica contralateral:
+  - Se $\text{ratio} < 1.0$: o canal $C3$ sofreu maior atenuação (dessincronização no hemisfério esquerdo), indicando imagética da **mão direita** (`'right_hand'`).
+  - Se $\text{ratio} \ge 1.0$: o canal $C4$ sofreu maior ou igual atenuação, indicando imagética da **mão esquerda** (`'left_hand'`).
+- Retorne a tupla `(ratio, prediction)`.
 
-## Passos
+## 3. Exemplos Canônicos de Validação
+```python
+# C3 atenuado (5.0) contra C4 alto (20.0): ratio = 0.25 -> right_hand
+ratio, pred = berlin_erd_ratio(5.0, 20.0)
+assert ratio == 0.25 and pred == "right_hand"
 
-1. Abra [PMC5116473](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) na secção de Methods (processamento e avaliação), não só no abstract: sem esse pipeline o lab não preenche a tabela estágio→synth.
-2. Preencha a tabela estágio → analogia synth (ver conceito).
-3. Identifique **uma** figura ou secção de Methods que descreva processamento de sinal; resuma em 4 bullets.
-4. Compare a métrica/avaliação do paper com κ + chance level do seu decode MVP.
-5. Escreva a declaração de honesty (copie e complete):
+# C4 atenuado (10.0) contra C3 alto (25.0): ratio = 2.5 -> left_hand
+ratio2, pred2 = berlin_erd_ratio(25.0, 10.0)
+assert ratio2 == 2.5 and pred2 == "left_hand"
+```
 
-> “Este walkthrough usa Blankertz et al. (DOI 10.3389/fnins.2016.00530) como âncora pedagógica. Meu lab com dados sintéticos/open **não** reproduz os resultados Berlin bit-a-bit; serve para treinar o pipeline e a leitura crítica.”
-
-## Lab
-
-Entregável curto (caderno / markdown):
-
-- 1 parágrafo: motivação Berlin BCI além de “só comunicação”.
-- Pipeline em caixas (ASCII ok).
-- 3 diferenças entre lab real Berlin e `synth_eeg_stream`.
-- 2 perguntas que você faria num journal club (CV? transferência entre dias? usuários?).
-
-## Checklist antes da Sala
-
-- [ ] DOI/PMC citados corretamente
-- [ ] Declaração “não bit-a-bit” escrita
-- [ ] Mapa stages → MVP feito
-- [ ] Sem overclaim clínico
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de retornar as strings exatamente como `'right_hand'` e `'left_hand'` em minúsculas com sublinhado.

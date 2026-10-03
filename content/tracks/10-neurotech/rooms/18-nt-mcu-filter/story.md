@@ -1,9 +1,20 @@
-# História — O MAC que saturou em Q15
+# História — O Ciclo de Clock que Não Volta
 
-O stub de MCU não é filter-bank de MI. Na bancada Q15, o guardião pede `q15_mac(acc, a, b) = acc + ((a * b) >> 15)`, com saturação em `[−32768, 32767]`.
+No laboratório de sistemas embarcados, uma equipe de engenharia desenvolve um dispositivo vestível de monitoramento neural em tempo real. O hardware é baseado em um microcontrolador ARM Cortex-M4 operando a 64 MHz, sem sistema operacional, com apenas 64 KB de memória SRAM. A placa deve receber amostras do conversor ADS1299 via interrupção SPI a 250 Hz e aplicar um filtro digital FIR para filtrar a banda sensoriomotora antes de transmitir os pacotes via rádio Bluetooth Low Energy.
 
-Primeiro ensaio: `acc = 0`, `a = b = 16384`. O produto é `16384² = 268435456`. O deslocamento de 15 bits divide por 32768 e entrega 8192. Quem esquecer o `>> 15` devolve o produto cru e estoura o formato.
+Durante os testes de osciloscópio, o sinal transmitido apresenta falhas periódicas: pacotes corrompidos e jitter violento no intervalo entre amostras.
 
-Segundo ensaio: `q15_mac(30000, 32767, 32767)`. `(32767² >> 15)` já é 32766; somado a 30000 passa de 32767. Sem saturação o acumulador vira lixo com sinal; com saturação a Sala exige 32767. Isto é MAC fracionário de laboratório, não um FIR de ritmos nem um claim de que o Cortex já decodifica imagética.
+O arquiteto de firmware conecta uma sonda de analisador lógico aos pinos de debug do microcontrolador:
+— Observem o pino de teste que colocamos no início e no fim da Rotina de Serviço de Interrupção (ISR) — explica o arquiteto. — A cada 4 milissegundos, a interrupção do conversor dispara. A ISR foi escrita em C utilizando aritmética de ponto flutuante de precisão dupla (`double`) de 64 bits para calcular o filtro FIR de 64 coeficientes:
+```c
+// Erro grave de firmware: float de 64 bits em interrupção rápida
+for (int i = 0; i < 64; i++) {
+    acc += (double)taps[i] * (double)history[i];
+}
+```
 
-Fase F9, nt-mcu-filter: q15_mac(0, 16384, 16384) tem de cair em 8192, e o segundo ensaio satura em 32767. Sem o shift de 15 o produto não é Q15; sem o grampo o acumulador muda de sinal.
+O microcontrolador Cortex-M4 possui apenas uma FPU de precisão simples (32 bits). Ao utilizar `double`, o compilador insere rotinas de emulação de software que consomem milhares de ciclos de clock por amostra. A ISR estava levando 3.8 milissegundos para concluir, consumindo 95% do tempo da CPU e bloqueando outras interrupções críticas do stack de comunicação sem fio.
+
+— Em firmware de baixa potência para neurotecnologia, a ISR de aquisição deve ser ultrarrápida: ler o registrador via DMA e sair em menos de vinte microssegundos — determina o arquiteto. — O processamento de filtragem deve ser executado no loop principal usando aritmética de ponto fixo Q15 com instruções SIMD dedicadas de multiplicação e acumulação com saturação (`SMLABB` / `SSAT`).
+
+A equipe reescreve o pipeline: o filtro passa a utilizar aritmética de ponto fixo Q15, com coeficientes escalados por $2^{15} = 32768$ e acumulador protegido contra overflow. O tempo de cálculo por amostra despenca de 3800 microssegundos para menos de 4 microssegundos, liberando o microcontrolador para operar com folga determinística.

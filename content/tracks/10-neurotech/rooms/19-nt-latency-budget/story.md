@@ -1,17 +1,18 @@
-# História — O Deadline Perdido por Quatro Milissegundos
+# História — O Deadline Invisível da Neuroprótese
 
-No laboratório de controle neural em tempo real, um desenvolvedor de visão computacional tentava adaptar uma arquitetura de aprendizado profundo para guiar um cursor na tela através de imagética motora. O modelo alcançava noventa e cinco por cento de acurácia nos arquivos estáticos gravados na semana anterior.
+Em uma sessão experimental em um centro de reabilitação robótica, um voluntário com lesão medular tenta controlar um exoesqueleto de membro superior acoplado a uma interface de BCI de imagética motora. O voluntário relata uma sensação profunda de desconexão e frustração: toda vez que ele imagina fechar a mão para segurar um objeto, o comando demora perceptivelmente para ser executado; quando o braço mecânico finalmente se move, o voluntário já relaxou a intenção, fazendo o robô abrir a mão novamente em oscilações instáveis.
 
-Entretanto, durante os testes ao vivo com o voluntário em malha fechada, o cursor movia-se de maneira engasgada, com atrasos perceptíveis que faziam o usuário errar sistematicamente os alvos visuais.
+O engenheiro sênior de sistemas de controle conecta um registrador de eventos de hardware para auditar a linha de tempo do ciclo fechado (closed-loop).
 
-"O classificador roda perfeitamente no computador com placa gráfica," protestava o programador, exibindo o log de acertos. "O tempo de inferência da rede é de apenas quarenta milissegundos."
+— No controle em malha fechada biológica, o sistema nervoso humano espera feedback sensorial em menos de 150 a 200 milissegundos após a intenção — explica o engenheiro. — Se o atraso total entre a emissão do biopotencial e a resposta física ultrapassar esse limite crítico (deadline), o usuário perde a sensação de agência e o sistema de controle entra em oscilação e instabilidade dinâmica.
 
-A arquiteta de sistemas de tempo real sentou-se na estação de trabalho, conectou um osciloscópio a um pino GPIO da placa de aquisição e colocou um fotodiodo colado na tela do monitor do voluntário para medir o tempo decorrido entre a emissão do sinal cerebral e a atualização física dos pixels na tela.
+Ele decompõe o orçamento de latência em suas três etapas canônicas:
+1. **Janela de Sensoriamento ($t_{\text{sense}}$):** A rotina utilizava uma janela temporal deslizante de 2.0 segundos (2000 ms) para garantir espectro de frequência perfeito.
+2. **Computação e Decodificação ($t_{\text{decide}}$):** O algoritmo de filtragem e inferência em Python levava 35 ms.
+3. **Transmissão e Atuação ($t_{\text{act}}$):** O atuador eletromecânico e os comandos de rádio consumiam mais 40 ms.
 
-"Seu modelo de inferência leva quarenta milissegundos," começou ela, desenhando a linha do tempo no quadro. "A taxa de amostragem do amplificador é de duzentos e cinquenta hertz, gerando quatro milissegundos de atraso de ingestão de pacote. O banco de filtros espaciais biquads consome quase um milissegundo. E o monitor de sessenta hertz do sujeito tem uma taxa de varredura que adiciona dezesseis vírgula seis milissegundos puros de espera de sincronização vertical."
+— Somando as etapas, nossa latência total é $2000 + 35 + 40 = 2075\text{ ms}$! — exclamou o desenvolvedor júnior. — Estamos mais de dez vezes acima do deadline de 150 milissegundos!
 
-Ela somou os três estágios: quatro mais quarenta vírgula oito mais dezesseis vírgula seis. O total resultou em sessenta e um vírgula quatro milissegundos.
+O engenheiro sênior orienta a reformulação do orçamento: reduzir a janela deslizante de sensoriamento para 100 milissegundos (25 amostras a 250 Hz) com avanço contínuo a cada 40 milissegundos, otimizar o decodificador para executar em 3 milissegundos no microcontrolador, e calibrar o atuador para resposta em 30 milissegundos.
 
-"O deadline máximo estipulado pelo protocolo neurofisiológico para sensação de agência motora é de cinquenta milissegundos," apontou a engenheira. "Seu sistema quebra o prazo em mais de onze milissegundos. Pior ainda: como você processa janelas a cada vinte e cinco milissegundos e seu código demora quarenta para rodar, a fila FIFO de entrada enche e descarta amostras a cada três segundos."
-
-O programador olhou para o gráfico de overrun. Substituindo a rede convolucional pesada por um Discriminante Linear de Fisher regularizado, o tempo de cálculo despencou de quarenta para cinco milissegundos. A latência total caiu para vinte e cinco vírgula seis milissegundos, bem abaixo do prazo fatal. O cursor deslizou pela tela com controle imediato e responsivo.
+A nova latência total fecha em $100 + 3 + 30 = 133\text{ ms}$ — estritamente abaixo do deadline de 150 ms. Ao repetir o teste, o voluntário relata controle instantâneo e natural, segurando o objeto com estabilidade e precisão.

@@ -1,6 +1,6 @@
-# Lição — Resolução LSB e Quantização em Microvolts
+# Desafio — Resolução LSB e Quantização em Microvolts
 
-## 1. Contexto Operacional
+## 1. Objetivo do Desafio
 A conversão A/D é o elo físico entre a eletrofisiologia contínua e os algoritmos de software discreto. Sem ganho prévio adequado ou resolução de conversão suficiente (24 bits), o sinal de microvolts desaparece no ruído de quantização.
 
 ## 2. Passo a Passo Matemático

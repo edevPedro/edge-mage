@@ -1,9 +1,15 @@
-# História — O emulador que substitui a placa
+# História — A Integração de Engenharia
 
-O checkpoint de projeto é caminho paralelo ao paper, não uma etapa a mais obrigatória depois dele. A aprendiz quer “rodar o cérebro” sem placa. O guardião aponta o comando e exige o nome: `mage emu ___`, com uma de três palavras — `synth`, `artifact` ou `cortex` — ou `all` se for varrer os três.
+Na bancada de prototipagem de firmware, uma desenvolvedora de sistemas embarcados finaliza os últimos testes de integração de um subsistema de aquisição e filtragem. Seu objetivo não é escrever um relatório teórico, mas entregar uma fatia de código sólida e testável: um módulo que ingere amostras sintéticas, gerencia o buffer circular sem perdas e computa a energia de banda em tempo real.
 
-`synth` é o stream didático; `artifact` injeta blink, EMG e linha; `cortex` é o stub de MCU. Escolher QEMU, ou o nome de uma sala, não preenche o fill. A URL de âncora, se a fatia for aquisição, é a do Cyton no `room.yaml`, não um datasheet decorado.
+O líder de engenharia aproxima-se com um gerador de sinais de calibração:
+— Um projeto de neuroengenharia só existe quando resiste a testes de estresse automatizados — pontua o líder. — Você pode escolher o caminho do artigo científico ou o caminho do subsistema de engenharia. Aqui, a evidência é o código em execução: sua fatia deve demonstrar aquisição estável, filtragem determinística e relatório de latência.
 
-Não há sujeito na bancada. A conta desta sala é nomear o emulador que exercita a fatia escolhida e registrar isso no artefato de projeto. Hardware OpenBCI continua eletivo: sem a placa, o caminho honesto é o emu, não um traçado inventado.
+A desenvolvedora executa a suíte de testes de emulação:
+- `mage emu synth`: validação de fluxo de dados multicanal contínuo.
+- `mage emu artifact`: rejeição de picos anômalos de amplitude.
+- `mage emu cortex`: cálculo de coeficientes de filtro sob deadline de relógio.
 
-Fase F10, nt-checkpoint-project: o fill do emulador aceita synth, artifact, cortex ou all. Esta sala é alternativa ao paper (ou), não uma etapa AND, e não substitui consentimento.
+Todos os testes de asserção retornam código zero de sucesso. A latência de cada etapa permanece rigorosamente abaixo do limite estabelecido.
+
+A desenvolvedora documenta o artefato de projeto em `study-log/artifacts/checkpoint-project.md`, detalhando a arquitetura de software, o uso de memória estática e os logs de execução. Com a fatia de engenharia comprovada, o subsistema está pronto para integrar o marco maior do Neuro Mage.

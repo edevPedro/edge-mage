@@ -1,17 +1,17 @@
-# História — A Fuga Invisível dos Diodos
+# História — O Choque Eletrostático de Dez Mil Volts
 
-Durante a fase de testes de certificação de imunidade eletrostática de um novo amplificador de EEG vestível, o protótipo anterior havia falhado miseravelmente: uma descarga de quatro mil volts aplicada ao cabo do eletrodo fritou os canais analógicos do processador.
+Em uma tarde de inverno seco em um laboratório de neuroengenharia, uma técnica caminha sobre o carpete isolante sintético da sala. Ao estender a mão para conectar o cabo de eletrodos à placa de aquisição de biopotenciais, uma faísca azul salta de sua ponta do dedo diretamente no conector do canal 1 com um estalo seco: uma descarga eletrostática (ESD) de quase dez mil volts.
 
-Para a segunda revisão da placa, o desenvolvedor de hardware tomou uma medida radical: soldou pares de diodos de proteção rápida nos pinos de todos os oito canais, interligando-os aos trilhos de três volts e terra.
+O estudante que observava a cena coloca as mãos na cabeça:
+— Queimamos os amplificadores operacionais ultra-sensíveis de microvolts! — teme ele.
 
-"Agora o hardware aguenta até raio," comemorou ele na reunião de alinhamento. "Coloquei diodos Schottky ultra-rápidos em cada pino para grampear qualquer pico acima de zero vírgula três volts."
+O engenheiro de hardware sênior conecta a placa ao computador e executa a rotina de auto-teste do conversor:
+— A placa está intacta e funcionando perfeitamente — anuncia o engenheiro com tranquilidade.
 
-No dia seguinte, porém, o desenvolvedor de firmware não conseguia registrar nenhum sinal cerebral. Nos oito canais, os conversores analógico-digitais de vinte e quatro bits retornavam leituras estáticas coladas no valor máximo da escala de saturação.
+Ele abre o esquemático do circuito impresso e aponta para o par de diodos semicondutores de proteção posicionados logo na entrada de cada pino:
+— O corpo humano pode acumular cargas eletrostáticas que ultrapassam $15.000\text{ V}$ em dias secos. Nenhuma junção de silício microscópica de um pré-amplificador resiste a essa tensão sem ser destruída por ruptura dielétrica instantânea. Por isso, toda entrada biológica possui diodos semicondutores de grampeamento de ESD (ESD Clamping Diodes) conectados em antiparalelo entre o pino de sinal e os trilhos de alimentação positiva e negativa.
 
-A arquiteta de instrumentação biomédica do laboratório pegou o multímetro e mediu a tensão DC diretamente nos eletrodos colocados na cabeça de um voluntário. O voltímetro acusava mais de um milivolt de tensão contínua fixa.
+Ele explica o funcionamento semicondutor do grampo:
+— Em operação normal de EEG ($V \approx 50\ \mu\text{V}$), os diodos permanecem reversamente polarizados, comportando-se como circuitos abertos ideais com corrente de fuga minúscula ($< 1\text{ pA}$). No instante em que a descarga de 10.000 volts atinge o pino, o diodo superior polariza-se diretamente em 0.7 V quando a tensão supera o trilho positivo ($V_{CC} + V_D$), e o diodo inferior conduz quando a tensão cai abaixo do trilho negativo ($V_{EE} - V_D$). A energia destrutiva da faísca é desviada com segurança para a terra através dos trilhos, limitando a tensão no chip a um valor inofensivo.
 
-"Você olhou a corrente de fuga reversa desses diodos Schottky no datasheet?" perguntou ela, abrindo o gráfico de temperatura do semicondutor. "Esses diodos foram projetados para fontes de alimentação chaveadas. A fuga reversa deles é de vinte nanoamperes. Quando essa corrente flui pelos cinquenta quilo-ohms da resistência de contato da pele do sujeito, a lei de Ohm gera uma queda de tensão DC de exatamente um milivolt — mil microvolts."
-
-O projetista arregalou os olhos. Um sinal de EEG tinha apenas dez microvolts.
-
-"Com um ganho analógico de vinte e quatro vezes, um milivolt de offset vira vinte e quatro milivolts," continuou a engenheira. "Se o seu ganho for de cem vezes, vira cem milivolts. Seus amplificadores estão saturados pela própria proteção que você colocou. Em biopotenciais de microvolts, você não pode usar diodos comuns de potência; você precisa de diodos de silício de fuga ultra-baixa com corrente na casa de picoamperes."
+A equipe implementa a função `esd_clamp`. A compreensão da física de semicondutores consolida o projeto de dispositivos médicos resistentes ao manuseio humano cotidiano.

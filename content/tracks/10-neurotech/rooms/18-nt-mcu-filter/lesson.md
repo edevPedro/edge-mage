@@ -1,30 +1,15 @@
-# Lição — MCU filter
+# Desafio — Multiplicação e Acumulação com Saturação Q15
 
-## Objetivos
-Dominar FIR/IIR no stub o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a rotina fundamental de multiplicação e acumulação com saturação (MAC Q15) representativa do conjunto de instruções de microcontroladores de sinal (DSP), prevenindo o wrap-around de overflow.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica e Formulação
+Considere a operação de ponto fixo Q15 onde valores válidos estão restritos ao intervalo inteiro $[-32768, 32767]$:
+- Implemente a função `q15_mac(acc, a, b)` que recebe o acumulador atual `acc` (inteiro de 32 bits) e dois operandos Q15 `a` e `b`:
+  $$\text{produto} = (a \times b) \gg 15$$
+  $$\text{novo\_acc} = \text{clamp}(\text{acc} + \text{produto}, -32768, 32767)$$
+- Onde $\text{clamp}(v, \text{min}, \text{max})$ garante que valores acima de $32767$ saturem em $32767$, e valores abaixo de $-32768$ saturem em $-32768$.
 
-## Lab
-Explique em 6–10 linhas como FIR/IIR no stub aparece num pipeline MI offline ou online.
-
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [CMSIS-DSP (Arm)](https://github.com/ARM-software/CMSIS-DSP) e leia a convenção de MAC fracionário no CMSIS-DSP (produto seguido de shift) para o q15_mac saturar em 16 bits em vez de devolver o inteiro cru.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que o shift à direita por 15 bits normalize o produto de dois valores Q15 de volta para a escala correta de 16 bits.
+- A saturação aritmética é mandatória: nunca permita que o acumulador inverta de sinal por overflow modular.

@@ -30,4 +30,4 @@ $$d \ge \text{FWHM}_{\text{crânio}} \approx 2.5\text{ cm}$$
 2. **Ignorar Correlação Espacial no Machine Learning**: Como um único dipolo induz voltagem em múltiplos eletrodos adjacentes devido à condução de volume, canais vizinhos possuem covariância não-nula mesmo sem qualquer conectividade funcional real entre as áreas corticais subjacentes. Assumir independência entre canais de EEG em modelos bayesianos é um erro conceitual grave.
 
 ## 3. O que a Próxima Sala Assume
-A sala seguinte ([`nt-electrode-snr`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/06-nt-electrode-snr/room.yaml)) assume que você sabe que os sinais de microvolts que atingem a superfície da pele precisam ser transladados de correntes iônicas para correntes eletrônicas via eletrodos de contato, onde a impedância da interface pele-eletrodo determina a perda por divisor de tensão na entrada do bioamplificador.
+A próxima sala do percurso é `nt-physics-field-lite` (Physics — Campo e distância (lite)): Potencial vs distância; por que fontes profundas somem.

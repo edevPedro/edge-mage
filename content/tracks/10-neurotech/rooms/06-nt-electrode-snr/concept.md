@@ -40,7 +40,7 @@ Um sinal típico de $10\ \mu\text{V}$ com ruído de fundo de $5\ \mu\text{V}$ po
 Conectar eletrodos de alta impedância (especialmente eletrodos secos ou gel desidratado) em circuitos com impedância de entrada moderada ($< 100\text{ M}\Omega$). O divisor de tensão atenua o sinal, e pequenas variações na impedância do eletrodo modulam o ganho aparente do canal, gerando artefatos de movimento que imitam oscilações neurais.
 
 ## 4. O que a Próxima Sala Assume
-A sala seguinte ([`nt-ground-ref`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/07-nt-ground-ref/room.yaml)) assume que você entende como o desbalanceamento de impedância entre dois eletrodos ($\Delta Z = |Z_1 - Z_2|$) converte tensão de modo comum de $60\text{ Hz}$ em ruído diferencial.
+A sala seguinte (`nt-ground-ref` (Terra, referência, 50/60 Hz)) assume que você entende como o desbalanceamento de impedância entre dois eletrodos ($\Delta Z = |Z_1 - Z_2|$) converte tensão de modo comum de $60\text{ Hz}$ em ruído diferencial.
 
 ## 5. Ponto de Destrave do Lab
 Para checar os limites recomendados de impedância na preparação de sujeitos e a física da interface eletroquímica, consulte a documentação oficial da [OpenBCI EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) e o estudo clínico de impedâncias de escalpo por [Tallgren et al. (DOI 10.1016/j.clinph.2004.07.016)](https://doi.org/10.1016/j.clinph.2004.07.016).

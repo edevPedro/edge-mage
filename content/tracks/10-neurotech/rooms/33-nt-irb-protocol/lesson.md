@@ -1,20 +1,14 @@
-# Lição — IRB literacy (não-jurídico)
+# Desafio — Protocolo Ético e Salvaguardas de Pesquisa
 
-Este curso **não** certifica IRB. Ensina perguntas que um MSc deve saber fazer.
+## 1. Objetivo do Desafio
+Demonstrar a compreensão integral dos requisitos de submissão de protocolos de pesquisa a comitês de ética (IRB), identificando os princípios éticos de Belmont, critérios de consentimento e salvaguardas de biossegurança elétrica.
 
-## Checklist mínimo (educacional)
+## 2. Especificação Técnica e Formulação
+Avalie os cenários experimentais apresentados nas tarefas:
+1. **Princípios Belmont:** Identificar a aplicação de Respeito pelas Pessoas, Beneficência e Justiça na rotina de laboratório.
+2. **Consentimento Informado:** Reconhecer os requisitos essenciais de autonomia, esclarecimento e revogabilidade livre sem ônus.
+3. **Prevenção de Riscos:** Identificar medidas de isolamento galvânico (baterias/optoacopladores) e triagem médica prévia para proteção de voluntários.
 
-- [ ] pergunta científica e população
-- [ ] riscos/benefícios
-- [ ] consentimento
-- [ ] dados: coleta, armazenamento, compartilhamento
-- [ ] critérios de inclusão/exclusão
-
-Para destravar o lab, abra [Belmont Report (OHRP)](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html) e leia os três princípios do Belmont Report (respeito às pessoas, beneficência, justiça) para o protocolo fechar consentimento informado sem caso inventado.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Lembre-se: em ciência biomédica, o consentimento não é apenas uma assinatura em papel, mas um processo contínuo de esclarecimento mútuo.
+- A segurança física do participante e a integridade de seus dados sobrepõem-se a qualquer deadline de cronograma científico.

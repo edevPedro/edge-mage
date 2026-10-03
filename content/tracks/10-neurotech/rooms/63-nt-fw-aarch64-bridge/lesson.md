@@ -1,30 +1,23 @@
-# Lição — AArch64 bridge
+# Desafio — Produto Escalar Vetorizado SIMD-4
 
-## Objetivos
-Dominar ponte Edge o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a simulação algorítmica de uma instrução vetorial SIMD de 4 vias (como o bloco fundamental das instruções Neon da arquitetura ARM AArch64), calculando o produto escalar de dois vetores de 4 elementos.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `simd4_dot(a, b)`:
+- Receba dois vetores iteráveis `a` e `b`, cada um contendo exatamente 4 elementos de ponto flutuante.
+- Calcule o produto escalar elemento a elemento:
+  $$\text{dot} = \sum_{i=0}^3 a[i] \times b[i] = a[0]b[0] + a[1]b[1] + a[2]b[2] + a[3]b[3]$$
+- Retorne o valor escalar float resultante.
 
-## Lab
-Explique em 6–10 linhas como ponte Edge aparece num pipeline MI offline ou online.
+## 3. Exemplo de Validação
+```python
+a = [1.0, 2.0, 3.0, 4.0]
+b = [2.0, 0.0, 1.0, -1.0]
+# 1*2 + 2*0 + 3*1 + 4*(-1) = 2 + 0 + 3 - 4 = 1.0
+assert abs(simd4_dot(a, b) - 1.0) < 1e-5
+```
 
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [edge-mage Edge AI track](https://github.com/edevPedro/edge-mage/blob/main/content/tracks/07-edge-ai/README.md) e leia o que a trilha Edge separa de stub versus device, para simd4_dot ficar marcado como ponte e não como ciclo medido no silício.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de manipular com precisão números negativos e produtos nulos.
+- O resultado deve ser um valor numérico escalar único (float).

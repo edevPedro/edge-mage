@@ -1,9 +1,15 @@
-# História — A Saturação do Primeiro Estágio
+# História — O Cancelamento Ativo do Zumbido de Sessenta Hertz
 
-Em um protótipo de placa de aquisição de biopotenciais desenhada para testes de bancada, um projetista de firmware resolve otimizar o SNR analógico antes da digitalização. Sabendo que o sinal de EEG é minúsculo ($15\text{--}30\ \mu\text{V}$), ele ajusta o resistor de ganho $R_G$ do amplificador de instrumentação para fornecer um ganho analógico $G = 100$.
+Na bancada de testes de um eletroencefalógrafo clínico, uma pesquisadora e um engenheiro de instrumentação biomédica tentam registrar sinais de EEG sem gaiola de Faraday em uma sala comercial comum. Assim que o voluntário senta-se na cadeira, a forma de onda nos canais $C3$ e $C4$ satura nos trilhos de alimentação: um bloco sólido de onda senoidal de 60 Hz com quase dois volts de amplitude esmaga o biopotencial de microvolts.
 
-A placa é alimentada pela linha de $3.3\text{ V}$ do barramento USB. Ao conectar os eletrodos de prata/cloreto de prata na pele de um voluntário, o conversor A/D lê apenas valores travados no teto digital máximo de $3.3\text{ V}$.
+O desenvolvedor tenta sugerir um filtro digital notch mais agressivo, mas a pesquisadora balança a cabeça:
+— Se o ruído de 60 Hz estiver saturando o amplificador analógico nos trilhos de alimentação ($+2.5\text{ V}$ e $-2.5\text{ V}$), o conversor analógico-digital digitalizará uma onda quadrada ceifada. Nenhum filtro digital do mundo consegue restaurar informação de um sinal que sofreu ceifamento analógico (clipping) — adverte ela. — O ruído precisa ser eliminado no domínio analógico antes da digitalização!
 
-O engenheiro de hardware sênior conecta a ponta de prova do multímetro diretamente nos terminais diferenciais de entrada antes do chip. Ele constata um potencial estático contínuo de $+48\text{ mV}$ entre os dois eletrodos, resultante das reações químicas espontâneas entre a pele e o gel eletrolítico. Multiplicados pelo ganho de cem, esses $48\text{ mV}$ resultam em uma tensão de saída teórica de $4.8\text{ V}$ — impossível de ser gerada por um circuito alimentado em $3.3\text{ V}$.
+O engenheiro sênior abre a arquitetura clássica de dois pilares da instrumentação biomédica:
+1. **O Amplificador de Instrumentação (INA):** Uma topologia clássica de três amplificadores operacionais onde o ganho diferencial é configurado por um único resistor externo $R_G$:
+   $$A_v = 1 + \frac{2 R_1}{R_G}$$
+   O INA rejeita tensões que aparecem simultaneamente nos dois eletrodos, com CMRR superior a 110 dB.
+2. **O Circuito Driven Right Leg (DRL):**
+   — O corpo do paciente atua como uma grande placa capacitiva que acopla corrente de deslocamento da rede elétrica residencial — explica o engenheiro. — O DRL extrai a tensão de modo comum nos dois eletrodos através de resistores de alta impedância, inverte a fase da onda em 180 graus com um amplificador inversor e injeta essa corrente em oposição de fase de volta no corpo do paciente através de um eletrodo de referência na perna direita ou na orelha.
 
-O amplificador de instrumentação estava colado no trilho de saturação superior. O desenvolvedor é instruído a recalibrar o ganho do estágio analógico para valores moderados ($G \le 12$) ou implementar o circuito de realimentação de perna direita (DRL) para absorver o modo comum e acomodar o offset galvânico dentro da janela linear dinâmica.
+A equipe implementa o circuito DRL e calcula o resistor de ganho do INA (`ina_gain`). No momento em que o eletrodo DRL toca a pele do voluntário, a interferência de 60 Hz colapsa em mais de 40 dB: a onda gigantesca de 2 volts encolhe para menos de 10 microvolts, permitindo que os biopotenciais do córtex motor surjam na tela com estabilidade perfeita.

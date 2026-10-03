@@ -1,34 +1,16 @@
-# Lição — Escrever a proposal
+# Desafio — Elaboração Estruturada de Proposta de Pesquisa
 
-## Objetivos
+## 1. Objetivo do Desafio
+Redigir uma proposta formal de pesquisa de nível de mestrado (MSc-prep) estruturada em markdown no diretório de artefatos, definindo hipótese testável, dataset aberto e métrica Kappa.
 
-Entregar uma mini-proposal que passa a rubrica SPEC (pergunta, hipótese, dados, métrica, ética, timeline).
+## 2. Especificação Técnica e Formulação
+Crie ou preencha o artefato em `study-log/artifacts/research-proposal.md` contendo:
+- `paper_or_project: research-proposal`
+- `url: <URL permanente do dataset aberto utilizado>`
+- `what_reproduced: <Hipótese de pesquisa e pergunta experimental>`
+- `metrics: <Cohen's Kappa (κ) e acurácia mínima esperada>`
+- `limits: <Declaração de pesquisa não-clínica educacional>`
 
-## Passos
-
-1. Escolha **uma** pergunta binária MI (ou SSVEP eletivo) — não três.
-2. Fixe dados: preferir synth + 1 dataset OA citado; humano só com consentimento.
-3. Escreva pipeline em 5 caixas: epoch → filter → feature → clf → κ/CV.
-4. Declare anti-leak (split por trial/sujeito).
-5. Ethics: 5 bullets Belmont + “não overclaim”.
-6. Timeline: 4–8 semanas realistas para o *slice* (não a tese inteira).
-
-## Lab (entregável)
-
-Documento `proposal.md` com secções da rubrica. Inclua:
-- fórmula de κ e `p_e` para seu desenho
-- N trials planejado (ordem de grandeza) e por quê
-- 1 risco dual-use *literacy* (sem receita)
-
-## Checklist Sala
-
-- [ ] Pergunta falsificável
-- [ ] Métrica ≠ só accuracy
-- [ ] Ética explícita
-- [ ] Timeline não fantasia
-
-## Caderno (domínio)
-
-Escreva 1 página: (1) diagrama desta sala, (2) 3 números com unidade, (3) honesty note, (4) ligação à sala anterior e seguinte do PEDAGOGICAL path. Isto conta como Estuda completo antes da Sala.
-
-Para destravar o lab, abra [MOABB documentation](https://neurotechx.github.io/moabb/) e leia como o MOABB declara dataset e avaliação, para a proposta nomear dados abertos e κ como métrica primária.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que a métrica primária explicitada no artefato inclua o coeficiente Kappa ($\kappa$).
+- A pergunta de pesquisa deve ser quantitativa e passível de verificação experimental através de dados de séries temporais de EEG.

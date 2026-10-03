@@ -1,30 +1,14 @@
-# Lição — SSVEP elective
+# Desafio — Detecção de Picos Harmônicos em SSVEP
 
-## Objetivos
-Dominar paradigma o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a rotina de detecção de frequência em paradigma SSVEP, verificando se a densidade de potência na frequência alvo supera o limiar de magnitude em relação ao ruído de fundo.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica e Formulação
+Dado um dicionário de densidades espectrais `psd_dict` (onde as chaves são frequências em float/int e os valores são potências em $\mu\text{V}^2/\text{Hz}$), uma frequência alvo `target_freq` e um limiar escalar `threshold`:
+- Implemente a função `ssvep_detect(psd_dict, target_freq, threshold)`:
+  - Extraia a potência na frequência alvo $P_{\text{target}} = \text{psd\_dict.get(target\_freq, 0.0)}$.
+  - Retorne `True` se $P_{\text{target}} \ge \text{threshold}$, e `False` caso contrário.
 
-## Lab
-Explique em 6–10 linhas como paradigma aparece num pipeline MI offline ou online.
-
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [Zhu et al. SSVEP BCI review JNE 2010](https://doi.org/10.1088/1741-2560/7/4/041001) e leia a definição de SSVEP e a escolha por pico espectral no review de Zhu, para ssvep_detect devolver a frequência alvo e não a potência.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de lidar com a ausência da chave no dicionário retornando `False`.
+- Lembre-se: esta sala é uma matéria eletiva e não bloqueia a progressão obrigatória para o Mago Supremo.

@@ -1,57 +1,34 @@
-# Conceito — Online stub (janela → label → log)
+# Conceito — Arquitetura de Loop Online e Janelas Deslizantes
 
-## Loop
+O teste em loop online simulado (Online Stub) é o estágio de verificação de integração que emula o comportamento exato de uma sessão de BCI em tempo real sem depender de hardware físico ou voluntários humanos.
 
+## 1. A Dinâmica do Janelamento Deslizante (Sliding Window)
+Em tempo real, as predições de intenção do usuário são geradas a uma taxa periódica fixa determinada pelo passo da janela (step ou hop size):
+- **Comprimento da Janela ($W$):** Define a quantidade de histórico temporal utilizada para computar a potência de banda ou covariância (ex. $100\text{--}500\text{ ms}$).
+- **Passo / Deslocamento ($S$):** Define o intervalo entre sucessivas inferências (ex. $100\text{ ms} = 10\text{ predições por segundo}$).
+
+Para uma série temporal contínua com $T$ amostras, as coordenadas de início de cada janela são geradas pela progressão aritmética:
+$$\text{início}_k = k \times S, \quad \text{fim}_k = \text{início}_k + W$$
+Para todos os índices onde $\text{fim}_k \le T$.
+
+## 2. A Estrutura do Loop de Tempo Real
+O ciclo de execução contínua compreende:
 ```text
-window = buffer.latest(W)
-feat = features(window)
-label = clf(feat)          # ou policy
-log(timestamp, label, latency_ms)
+Ingestão de Amostras (Stream) 
+   → Atualização do Buffer Circular 
+   → Gatilho de Temporização (Step expirou)
+   → Extração da Janela Atual [T - W : T]
+   → Pré-Processamento Causal + Inferência
+   → Geração do Rótulo (Label) e Comando
+   → Registro em Log (Timestamp, Predição, Latência)
 ```
 
-Deadline: se `latency > budget`, conta **miss** (liga `nt-latency-budget`).
+## 3. Modos de Falha na Prática de Engenharia
+1. **Deriva Temporal do Loop (Clock Drift):** Usar `time.sleep()` fixo no loop em vez de sincronização baseada no número acumulado de amostras ingeridas, acumulando atraso em relação ao relógio de amostragem de hardware.
+2. **Índices de Janela Fora dos Limites:** Tentar acessar janelas maiores do que as amostras disponíveis no buffer circular durante os primeiros segundos de inicialização do sistema (cold start).
 
-## Emulator
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-checkpoint-paper`) formaliza a consolidação do percurso através de um módulo de reprodução e análise crítica de artigo científico seminal de BCI.
 
-`online_loop` / `mage emu online` — ensina a estrutura. Não é BCI clínico; não há sujeito.
-
-## Runa
-
-`rune-neuro-online` tipicamente desta sala (SPEC).
-
-## Honesty
-
-Offline κ alto ≠ online estável (jitter, underrun, concept drift).
-
-## Contadores
-
-- `n_windows`
-- `n_deadline_miss`
-- `p95_latency_ms`
-
-Passe a Sala se o emulator reporta coerência com o budget da task numérica.
-
-## Transição offline→online
-Reutilize o *mesmo* vetor de features do MVP; mude só a origem das janelas (arquivo → ringbuf). Evita “dois pipelines”.
-
-## Sense / decide / act (online)
-
-Mesmo no stub educacional:
-1. **Sense** — ler janela do ringbuf
-2. **Decide** — features + clf (ou threshold de banda)
-3. **Act** — log / comando simulado / feedback visual toy
-
-Se decide>budget, act atrasa e o usuário (mesmo sintético) vê feedback velho — closed-loop sofre (`nt-closed-loop-control`).
-
-## Contrato com offline
-Salve `clf` treinado offline; online só infere. Retreinar online sem protocolo = outro projeto (pesquisa).
-
-## Falhas a instrumentar
-timeout; exception em feature NaN; clock rewind; buffer resize errado. Cada uma vira teste em `nt-cs-realtime-testing`.
-
-## Síntese em 4 bullets
-- Ensina o loop operacional janela → feature → label → log, com miss quando a latência passa do budget.
-- O número a carregar é a latência em ms: 25 amostras a 250 Hz duram 100 ms; `sliding_windows` com janela 250 e hop 50 abre em (0, 250), (50, 300) e (100, 350).
-- Honesty: κ offline alto não é online estável; o stub não tem sujeito e não cobre jitter, underrun nem concept drift.
-- A sala seguinte no order é `nt-closed-loop-control`.
-
+## 5. Ponto de Destrave do Lab
+Para o estudo de arquiteturas de BCI online em código aberto, consulte a documentação e código do [BCILAB (Swartz Center for Computational Neuroscience)](https://sccn.ucsd.edu/wiki/BCILAB) e [OpenViBE Online Scenarios](http://openvibe.inria.fr/).

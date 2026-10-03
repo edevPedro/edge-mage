@@ -1,9 +1,17 @@
-# História — O limiar que não é um ritmo
+# História — O Falso Triunfo do Piscar de Olhos
 
-A bancada de artefatos entrega o trecho sintético `[10, −150, 20, 110]`, em unidades do vetor, não um traçado de sujeito. O guardião pede `flag_artifacts` com limiar 100: marque o índice onde o módulo passa de 100.
+Em uma apresentação de progresso em um centro de reabilitação motora, um grupo de bolsistas celebrava um resultado aparentemente espetacular: seu novo classificador de imagética motora havia alcançado 98.4% de acurácia na separação entre as classes de movimento imaginado da mão direita e repouso. O resultado superava os melhores benchmarks da literatura internacional.
 
-A aprendiz aponta o 10 “porque é o começo”. Errado. `|10|` fica, `|-150| = 150` cai no índice 1, `|20|` fica, `|110|` cai no índice 3. A lista é `[1, 3]`, não os valores, não os índices pares.
+O engenheiro de instrumentação do hospital, experiente em eletrofisiologia clínica, aproximou-se do osciloscópio digital que monitorava a linha de sinal bruta dos voluntários.
 
-Linha de rede, 50 ou 60 Hz, é outro artefato — não entra nesta conta. Rejeitar o trial extremo é higiene do pipeline; fingir que o pico é mu é como treinar o classificador em piscada. O synth continua sintético: limiar alto demais zera a lista, limiar 100 sem módulo absoluto esquece o −150.
+— O protocolo experimental de vocês apresenta um estímulo visual com contraste brilhante na tela quando o sujeito deve iniciar a imagética, correto? — perguntou ele.
 
-Fase F6, nt-artifacts: flag_artifacts devolve índices, não cópia do sinal. Limiar 100 com a lista da bancada tem de produzir exatamente dois índices; um a mais significa que você comparou o valor cru, não o módulo.
+Os pesquisadores confirmaram. O engenheiro pediu para carregar o traçado bruto temporal do canal frontal $Fp1$ e dos canais centrais $C3$ e $C4$.
+
+— Observem a escala vertical — apontou ele. — O sinal de EEG sensoriomotor autêntico varia entre $10$ e $40\ \mu\text{V}$. No momento exato em que a tela acende, o eletrodo frontal registra uma deflexão parabólica gigantesca de quase $300\ \mu\text{V}$, que se propaga por condução de volume até os eletrodos parietais e centrais. O voluntário involuntariamente pisca toda vez que a seta luminosa surge.
+
+O engenheiro explicou a biofísica do artefato: o globo ocular é um dipolo elétrico permanente, com a córnea positiva em relação à retina. Quando a pálpebra desce e sobe durante a piscada, ela atua como um condutor deslizante que desvia o campo elétrico do olho, injetando centenas de microvolts no couro cabeludo (Eletrooculograma - EOG).
+
+— O algoritmo de vocês não aprendeu imagética motora. Ele aprendeu a classificar se o voluntário piscou ou não — concluiu o engenheiro. — Se filtrarmos ou rejeitarmos os ensaios com amplitudes espúrias acima de $100\ \mu\text{V}$, a acurácia do modelo desaba para 54%.
+
+O grupo compreendeu a lição mais dura da neuroengenharia: em biopotenciais de microvolts, qualquer sistema de validação que não implemente rotinas estritas de detecção e rejeição de artefatos biológicos e ambientais é um gerador de ilusões estatísticas.

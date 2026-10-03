@@ -1,17 +1,14 @@
-# História — O Mistério da Amígdala Invisível
+# História — O Silêncio das Fontes Profundas
 
-Em um simpósio de tecnologia vestível, uma equipe de ciência de dados apresentava os resultados de um modelo preditivo. Eles alegavam prever surtos de ansiedade e pânico medindo a atividade elétrica direta da amígdala basolateral através de dois eletrodos de EEG colocados na testa dos voluntários.
+Em uma discussão de desenho de projeto para controle de BCI, um desenvolvedor sugere capturar a atividade da amígdala e do hipocampo — estruturas subcorticais profundas situadas a mais de sete centímetros da superfície craniana — utilizando um eletrodo posicionado no topo da cabeça ($Cz$).
 
-"O classificador atinge noventa por cento de acurácia no nosso conjunto de validação," afirmava o cientista de dados principal, apontando para gráficos coloridos de densidade espectral.
+O neurofisiologista do laboratório pega um compasso e traça as esferas concêntricas da cabeça no quadro:
+— No escalpo, nós enxergamos com clareza a atividade dos neurônios piramidais do córtex cerebral, situados a cerca de 1.5 a 2 centímetros dos eletrodos. Agora calcule a atenuação geométrica de uma fonte situada a 7 centímetros de profundidade.
 
-Uma neurocientista na primeira fila levantou a mão e pediu para examinar o modelo de propagação eletrostática subjacente.
+O desenvolvedor lembra-se da lei do dipolo: o potencial decai com o quadrado da distância ($V \propto 1/r^2$).
+Ele calcula a razão teórica de atenuação entre a fonte próxima ($r_{\text{near}} = 1.5\text{ cm}$) e a fonte profunda ($r_{\text{far}} = 7.0\text{ cm}$):
+$$\text{Razão de Atenuação} = \left( \frac{r_{\text{far}}}{r_{\text{near}}} \right)^2 = \left( \frac{7.0}{1.5} \right)^2 \approx 21.78$$
 
-"A amígdala é uma estrutura nuclear profunda, situada no lobo temporal medial a cerca de sete centímetros e meio de profundidade em relação aos seus eletrodos frontais," explicou ela. "Enquanto isso, os giros corticais frontais estão a apenas um centímetro e meio da superfície do escalpo."
+— Apenas a distância geométrica pura reduz o sinal da amígdala por um fator de mais de vinte vezes em relação a uma fonte cortical superficial — demonstra o neurofisiologista. — E quando consideramos que a corrente da fonte profunda é borrada isotropicamente em todas as direções pela condução de volume do líquor e do crânio, a amplitude resultante no eletrodo de escalpo cai para menos de 0.1 microvolt — completamente soterrada pelo ruído térmico Johnson de 1 microvolt do próprio eletrodo.
 
-Ela pegou um caderno e calculou a razão geométrica de decaimento dipolar: $(1,5 / 7,5)^2 = 0,04$.
-
-"Mesmo se a amígdala disparasse com a mesma sincronia e momento dipolar de uma área motora inteira — o que ela não faz, pois seus núcleos não possuem células piramidais alinhadas em paliçada —, o potencial que chegaria ao seu eletrodo de testa seria reduzido a quatro por cento," demonstrou ela. "Um sinal que seria de vinte e cinco microvolts no córtex superficial vira um microvolt na testa. O ruído miográfico basal dos músculos faciais e o ruído térmico do amplificador somam mais de um microvolt e meio. Sua relação sinal-ruído é negativa: menos três vírgula cinco decibéis."
-
-O cientista de dados olhou para a equação em silêncio.
-
-"O que seu algoritmo aprendeu," concluiu a pesquisadora, "não foi a amígdala profunda. Foi o microtremor muscular do músculo frontalis quando o sujeito tensiona a face. A física dos campos elétricos não perdoa atalhos estatísticos."
+O desenvolvedor compreende a limitação biofísica inegociável: o EEG não-invasivo de escalpo é uma ferramenta excelente para decodificar dinâmicas corticais superficiais (como os giros pré e pós-centrais do córtex motor), mas é fisicamente cego para dinâmicas subcorticais profundas sem eletrodos invasivos estereotácticos (sEEG).

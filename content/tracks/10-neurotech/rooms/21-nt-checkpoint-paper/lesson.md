@@ -1,14 +1,16 @@
-# Lição — Ritual módulo de paper
+# Desafio — Registro Estruturado de Checkpoint de Paper
 
-CP-MI review map **ou** CP-Riemann figure (SPEC §7). Campo obrigatório: `url`.
+## 1. Objetivo do Desafio
+Elaborar a documentação de evidência técnica baseada em um artigo científico de BCI de acesso aberto, registrando formalmente a URL permanente, os parâmetros de pipeline e os limites biofísicos do estudo.
 
-Escolha um caminho e documente o que reproduziu (mapa de pipeline / figura SPD toy).
+## 2. Especificação Técnica e Formulação
+Crie ou preencha o artefato em `study-log/artifacts/checkpoint-paper.md` contendo:
+- `paper_or_project: paper`
+- `url: <URL ou DOI do artigo em acesso aberto>`
+- `what_reproduced: <Resumo do pipeline de sinal analisado>`
+- `metrics: <Acurácia ou Cohen's Kappa relatado no estudo>`
+- `limits: <Declaração explícita de que se trata de estudo não-clínico educacional>`
 
-Para destravar o lab, abra [Singh et al. MI-BCI review (Sensors 2021, PMC8003721) — CP-MI map](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) e leia o mapa de estágios do pipeline em Singh, para o campo url do artefato apontar a um resource real e não a um resumo sem fonte.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de que a URL fornecida seja válida e comece com `http://` ou `https://`.
+- Não inclua declarações clínicas fictícias: o artefato deve refletir o conteúdo genuíno de um estudo experimental real.

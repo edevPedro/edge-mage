@@ -1,30 +1,30 @@
-# Lição — Testes realtime
+# Desafio — Análise de Jitter Temporal e Violação de Prazos
 
-## Objetivos
+## 1. Objetivo do Desafio
+Implementar a rotina analítica de diagnóstico temporal para processar um vetor de marcas de tempo (*timestamps*), computando o jitter absoluto médio e o número de violações que ultrapassaram a tolerância estipulada.
 
-Desenhar 3 testes de stream; definir métricas underrun/deadline.
+## 2. Especificação Técnica
+Implemente a função `timing_analysis(timestamps_s, target_interval_s=0.004, max_jitter_s=0.001)`:
+- Receba uma lista de marcas temporais contínuas em segundos `timestamps_s`.
+- Se a lista tiver menos de 2 elementos, retorne `(0.0, 0)`.
+- Para cada par consecutivo de timestamps $(t_i, t_{i+1})$:
+  - Calcule o intervalo decorrido: $\Delta t = t_{i+1} - t_i$.
+  - Calcule o erro absoluto em relação ao intervalo nominal:
+    $$e_i = |\Delta t - target\_interval\_s|$$
+  - Acumule o erro total para a média.
+  - Se $e_i > max\_jitter\_s$, incremente o contador de violações (`misses_count`).
+- Retorne a tupla `(mean_jitter, misses_count)` onde `mean_jitter` é a média aritmética dos erros absolutos sobre todos os intervalos válidos.
 
-## Passos
+## 3. Exemplo de Referência
+```python
+ts = [0.0, 0.004, 0.008, 0.014]
+# Intervalos: 0.004 (erro 0.0), 0.004 (erro 0.0), 0.006 (erro 0.002)
+# Erro médio: (0.0 + 0.0 + 0.002) / 3 = 0.0006666...
+# Misses (> 0.001): 1 (o terceiro intervalo)
+j, m = timing_analysis(ts, 0.004, 0.001)
+assert m == 1
+assert abs(j - 0.002 / 3.0) < 1e-5
+```
 
-1. Pseudo-teste: push 250 samples/s, consumer a 1 janela/40 ms — detectar underrun.
-2. Assert: p95 latency < deadline.
-3. Relacione leak de CV (offline) vs bug de timing (online) — falhas diferentes.
-
-## Lab
-
-Escreva um checklist de CI para `mage emu online`.
-
-## Checklist
-
-- [ ] Underrun definido
-- [ ] Deadline testável
-- [ ] Pronto para filter-bank / stream
-
-Para destravar o lab, abra [Varoquaux et al. — CV pitfalls](https://doi.org/10.1016/j.neuroimage.2016.10.038) e leia o aviso de Varoquaux contra avaliação que vaza, para timing_analysis contar miss no intervalo e não “ajustar” o relógio no teste.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 4. Critérios de Validação e Armadilhas
+- Certifique-se de dividir pelo número de intervalos ($N - 1$), e não pelo número de timestamps ($N$).

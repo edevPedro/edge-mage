@@ -1,9 +1,18 @@
-# História — A Frequência Fantasma de Duzentos Hertz
+# História — O Fantasma que Rebatia no Espelho
 
-Em um teste de bancada de um headset de BCI experimental conectado a um conversor analógico-digital operando a 250 Hz (frequência de Nyquist de 125 Hz), o desenvolvedor do pipeline de DSP observa um pico espectral misterioso em 50 Hz durante a análise de densidade de potência espectral via periodograma de Welch.
+Na bancada de instrumentação de um novo protótipo de eletroencefalógrafo digital, um desenvolvedor conecta o sinal de saída de um pré-amplificador diretamente à entrada analógica de um conversor ADC amostrando a uma taxa fixa de 160 Hz. No monitor de espectro digital, o desenvolvedor identifica uma oscilação contínua e forte em exatamente 20 Hz.
 
-O time suspeita imediatamente de interferência da rede elétrica européia ou de aterramento precário. No entanto, o equipamento está funcionando inteiramente a bateria, desconectado de qualquer tomada AC.
+— Temos um ritmo beta nítido em 20 Hz — comemora o novato.
 
-O engenheiro de hardware traz o analisador de espectro de bancada e descobre que o regulador chaveado (DC-DC buck converter) que alimenta a interface Bluetooth na mesma placa está operando com ripple de comutação em 200 Hz. Sem um filtro analógico passa-baixas na entrada do ADC, a frequência de 200 Hz estava sendo rebatida pelo espelho de Nyquist: $|200 - 250| = 50\text{ Hz}$. O chaveamento do regulador virou um fantasma digital indistinguível das oscilações gama lentas.
+O engenheiro sênior de hardware aproxima-se com um osciloscópio de bancada de alta frequência e conecta a ponta de prova diretamente no pino analógico de entrada do ADC:
+— Olhe para o osciloscópio analógico — aponta o sênior. — Não existe nenhuma oscilação biológica em 20 Hz na entrada. O que existe é uma interferência eletromagnética espúria de 140 Hz induzida por uma fonte chaveada de computador próxima ao paciente.
 
-O desenvolvedor aprende que o filtro anti-aliasing analógico antes do ADC não é opcional: ele calcula a atenuação necessária em 125 Hz e projeta um corte em 40 Hz, silenciando o ripple de alta frequência antes da amostragem digital.
+O engenheiro sênior desenha o eixo de frequências de Nyquist no quadro:
+— A sua taxa de amostragem é $f_s = 160\text{ Hz}$. Pelo Teorema de Nyquist-Shannon, a frequência máxima que o conversor pode representar sem ambiguidade é a frequência de Nyquist:
+$$f_{\text{Nyquist}} = \frac{f_s}{2} = 80\text{ Hz}$$
+Quando um sinal de frequência superior a Nyquist ($f_{\text{sinal}} = 140\text{ Hz}$) atinge o conversor analógico-digital sem filtragem analógica prévia, o processo de amostragem no tempo discretizado rebate essa frequência para dentro da banda base útil:
+$$f_{\text{alias}} = |f_s - f_{\text{sinal}}| = |160 - 140| = 20\text{ Hz}$$
+
+— O seu "ritmo beta de 20 Hz" é uma ilusão matemática destrutiva: é o fantasma rebatido do ruído de 140 Hz da fonte chaveada — alerta o sênior. — E o mais grave: uma vez que o sinal foi digitalizado com aliasing, é matematicamente impossível distinguir o sinal biológico autêntico do ruído rebatido por qualquer filtro digital subsequente! O filtro anti-aliasing deve ser posicionado **antes** do conversor, no domínio analógico.
+
+A equipe instala um filtro analógico passa-baixas ativo de 4ª ordem antes do ADC (`check_aliasing`). O fantasma de 20 Hz desaparece, restabelecendo a fidelidade e a integridade da medição biológica.

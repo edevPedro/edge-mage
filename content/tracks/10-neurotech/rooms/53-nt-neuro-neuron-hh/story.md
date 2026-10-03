@@ -1,9 +1,15 @@
-# História — O passo que dispara e o que não é EEG
+# História — A Ilusão do Spike no Escalpo
 
-HH fica como mapa mental: sódio sobe, potássio repolariza, limiar regenera. A Sala não integra o HH completo. Integra um LIF explícito, Euler, `dt = 0,001 s`, `τ = 20 ms`, `R = 10`, repouso −70 mV, limiar −55 mV.
+Um engenheiro de software sênior recém-contratado por uma equipe de neuroengenharia acabara de debugar um modelo computacional de Hodgkin-Huxley em C++. Encantado com a precisão dos potenciais de ação simulados — picos esguios de 100 mV com duração de apenas um milissegundo —, ele propôs imediatamente à liderança técnica uma arquitetura revolucionária:
 
-`v_next = v + (dt/τ) * (−(v − v_rest) + R * I)`. Em `v = −70` e `I = 0` o incremento é zero: devolve `(−70, False)`. Em `v = −56` e `I = 10`, o termo entre parênteses é `−(−56 − (−70)) + 100 = 86`. Vezes `0,001/0,020 = 0,05` dá `+4,3`. `−56 + 4,3 = −51,7`, que cruza −55: a função devolve o reset `(−70, True)`, não o −51,7.
+— "Se detectarmos os disparos individuais de cada neurônio motor no sinal de EEG, podemos decodificar a digitação do usuário tecla por tecla, sem precisar de janelas temporais de meio segundo."
 
-Esse spike de brinquedo não é um potencial de escalpo. EEG é população filtrada pelo volume. A honesty da sala é exatamente essa: sem geometria, sem rede HH, sem single-unit no eletrodo de superfície.
+O neurofisiologista do laboratório pousou a caneca de café na bancada e sorriu com paciência:
 
-Fase F4, nt-neuro-neuron-hh: o primeiro passo fica em −70 mV sem spike; o segundo reseta a −70 mV com spike True. Guardar −51,7 é esquecer o limiar. EEG de escalpo não é esse AP.
+— "Seu modelo de Hodgkin-Huxley é matematicamente elegante para o axônio gigante de lula de 1952. Mas traga o eletrodo de superfície até o couro cabeludo. O que você enxerga no osciloscópio?"
+
+O engenheiro olhou para o traçado: uma oscilação contínua, ruidosa, de meros trinta microvolts pico a pico. Nenhum spike afiado de um milissegundo era visível.
+
+— "Onde foram parar os spikes?", perguntou o engenheiro.
+
+— "Pense na física de condutores de volume e na escala temporal", explicou o pesquisador. "Um potencial de ação dura um milissegundo e viaja em axônios com orientações geométricas dispersas. Seus campos elétricos quadrupolares decaem com a terceira potência da distância e se cancelam quase perfeitamente no espaço extracelular. O que chega ao escalpo não é o disparo isolado de um neurônio, mas a soma coerente de centenas de milhares de correntes pós-sinápticas em neurônios piramidais alinhados paralelamente. Para entender a dinâmica celular sem cair na armadilha de achar que o EEG lê spikes individuais, você vai integrar o modelo mínimo de Euler de um neurônio Leaky Integrate-and-Fire. E vai entender onde a abstração celular termina e onde o sinal populacional de BCI começa."

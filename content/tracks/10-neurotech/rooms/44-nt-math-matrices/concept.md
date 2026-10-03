@@ -1,35 +1,27 @@
-# Conceito — Matrizes, Transformações Lineares e Covariância Amostral
+# Conceito — Matrizes em Neuroengenharia, Transformações Lineares e Covariância Amostral
 
-Em processamento de sinais neurais, matrizes desempenham dois papéis fundamentais:
-1. **Transformações espaciais instantâneas:** Uma matriz $A \in \mathbb{R}^{M \times C}$ mapeia $C$ canais de eletrodos em $M$ sinais derivados ($y = Ax$), como montagens bipolares ou Common Average Reference (CAR).
-2. **Representação estatística da dinâmica cortical:** A matriz de covariância espacial $\Sigma \in \mathbb{R}^{C \times C}$ quantifica a dispersão conjunta e o acoplamento elétrico entre todos os pares de eletrodos ao longo de uma janela temporal de $T$ amostras.
+A representação matricial é a linguagem canônica para descrever séries temporais multicanal e conectividade espacial em BCI.
 
-## 1. O Fundamento Matemático do Lab
+## 1. A Matriz de Dados Multicanal
+Um ensaio (epoch) de EEG com $C$ canais e $T$ amostras temporais é estruturado na matriz $X \in \mathbb{R}^{C \times T}$:
+$$X = \begin{bmatrix} x_{1,1} & x_{1,2} & \dots & x_{1,T} \\ x_{2,1} & x_{2,2} & \dots & x_{2,T} \\ \vdots & \vdots & \ddots & \vdots \\ x_{C,1} & x_{C,2} & \dots & x_{C,T} \end{bmatrix}$$
+Cada linha representa a série temporal de um eletrodo; cada coluna representa a captura espacial instantânea do escalpo.
 
-### Multiplicação Matriz-Vetor ($y = Ax$)
-Se $x \in \mathbb{R}^C$ é o vetor de tensões em um instante $t$, a $i$-ésima saída transformada é o produto interno da $i$-ésima linha de $A$ por $x$:
-$$y_i = \sum_{j=1}^C A_{ij} x_j$$
-
-### Matriz de Covariância Multicanal Amostral
-Dada uma matriz de dados centrada $\tilde{X} \in \mathbb{R}^{C \times T}$, onde cada linha corresponde a um canal com média temporal subtraída ($\mu_c = \frac{1}{T}\sum_{t=1}^T X_{c, t}$):
-$$\tilde{X}_{c, t} = X_{c, t} - \mu_c$$
-
-A estimativa não enviesada da covariância amostral entre o canal $i$ e o canal $j$ é:
-$$\Sigma_{ij} = \frac{1}{T - 1} \sum_{t=1}^T \tilde{X}_{i, t} \tilde{X}_{j, t} = \left( \frac{1}{T - 1} \tilde{X} \tilde{X}^T \right)_{ij}$$
-
-A diagonal principal $\Sigma_{ii}$ contém a variância temporal de cada eletrodo (energia da banda), enquanto os elementos fora da diagonal $\Sigma_{ij}$ refletem a correlação cruzada induzida pela condução de volume e sincronia neural.
-
-## 2. Unidades e Estrutura Geométrica
-- **Sinal temporal ($X_{c, t}$):** $\mu\text{V}$ (microvolts).
-- **Variância e covariância ($\Sigma_{ij}$):** $\mu\text{V}^2$ (microvolts ao quadrado).
-- **Propriedade fundamental:** $\Sigma$ é simétrica ($\Sigma = \Sigma^T$) e Semidefinida Positiva (SPD) se $T \ge C$ e os canais forem linearmente independentes.
+## 2. A Matriz de Covariância Espacial Amostral
+Assumindo que os sinais tenham média temporal zero (sinal centralizado após filtragem passa-faixa), a matriz de covariância espacial $\Sigma \in \mathbb{R}^{C \times C}$ é dada por:
+$$\Sigma = \frac{1}{T - 1} X X^T$$
+Propriedades fundamentais da covariância:
+- **Simetria:** $\Sigma_{i, j} = \Sigma_{j, i}$.
+- **Elementos da Diagonal ($\Sigma_{i, i}$):** Representam a variância (potência total) do canal $i$.
+- **Elementos Fora da Diagonal ($\Sigma_{i, j}$):** Representam a covariância mútua entre os canais $i$ e $j$.
+- **Traço ($\text{tr}(\Sigma)$):** Soma das variâncias de todos os eletrodos, quantificando a energia total do campo elétrico capturado.
 
 ## 3. Modos de Falha na Prática de Engenharia
-1. **Esquecer de Centrar os Dados:** Se a média temporal $\mu_c$ (offset DC do eletrodo ou deriva de potencial) não for removida antes do produto externo, o termo $\frac{1}{T-1} X X^T$ não representará a variância, mas sim a potência média total contaminada por offset contínuo, gerando covariâncias falsamente infladas.
-2. **Subamostragem Crítica ($T < C$):** Quando a janela temporal tem menos amostras do que o número de canais ($T < C$), a matriz empírica $\Sigma$ é estritamente singular (posto $< C$, determinante zero). Nenhuma rotina de inversão clássica funcionará sem regularização por shrinkage.
+1. **Divisão por $T$ em vez de $T - 1$:** Introduzir um viés sistemático na estimativa de covariância amostral em janelas curtas.
+2. **Incompatibilidade de Dimensões:** Multiplicar $X^T X$ (que gera uma matriz $T \times T$ de correlação temporal massiva) em vez de $X X^T$ (que gera a matriz $C \times C$ de covariância espacial desejada).
 
 ## 4. O que a Próxima Sala Assume
-A sala seguinte ([`nt-math-eigen`](file:///Users/epedro/eCodes/edevs/edge-mage/content/tracks/10-neurotech/rooms/45-nt-math-eigen/room.yaml)) assume que você tem uma matriz $\Sigma$ simétrica $2 \times 2$ válida para extrair autovalores e autovetores via power iteration.
+A próxima sala (`nt-math-eigen`) decompõe essas matrizes de covariância em autovalores e autovetores através do método da iteração de potência (Power Iteration).
 
 ## 5. Ponto de Destrave do Lab
-Para sanar dúvidas de alinhamento dimensional em produtos matriciais ou na formulação da geometria Riemanniana sobre matrizes SPD, consulte [NumPy matmul](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html) e o paper pioneiro de [Barachant et al. (2011, DOI 10.1109/TBME.2011.2172210)](https://doi.org/10.1109/TBME.2011.2172210).
+Consulte o guia de álgebra linear matricial de [Strang (Linear Algebra and Its Applications, Cengage Learning)](https://math.mit.edu/~gs/).

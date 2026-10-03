@@ -1,78 +1,25 @@
-# Conceito — SSVEP (eletivo)
-Estimulação visual periódica → picos em f e harmônicos. Zhu et al. DOI. Não obrigatório ao Supremo path.
+# Conceito — Potenciais Evocados Visuais de Estado Estável (SSVEP) e Análise Harmônica
 
-## Por que está no caminho MSc-prep
-Este tópico (SSVEP elective) ancora o pilar: sem ele, salas à frente viram procedimentos sem modelo mental.
+O SSVEP é um paradigma exógeno de BCI baseado na resposta de arrasto eletrofisiológico do córtex visual a estímulos luminosos periódicos.
 
-## Erros comuns
-1. Memorizar buzzword sem unidade / equação / contraexemplo.
-2. Misturar escala (single-trial vs sujeito vs população).
-3. Overclaim a partir de synth ou N pequeno.
+## 1. Biofísica do SSVEP
+Quando o sistema visual é estimulado por uma fonte intermitente piscando a uma frequência $f_0$ (tipicamente na faixa de $8\text{--}30\text{ Hz}$):
+- Os potenciais pós-sinápticos em V1 e áreas extraestriadas sincronizam-se na frequência fundamental $f_0$.
+- Devido à não-linearidade da transdução retiniana e do circuito cortical, harmônicos de ordem superior ($2 f_0, 3 f_0, \dots$) aparecem com amplitudes mensuráveis no escalpo occipital ($Oz, O1, O2$).
 
-## Exercícios mentais
-- Defina paradigma em uma frase.
-- Dê um contraexemplo onde ignorar isto quebra κ ou SNR.
-- Cite uma sala vizinha que depende desta.
+## 2. Métodos de Detecção Espectral
+1. **Detecção por Razão Espectral (Signal-to-Noise Ratio - SNR):**
+   Compara-se a potência na frequência de interesse $P(f_0)$ contra a média das frequências vizinhas $P_{\text{noise}}$:
+   $$\text{SNR}(f_0) = \frac{P(f_0)}{\frac{1}{2\Delta f} \left[ \int_{f_0 - \Delta f}^{f_0 - \delta} P(f)df + \int_{f_0 + \delta}^{f_0 + \Delta f} P(f)df \right]}$$
+   Se a potência relativa superar um limiar predefinido, a classe correspondente é ativada.
+2. **Análise de Correlação Canônica (CCA):** Método multi-canal avançado que encontra combinações lineares espaciais que maximizam a correlação entre os sinais de EEG e ondas senoidais puras de referência nas frequências dos alvos.
 
-## Leitura
-Use os resources do `room.yaml` desta sala; priorize DOI/PMC já listados.
+## 3. Modos de Falha na Prática de Engenharia
+1. **Fadiga Visual e Risco de Fotossensibilidade:** Estímulos de alta luminância abaixo de 15 Hz podem causar cansaço ocular rápido e representam risco formal de desencadear crises em indivíduos com epilepsia fotossensível (triagem médica obrigatória).
+2. **Harmônicos Compartilhados:** Utilizar alvos em $10\text{ Hz}$ e $20\text{ Hz}$, onde o 2º harmônico do primeiro confunde-se com a frequência fundamental do segundo.
 
+## 4. O que a Próxima Sala Assume
+A próxima sala (`nt-fbcsp-bakeoff`) é a eletiva de comparação competitiva (bake-off) entre Filter Bank CSP e Classificadores Riemannianos no mesmo dataset.
 
-## Extensão MSc-prep (foundation → advanced)
-
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
-
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
-
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
-
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
-
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 5. Ponto de Destrave do Lab
+Consulte a revisão abrangente de SSVEP em [Zhu et al. (IEEE Trans Biomed Eng 2010, High-speed BCI based on SSVEP)](https://doi.org/10.1109/TBME.2010.2041352) e [Lin et al. (J Neural Eng 2006)](https://doi.org/10.1088/1741-2560/3/4/007).

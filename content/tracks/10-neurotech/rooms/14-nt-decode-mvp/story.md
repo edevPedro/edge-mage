@@ -10,9 +10,9 @@ O engenheiro de aprendizado de máquina aproximou-se da tela e abriu o algoritmo
 
 "Em conjuntos pequenos de calibração de EEG," disse o sênior, "a matriz amostral empírica subestima a variância das direções ortogonais e sofre com instabilidade extrema. Você não deve inventar números arbitrários; você aplica regularização de encolhimento, o *shrinkage*."
 
-Ele pegou a matriz de covariância empírica $\Sigma$ e adicionou uma fração da matriz identidade proporcional ao traço médio: $\Sigma_{\text{reg}} = (1 - \gamma)\Sigma + \gamma (\text{tr}(\Sigma)/2) \mathbf{I}$, com $\gamma = 0.1$.
+Ele pegou a matriz de covariância empírica $\Sigma$ e adicionou uma fração da matriz identidade proporcional ao traço médio: $\Sigma_{	ext{reg}} = (1 - \gamma)\Sigma + \gamma (	ext{tr}(\Sigma)/2) \mathbf{I}$, com $\gamma = 0.1$.
 
-O determinante da matriz estabilizou-se instantaneamente longe de zero. Ao calcular o vetor de pesos ótimo $w = \Sigma_{\text{reg}}^{-1}(\mu_1 - \mu_0)$ e o bias bayesiano, os pesos assumiram magnitudes físicas coerentes, com polaridades opostas para C3 e C4.
+O determinante da matriz estabilizou-se instantaneamente longe de zero. Ao calcular o vetor de pesos ótimo $w = \Sigma_{	ext{reg}}^{-1}(\mu_1 - \mu_0)$ e o bias bayesiano, os pesos assumiram magnitudes físicas coerentes, com polaridades opostas para C3 e C4.
 
 No teste independente dos ensaios seguintes, o classificador acertou as intenções motoras com clareza matemática.
 

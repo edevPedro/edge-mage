@@ -1,6 +1,9 @@
-# Lição — Condução de Volume e Borrão Espacial
+# Desafio — Condução de Volume e Borrão Espacial
 
-## 1. Condução de Volume no Modelo Esférico Concéntrico
+## 1. Objetivo do Desafio
+Compreender o efeito de difusão de corrente pelo crânio e aplicar critérios de resolução espacial no escalpo.
+
+## 2. Condução de Volume no Modelo Esférico Concéntrico
 A cabeça humana é modelada na eletrofisiologia como um condutor de volume multicamadas (tipicamente 3 ou 4 esferas concêntricas: cérebro, líquor, crânio e couro cabeludo).
 
 1. **A Descontinuidade do Crânio**:

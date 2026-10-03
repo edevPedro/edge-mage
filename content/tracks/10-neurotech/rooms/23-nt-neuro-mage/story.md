@@ -1,11 +1,15 @@
-# História — O Portal do Círculo Neural
+# História — A Consagração do Neuro Mage
 
-Na câmara de transição do laboratório de neuroengenharia, o aprendiz deparou-se com o grande portal de verificação do Neuro Mage. As três runas fundamentais conquistadas nas salas anteriores — a runa de aquisição física do sinal, a runa de decodificação espacial e a runa de streaming em tempo real — repousavam sobre a bancada de análise.
+No grande auditório de apresentações técnicas do centro de engenharia neural, os pesquisadores e engenheiros reúnem-se para a avaliação do primeiro marco integrador do percurso: a ascensão a Neuro Mage. O candidato não precisa apresentar teorias abstratas; ele deve demonstrar a operação de ponta a ponta do sistema sob condições rigorosas de auditoria.
 
-Para destravar o título intermediário de Neuro Mage, o protocolo exigia mais do que testes automatizados de código passando em tela: exigia um memorial formal de engenharia comprovando a integridade de um loop fechado ponta a ponta.
+Na tela principal, a telemetria do sistema exibe o fluxo contínuo de dados:
+- O conversor sintético transmite pacotes de quatro canais de biopotenciais a 250 Hz.
+- O buffer circular organiza os dados em janelas deslizantes sem perder uma única amostra.
+- O banco de filtros passa-faixa isola as frequências de $8\text{ a }24\text{ Hz}$, rejeitando interferência de 60 Hz.
+- O classificador linear regularizado decodifica as intenções de movimento com Cohen's Kappa $\kappa \ge 0.50$.
+- O log de eventos registra que o ciclo completo de sensoriamento, cálculo e decisão opera consistentemente em menos de 100 milissegundos — bem abaixo do deadline de 150 ms.
 
-"Muitos tentam cruzar este portal com código copiado e métricas infladas," advertiu a guardiã do sistema. "O validador automatizado rejeitará qualquer submissão que não explicite a origem honesta dos dados, o coeficiente Kappa ajustado pelo nível do acaso, o limite de latência física e as salvaguardas éticas do protocolo."
+O comitê avaliador examina os artefatos depositados no repositório:
+— O título de Neuro Mage não é concedido por acumulação passiva de leitura — declara a coordenadora do programa. — Ele exige a união comprovada de duas forças: o rigor científico de replicação de evidências e o domínio técnico da implementação em tempo real. O candidato demonstrou que compreende a biofísica do escalpo, domina a álgebra linear de covariâncias e projeta sistemas determinísticos sob restrições reais de latência.
 
-O aprendiz sentou-se diante do terminal e redigiu o artefato em `study-log/artifacts/neuro-mage.md`. Ele documentou a cadeia de filtros biquads causais sintonizados em dez hertz, o discriminante regularizado com encolhimento para matrizes de covariância, a latência de malha fechada medida em quarenta e dois milissegundos — bem abaixo do teto de cento e cinquenta milissegundos —, e a conformidade ética estrita sem claims clínicos.
-
-Ao executar o comando de validação, os pinos de auditoria verificaram os quatro parâmetros quantitativos. O sistema retornou aprovação unânime, gravando a insígnia de Neuro Mage no perfil do desenvolvedor. A trilha para as fases avançadas de pesquisa estava formalmente aberta.
+A auditoria de software confirma a validação de todas as rotinas. O selo do Neuro Mage é registrado no perfil do engenheiro, abrindo os portões para as fases avançadas de estatística inferencial, projeto de pesquisa independente e a marcha em direção ao Mago Supremo.

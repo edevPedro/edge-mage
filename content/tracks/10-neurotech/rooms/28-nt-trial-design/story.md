@@ -1,9 +1,15 @@
-# História — A sequência que denunciou o bloco
+# História — A Armadilha da Sequência Repetida
 
-O desenho experimental mente quando uma classe ocupa a sessão inteira. O guardião entrega os rótulos `[0, 1, 1, 1, 0, 1]` e pede `max_streak`: o maior número de repetições consecutivas do mesmo rótulo.
+Em um experimento de calibração de BCI motora, um pesquisador desenhou o protocolo de estimulação visual apresentando primeiro 20 ensaios consecutivos da mão direita e, em seguida, 20 ensaios consecutivos da mão esquerda. Ao treinar um classificador linear, a acurácia no conjunto de teste atingiu impressionantes 91%.
 
-A aprendiz conta todos os 1 e diz 4. Errado — há um 0 no meio. A corrida mais longa é três 1 seguidos; o 1 final é outra corrida, de comprimento 1. Resposta: 3. No controle `[0, 1, 0, 1]` toda corrida tem comprimento 1.
+No dia seguinte, ao tentar utilizar o mesmo modelo decodificador com classes sorteadas aleatoriamente, a acurácia desmoronou para 48%.
 
-Esse 3 é o alarme de viés de ordem, não uma acurácia. Classes muito desbalanceadas pedem desenho balanceado ou métrica que não seja accuracy crua. Markers alinhados ao stream é que permitem cortar o trial; sem eles o streak nem se calcula. Nenhum rótulo aqui é um sujeito.
+O coordenador do laboratório abriu os traçados temporais e apontou o erro clássico de desenho experimental:
+— Em EEG, a impedância dos eletrodos sofre deriva eletroquímica contínua ao longo do tempo (drift de baseline), a fadiga cognitiva aumenta e a temperatura da sala varia — explica o coordenador. — Quando você coloca 20 ensaios da mesma classe em bloco contínuo, a média do sinal no início do experimento é completamente diferente da média no final do experimento devido à deriva física, e não à imagética. O classificador não aprendeu a intenção motora: aprendeu o horário em que o ensaio ocorreu!
 
-Fase F7, nt-trial-design: max_streak da sequência com três 1 seguidos vale 3; a alternada vale 1. Contar a classe majoritária em vez da corrida consecutiva esconde o bloco que enviesa o decode.
+Ele detalhou as regras fundamentais do desenho de ensaios (Trial Design):
+1. **Pseudoaleatorização com Balanceamento em Blocos:** As classes devem ser sorteadas aleatoriamente dentro de pequenos blocos balanceados (por exemplo, blocos de 4 ensaios contendo exatamente 2 de cada classe em ordem sorteada).
+2. **Controle de Sequência Máxima (Max Streak):** Nenhuma classe pode se repetir mais do que três vezes consecutivas, evitando que o voluntário antecipe o próximo estímulo ou entre em modo automático.
+3. **Intervalo Inter-Ensaios Variável (Jittered ITI):** O tempo de repouso entre ensaios deve variar aleatoriamente entre 1.5 e 2.5 segundos para impedir que o ritmo do relógio seja antecipado pelo córtex visual (potencial de prontidão de Bereitschaftspotential).
+
+O pesquisador implementa a função `max_streak` para auditar a sequência de marcadores de evento. O novo protocolo de calibração elimina os vieses de deriva e garante que o classificador aprenda exclusivamente padrões neurais genuínos.

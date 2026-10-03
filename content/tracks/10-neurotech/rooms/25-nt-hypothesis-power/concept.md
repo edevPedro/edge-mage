@@ -1,66 +1,33 @@
-# Conceito — Hipótese, potência, múltiplos testes
+# Conceito — Poder Estatístico, Tamanho de Efeito (d de Cohen) e Múltiplos Testes
 
-- **H0 / H1:** declare o contraste *antes* de olhar os dados.
-- **α:** taxa de falso positivo sob H0 (clássico 0,05) — sobe com fishing.
-- **Potência (1−β):** probabilidade de detectar efeito real; sobe com N e tamanho de efeito.
-- **Correção:** Bonferroni / FDR quando há família de testes.
+A busca por padrões em séries temporais de alta densidade neural expõe o pesquisador ao risco massivo de inflação de falsos positivos devido à multiplicidade de testes.
 
+## 1. A Inflação do Erro Tipo I em Comparações Múltiplas
+Ao realizar $M$ testes estatísticos independentes, cada um ao nível de significância $\alpha$:
+$$\text{Probabilidade de pelo menos um falso positivo} = 1 - (1 - \alpha)^M$$
+Para $M = 20$ testes a $\alpha = 0.05$, a probabilidade de falso alarme sobe para $1 - 0.95^{20} \approx 64\%$. Para $M = 100$, ela atinge $99.4\%$.
 
-## Extensão MSc-prep (foundation → advanced)
+### Correção de Bonferroni
+Ajusta o limiar de rejeição para cada teste individual de forma estrita:
+$$\alpha_{\text{Bonferroni}} = \frac{\alpha}{M}$$
+Garante que a taxa de erro global da família de testes (FWER) permaneça $\le \alpha$.
 
-### Modelo mental
-1. **Definir** a grandeza / estrutura com unidades ou assinatura.
-2. **Calcular** um exemplo numérico mínimo (mesmo que toy).
-3. **Falhar com honestidade** — listar o que o modelo *não* captura (synth ≠ fisiologia; stub ≠ silício; κ sem chance level ≠ evidência).
-4. **Ligar** à sala seguinte do mapa pedagógico (portal → pilares → espinha → online → research).
+## 2. Tamanho de Efeito: O $d$ de Cohen
+O valor-p informa apenas se um efeito é improvável sob a hipótese nula, mas não sua relevância prática. O tamanho de efeito $d$ de Cohen padroniza a magnitude da diferença entre duas médias:
+$$d = \frac{\mu_1 - \mu_2}{s_{\text{pooled}}}, \quad s_{\text{pooled}} = \sqrt{\frac{s_1^2 + s_2^2}{2}}$$
+- $|d| < 0.2$: Efeito desprezível.
+- $|d| \approx 0.5$: Efeito moderado.
+- $|d| \ge 0.8$: Efeito grande (robusto para classificação de BCI).
 
-### Mini-lab escrito (15–25 min)
-- Escreva um parágrafo Methods-style usando o vocabulário desta sala.
-- Inclua uma métrica ou checklist observável (número, diagrama, ou critério pass/fail).
-- Declare dados: synth / open dataset / HW eletivo.
+## 3. Poder Estatístico ($1 - \beta$)
+É a probabilidade de rejeitar corretamente a hipótese nula quando um efeito real existe. Em BCI, estudos com baixo poder estatístico sofrem da maldição do vencedor (winner's curse): efeitos superestimados que nunca se repetem na replicação.
 
-### Rubrica rápida de autoavaliação
-| Nível | Evidência |
-|-------|-----------|
-| Frágil | Só reconhece o nome do tópico |
-| Operacional | Resolve o exercício da Sala e explica o porquê |
-| Integrado | Conecta a CV/leak, SNR, latência ou ética conforme o pilar |
+## 4. Modos de Falha na Prática de Engenharia
+1. **P-Hacking por Seleção Pós-Hoc:** Varrer dezenas de bandas e selecionar apenas a frequência que atingiu $p < 0.05$ sem reportar a quantidade total de tentativas exploratórias.
+2. **Confundir Significância com Utilidade:** Encontrar $p = 0.001$ com um tamanho de efeito minúsculo ($d = 0.05$) em um dataset massivo, descobrindo que o modelo é inútil para controle em tempo real.
 
-### Leitura ativa
-Abra ≥1 resource do `room.yaml`, anote DOI/PMC, e escreva *uma* frase do paper/docs que esta sala operacionaliza.
+## 5. O que a Próxima Sala Assume
+A próxima sala (`nt-dsp-welch`) aprofunda na estimação de densidade espectral de potência (PSD) via método de Welch e na prevenção de vazamento espectral.
 
-
-## Caderno do aluno (bloco denso)
-
-### Glossário mínimo (preencha com suas palavras)
-- Termo A → definição + unidade
-- Termo B → definição + unidade
-- Termo C → anti-exemplo (o que *não* é)
-
-### Derivação / algoritmo em 5 linhas
-Descreva o núcleo operacional desta sala como sequência:
-entrada → transformação → saída mensurável → critério de qualidade → falha típica.
-
-### Exemplo numérico guiado
-Escolha números redondos compatíveis com EEG/BCI educacional:
-- fs ∈ {128, 250, 512} Hz
-- bandas mu/beta ou SNR em dB
-- latência em ms ou κ ∈ [-1, 1]
-Calcule à mão ou com pseudo-código e registre o resultado.
-
-### Ligação multi-pilar
-Escreva uma seta:
-Math/Physics/EE/Neuro/CS/FW → **esta sala** → Decode/Online/Research.
-Explicite *uma* dependência de cada lado.
-
-### Ética e honesty (sempre)
-Se houver sujeito humano, consentimento vem antes. Se houver synth, declare que não é ERD fisiológico.
-Se houver MCU stub, declare que não é QEMU/ciclo-acurado. Se houver κ, declare chance level e CV.
-
-### Checklist de saída (Estuda completo)
-- [ ] Glossário preenchido
-- [ ] Exemplo numérico feito
-- [ ] Honesty note escrita
-- [ ] Resource DOI/PMC aberto pelo menos uma vez
-- [ ] Pronto para tasks da Sala sem “chute de MCQ”
-
+## 6. Ponto de Destrave do Lab
+Consulte o guia clássico sobre tamanho de efeito e poder estatístico em [Cohen (Statistical Power Analysis for the Behavioral Sciences, 1988)](https://doi.org/10.4324/9780203771587) e [Benjamini & Hochberg (J R Stat Soc B 1995, Controlling the False Discovery Rate)](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x).

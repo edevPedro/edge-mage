@@ -1,59 +1,27 @@
-# Conceito — Caso Berlin BCI (walkthrough pedagógico)
+# Conceito — O Paradigma Berlin BCI (BBCI) e Emulação Metodológica
 
-## Fonte âncora
+## 1. O Marco Histórico do Berlin BCI
+Desenvolvido pelo consórcio entre o Instituto Fraunhofer FIRST e o Hospital Universitário Charité de Berlim (Blankertz et al., 2006, 2016), o Berlin BCI estabeleceu os padrões modernos de interfaces de imagética motora:
+- **Calibração Rápida (Machine-Learning-Driven):** Redução do tempo de calibração inicial através de filtros espaciais supervisionados (Common Spatial Patterns - CSP) e classificadores lineares robustos (LDA regularizado).
+- **Dados e Metodologias Abertas:** O grupo publicou conjuntos de dados canônicos com metadados detalhados, permitindo que pesquisadores do mundo inteiro reproduzissem e comparassem seus decodificadores sobre evidências empíricas verificáveis.
 
-Blankertz et al., *The Berlin Brain–Computer Interface: Progress Beyond Communication and Control* — Frontiers in Neuroscience  
-[PMC5116473](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) · DOI [10.3389/fnins.2016.00530](https://doi.org/10.3389/fnins.2016.00530)
+## 2. Emulação Científica vs. Casos Inventados
+Princípios de integridade adotados neste curso:
+- **Emulação Educacional:** Utilizar geradores sintéticos de sinal modelados rigorosamente conforme a dinâmica espectral de artigos publicados (com citação explícita de DOI e autores).
+- **Declaração Explícita de Limites:** Declarar abertamente que pipelines didáticos não equivalem à reprodução bit-a-bit de ensaios com participantes humanos reais.
+- **Repúdio a Casos Fictícios:** Jamais inventar histórias clínicas de pacientes imaginários para validar algoritmos de engenharia.
 
-## O que o caso ensina (neste círculo)
+## 3. O Classificador de Assimetria Hemisférica (Berlin ERD Ratio)
+Na imagética motora bimanual:
+- **Mão Direita:** Provoca Dessincronização Relacionada a Eventos (ERD) no córtex motor esquerdo, atenuando a potência do ritmo $\mu$ no eletrodo $C3$. A potência em $C4$ (mão esquerda em repouso) permanece elevada.
+- **Mão Esquerda:** Provoca ERD no córtex motor direito ($C4$), mantendo $C3$ elevado.
 
-1. **Histórico / motivação** de um lab maduro de MI / SMR.
-2. **Pipeline típico** (estágicos) que você deve reconhecer no seu MVP.
-3. **Honestidade de escopo**: feedback online, usuários reais, desafios de transferência — não um notebook de 20 linhas.
-4. **Como ler** Methods/figuras: estágio a estágio, sem fingir reprodução completa.
+A razão de potências espectrais contralaterais define o preditor linear:
 
-## Estágios → seu pipeline synth (mapa)
+$$r = \frac{P_{C3}}{P_{C4}}$$
 
-| Estágio no paper (genérico MI lab) | Analogia no MVP do aluno |
-|------------------------------------|---------------------------|
-| Captação EEG / montagem | `synth` ou dataset aberto; EE real = eletivo ético |
-| Pré-processamento / filtros | filter-bank mu/beta; anti-leak |
-| Features (CSP / bandpower / …) | bandpower toy → depois CSP primer |
-| Classificação | LDA toy / sklearn |
-| Avaliação | κ, chance level, CV por trial/sujeito |
-| Online / feedback | `online_stub` + latency budget |
-| Limites / usuários | paper critique + ethics |
+Regra de decisão:
+$$\text{predição} = \begin{cases} \text{'right\_hand'}, & \text{se } r < 1.0 \\ \text{'left\_hand'}, & \text{se } r \ge 1.0 \end{cases}$$
 
-## O que NÃO é este exercício
-
-- Reprodução bit-a-bit de resultados Berlin.
-- Afirmar equivalência synth ↔ sujeitos Berlin.
-- Usar figuras do paper sem atribuição / fora de fair use pedagógico.
-- Overclaim clínico.
-
-## Como caminhar o PMC (checklist)
-
-1. Leia abstract + introduction: pergunta científica / aplicação.
-2. Localize descrição de paradigma MI / feedback.
-3. Anote pipeline de sinal (filtros, features, classificador) — mesmo que parcialmente.
-4. Veja como avaliam (métrica, sujeitos, sessões).
-5. Extraia **limites** admitidos pelos autores.
-6. Escreva 5 linhas: *o que eu reimplemento no synth* vs *o que exigiria estudo humano IRB*.
-
-
-## Profundidade full (espinha / EE avançada)
-
-### Estudo dirigido (40–60 min)
-1. Releia a tabela/equações do conceito e feche o arquivo; reescreva de memória.
-2. Faça o lab numérico duas vezes com parâmetros diferentes (`fs`, banda, N).
-3. Escreva um parágrafo ligando esta sala a **ética** (overclaim) e a **CV/leak** ou **SNR**, conforme couber.
-4. Se houver paper DOI/PMC na sala, copie a frase Methods que você operacionaliza no MVP synth.
-
-### Entregável de caderno
-- Diagrama de 1 página (ASCII ok)
-- 3 números com unidade
-- 3 honesty bullets
-- 1 pergunta para journal club
-
-Isto eleva a sala do modo “trivia” para modo MSc-prep auditável.
-
+## 4. O Que a Próxima Sala Assume
+A próxima sala (`nt-case-bci-comp-iv`) aplica esses conceitos em um dos maiores marcos de benchmarking público da neurotecnologia: a BCI Competition IV.

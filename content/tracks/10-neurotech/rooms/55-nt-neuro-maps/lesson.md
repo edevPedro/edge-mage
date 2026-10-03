@@ -1,30 +1,20 @@
-# Lição — Mapas
+# Desafio — Parser Topográfico do Sistema 10–20
 
-## Objetivos
-Dominar somatotopia e C3/C4 o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar um analisador determinístico da nomenclatura do sistema internacional de eletrodos 10-20, classificando a lateralidade anatômica (hemisfério esquerdo, direito ou linha média) a partir do identificador alfanumérico do canal.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `channel_hemisphere(ch_name)`:
+- Avalie o sufixo ou último caractere da string `ch_name` (insensível a maiúsculas/minúsculas):
+  - Se terminar com a letra `'z'` ou `'Z'`, retorne `'midline'`.
+  - Se terminar com um dígito numérico ímpar (`1, 3, 5, 7, 9`), retorne `'left'`.
+  - Se terminar com um dígito numérico par (`0, 2, 4, 6, 8`), retorne `'right'`.
+- Exemplos:
+  - `channel_hemisphere("C3")` $	o$ `'left'`
+  - `channel_hemisphere("C4")` $	o$ `'right'`
+  - `channel_hemisphere("Cz")` $	o$ `'midline'`
+  - `channel_hemisphere("Fp2")` $	o$ `'right'`
 
-## Lab
-Explique em 6–10 linhas como somatotopia e C3/C4 aparece num pipeline MI offline ou online.
-
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [Pfurtscheller & Neuper 1997 MI](https://doi.org/10.1016/S0304-3940(97)00889-6) e leia o resultado de Pfurtscheller e Neuper (MI modula a área sensorimotora contralateral) para C3/C4 no mapa 10–20.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de manipular nomes de eletrodos compostos como "Fp1" e "Fp2" inspecionando corretamente o último caractere da string.
+- O resultado deve ser retornado em letras minúsculas exatamente conforme especificado.

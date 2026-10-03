@@ -1,30 +1,15 @@
-# Lição — Sinapse
+# Desafio — Modelagem Analítica da Condutância Pós-Sináptica
 
-## Objetivos
-Dominar PSP → população → LFP o suficiente para o pilar e a espinha BCI.
+## 1. Objetivo do Desafio
+Implementar a função de condutância pós-sináptica baseada na formulação analítica alfa de Rall, simulando a resposta transitória de um canal iônico estimulado por neurotransmissores.
 
-## Passos
-1. Leia o conceito e anote 5 termos-chave.
-2. Faça 1 exercício numérico ou de design ligado à Sala.
-3. Escreva uma honesty note (limites do que esta sala *não* cobre).
-4. Ligue esta sala à anterior e à próxima no mapa do portal.
+## 2. Especificação Técnica
+Implemente a função `alpha_conductance(t, tau=0.005, g_peak=1.0)`:
+- Para $t < 0$, a condutância deve ser estritamente $0.0$.
+- Para $t \ge 0$, calcule a condutância utilizando a fórmula exponencial normalizada:
+  $$g(t) = g_{peak} \cdot \left(\frac{t}{\tau}\right) \cdot \exp\left(1 - \frac{t}{\tau}\right)$$
+- Utilize a biblioteca `math.exp` para a exponenciação contínua.
 
-## Lab
-Explique em 6–10 linhas como PSP → população → LFP aparece num pipeline MI offline ou online.
-
-## Checklist
-- [ ] Conceito lido
-- [ ] Lab anotado
-- [ ] Pronto para a Sala
-
-## Numeric / fill warm-up
-Escreva: definição → fórmula ou diagrama → falha típica → ligação a decode/online.
-
-Para destravar o lab, abra [Einevoll et al. LFP (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) e leia a ligação de Einevoll entre corrente pós-sináptica e LFP para a função alfa em t = τ não ser confundida com um spike de escalpo.
-
-## Lab estendido (obrigatório no Estuda)
-
-1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
-2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
-3. Escreva a honesty note em 2 frases.
-4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.
+## 3. Critérios de Validação e Armadilhas
+- **Pico em $\tau$:** Verifique se em $t = \tau$, o valor retornado corresponde exatamente a $g_{peak}$.
+- **Causalidade Estrita:** Garanta que tempos negativos não gerem exceções matemáticas ou valores de condutância espúrios.

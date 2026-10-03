@@ -1,16 +1,18 @@
-# Lição — Boss Neuro Mage: Memorial de Engenharia e Auditoria de Pipeline
+# Desafio — Auditoria de Evidências do Marco Neuro Mage
 
-## 1. O Ritual do Neuro Mage
-Para selar a sala do boss `nt-neuro-mage`, o estudante deve:
-1. Concluir a tarefa de código `audit-neuro-mage-evidence`, implementando a função `audit_pipeline_integrity(evidence)` que valida a presença de filtro causal, Kappa estritamente positivo e latência de loop $<150\text{ ms}$.
-2. Produzir o artefato `study-log/artifacts/neuro-mage.md` contendo:
-   - Origem dos dados (`data` ou `data_source`).
-   - Métrica primária (`primary_metric` ou `metrics`, com Kappa de Cohen).
-   - Limites éticos e metodológicos declarados (`limits` ou `ethical_limits`).
-   - Número do fundamento: latência medida (`latency_ms`) compatível com o deadline neurofisiológico.
-   - Referência a módulo de paper ou fatia de projeto e evidência do loop online.
+## 1. Objetivo do Desafio
+Implementar a rotina formal de auditoria de evidências de engenharia e protocolar o artefato do Boss Neuro Mage no repositório de estudos.
 
-## 2. A Função de Laboratório
-- `audit_pipeline_integrity(evidence)`: Recebe um dicionário com `has_filter`, `test_kappa` e `latency_ms`, auditando se todos os requisitos técnicos de integridade de malha fechada estão cumpridos.
+## 2. Especificação Técnica e Formulação
+Implemente a função `audit_pipeline_evidence(evidence_dict)` que verifica se o dicionário de evidências satisfaz cumulativamente:
+1. `evidence_dict.get("data")` é não-vazio.
+2. `evidence_dict.get("filter")` é não-vazio (ex. "bandpass 8-30Hz").
+3. `evidence_dict.get("model")` é não-vazio (ex. "LDA" ou "CSP+LDA").
+4. `evidence_dict.get("kappa", 0.0) >= 0.40`.
+5. `evidence_dict.get("latency_ms", 999.0) <= evidence_dict.get("deadline_ms", 150.0)`.
 
-Para destravar o lab, abra [SPEC Neurotech](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) e leia as runas e os gates do SPEC (o que o rank exige em artefato e latência numérica) para fechar o ritual do Neuro Mage.
+Retorne uma tupla `(True, "Evidências aprovadas")` se todos os critérios forem satisfeitos, ou `(False, "Motivo da falha")` caso contrário.
+
+## 3. Critérios de Validação e Armadilhas
+- Certifique-se de criar o artefato `study-log/artifacts/neuro-mage-evidence.md` com a documentação do seu loop online e métricas.
+- Lembre-se: o marco Neuro Mage coroa a integração de hardware, sinal e matemática.
