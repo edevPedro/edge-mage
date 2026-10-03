@@ -113,3 +113,12 @@ Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 ## Como completar até Edge Mage
 
 Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — **treino → export → quant → runtime → golden** — não só XP acumulado cedo.
+
+## Neurotech (círculo paralelo)
+
+Curso id **`neurotech`** — sibling do Edge ML Mage; **não** altera gates do Mago Supremo.
+
+- SPEC: [`docs/SPEC-neurotech-course.md`](../docs/SPEC-neurotech-course.md)
+- Trilha starter: `content/tracks/10-neurotech/` (Estuda → Sala)
+- Domínios: BCI · EEG · física · math · firmware/embedded
+- Agentes: `agent-pedagogo` + `agent-bci` / `neuroeng` / `eletrica` / `fisica` / `neurociencia`

@@ -74,7 +74,10 @@ Números **aproximados** da grade de hoje (~100+ salas web/TUI + bosses craft). 
 | **Fundamentos** → Mago base | 25–40 h | 5–10 semanas |
 | **Systems Mage** (systems + LLVM + bosses) | 50–90 h | 3–5 meses |
 | **Edge ML Mage** (math → on-device) | 30–50 h | 2–3 meses |
+| **Neurotech** (círculo paralelo, scaffold) | 35–55 h | 2–4 meses |
 | **Formação completa** → Mago Supremo | **~110–180 h** | **~6–10 meses** |
+
+**Neurotech** (`neurotech`) é círculo **paralelo** (BCI / EEG / física / firmware). Não substitui o on-device do Edge nem muda os gates do **Mago Supremo**. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · trilha: `content/tracks/10-neurotech/`. Pedagogia: **Estuda → Sala**.
 
 Mais rápido se você já programa; mais lento se for o primeiro contato com terminal/C.
 
@@ -87,6 +90,7 @@ Mais rápido se você já programa; mais lento se for o primeiro contato com ter
 | `fundamentals` | Fundamentos | Caminho até **Mago base** (núcleo compartilhado + clearance) |
 | `systems` | Systems Mage | **Catálogo FLAG completo** no TUI: systems + llvm + math (mesmo escopo do núcleo Systems na web) |
 | `edge` | Edge ML Mage | Trilhas atuais math → Edge AI on-device (UX TUI completa) — **ARM-first** inalterado |
+| `neurotech` | Neurotech (scaffold) | Círculo paralelo BCI/EEG — ver `docs/SPEC-neurotech-course.md` (não gateia Mago Supremo) |
 
 `mage` abre o **seletor de cursos** primeiro (e stub de GitHub). Systems/Edge têm soft gate atrás de Mago base (preview com aviso).
 
