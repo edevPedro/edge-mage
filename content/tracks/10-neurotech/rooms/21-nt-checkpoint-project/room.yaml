@@ -1,6 +1,6 @@
 id: nt-checkpoint-project
 title: "Ritual fatia de projeto"
-summary: "Filter bank / decoder MVP / firmware stub com evidência."
+summary: "Filter bank / decoder MVP / firmware stub — caminho paralelo ao paper."
 xp_reward: 42
 unlock_xp: 0
 owners:
@@ -8,7 +8,7 @@ owners:
   - neuroeng
 phase: F6
 requires_rooms:
-  - nt-checkpoint-paper
+  - nt-online-stub
 course: neurotech
 resources:
   - title: "OpenBCI Cyton"
@@ -30,10 +30,20 @@ tasks:
       - "ring buffer + packet stub"
       - "receita de estimulação DIY em humano"
       - "decoder offline com κ reportado"
+  - id: path
+    type: mcq
+    prompt: "Em relação ao checkpoint de paper, esta sala é:"
+    xp: 10
+    answer: 1
+    choices:
+      - "obrigatória depois do paper (AND)"
+      - "caminho alternativo (paper OU projeto para evidência do boss)"
+      - "substituto do consentimento"
+      - "QEMU completo"
   - id: emu
     type: fill
     prompt: "Para testar sem hardware, rode: mage emu ___ (synth|artifact|cortex)."
-    xp: 12
+    xp: 10
     answers:
       - synth
       - artifact

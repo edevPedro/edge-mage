@@ -1,3 +1,5 @@
-# Conceito — Orçamento closed-loop
+# Conceito — Orçamento sense→decide→act
 
-Closed-loop = sense → decide → act. Some os ms; se > deadline, miss. Emuladores: `latency_budget` + Cortex stub.
+Closed-loop: tempo para **sense** (janela), **decide** (feature/classificador), **act** (feedback). Se a soma > deadline → miss.
+
+Micro-exemplo: window 128 ms + compute 2 ms já estoura um deadline de 40 ms — a janela domina o sense.

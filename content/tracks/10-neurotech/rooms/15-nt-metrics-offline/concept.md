@@ -1,3 +1,5 @@
 # Conceito — Métricas e vazamento
 
-Offline: acurácia, Cohen’s κ, matrizes de confusão. Vazamento = features/normalização usando o teste. Datasets públicos de competição (ex. BCI Competition) existem para benchmark — não invente “paciente anônimo”.
+Acurácia sozinha mente com classes desbalanceadas; Cohen’s κ ajusta o acerto ao acaso. Vazamento de trial: estatística do teste vaza no treino (filtros, z-score global, splits errados).
+
+Micro-exemplo: z-score com média do dataset inteiro antes do split → κ inflado.

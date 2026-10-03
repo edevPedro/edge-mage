@@ -1,3 +1,3 @@
-# História — A janela que não espera
+# História — A janela que não cabia
 
-O stream não pausa. Sem ring buffer, amostras morrem no chão. Firmware e software compartilham a mesma metáfora.
+O stream chega a 250 Hz. O aprendiz aloca listas infinitas. O MCU ri (metaforicamente): sem ring buffer, o closed-loop vira GC e miss.

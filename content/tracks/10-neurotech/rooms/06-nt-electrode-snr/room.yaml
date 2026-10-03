@@ -14,12 +14,13 @@ resources:
     url: "https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/"
     kind: docs
 animation: null
-emulator: impedance_probe
+# honesty: impedance_probe emulator is SPEC-stub only (no shipped slider UI yet)
+emulator: null
 tasks:
   - id: snr-def
     type: mcq
     prompt: "SNR alto significa, em intuição:"
-    xp: 10
+    xp: 8
     answer: 0
     choices:
       - "sinal útil grande frente ao ruído"
@@ -29,17 +30,25 @@ tasks:
   - id: contact
     type: mcq
     prompt: "Contato de eletrodo ruim costuma:"
-    xp: 10
+    xp: 8
     answer: 2
     choices:
       - "aumentar magicamente κ do classificador"
       - "eliminar volume conduction"
       - "piorar SNR / estabilidade"
       - "trocar AArch64 por x86"
+  - id: snr-db
+    type: numeric
+    prompt: |
+      Sinal RMS = 10 µV, ruído RMS = 5 µV. SNR linear = 2.
+      SNR em dB ≈ 20*log10(2) ≈ ? (responda 6.0)
+    xp: 14
+    answer: 6.0
+    tolerance: 0.3
   - id: snr-fill
     type: fill
     prompt: "A sigla SNR significa signal-to-___ ratio."
-    xp: 10
+    xp: 8
     answers:
       - noise
       - "ruído"

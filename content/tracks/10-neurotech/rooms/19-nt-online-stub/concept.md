@@ -1,3 +1,5 @@
 # Conceito — Loop online simulado
 
-Pipeline mínimo com latência medida. Não é produto clínico. Artefato: `study-log/artifacts/neuro-online-loop.md`.
+Sliding window → feature → label stub → log de latência. Modo **simulated online** (synth), não hardware clínico.
+
+Micro-exemplo: a cada chunk, atualize buffer, calcule bandpower, emita label e `latency_ms`.

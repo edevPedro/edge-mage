@@ -8,6 +8,7 @@ owners:
 phase: F2
 requires_rooms:
   - nt-rhythms
+  - nt-adc-bio
 course: neurotech
 resources:
   - title: "OpenBCI — Setting up for EEG"

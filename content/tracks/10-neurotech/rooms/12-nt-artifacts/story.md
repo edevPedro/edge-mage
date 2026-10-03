@@ -1,3 +1,3 @@
-# História — O blink que virou classe
+# História — O piscar venceu o µ
 
-O classificador acerta demais… porque aprendeu o piscar do sujeito, não o µ. Artefato disfarçado de feature.
+κ offline excelente. Online, cada piscar vira “mão esquerda”. O guardião ri sem humor: artefato não é feature — a menos que você o rotule e trate.

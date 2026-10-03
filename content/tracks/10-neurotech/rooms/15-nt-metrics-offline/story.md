@@ -1,3 +1,3 @@
-# História — κ inflado
+# História — κ 0.9 e o vazamento
 
-Acurácia 99% com shuffle errado de trials. O guardião pede κ e proíbe vazamento de trial.
+O poster diz 90%. O guardião pergunta se a normalização usou o teste. Silêncio. Offline honesto > número mágico.

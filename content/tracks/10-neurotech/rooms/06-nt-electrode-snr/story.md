@@ -1,3 +1,3 @@
-# História — Contato fraco, decoder fraco
+# História — O contato que roubou o µ
 
-O classificador “funciona” no replay limpo e desaba ao vivo. Impedância de contato pelas nuvens — SNR no chão. Neuroeng aponta o eletrodo antes do hiperparâmetro.
+κ caiu sem mudar o modelo. O guardião aponta o eletrodo seco: impedância alta, SNR no chão. Antes de retreinar, molhe o contato (metaforicamente — siga o kit).

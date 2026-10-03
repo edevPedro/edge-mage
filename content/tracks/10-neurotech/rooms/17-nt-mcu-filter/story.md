@@ -1,3 +1,3 @@
-# História — Filter bank no ferro
+# História — FIR no bolso
 
-No PC o SciPy é farto. No MCU, taps e buffers pesam. O stub Cortex-M ensina o contrato: buffer → FIR leve → pacote.
+O filter bank “na nuvem” passa. No stub de MCU, o heap some e a latência aparece. O guardião exige orçamento, não notebook.

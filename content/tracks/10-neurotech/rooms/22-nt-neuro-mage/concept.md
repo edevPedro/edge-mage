@@ -1,3 +1,3 @@
-# Conceito — Boss Neuro Mage
+# Conceito — Neuro Mage
 
-Ritual final do círculo: evidência combinada (online stub + paper/project). **Não** gateia Mago Supremo.
+Rank final do círculo paralelo. Evidência: loop online simulado + (**paper module** XOR **project slice**). Não substitui gates do Mago Supremo.

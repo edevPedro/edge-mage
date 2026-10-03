@@ -1,3 +1,3 @@
-# História — A elipse no mapa
+# História — A geometria do SPD
 
-Covariâncias vivem em um espaço curvo (SPD). Distâncias euclideias ingênuas mentem. O primer Riemanniano abre o mapa sem virar curso de geometria diferencial.
+Dois trials têm a mesma “energia média”, mas misturam canais diferente. O guardião desenha uma elipse: covariâncias vivem em um espaço onde a reta euclidiana mente.

@@ -413,43 +413,85 @@ def frame_filter_freq_response(t: float, *, cols: int = 48, rows: int = 10) -> s
 
 
 def frame_dipole_field(t: float, *, cols: int = 40, rows: int = 12) -> str:
-    """Dipolo sob camadas → mapa de escalpo simplificado."""
+    """Dipolo sob camadas → mapa de escalpo; amplitudes dos eletrodos mudam com θ."""
     canvas = BrailleCanvas(cols, rows)
     cx, cy = canvas.px_w / 2, canvas.px_h * 0.65
+    r = min(cx, cy) * 0.7
     # skull arc
-    canvas.circle(cx, cy - 2, min(cx, cy) * 0.7, steps=60)
-    # dipole
+    canvas.circle(cx, cy - 2, r, steps=60)
+    # dipole orientation θ
     ang = (t % 1.0) * math.pi - math.pi / 2
     dx, dy = 6 * math.cos(ang), -6 * math.sin(ang)
     canvas.line(cx - dx, cy - dy, cx + dx, cy + dy)
-    # scalp samples
+    dlen = math.hypot(dx, dy) or 1.0
+    ux, uy = dx / dlen, dy / dlen
+    # scalp samples: stem height ∝ |projection| — changes with θ
+    amp_labels: list[str] = []
     for k in range(7):
         a = math.pi * (0.15 + 0.7 * k / 6)
-        px = cx + (min(cx, cy) * 0.7) * math.cos(a)
-        py = cy - 2 - (min(cx, cy) * 0.7) * math.sin(a) * 0.35
-        canvas.set_pixel(int(px), int(py))
-    header = f"dipolo→escalpo  θ={ang * 180 / math.pi:5.1f}°  (borrão espacial)"
+        px = cx + r * math.cos(a)
+        py = cy - 2 - r * math.sin(a) * 0.35
+        ex, ey = px - cx, py - cy
+        elen = math.hypot(ex, ey) or 1.0
+        proj = (ux * ex + uy * ey) / elen
+        amp = abs(proj)
+        amp_labels.append(f"{amp:0.2f}")
+        stem = max(1, int(round(amp * 5)))
+        ix, iy = int(px), int(py)
+        canvas.set_pixel(ix, iy)
+        for h in range(1, stem + 1):
+            canvas.set_pixel(ix, iy - h)
+    header = (
+        f"dipolo→escalpo  θ={ang * 180 / math.pi:5.1f}°  "
+        f"amps=[{', '.join(amp_labels)}]  (borrão espacial)"
+    )
     return f"{header}\n{canvas.render()}"
 
 
-def frame_spike_to_lfp(t: float, *, cols: int = 48, rows: int = 10) -> str:
-    """Spike train rápido vs LFP mais lento."""
+def frame_spike_to_lfp(t: float, *, cols: int = 48, rows: int = 12) -> str:
+    """Spike → corrente/PSP sináptica → LFP lento. LFP ≠ AP filtrado."""
     canvas = BrailleCanvas(cols, rows)
-    mid = canvas.px_h // 2
-    canvas.line(0, mid, canvas.px_w - 1, mid)
+    h = canvas.px_h
+    y_spike = int(h * 0.22)
+    y_psp = int(h * 0.50)
+    y_lfp = int(h * 0.78)
+    canvas.line(0, y_spike, canvas.px_w - 1, y_spike)
+    canvas.line(0, y_psp, canvas.px_w - 1, y_psp)
+    canvas.line(0, y_lfp, canvas.px_w - 1, y_lfp)
     phase = int((t % 1.0) * 8)
-    # spikes
-    for i in range(0, canvas.px_w, 6):
-        if (i // 6 + phase) % 3 == 0:
-            canvas.line(i, mid, i, mid - (mid - 2))
-    # slow LFP
+    # spikes (AP)
+    spike_xs: list[int] = []
+    for i in range(0, canvas.px_w, 7):
+        if (i // 7 + phase) % 3 == 0:
+            canvas.line(i, y_spike, i, y_spike - 6)
+            spike_xs.append(i)
+    # synaptic / PSP: exponential-ish bumps after each spike
     last = None
     for i in range(canvas.px_w):
-        y = mid + (mid - 3) * 0.35 * math.sin(i / 8 + t * 2 * math.pi)
+        psp = 0.0
+        for sx in spike_xs:
+            dt = i - sx
+            if 0 <= dt < 18:
+                psp += math.exp(-dt / 5.0) * math.sin(dt / 3.0 + 0.2)
+        y = y_psp - int(5 * psp)
         if last is not None:
             canvas.line(last[0], last[1], i, y)
         last = (i, y)
-    header = "spike (barras) → LFP (curva lenta) — escalas diferentes"
+    # slow LFP: smoothed / summed synaptic currents (not a filtered AP copy)
+    last = None
+    for i in range(canvas.px_w):
+        y = y_lfp + int(4 * math.sin(i / 10 + t * 2 * math.pi))
+        for sx in spike_xs:
+            dt = i - sx
+            if 0 <= dt < 28:
+                y -= int(2.5 * math.exp(-dt / 10.0))
+        if last is not None:
+            canvas.line(last[0], last[1], i, y)
+        last = (i, y)
+    header = (
+        "AP (cima) → PSP/sinapse (meio) → LFP (baixo)  |  "
+        "LFP ≠ potencial de ação filtrado"
+    )
     return f"{header}\n{canvas.render()}"
 
 
@@ -468,7 +510,7 @@ def frame_mi_erds(t: float, *, cols: int = 42, rows: int = 10) -> str:
         h = max(1, int(max(0.1, p) * (rows - 3)))
         for y in range(rows - 2, rows - 2 - h, -1):
             grid[y][i] = "▓"
-    header = "MI cartoon  potência µ  (ERD após cue)  — educacional"
+    header = "MI cartoon  µ power  ERD↓ após cue · ERS↑ rebound  — educacional"
     return f"{header}\n{flatten_grid(grid)}"
 
 

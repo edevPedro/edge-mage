@@ -8,7 +8,7 @@ owners:
   - neuroeng
 phase: F2
 requires_rooms:
-  - nt-adc-bio
+  - nt-electrode-snr
 course: neurotech
 resources:
   - title: "OpenBCI EEG Setup"

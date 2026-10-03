@@ -1,3 +1,5 @@
-# Conceito — Checkpoint = fatia de projeto
+# Conceito — Checkpoint projeto (fatia)
 
-CP-Filter bank · CP-Decoder MVP · CP-Firmware driver · CP-OpenBCI chain (SPEC §7).
+Fatia real: filter bank/bandpower, decoder MVP offline, driver/buffer stub, online loop log.
+
+**Caminho paralelo ao paper:** complete **este** ritual **ou** o de paper para evidência de boss — não os dois obrigatoriamente (SPEC: paper **ou** project).

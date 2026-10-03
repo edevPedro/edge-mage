@@ -1,6 +1,6 @@
 id: nt-mi-paradigm
 title: "Imagética motora (paradigma)"
-summary: "Classes, trials e ERD/ERS — paradigma MI educacional."
+summary: "Classes, trials e ERD↓/ERS↑ — paradigma MI educacional."
 xp_reward: 32
 unlock_xp: 0
 owners:
@@ -40,6 +40,16 @@ tasks:
       - "exclusivamente artefato de piscar"
       - "frequência da rede"
       - "rank de Mago Supremo"
+  - id: erd-dir
+    type: mcq
+    prompt: "Na convenção deste curso, durante a imagética tipicamente espera-se:"
+    xp: 10
+    answer: 0
+    choices:
+      - "ERD↓ (queda de potência µ/β) e depois possível ERS↑ (rebound)"
+      - "apenas aumento contínuo de 60 Hz"
+      - "spike único resolvido no escalpo"
+      - "substituição do consentimento"
   - id: classes
     type: fill
     prompt: "Em MI binário clássico, costuma-se contrastar esquerda vs ___."

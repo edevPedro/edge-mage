@@ -1,3 +1,3 @@
-# História — O loop que perdeu o deadline
+# História — Deadline 40 ms
 
-Sense 12 ms + decide 25 ms + act 10 ms > deadline 40 ms. O atuador chega atrasado; o sujeito sente o lag.
+O feedback chega depois do gesto. O sujeito “aprende” o atraso, não o decode. Closed-loop sem orçamento é teatro.

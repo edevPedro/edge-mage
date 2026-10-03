@@ -1,3 +1,5 @@
-# Conceito — Checkpoint = módulo de paper
+# Conceito — Checkpoint paper (módulo)
 
-Escolha CP-MI review map **ou** CP-Riemann figure (SPEC §7). Evidência em artefato com URL.
+Checkpoint = **módulo de paper** (mapa de pipeline MI, figura SPD toy, Methods slice) com citação real.
+
+**Escolha de caminho:** paper **ou** projeto (sala irmã) — o boss Neuro Mage aceita evidência de **um** dos dois, não exige ambos (SPEC §3/§7).

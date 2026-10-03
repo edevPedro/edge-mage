@@ -1,3 +1,3 @@
-# História — A primeira volta fechada
+# História — A primeira decisão a tempo
 
-Janela desliza → feature → rótulo → log de latência. Ainda sintético — mas já é loop. O ritual pede o artefato.
+Offline brilha. Online, a janela desliza e o relógio corre. O guardião pede um log: label, latência, miss — evidência, não vibe.

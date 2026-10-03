@@ -22,17 +22,23 @@ tasks:
   - id: window
     type: mcq
     prompt: "No stub online, a unidade típica de decisão é:"
-    xp: 12
+    xp: 10
     answer: 1
     choices:
       - "o dataset inteiro de uma vez"
       - "uma janela deslizante com orçamento de tempo"
       - "só o PDF do paper"
       - "o launcher"
+  - id: win-ms
+    type: numeric
+    prompt: "Em fs = 250 Hz, uma janela de 25 amostras dura quantos ms? (só window_ms)"
+    xp: 12
+    answer: 100
+    tolerance: 0.01
   - id: log
     type: mcq
     prompt: "O artefato do ritual online deve incluir:"
-    xp: 12
+    xp: 10
     answer: 0
     choices:
       - "latency_ms / misses / o que foi reproduzido"

@@ -1,5 +1,6 @@
 # Conceito — Spike → LFP
 
-- **Spike**: evento rápido de potencial de ação (ms).
-- **LFP**: soma de correntes sinápticas / campos mais lentos.
+- **Spike (AP)**: evento rápido de potencial de ação (ms).
+- **PSP / corrente sináptica**: passo intermediário — entradas que somam no tempo.
+- **LFP**: campo local mais lento; **não** é só “AP passado num filtro”.
 - Escalpo: ainda mais filtrado espacialmente — ritmos de banda, não spikes isolados.

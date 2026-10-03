@@ -91,14 +91,14 @@ Format: `room-id` — Title — **owner**
 - `nt-spike-lfp` — Spike → LFP (intuição) — **fisica+neurociencia**
 - `nt-volume-blur` — Condução de volume e borrão espacial — **fisica**
 
-**F2**
+**F2** (cadeia via `requires_rooms`: eletrodo → terra/ref → ADC → filter-bank)
 - `nt-electrode-snr` — Eletrodo, impedância, SNR — **neuroeng**
-- `nt-filter-bank` — Banco de filtros EEG — **eletrica**
-- `nt-adc-bio` — ADC e escala µV — **eletrica**
 - `nt-ground-ref` — Terra, referência, 50/60 Hz — **eletrica+neuroeng**
+- `nt-adc-bio` — ADC e escala µV — **eletrica**
+- `nt-filter-bank` — Banco de filtros EEG — **eletrica** (após ritmos + ADC)
 
 **F3**
-- `nt-rhythms` — Ritmos α/β/γ/µ — **neurociencia**
+- `nt-rhythms` — Ritmos α/β/γ/µ — **neurociencia** (pode vir antes do filter-bank para intuição de banda)
 - `nt-mi-paradigm` — Imagética motora (paradigma) — **bci+neurociencia**
 - `nt-artifacts` — Artefatos (EOG/EMG/movimento) — **bci+eletrica**
 
@@ -118,7 +118,7 @@ Format: `room-id` — Title — **owner**
 - `nt-checkpoint-project` — Ritual fatia de projeto — **pedagogo+neuroeng**
 - `nt-neuro-mage` — Boss Neuro Mage — **pedagogo**
 
-**Shipped rooms (F0→F6 catalog):** all stubs in §4 authored under `content/tracks/10-neurotech/rooms/` (22 salas). Pedagogical path places `nt-rhythms` before `nt-filter-bank` even though phase labels are F3/F2.
+**Shipped rooms (F0→F6 catalog):** all stubs in §4 authored under `content/tracks/10-neurotech/rooms/` (22 salas). Pedagogical path: F2 acquisition order eletrodo→ground→ADC→filter; `nt-rhythms` may precede filter-bank for band intuition. **Checkpoints:** paper module **or** project slice (parallel); Neuro Mage evidence = online stub + one of the two — not both required.
 
 **Neurological clinical case rooms:** none invented. Only literature-backed MI/artifact/benchmark paradigms (see §7). Rejected fake “patient diagnosis” rooms without public solved-case URLs.
 
@@ -128,11 +128,11 @@ Format: `room-id` — Title — **owner**
 
 | Emulator id | Teaches | Notes |
 |-------------|---------|-------|
-| `synth_eeg_stream` | Multichannel colored noise + injected band-limited “µ” bursts | Offline replay + “online” tick mode · **shipped** `edge_mage/emulators/synth_eeg.py` |
+| `synth_eeg_stream` | Multichannel colored noise + band-energy probes (µ-burst / suppression) | **Didactic µV-scale**; probes ≠ physiological MI/ERD · **shipped** `edge_mage/emulators/synth_eeg.py` |
 | `artifact_inject` | Blink / EMG / line noise overlays | **shipped** `edge_mage/emulators/artifact_inject.py` |
-| `cortex_m_stub` | ADC → ring buffer → FIR → UART packet + latency | ARM Cortex-M **class** stub (not full QEMU) · **shipped** `edge_mage/emulators/cortex_m_stub.py` |
+| `cortex_m_stub` | ADC → ring buffer → FIR → UART packet + latency | **Python host stub** (Cortex-M *class* mental model) — **not QEMU / not CMSIS runtime**; splits `window_ms` vs `compute_ms` · **shipped** `edge_mage/emulators/cortex_m_stub.py` |
 | `latency_budget` | Pipeline stages with ms costs | Exercised via Cortex stub `deadline_ms` + room `nt-latency-budget` |
-| `impedance_probe` | Contact quality → SNR slider | Conceptual in `nt-electrode-snr` (slider UI TBD) |
+| `impedance_probe` | Contact quality → SNR slider | **Stub / not shipped UI** — honesty note in `nt-electrode-snr` (numeric SNR task instead) |
 | `spd_toy` | 2×2 or small SPD covariances on a grid | Conceptual in `nt-riemann-primer` |
 
 CLI: `mage emu all` · `python -m edge_mage.emulators [synth|artifact|cortex|all]`

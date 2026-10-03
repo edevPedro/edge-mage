@@ -1,3 +1,5 @@
 # Conceito — Bandpower / covariância
 
-Após filter bank: energia (variância/potência) por banda×canal, ou matrizes de covariância. Base offline antes de Riemann/CSP.
+Após isolar uma banda (ex. µ 8–12 Hz), a variância/potência no tempo é feature clássica. Covariâncias entre canais abrem o caminho Riemanniano.
+
+Micro-exemplo: `bandpower(xs) = mean(x²)` no trecho passa-banda — proxy de energia naquela banda.

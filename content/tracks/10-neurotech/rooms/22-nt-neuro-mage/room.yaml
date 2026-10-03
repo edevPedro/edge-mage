@@ -1,13 +1,13 @@
 id: nt-neuro-mage
 title: "Boss Neuro Mage"
-summary: "Ritual final do círculo paralelo — evidência online + paper/projeto."
+summary: "Ritual final — online stub + evidência paper OU projeto (não ambos obrigatórios)."
 xp_reward: 60
 unlock_xp: 0
 owners:
   - pedagogo
 phase: F6
 requires_rooms:
-  - nt-checkpoint-project
+  - nt-online-stub
 course: neurotech
 boss: true
 elite_skill: neuro-mage
@@ -33,12 +33,12 @@ tasks:
     xp: 14
     answer: 0
     choices:
-      - "loop online + módulo paper ou fatia de projeto"
+      - "loop online + módulo paper OU fatia de projeto (um dos dois)"
       - "apenas XP de Edge"
       - "só assistir um vídeo"
       - "hackear um device clínico"
   - id: ritual
     type: ritual
-    prompt: "Artefato study-log/artifacts/neuro-mage.md"
+    prompt: "Artefato study-log/artifacts/neuro-mage.md (cite paper OU project + online)"
     xp: 32
     ritual_id: neuro-mage

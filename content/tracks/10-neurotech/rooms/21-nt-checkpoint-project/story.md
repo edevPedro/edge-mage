@@ -1,3 +1,3 @@
 # História — A fatia que roda
 
-Paper sem código é só leitura. O ritual de projeto pede filter bank testável **ou** decoder MVP **ou** driver/buffer no stub.
+Em vez do poster eterno, o aprendiz entrega bandpower testado no synth — ou ring+packet no stub. O guardião aceita evidência executável.

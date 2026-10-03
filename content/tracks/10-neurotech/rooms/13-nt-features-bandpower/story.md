@@ -1,3 +1,3 @@
-# História — A feature que faltava
+# História — Features antes do feitiço
 
-O novato joga a série crua no classificador. O guardião pede potência de banda (ou covariância) — o idioma do filtro bank.
+O aprendiz joga raw no SVM. O guardião entrega um filter bank: “potência de banda é o feitiço pequeno que o feitiço grande ainda precisa”.

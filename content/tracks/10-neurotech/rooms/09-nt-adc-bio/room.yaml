@@ -7,7 +7,7 @@ owners:
   - eletrica
 phase: F2
 requires_rooms:
-  - nt-filter-bank
+  - nt-ground-ref
 course: neurotech
 resources:
   - title: "OpenBCI Cyton"
@@ -35,10 +35,18 @@ tasks:
       - "200 Hz"
       - "50 Hz"
       - "1 Hz"
+  - id: uv-lsb
+    type: numeric
+    prompt: |
+      Faixa ±100 000 µV (após ganho do front-end) em ADC 24-bit (2^24 níveis ≈ 1.678e7).
+      Qual o µV/LSB aproximado? (100000*2 / 2^24). Resposta ~0.0119.
+    xp: 14
+    answer: 0.0119
+    tolerance: 0.002
   - id: uv
     type: fill
-    prompt: "EEG de escalpo costuma ser discutido em escala de micro___ (unidade)."
-    xp: 10
+    prompt: "EEG de escalpo costuma ser discutido em escala de micro___ (unidade SI)."
+    xp: 8
     answers:
       - volts
       - volt

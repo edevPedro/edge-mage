@@ -1,3 +1,3 @@
-# História — O módulo do paper
+# História — O mapa do paper
 
-Não basta citar o DOI. O ritual pede um módulo: mapa do pipeline MI **ou** figura/intuição SPD reproduzida em nível toy.
+O aprendiz quer “fazer BCI”. O guardião entrega um review aberto: reproduza *um módulo* (figura/pipeline) com URL — não invente caso clínico.

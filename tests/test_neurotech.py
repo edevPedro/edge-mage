@@ -36,11 +36,16 @@ def test_edge_excludes_neurotech_track() -> None:
 def test_synth_eeg_and_artifacts() -> None:
     stream = SynthEEGStream(n_channels=2, fs=250.0, seed=1)
     stream.schedule_mu_burst(
-        start_sample=10, duration_samples=50, channel=0, amplitude=4.0, freq_hz=10.0
+        start_sample=10, duration_samples=50, channel=0, amplitude=15.0, freq_hz=10.0
+    )
+    stream.schedule_mu_suppression(
+        start_sample=80, duration_samples=40, channel=0, factor=0.2
     )
     block = stream.generate(200)
     assert len(block) == 200
     assert len(block[0]) == 2
+    # didactic µV-scale: noise_std default ~5 → samples not near 0±1 only
+    assert max(abs(row[0]) for row in block) > 2.0
     bp = stream.bandpower_proxy(block, 0, 8.0, 12.0)
     assert bp > 0
 
@@ -56,6 +61,12 @@ def test_cortex_m_stub_pipeline() -> None:
     assert "packet_hex" in result
     assert result["buffer_fill"] == 32
     assert mcu.packets_sent == 1
+    # 32 samples @ 250 Hz → window 128 ms dominates → miss vs 40 ms
+    assert result["window_ms"] == 128.0
+    assert result["compute_ms"] < result["window_ms"]
+    assert result["latency_ms"] == result["window_ms"] + result["compute_ms"]
+    assert result["miss"] is True
+    assert "not QEMU" in result["runtime_note"]
 
 
 def test_neuro_animations_render() -> None:
