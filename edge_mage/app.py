@@ -38,6 +38,10 @@ class EdgeMageApp(App[None]):
         Binding("question_mark", "show_help", show=False, priority=True),
         Binding("colon", "open_cmdline", show=False, priority=True),
         Binding("ctrl+w", "window_prefix", show=False, priority=True),
+        Binding("ctrl+shift+h", "resize_left", show=False, priority=True),
+        Binding("ctrl+shift+j", "resize_down", show=False, priority=True),
+        Binding("ctrl+shift+k", "resize_up", show=False, priority=True),
+        Binding("ctrl+shift+l", "resize_right", show=False, priority=True),
     ]
 
     def __init__(
@@ -142,6 +146,10 @@ class EdgeMageApp(App[None]):
             "smart_quit",
             "show_help",
             "open_cmdline",
+            "resize_left",
+            "resize_down",
+            "resize_up",
+            "resize_right",
         }:
             if self.nav_mode == NavMode.COMMAND:
                 return False
@@ -245,6 +253,26 @@ class EdgeMageApp(App[None]):
         if m:
             m.action_vim_insert()
 
+    def action_resize_left(self) -> None:
+        m = self._mage()
+        if m:
+            m.resize_pane("H")
+
+    def action_resize_down(self) -> None:
+        m = self._mage()
+        if m:
+            m.resize_pane("J")
+
+    def action_resize_up(self) -> None:
+        m = self._mage()
+        if m:
+            m.resize_pane("K")
+
+    def action_resize_right(self) -> None:
+        m = self._mage()
+        if m:
+            m.resize_pane("L")
+
     def on_key(self, event: events.Key) -> None:
         if self.nav_mode == NavMode.COMMAND:
             return
@@ -253,15 +281,39 @@ class EdgeMageApp(App[None]):
             event.stop()
             event.prevent_default()
             key = event.character or event.key
+            key_lower = (event.key or "").lower()
             m = self._mage()
             if event.key == "escape":
                 self.enter_normal()
                 return
-            if key in {"w", "W"} or event.key == "ctrl+w":
+            if key in {"w", "W"} or event.key in {"ctrl+w", "ctrl+W"}:
                 if m and m.pane_ids:
                     m.cycle_pane(1)
                 self.enter_normal()
                 return
+
+            # Neovim split resize: Shift+H/J/K/L ou +, -, <, >
+            if key in {"K", "+", "="} or key_lower in {"shift+k", "plus", "equals", "ctrl+shift+k"}:
+                if m:
+                    m.resize_pane("K")
+                self.enter_normal()
+                return
+            if key in {"J", "-", "_"} or key_lower in {"shift+j", "minus", "underscore", "ctrl+shift+j"}:
+                if m:
+                    m.resize_pane("J")
+                self.enter_normal()
+                return
+            if key in {"H", "<"} or key_lower in {"shift+h", "less_than", "ctrl+shift+h"}:
+                if m:
+                    m.resize_pane("H")
+                self.enter_normal()
+                return
+            if key in {"L", ">"} or key_lower in {"shift+l", "greater_than", "ctrl+shift+l"}:
+                if m:
+                    m.resize_pane("L")
+                self.enter_normal()
+                return
+
             if key in {"h", "j", "k", "l"}:
                 if m and m.pane_ids:
                     m.move_pane(key)

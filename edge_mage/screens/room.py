@@ -29,6 +29,9 @@ class RoomScreen(MageScreen):
         self.pane_ids = panes
         self.focused_pane = "story"
         self._content_tab = "story"  # qual markdown está no painel esquerdo
+        self._task_list_height = 7
+        self._anim_width = 42
+
 
     def _md(self, kind: str) -> str:
         if kind == "story":
@@ -117,10 +120,67 @@ class RoomScreen(MageScreen):
             self.app.set_nav_context(self.context_label)  # type: ignore[attr-defined]
         if hasattr(self.app, "enter_normal"):
             self.app.enter_normal()  # type: ignore[attr-defined]
+        try:
+            self.query_one("#task-list").styles.height = self._task_list_height
+        except Exception:
+            pass
         self._apply_content_visibility()
         self.set_focused_pane("story")
         if self.anim_kind != "none":
             self.call_after_refresh(self._autoplay)
+
+    def resize_pane(self, direction: str, delta: int = 2) -> None:
+        """
+        Redimensiona painéis estilo Neovim (Ctrl+w Shift+H/J/K/L ou +, -, <, >):
+          K / + : Aumenta o conteúdo da sala (encolhe a lista de tarefas)
+          J / - : Aumenta a lista de tarefas (encolhe o conteúdo da sala)
+          H / < : Alarga o painel de texto / encolhe o painel de animação
+          L / > : Alarga o painel de animação
+        """
+        try:
+            task_list = self.query_one("#task-list")
+        except Exception:
+            return
+
+        if direction in {"K", "+"}:
+            self._task_list_height = max(3, self._task_list_height - delta)
+            task_list.styles.height = self._task_list_height
+            self.notify(
+                f"Conteúdo ampliado  ·  Tarefas: {self._task_list_height} lin",
+                severity="information",
+            )
+        elif direction in {"J", "-"}:
+            self._task_list_height = min(22, self._task_list_height + delta)
+            task_list.styles.height = self._task_list_height
+            self.notify(
+                f"Tarefas ampliadas: {self._task_list_height} lin",
+                severity="information",
+            )
+        elif direction in {"H", "<"}:
+            if self.anim_kind != "none":
+                try:
+                    anim = self.query_one("#anim-panel")
+                    self._anim_width = max(24, self._anim_width - delta * 2)
+                    anim.styles.width = self._anim_width
+                    self.notify(
+                        f"Texto mais largo  ·  Animação: {self._anim_width} cols",
+                        severity="information",
+                    )
+                except Exception:
+                    pass
+        elif direction in {"L", ">"}:
+            if self.anim_kind != "none":
+                try:
+                    anim = self.query_one("#anim-panel")
+                    self._anim_width = min(68, self._anim_width + delta * 2)
+                    anim.styles.width = self._anim_width
+                    self.notify(
+                        f"Animação: {self._anim_width} cols",
+                        severity="information",
+                    )
+                except Exception:
+                    pass
+
 
     def _tab_label(self) -> str:
         marks = []

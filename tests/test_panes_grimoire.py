@@ -112,3 +112,66 @@ async def test_grimoire_screen_opens() -> None:
         await pilot.press("g", "r")
         assert isinstance(app.screen, GrimoireScreen)
         assert app.nav_mode == NavMode.NORMAL
+
+
+@pytest.mark.asyncio
+async def test_ctrl_w_resizes_room_panes() -> None:
+    app = EdgeMageApp(course="edge", show_launcher=False)
+    async with app.run_test() as pilot:
+        fund = next(t for t in app.tracks if t.id == "fundamentos")
+        room = next(r for r in fund.rooms if r.id == "trigonometria")
+        app.push_screen(RoomScreen(fund, room))
+        await pilot.pause()
+
+        screen = app.screen
+        assert isinstance(screen, RoomScreen)
+        initial_h = screen._task_list_height
+
+        # Ctrl+w seguido de K (Shift+K): encolhe a lista de tarefas para ampliar conteúdo
+        await pilot.press("ctrl+w")
+        assert app.nav_mode == NavMode.WINDOW
+        await pilot.press("K")
+        assert app.nav_mode == NavMode.NORMAL
+        assert screen._task_list_height < initial_h
+
+        # Ctrl+w seguido de J (Shift+J): amplia a lista de tarefas
+        smaller_h = screen._task_list_height
+        await pilot.press("ctrl+w")
+        await pilot.press("J")
+        assert app.nav_mode == NavMode.NORMAL
+        assert screen._task_list_height > smaller_h
+
+        # Redimensionamento direto com ctrl+shift+k / ctrl+shift+j
+        cur_h = screen._task_list_height
+        await pilot.press("ctrl+shift+k")
+        assert screen._task_list_height < cur_h
+
+
+@pytest.mark.asyncio
+async def test_ctrl_w_resizes_task_screen() -> None:
+    from edge_mage.screens.task import TaskScreen
+
+    app = EdgeMageApp(course="edge", show_launcher=False)
+    async with app.run_test() as pilot:
+        fund = next(t for t in app.tracks if t.id == "fundamentos")
+        room = next(r for r in fund.rooms if r.id == "trigonometria")
+        task = room.tasks[0]
+        app.push_screen(TaskScreen(fund, room, task))
+        await pilot.pause()
+
+        screen = app.screen
+        assert isinstance(screen, TaskScreen)
+        initial_act_h = screen._actions_height
+
+        # Ctrl+w seguido de K: encolhe ações para dar mais espaço ao enunciado
+        await pilot.press("ctrl+w")
+        assert app.nav_mode == NavMode.WINDOW
+        await pilot.press("K")
+        assert app.nav_mode == NavMode.NORMAL
+        assert screen._actions_height <= initial_act_h
+
+        # Ctrl+w seguido de J: amplia ações
+        await pilot.press("ctrl+w")
+        await pilot.press("J")
+        assert screen._actions_height > screen._actions_height - 2
+

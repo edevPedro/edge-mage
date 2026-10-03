@@ -106,12 +106,17 @@ MODOS (statusline)
   G-          leader aguardando 2ª tecla (após g)
   C-W         modo janela (após Ctrl+w)
 
-PAINÉIS (Ctrl+w) — salas e tasks
-  Ctrl+w w    ciclar painel (História→Conceito→Desafio→Anim→Tarefas)
-  Ctrl+w h/l  painel anterior / próximo
-  Ctrl+w j/k  idem (layout linear)
-  j / k       scroll no painel de texto · navegar opções em Tarefas
-  Statusline  mostra o painel focado (HISTÓRIA, CONCEITO, …)
+PAINÉIS E RESIZE (Ctrl+w) — salas e tasks (estilo Neovim)
+  Ctrl+w w            ciclar painel (História→Conceito→Desafio→Anim→Tarefas)
+  Ctrl+w h/l          foco no painel anterior / próximo
+  Ctrl+w j/k          navegar foco entre splits
+  Ctrl+w Shift+K / +  aumentar conteúdo da sala / enunciado
+  Ctrl+w Shift+J / -  aumentar lista de tarefas / editor
+  Ctrl+w Shift+H / <  largura: texto mais largo, anim menor
+  Ctrl+w Shift+L / >  largura: animação mais larga
+  Ctrl+Shift+H/J/K/L  redimensionar direto sem prefixo
+  j / k               scroll no texto focado · navegar opções
+  Statusline          mostra o painel focado (HISTÓRIA, CONCEITO, …)
 
 NAVEGAÇÃO (NORMAL)
   j / k       descer / subir (lista ou scroll)

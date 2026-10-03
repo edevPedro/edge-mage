@@ -36,7 +36,10 @@ class TaskScreen(MageScreen):
         self.on_success = on_success
         tag = "mastery" if mastery else ("daily" if daily else quest.id)
         self.context_label = f"{track.id}/{room.id}/{tag}"
+        self.pane_ids = ["prompt", "actions"]
         self.focused_pane = "actions"
+        self._actions_height = 5
+        self._editor_height = 12
 
     def compose_body(self) -> ComposeResult:
         store = self.app.store  # type: ignore[attr-defined]
@@ -54,11 +57,13 @@ class TaskScreen(MageScreen):
             with VerticalScroll(classes="panel", id="pane-prompt", can_focus=True):
                 yield Static(self.quest.prompt)
                 if self.quest.type == "mcq" and self.quest.choices:
-                    lines = []
+                    lines = [""]
                     for i, c in enumerate(self.quest.choices):
                         letter = chr(ord("A") + i)
-                        lines.append(f"  {letter}) {c}")
+                        lines.append(f"  [{letter}]  {c}")
+                    lines.append("")
                     yield Static("\n".join(lines), classes="accent")
+
                 if self.quest.hint:
                     yield Static(f"Dica: {self.quest.hint}", classes="muted")
                 if self.quest.type == "ritual":
@@ -132,6 +137,55 @@ class TaskScreen(MageScreen):
             self.refresh_statusline()
             return
         self.action_vim_back()
+
+    def resize_pane(self, direction: str, delta: int = 3) -> None:
+        """
+        Redimensiona splits estilo Neovim na tela de task:
+          K / + : Aumenta o painel do enunciado / teoria
+          J / - : Aumenta o editor de código ou painel de ações
+        """
+        dir_upper = direction.upper() if len(direction) == 1 else direction.lower()
+
+        if self.quest.type == "code":
+            try:
+                answer = self.query_one("#answer", TextArea)
+            except Exception:
+                return
+
+            if dir_upper in {"J", "-", "down"}:
+                self._editor_height = min(36, self._editor_height + delta * 2)
+                answer.styles.height = self._editor_height
+                self.notify(
+                    f"Editor ampliado: {self._editor_height} lin",
+                    severity="information",
+                )
+            elif dir_upper in {"K", "+", "up"}:
+                self._editor_height = max(5, self._editor_height - delta * 2)
+                answer.styles.height = self._editor_height
+                self.notify(
+                    f"Enunciado ampliado  ·  Editor: {self._editor_height} lin",
+                    severity="information",
+                )
+        else:
+            try:
+                actions = self.query_one("#task-actions")
+            except Exception:
+                return
+
+            if dir_upper in {"J", "-", "down"}:
+                self._actions_height = min(12, self._actions_height + delta)
+                actions.styles.height = self._actions_height
+                self.notify(
+                    f"Ações ampliadas: {self._actions_height} lin",
+                    severity="information",
+                )
+            elif dir_upper in {"K", "+", "up"}:
+                self._actions_height = max(3, self._actions_height - delta)
+                actions.styles.height = self._actions_height
+                self.notify(
+                    f"Enunciado ampliado  ·  Ações: {self._actions_height} lin",
+                    severity="information",
+                )
 
     def _user_value(self) -> str:
         if self.quest.type == "code":

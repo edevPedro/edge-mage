@@ -138,7 +138,8 @@ Input:focus, TextArea:focus {
 }
 
 #room-main {
-    height: 14;
+    height: 1fr;
+    min-height: 10;
     margin: 0 0 1 0;
 }
 
@@ -169,7 +170,27 @@ Input:focus, TextArea:focus {
     border: solid #5a7a68 !important;
 }
 
-#home-menu, #track-list, #room-list, #task-list, #task-actions {
+#task-list {
+    height: 7;
+    min-height: 4;
+    max-height: 16;
+    margin: 0 1 1 1;
+}
+
+#pane-prompt {
+    height: 1fr;
+    min-height: 8;
+    margin: 0 1 1 1;
+}
+
+#task-actions, #daily-actions {
+    height: auto;
+    max-height: 5;
+    min-height: 3;
+    margin: 0 1 1 1;
+}
+
+#home-menu, #track-list, #room-list {
     height: 1fr;
     margin: 0 1 1 1;
 }

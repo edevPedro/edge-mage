@@ -215,6 +215,13 @@ class MageScreen(Screen[None]):
         elif direction in {"h", "k"}:
             self.cycle_pane(-1)
 
+    def resize_pane(self, direction: str, delta: int = 2) -> None:
+        """
+        Redimensiona painéis estilo Neovim (Ctrl+w Shift+H/J/K/L ou +, -, <, >).
+        Sobrescrito em telas com splits e painéis ajustáveis.
+        """
+        pass
+
     def action_vim_escape(self) -> None:
         app = self.app
         if getattr(app, "nav_mode", None) == NavMode.WINDOW:
