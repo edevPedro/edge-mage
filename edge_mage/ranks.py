@@ -1,8 +1,9 @@
-"""Ranks: global e-mage path + Edge ML course internal ranks."""
+"""Ranks: global e-mage path + Edge ML + Neurotech course-internal ranks."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Iterable
 
 
 @dataclass(frozen=True)
@@ -13,6 +14,133 @@ class Rank:
     min_xp: int
     min_level: int
     blurb: str
+
+
+# --- Neurotech parallel circle (rune + boss gated; never Edge ladder) --------
+NEURO_RUNE_ACQ = "rune-neuro-acq"
+NEURO_RUNE_DECODE = "rune-neuro-decode"
+NEURO_RUNE_ONLINE = "rune-neuro-online"
+NEURO_RUNE_IDS: tuple[str, ...] = (
+    NEURO_RUNE_ACQ,
+    NEURO_RUNE_DECODE,
+    NEURO_RUNE_ONLINE,
+)
+
+# Room clears that materialize inventory runes (parallel circle).
+NEURO_RUNE_DROP_ROOMS: dict[str, str] = {
+    "nt-filter-bank": NEURO_RUNE_ACQ,
+    "nt-decode-mvp": NEURO_RUNE_DECODE,
+    "nt-online-stub": NEURO_RUNE_ONLINE,
+}
+
+# Alternate acq path: full F2 electrode chain without filter-bank yet.
+NEURO_ACQ_CHAIN: tuple[str, ...] = (
+    "nt-electrode-snr",
+    "nt-ground-ref",
+    "nt-adc-bio",
+)
+
+NEURO_MILESTONE_ROOMS: frozenset[str] = frozenset(
+    {
+        "nt-filter-bank",
+        "nt-decode-mvp",
+        "nt-online-stub",
+        "nt-neuro-mage",
+    }
+)
+
+NEURO_RUNE_META: dict[str, tuple[str, str]] = {
+    NEURO_RUNE_ACQ: ("◈", "Aquisição"),
+    NEURO_RUNE_DECODE: ("λ", "Decode"),
+    NEURO_RUNE_ONLINE: ("↺", "Online"),
+}
+
+NEURO_RANKS: tuple[Rank, ...] = (
+    Rank(
+        "neuro_novice",
+        "Novice",
+        "Novice",
+        0,
+        1,
+        "Portal do círculo Neural — Estuda → Sala.",
+    ),
+    Rank(
+        "signal_adept",
+        "Signal Adept",
+        "Signal Adept",
+        1,
+        2,
+        "Cadeia de aquisição / filter-bank — rune-neuro-acq.",
+    ),
+    Rank(
+        "decode_adept",
+        "Decode Adept",
+        "Decode Adept",
+        2,
+        3,
+        "Decode MVP offline (LDA→κ) — rune-neuro-decode.",
+    ),
+    Rank(
+        "closed_loop_adept",
+        "Closed-Loop Adept",
+        "Closed-Loop Adept",
+        3,
+        4,
+        "Loop online stub — rune-neuro-online.",
+    ),
+    Rank(
+        "neuro_mage",
+        "Neuro Mage",
+        "Neuro Mage",
+        4,
+        5,
+        "3 runas neuro + boss ritual — círculo paralelo (≠ Mago Supremo).",
+    ),
+)
+
+
+def neuro_runes_earned_from_rooms(completed_room_ids: Iterable[str]) -> set[str]:
+    """Derive which neuro runes rooms should grant (idempotent inventory)."""
+    done = {str(r) for r in completed_room_ids}
+    earned: set[str] = set()
+    if "nt-filter-bank" in done or set(NEURO_ACQ_CHAIN).issubset(done):
+        earned.add(NEURO_RUNE_ACQ)
+    if "nt-decode-mvp" in done:
+        earned.add(NEURO_RUNE_DECODE)
+    if "nt-online-stub" in done:
+        earned.add(NEURO_RUNE_ONLINE)
+    return earned
+
+
+def effective_neuro_rank(
+    owned_runes: Iterable[str],
+    *,
+    has_neuro_mage_boss: bool,
+) -> Rank:
+    """
+    Neurotech course ranks — rune ladder + boss for Neuro Mage.
+    Does not use Edge XP / on-device ritual.
+    """
+    runes = {str(r) for r in owned_runes}
+    has_acq = NEURO_RUNE_ACQ in runes
+    has_decode = NEURO_RUNE_DECODE in runes
+    has_online = NEURO_RUNE_ONLINE in runes
+    if has_acq and has_decode and has_online and has_neuro_mage_boss:
+        return next(r for r in NEURO_RANKS if r.id == "neuro_mage")
+    if has_online:
+        return next(r for r in NEURO_RANKS if r.id == "closed_loop_adept")
+    if has_decode:
+        return next(r for r in NEURO_RANKS if r.id == "decode_adept")
+    if has_acq:
+        return next(r for r in NEURO_RANKS if r.id == "signal_adept")
+    return NEURO_RANKS[0]
+
+
+def next_neuro_rank(current: Rank) -> Rank | None:
+    for i, rank in enumerate(NEURO_RANKS):
+        if rank.id == current.id and i + 1 < len(NEURO_RANKS):
+            return NEURO_RANKS[i + 1]
+    return None
 
 
 # --- Edge ML Mage course (internal feeling; preserved from Edge Mage) --------

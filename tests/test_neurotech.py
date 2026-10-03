@@ -101,11 +101,14 @@ def test_requires_rooms_enforced_in_unlock(tmp_path) -> None:
     assert store.is_room_unlocked(track, ethics)
     assert not store.is_room_unlocked(track, ground)
 
-    # Boss needs online + (paper OR project)
+    # Boss needs online + (paper OR project) + 3 neuro runes
     boss = next(r for r in track.rooms if r.id == "nt-neuro-mage")
     store.state.completed_rooms_by_id["nt-online-stub"] = True
     assert not store.is_room_unlocked(track, boss)
     store.state.completed_rooms_by_id["nt-checkpoint-paper"] = True
+    assert not store.is_room_unlocked(track, boss)
+    store.state.completed_rooms_by_id["nt-filter-bank"] = True
+    store.state.completed_rooms_by_id["nt-decode-mvp"] = True
     assert store.is_room_unlocked(track, boss)
 
 
@@ -271,3 +274,97 @@ def test_substantive_rooms_have_http_resources() -> None:
             continue
         assert room.resources, f"{room.id} missing resources"
         assert any(r.url.startswith("http") for r in room.resources), room.id
+
+
+def test_neuro_ranks_ladder_and_boss_gate() -> None:
+    from edge_mage.ranks import (
+        NEURO_RUNE_ACQ,
+        NEURO_RUNE_DECODE,
+        NEURO_RUNE_ONLINE,
+        effective_neuro_rank,
+        neuro_runes_earned_from_rooms,
+    )
+
+    assert effective_neuro_rank([], has_neuro_mage_boss=False).id == "neuro_novice"
+    assert (
+        effective_neuro_rank([NEURO_RUNE_ACQ], has_neuro_mage_boss=False).id
+        == "signal_adept"
+    )
+    assert (
+        effective_neuro_rank(
+            [NEURO_RUNE_ACQ, NEURO_RUNE_DECODE], has_neuro_mage_boss=False
+        ).id
+        == "decode_adept"
+    )
+    three = [NEURO_RUNE_ACQ, NEURO_RUNE_DECODE, NEURO_RUNE_ONLINE]
+    assert effective_neuro_rank(three, has_neuro_mage_boss=False).id == "closed_loop_adept"
+    assert effective_neuro_rank(three, has_neuro_mage_boss=True).id == "neuro_mage"
+    # 3 runes + boss required — boss alone is not enough
+    assert effective_neuro_rank([], has_neuro_mage_boss=True).id == "neuro_novice"
+
+    assert NEURO_RUNE_ACQ in neuro_runes_earned_from_rooms(
+        {"nt-electrode-snr", "nt-ground-ref", "nt-adc-bio"}
+    )
+    assert NEURO_RUNE_DECODE in neuro_runes_earned_from_rooms({"nt-decode-mvp"})
+    assert NEURO_RUNE_ONLINE in neuro_runes_earned_from_rooms({"nt-online-stub"})
+
+
+def test_neuro_rune_drops_persist(tmp_path) -> None:
+    from edge_mage.models import Room, Task
+    from edge_mage.ranks import NEURO_RUNE_ACQ, NEURO_RUNE_DECODE, NEURO_RUNE_ONLINE
+
+    store = ProgressStore(tmp_path / "runes.json")
+    room = Room(
+        id="nt-filter-bank",
+        title="Filter",
+        summary="",
+        xp_reward=10,
+        unlock_xp=0,
+        lesson_md="",
+        tasks=[Task(id="t1", type="mcq", prompt="?", xp=5, answer=0, choices=["a"])],
+        path="",
+        course="neurotech",
+    )
+    # mark single task → room complete → rune drop
+    store.state.completed_tasks["neurotech/nt-filter-bank/t1"] = False
+    result = store.mark_task("neurotech", "nt-filter-bank", "t1", 5, room)
+    assert result["room_completed"]
+    assert NEURO_RUNE_ACQ in result["newly_runes"]
+    assert store.has_rune(NEURO_RUNE_ACQ)
+    assert result["rank"].id == "signal_adept"
+    assert result["milestone"] is True
+
+    # Edge ladder must not be used for neuro clears
+    assert result["rank"].id != "novico"
+    assert result["course"] == "neurotech"
+
+    store.state.completed_rooms_by_id["nt-decode-mvp"] = True
+    store.state.completed_rooms_by_id["nt-online-stub"] = True
+    newly = store.sync_neuro_runes_from_rooms()
+    assert NEURO_RUNE_DECODE in newly or store.has_rune(NEURO_RUNE_DECODE)
+    assert store.has_rune(NEURO_RUNE_ONLINE)
+    assert store.neuro_rank().id == "closed_loop_adept"
+
+    store.state.rituals["neuro-mage"] = True
+    assert store.neuro_rank().id == "neuro_mage"
+
+    # Parallel circle: Neuro Mage does not mint Mago Supremo
+    g = store.global_rank()
+    assert g.id != "mago_supremo"
+
+    p = store.profile_summary("neurotech")
+    assert p["rank"].id == "neuro_mage"
+    assert p["runes_owned"] == 3
+    assert p["neuro_mage"] is True
+
+
+def test_neuro_profile_not_edge_on_device(tmp_path) -> None:
+    store = ProgressStore(tmp_path / "p.json")
+    store.state.xp = 3000
+    store.state.rituals["on-device"] = True
+    edge = store.profile_summary("edge")
+    assert edge["rank"].id == "edge_mage"
+    neuro = store.profile_summary("neurotech")
+    assert neuro["rank"].id == "neuro_novice"
+    assert "on_device" in neuro  # field exists but HUD uses runes
+    assert neuro["runes_owned"] == 0

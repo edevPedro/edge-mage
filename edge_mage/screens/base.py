@@ -64,15 +64,25 @@ class MageScreen(Screen[None]):
         rank = ""
         skills = ""
         if store is not None:
-            p = store.profile_summary()
+            course = getattr(app, "course", None) or ""
+            p = store.profile_summary(course if course else None)
             xp = p["xp"]
             rank = p["rank"].title
-            skills_n = p.get("skills_done", 0)
-            skills_total = getattr(app, "skills_total", 0)
-            if skills_total:
-                skills = f"✧{skills_n}/{skills_total}"
-            elif skills_n:
-                skills = f"✧{skills_n}"
+            if course == "neurotech":
+                owned = int(p.get("runes_owned") or 0)
+                total = int(p.get("runes_total") or 3)
+                rooms = int(p.get("neuro_rooms_done") or p.get("rooms_done") or 0)
+                # 23 salas F0→F6 in catalog
+                pct = min(100, int(100 * rooms / 23)) if rooms else 0
+                mage = "✓" if p.get("neuro_mage") else "·"
+                skills = f"◈{owned}/{total} · mage{mage} · {pct}%"
+            else:
+                skills_n = p.get("skills_done", 0)
+                skills_total = getattr(app, "skills_total", 0)
+                if skills_total:
+                    skills = f"✧{skills_n}/{skills_total}"
+                elif skills_n:
+                    skills = f"✧{skills_n}"
         sl.set_status(mode=str(mode), context=ctx, xp=xp, rank=rank, skills=skills)
 
     def is_typing(self) -> bool:

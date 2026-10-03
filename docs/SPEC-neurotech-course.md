@@ -220,13 +220,35 @@ Faster with Edge ML already done (shared sampling/ADC/latency intuition).
 
 ```text
 e-mage global:  Mago base → … → Mago Supremo   (UNCHANGED hardcore)
-neurotech:      parallel courseProgress.neurotech + rituals neuro-*
+neurotech:      parallel NEURO_RANKS + runes rune-neuro-* + courseProgress.neurotech
 ```
+
+**Course ranks** (`edge_mage/ranks.py` — HUD/ceremony when `--course neurotech`):
+
+`Novice → Signal Adept → Decode Adept → Closed-Loop Adept → Neuro Mage`
+
+| Rank | Gate |
+|------|------|
+| Signal Adept | `rune-neuro-acq` |
+| Decode Adept | `rune-neuro-decode` |
+| Closed-Loop Adept | `rune-neuro-online` |
+| Neuro Mage | 3 runas + boss ritual (`neuro-mage` / `nt-neuro-mage`) |
+
+**Rune drops** (persisted in `progress.runes`):
+
+| Rune | Room (or alt) |
+|------|----------------|
+| `rune-neuro-acq` | `nt-filter-bank` **or** electrode chain (`nt-electrode-snr`+`nt-ground-ref`+`nt-adc-bio`) |
+| `rune-neuro-decode` | `nt-decode-mvp` |
+| `rune-neuro-online` | `nt-online-stub` |
+
+Boss `nt-neuro-mage` unlock also requires the 3 runes (plus online + paper\|project).
 
 Implementation (landed):
 
 - TUI course id `neurotech` in `edge_mage/courses.py` + launcher + `mage --course neurotech`.
-- Grimório: `content/grimoire/skills.yaml` entries `neuro-…` (+ elite `neuro-mage`).
+- Grimório: `content/grimoire/skills.yaml` entries `neuro-…` (+ elite `neuro-mage`) — copy matches real drops.
+- Statusline Neuro: `◈runas · mage · %fases` (not Edge on-device).
 - Web Estudo: fourth course `/estudo/cursos/neurotech` + `content/estudo/neurotech/export.json` (soft-gate Mago base like Edge).
 - **Never** require Neurotech rituals for Mago Supremo.
 

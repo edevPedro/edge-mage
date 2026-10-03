@@ -4,4 +4,4 @@ Nas ruínas do laboratório, o grimório lista *trials* com rótulos `left` / `r
 mas o decoder anterior só imprimia “confiança 99%” sem κ nem split.
 
 Você reconstrói o caminho mínimo: **features honestas → LDA toy → κ**,
-antes de qualquer loop online. Sem mapa de classes, o boss não selará a runa.
+antes de qualquer loop online. Limpar esta sala dropa **`rune-neuro-decode`** no inventário.

@@ -102,8 +102,14 @@ def progress_to_api_payload(progress: dict[str, Any], *, user: str = "pedro") ->
             "completed_rooms_by_id": progress.get("completed_rooms_by_id", {}),
             "courses": progress.get("courses", {}),
             "rituals": progress.get("rituals", {}),
+            "runes": progress.get("runes", {}),
             "global_rank": progress.get("global_rank"),
-            "version": progress.get("version", 4),
+            "version": progress.get("version", 5),
+        },
+        "rooms": {
+            str(k): bool(v)
+            for k, v in (progress.get("completed_rooms_by_id") or {}).items()
+            if v
         },
     }
 

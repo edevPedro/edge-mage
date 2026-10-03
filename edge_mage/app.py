@@ -409,14 +409,26 @@ class EdgeMageApp(App[None]):
             else:
                 self.notify("animação só em salas com visual", severity="warning")
         elif cmd.name == "xp":
-            p = self.store.profile_summary()
+            course = getattr(self, "course", None) or ""
+            p = self.store.profile_summary(course if course else None)
             nxt = p["next_rank"]
-            extra = f" → {nxt.title} ({nxt.min_xp})" if nxt else " (rank máx.)"
-            skills = f" · grimório {p.get('skills_done', 0)}/{self.skills_total}"
-            self.notify(
-                f"XP {p['xp']} · Nv {p['level']} · {p['rank'].title}{extra}{skills}",
-                severity="information",
-            )
+            if course == "neurotech":
+                owned = p.get("runes_owned", 0)
+                total = p.get("runes_total", 3)
+                mage = "✓" if p.get("neuro_mage") else "·"
+                nxt_s = f" → {nxt.title}" if nxt else " (Neuro Mage)"
+                self.notify(
+                    f"{p['rank'].title}{nxt_s} · runas {owned}/{total} · mage{mage} · "
+                    f"XP {p['xp']}",
+                    severity="information",
+                )
+            else:
+                extra = f" → {nxt.title} ({nxt.min_xp})" if nxt else " (rank máx.)"
+                skills = f" · grimório {p.get('skills_done', 0)}/{self.skills_total}"
+                self.notify(
+                    f"XP {p['xp']} · Nv {p['level']} · {p['rank'].title}{extra}{skills}",
+                    severity="information",
+                )
         elif cmd.name == "sync":
             from edge_mage.sync import sync_all
 

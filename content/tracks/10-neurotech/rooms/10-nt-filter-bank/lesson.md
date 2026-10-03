@@ -4,9 +4,10 @@
 2. Para un MI toy: passe-banda mu e/ou beta → potência (ou variância) por canal.
 3. Separe **pré-processamento** de **classificação**; vazamento de trial invalida o número.
 
-## Checkpoint futuro
+## Runa
 
-Projeto fatia **CP-Filter bank** (SPEC §7): implementar bandpower em EEG sintético com testes.
+Limpar esta sala dropa **`rune-neuro-acq`** no inventário (círculo paralelo).  
+Cadeia eletrodo→terra→ADC completa também concede a mesma runa se o filter-bank ainda estiver aberto.
 
 ## Leituras
 

@@ -65,10 +65,16 @@ class HomeScreen(MageScreen):
             )
         else:
             banner = BANNER
-        profile = store.profile_summary()
+        profile = store.profile_summary(course)
         rank = profile["rank"]
         into, need = xp_for_next_level(profile["xp"])
-        if need:
+        if course == "neurotech":
+            rooms = int(profile.get("neuro_rooms_done") or profile.get("rooms_done") or 0)
+            pct = min(100, int(100 * rooms / 23)) if rooms else 0
+            filled = int(20 * pct / 100)
+            bar = "█" * filled + "░" * (20 - filled)
+            bar_line = f"Fases  [{bar}]  {pct}%  ·  {rooms}/23 salas"
+        elif need:
             filled = int(20 * into / need) if need else 0
             bar = "█" * filled + "░" * (20 - filled)
             bar_line = f"Nível {profile['level']}  [{bar}]  {into}/{need} XP"
@@ -79,11 +85,19 @@ class HomeScreen(MageScreen):
         combo = int(profile.get("combo") or 0)
         mana = f"  ·  mana ×{mult:.2f}" if mult > 1 else ""
         combo_s = f"  ·  combo {combo}/4" if combo else ""
-        od = "  ·  ritual on-device ✓" if profile.get("on_device") else ""
+        if course == "neurotech":
+            owned = int(profile.get("runes_owned") or 0)
+            total = int(profile.get("runes_total") or 3)
+            mage = " ✓" if profile.get("neuro_mage") else ""
+            od = f"  ·  runas {owned}/{total}{mage}"
+            status_title = "STATUS · CÍRCULO NEURAL"
+        else:
+            od = "  ·  ritual on-device ✓" if profile.get("on_device") else ""
+            status_title = "STATUS DO MAGO"
 
         with Vertical():
             yield Static(banner, id="banner")
-            yield Static("STATUS DO MAGO", classes="panel-title")
+            yield Static(status_title, classes="panel-title")
             yield Static(
                 f"Rank: [{rank.title}]  ·  XP: {profile['xp']}  ·  "
                 f"Streak: {profile['streak']}d{mana}{combo_s}{od}",
@@ -91,13 +105,34 @@ class HomeScreen(MageScreen):
             )
             yield Static(bar_line, id="xp-bar")
             yield Static(rank.blurb, classes="muted")
+            if course == "neurotech" and profile.get("rune_labels"):
+                yield Static(
+                    "  ".join(profile["rune_labels"]),
+                    classes="accent",
+                )
             nxt = profile["next_rank"]
             if nxt:
                 extra = ""
-                if nxt.id == "edge_mage" and not profile.get("on_device"):
-                    extra = " + ritual on-device"
+                if course == "neurotech":
+                    if nxt.id == "neuro_mage":
+                        extra = " — 3 runas + boss ritual"
+                    elif nxt.id == "signal_adept":
+                        extra = " — limpe filter-bank (ou cadeia eletrodo)"
+                    elif nxt.id == "decode_adept":
+                        extra = " — limpe decode-mvp"
+                    elif nxt.id == "closed_loop_adept":
+                        extra = " — limpe online-stub"
+                    yield Static(f"Próximo: {nxt.title}{extra}", classes="accent")
+                else:
+                    if nxt.id == "edge_mage" and not profile.get("on_device"):
+                        extra = " + ritual on-device"
+                    yield Static(
+                        f"Próximo: {nxt.title} (≥{nxt.min_xp} XP{extra})",
+                        classes="accent",
+                    )
+            elif course == "neurotech" and rank.id == "neuro_mage":
                 yield Static(
-                    f"Próximo: {nxt.title} (≥{nxt.min_xp} XP{extra})",
+                    "Neuro Mage selado — círculo paralelo (≠ Mago Supremo).",
                     classes="accent",
                 )
             yield Static(

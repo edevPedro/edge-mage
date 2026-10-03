@@ -77,7 +77,8 @@ class DailyRunScreen(MageScreen):
         if oid == "done":
             from edge_mage.screens.ceremony import CeremonyScreen
 
-            p = store.profile_summary()
+            course = getattr(self.app, "course", None) or ""
+            p = store.profile_summary(course if course else None)
             self.app.push_screen(
                 CeremonyScreen(
                     title="RUN DO DIA COMPLETA",

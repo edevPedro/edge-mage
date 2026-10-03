@@ -40,6 +40,25 @@ def rank_up_banner(title: str) -> str:
     )
 
 
+def rune_drop_banner(glyph: str, name: str) -> str:
+    g = (glyph or "◈")[:3]
+    return (
+        "╔══════════════════════════════════╗\n"
+        f"║          {g:^8s}                ║\n"
+        f"║   RUNA · {name[:22]:<22s} ║\n"
+        "╚══════════════════════════════════╝"
+    )
+
+
+def milestone_banner(label: str) -> str:
+    return (
+        "╔══════════════════════════════════╗\n"
+        "║     ◆  MARCO DO CÍRCULO  ◆       ║\n"
+        f"║      {label[:26]:^26s}  ║\n"
+        "╚══════════════════════════════════╝"
+    )
+
+
 def xp_bar(into: int, need: int | None, width: int = 20) -> str:
     if not need:
         return "[" + "█" * width + "] CAP"

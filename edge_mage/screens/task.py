@@ -213,6 +213,8 @@ class TaskScreen(MageScreen):
         status.set_class(True, "ok")
         status.set_class(False, "err")
 
+        from edge_mage.juice import milestone_banner, rune_drop_banner
+        from edge_mage.ranks import NEURO_RUNE_META
         from edge_mage.screens.ceremony import CeremonyScreen
 
         title = "SALA CONCLUÍDA" if result.get("room_completed") else "ACERTO"
@@ -220,6 +222,25 @@ class TaskScreen(MageScreen):
             title = f"MASTERY {result.get('mastery', 0)}/3"
         if result.get("ranked_up"):
             title = "ASCENSÃO DE RANK"
+        if result.get("milestone"):
+            titles = {
+                "nt-filter-bank": "MARCO · FILTER BANK",
+                "nt-decode-mvp": "MARCO · DECODE MVP",
+                "nt-online-stub": "MARCO · ONLINE LOOP",
+                "nt-neuro-mage": "BOSS · NEURO MAGE",
+            }
+            title = titles.get(self.room.id, "MARCO DO CÍRCULO")
+
+        extra: list[str] = []
+        if self.mastery and result.get("mastery"):
+            extra.append(f"Mastery {result.get('mastery')}/3 — glyph shine")
+        if result.get("milestone"):
+            extra.append(milestone_banner(self.room.title))
+        for rid in result.get("newly_runes") or []:
+            glyph, name = NEURO_RUNE_META.get(rid, ("◈", rid))
+            extra.append("")
+            extra.append(rune_drop_banner(glyph, name))
+            extra.append(f"Inventário: {rid}")
 
         ceremony = CeremonyScreen(
             title=title,
@@ -235,11 +256,7 @@ class TaskScreen(MageScreen):
             skill_name=skill_name,
             combo=int(result.get("combo") or 0),
             mult=float(result.get("mult") or 1.0),
-            extra_lines=(
-                [f"Mastery {result.get('mastery')}/3 — glyph shine"]
-                if self.mastery and result.get("mastery")
-                else []
-            ),
+            extra_lines=extra,
         )
         # sai da task e mostra cerimônia por cima da sala
         self.app.pop_screen()

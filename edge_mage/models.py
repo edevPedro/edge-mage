@@ -103,6 +103,8 @@ class ProgressState:
     completed_rooms_by_id: dict[str, bool] = field(default_factory=dict)
     unlocked_skills: dict[str, bool] = field(default_factory=dict)
     rituals: dict[str, bool] = field(default_factory=dict)
+    # Collectible runes (neuro parallel circle; never Mago Supremo gates)
+    runes: dict[str, bool] = field(default_factory=dict)
     mastery: dict[str, int] = field(default_factory=dict)  # room_key -> 0..3
     streak_days: int = 0
     last_active: str = ""
@@ -113,7 +115,7 @@ class ProgressState:
     # per-course flags: { fundamentals: { cleared: bool }, … }
     courses: dict[str, Any] = field(default_factory=dict)
     evidence: dict[str, bool] = field(default_factory=dict)
-    version: int = 4
+    version: int = 5
 
     def task_key(self, track_id: str, room_id: str, task_id: str) -> str:
         return f"{track_id}/{room_id}/{task_id}"

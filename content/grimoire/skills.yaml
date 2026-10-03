@@ -253,14 +253,14 @@ skills:
 
   - id: neuro-filter
     name: Filter Bank EEG
-    description: "Passa-banda / notch / bandpower — rune-neuro-acq."
+    description: "Limpar nt-filter-bank dropa rune-neuro-acq (inventário real)."
     glyph: "▤"
     unlock_room: nt-filter-bank
     unlock_track: neurotech
 
   - id: neuro-decode
     name: Decode Offline
-    description: "Decode MVP (LDA/κ) + métricas — rune-neuro-decode."
+    description: "Limpar nt-decode-mvp dropa rune-neuro-decode (inventário real)."
     glyph: "λ"
     unlock_room: nt-decode-mvp
     unlock_track: neurotech
@@ -274,14 +274,14 @@ skills:
 
   - id: neuro-online
     name: Online Loop
-    description: "Loop online simulado — rune-neuro-online."
+    description: "Limpar nt-online-stub dropa rune-neuro-online (inventário real)."
     glyph: "↺"
     unlock_room: nt-online-stub
     unlock_track: neurotech
 
   - id: neuro-mage
     name: Neuro Mage
-    description: "Boss do círculo paralelo — evidência online + paper/projeto."
+    description: "Boss: 3 runas neuro + paper|projeto + ritual neuro-mage (≠ Mago Supremo)."
     glyph: "✦"
     unlock_room: nt-neuro-mage
     unlock_track: neurotech

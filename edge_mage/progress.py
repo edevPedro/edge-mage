@@ -7,14 +7,26 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from edge_mage.courses import COURSE_EDGE, COURSE_FUNDAMENTALS, COURSE_SYSTEMS
+from edge_mage.courses import (
+    COURSE_EDGE,
+    COURSE_FUNDAMENTALS,
+    COURSE_NEUROTECH,
+    COURSE_SYSTEMS,
+)
 from edge_mage.models import ProgressState, Room, Track
 from edge_mage.paths import progress_path
 from edge_mage.ranks import (
+    NEURO_MILESTONE_ROOMS,
+    NEURO_RUNE_DROP_ROOMS,
+    NEURO_RUNE_IDS,
+    NEURO_RUNE_META,
+    effective_neuro_rank,
     effective_rank,
     global_rank_from_flags,
     level_from_xp,
+    neuro_runes_earned_from_rooms,
     next_global_rank,
+    next_neuro_rank,
     next_rank,
     rank_from_xp,
     xp_for_next_level,
@@ -61,6 +73,7 @@ class ProgressStore:
             completed_rooms_by_id=by_id,
             unlocked_skills=dict(raw.get("unlocked_skills", {})),
             rituals=dict(raw.get("rituals", {})),
+            runes=dict(raw.get("runes", {})),
             mastery={k: int(v) for k, v in dict(raw.get("mastery", {})).items()},
             streak_days=int(raw.get("streak_days", 0)),
             last_active=str(raw.get("last_active", "")),
@@ -70,7 +83,7 @@ class ProgressStore:
             unlocked_tracks=dict(raw.get("unlocked_tracks", {})),
             courses=dict(raw.get("courses", {})),
             evidence=dict(raw.get("evidence", {})),
-            version=int(raw.get("version", 4)),
+            version=int(raw.get("version", 5)),
         )
 
     def save(self) -> None:
@@ -82,6 +95,7 @@ class ProgressStore:
             "completed_rooms_by_id": self.state.completed_rooms_by_id,
             "unlocked_skills": self.state.unlocked_skills,
             "rituals": self.state.rituals,
+            "runes": self.state.runes,
             "mastery": self.state.mastery,
             "streak_days": self.state.streak_days,
             "last_active": self.state.last_active,
@@ -171,6 +185,57 @@ class ProgressStore:
     def has_ritual(self, ritual_id: str) -> bool:
         return bool(self.state.rituals.get(ritual_id))
 
+    def has_rune(self, rune_id: str) -> bool:
+        return bool(self.state.runes.get(rune_id))
+
+    def owned_runes(self) -> set[str]:
+        return {k for k, v in self.state.runes.items() if v}
+
+    def grant_rune(self, rune_id: str) -> bool:
+        """Persist a rune; returns True if newly granted."""
+        if not rune_id or self.state.runes.get(rune_id):
+            return False
+        self.state.runes[rune_id] = True
+        return True
+
+    def sync_neuro_runes_from_rooms(self) -> list[str]:
+        """Backfill neuro runes from completed room ids (idempotent)."""
+        done_ids = {k for k, v in self.state.completed_rooms_by_id.items() if v}
+        newly: list[str] = []
+        for rid in neuro_runes_earned_from_rooms(done_ids):
+            if self.grant_rune(rid):
+                newly.append(rid)
+        return newly
+
+    def grant_neuro_runes_for_room(self, room_id: str) -> list[str]:
+        """Materialize rune drops for a cleared neuro room (+ acq chain alt)."""
+        before = self.owned_runes()
+        drop = NEURO_RUNE_DROP_ROOMS.get(room_id)
+        if drop:
+            self.grant_rune(drop)
+        # Electrode chain complete also earns acq (even before filter-bank).
+        self.sync_neuro_runes_from_rooms()
+        return sorted(self.owned_runes() - before)
+
+    def has_neuro_mage_boss(self) -> bool:
+        return bool(
+            self.has_ritual("neuro-mage")
+            or self.has_ritual("nt-neuro-mage")
+            or self.state.completed_rooms_by_id.get("nt-neuro-mage")
+        )
+
+    def neuro_rank(self):
+        self.sync_neuro_runes_from_rooms()
+        return effective_neuro_rank(
+            self.owned_runes(),
+            has_neuro_mage_boss=self.has_neuro_mage_boss(),
+        )
+
+    def neuro_runes_progress(self) -> tuple[int, int]:
+        self.sync_neuro_runes_from_rooms()
+        owned = sum(1 for rid in NEURO_RUNE_IDS if self.has_rune(rid))
+        return owned, len(NEURO_RUNE_IDS)
+
     def course_meta(self, course_id: str) -> dict[str, Any]:
         raw = self.state.courses.get(course_id)
         return dict(raw) if isinstance(raw, dict) else {}
@@ -251,8 +316,17 @@ class ProgressStore:
         key = self.state.task_key(track_id, room_id, task_id)
         gained = 0
         room_completed = False
+        newly_runes: list[str] = []
+        is_neuro = (
+            room.course == COURSE_NEUROTECH
+            or room_id.startswith("nt-")
+            or track_id == "neurotech"
+        )
         before_level = level_from_xp(self.state.xp)
-        before_rank = effective_rank(self.state.xp, self.has_ritual("on-device"))
+        if is_neuro:
+            before_rank = self.neuro_rank()
+        else:
+            before_rank = effective_rank(self.state.xp, self.has_ritual("on-device"))
 
         first_completion = False
         mastery_bump = 0
@@ -287,6 +361,18 @@ class ProgressStore:
                     self.state.unlocked_tracks[room.unlocks_track] = True
                 if room.boss:
                     self.state.rituals[room.id] = True
+                    if room_id == "nt-neuro-mage" or room.id == "nt-neuro-mage":
+                        self.state.rituals["neuro-mage"] = True
+                if is_neuro:
+                    newly_runes = self.grant_neuro_runes_for_room(room_id)
+                    neuro_meta = self.course_meta(COURSE_NEUROTECH)
+                    neuro_meta["runes"] = sorted(
+                        self.owned_runes() & set(NEURO_RUNE_IDS)
+                    )
+                    if room_id == "nt-neuro-mage" or room.id == "nt-neuro-mage":
+                        neuro_meta["neuro_mage"] = True
+                        neuro_meta["cleared"] = True
+                    self.state.courses[COURSE_NEUROTECH] = neuro_meta
                 if room_id == "fundamentals-clear" or room.id == "fundamentals-clear":
                     self.state.courses.setdefault(COURSE_FUNDAMENTALS, {})
                     self.state.courses[COURSE_FUNDAMENTALS]["cleared"] = True
@@ -297,7 +383,10 @@ class ProgressStore:
             combo = self.state.daily_combo
 
         after_level = level_from_xp(self.state.xp)
-        after_rank = effective_rank(self.state.xp, self.has_ritual("on-device"))
+        if is_neuro:
+            after_rank = self.neuro_rank()
+        else:
+            after_rank = effective_rank(self.state.xp, self.has_ritual("on-device"))
         return {
             "gained": gained,
             "first_completion": first_completion,
@@ -314,6 +403,9 @@ class ProgressStore:
             "before_level": before_level,
             "into_level": xp_for_next_level(self.state.xp)[0],
             "need_level": xp_for_next_level(self.state.xp)[1],
+            "newly_runes": newly_runes,
+            "milestone": room_completed and room_id in NEURO_MILESTONE_ROOMS,
+            "course": COURSE_NEUROTECH if is_neuro else "",
         }
 
     def room_progress(self, track_id: str, room: Room) -> tuple[int, int]:
@@ -353,6 +445,11 @@ class ProgressStore:
             if not any(
                 self.is_room_done(track.id, rid) for rid in room.requires_rooms_any
             ):
+                return False
+        # Neuro Mage boss: 3 parallel runes (acq/decode/online) + existing room gates.
+        if room.id == "nt-neuro-mage":
+            self.sync_neuro_runes_from_rooms()
+            if not all(self.has_rune(rid) for rid in NEURO_RUNE_IDS):
                 return False
         return True
 
@@ -396,18 +493,63 @@ class ProgressStore:
             any_advanced_progress=edge_progress or systems_progress,
         )
 
-    def profile_summary(self) -> dict:
+    def profile_summary(self, course_id: str | None = None) -> dict:
         xp = self.state.xp
         level = level_from_xp(xp)
         has_od = self.has_ritual("on-device")
-        rank = effective_rank(xp, has_od)
         into, need = xp_for_next_level(xp)
+        g_rank = self.global_rank()
+        neuro_rooms = sum(
+            1
+            for k, v in self.state.completed_rooms_by_id.items()
+            if v and str(k).startswith("nt-")
+        )
+
+        if course_id == COURSE_NEUROTECH:
+            self.sync_neuro_runes_from_rooms()
+            rank = self.neuro_rank()
+            nxt = next_neuro_rank(rank)
+            runes_owned, runes_total = self.neuro_runes_progress()
+            rune_labels = []
+            for rid in NEURO_RUNE_IDS:
+                glyph, name = NEURO_RUNE_META[rid]
+                mark = "✓" if self.has_rune(rid) else "·"
+                rune_labels.append(f"{mark}{glyph}{name}")
+            return {
+                "xp": xp,
+                "level": level,
+                "rank": rank,
+                "global_rank": g_rank,
+                "next_global_rank": next_global_rank(g_rank.id),
+                "mago_base": self.has_mago_base(),
+                "into_level": into,
+                "need_level": need,
+                "next_rank": nxt,
+                "streak": self.state.streak_days,
+                "mult": self.xp_multiplier(),
+                "combo": self.state.daily_combo
+                if self.state.combo_date == date.today().isoformat()
+                else 0,
+                "tasks_done": sum(1 for v in self.state.completed_tasks.values() if v),
+                "rooms_done": neuro_rooms,
+                "skills_done": sum(1 for v in self.state.unlocked_skills.values() if v),
+                "rituals_done": sum(1 for v in self.state.rituals.values() if v),
+                "on_device": has_od,
+                "course": COURSE_NEUROTECH,
+                "runes_owned": runes_owned,
+                "runes_total": runes_total,
+                "rune_labels": rune_labels,
+                "neuro_mage": self.has_neuro_mage_boss(),
+                "neuro_rooms_done": neuro_rooms,
+                "updated": datetime.now(timezone.utc).isoformat(),
+            }
+
+        rank = effective_rank(xp, has_od)
         nxt = next_rank(xp)
         if rank.id == "arquimago" and xp >= 2900 and not has_od:
             from edge_mage.ranks import EDGE_RANKS
 
             nxt = next(r for r in EDGE_RANKS if r.id == "edge_mage")
-        g_rank = self.global_rank()
         return {
             "xp": xp,
             "level": level,
@@ -426,5 +568,6 @@ class ProgressStore:
             "skills_done": sum(1 for v in self.state.unlocked_skills.values() if v),
             "rituals_done": sum(1 for v in self.state.rituals.values() if v),
             "on_device": has_od,
+            "course": course_id or "",
             "updated": datetime.now(timezone.utc).isoformat(),
         }
