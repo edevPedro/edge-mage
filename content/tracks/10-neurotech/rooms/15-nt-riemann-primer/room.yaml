@@ -5,9 +5,9 @@ xp_reward: 34
 unlock_xp: 0
 owners:
 - bci
-phase: F4
+phase: F8-decode
 requires_rooms:
-- nt-decode-mvp
+- nt-csp-primer
 course: neurotech
 resources:
 - title: Yger et al. review (HAL PDF)
@@ -19,8 +19,8 @@ resources:
 - title: arXiv:2407.20250
   url: https://arxiv.org/abs/2407.20250
   kind: paper
-- title: Barachant et al. — Multiclass brain–computer interface classification by Riemannian geometry
-    (IEEE)
+- title: Barachant et al. — Multiclass brain–computer interface classification by
+    Riemannian geometry (IEEE)
   url: https://doi.org/10.1109/TBME.2011.2172210
   kind: paper
 animation: matrix
@@ -55,4 +55,4 @@ tasks:
   - definite
   - Definida
   - definida
-order: 15
+order: 40

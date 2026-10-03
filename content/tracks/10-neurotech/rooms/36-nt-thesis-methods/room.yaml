@@ -1,0 +1,47 @@
+id: nt-thesis-methods
+title: Módulo Methods (padrão paper)
+summary: Pré-proc, CV, seeds, exclusões — reproduzível.
+xp_reward: 40
+unlock_xp: 0
+order: 62
+owners:
+- pedagogo
+- bci
+phase: F13-research
+requires_rooms:
+- nt-research-proposal
+course: neurotech
+resources:
+- title: MNE-Python documentation
+  url: https://mne.tools/stable/index.html
+  kind: docs
+- title: sklearn User Guide
+  url: https://scikit-learn.org/stable/user_guide.html
+  kind: docs
+tasks:
+- id: seed
+  type: mcq
+  prompt: 'Para Methods reproduzível, seeds de RNG e versão de libs devem ser:'
+  xp: 12
+  answer: 0
+  choices:
+  - documentados
+  - ocultados para “magia”
+  - trocados após ver o teste
+  - irrelevantes em BCI
+- id: section
+  type: fill
+  prompt: A seção do paper que descreve aquisição, preprocess e modelo chama-se ___.
+  xp: 12
+  answers:
+  - Methods
+  - methods
+  - Método
+  - Metodos
+  - Métodos
+  - Methodology
+- id: ritual
+  type: ritual
+  prompt: Artefato study-log/artifacts/neuro-thesis-methods.md
+  xp: 20
+  ritual_id: neuro-thesis-methods

@@ -5,9 +5,10 @@ xp_reward: 60
 unlock_xp: 0
 owners:
 - pedagogo
-phase: F6
+phase: F10-mage
 requires_rooms:
 - nt-online-stub
+- nt-closed-loop-control
 course: neurotech
 boss: true
 elite_skill: neuro-mage
@@ -23,8 +24,8 @@ tasks:
   xp: 14
   answer: 1
   choices:
-  - substitui as runas hardcore
-  - círculo paralelo — não altera gates do Mago Supremo
+  - substitui as runas hardcore na hora
+  - marco do círculo — o climax MSc (F7–F9) é a rota alternativa a Supremo
   - obriga implante
   - remove Fundamentals
 - id: evidence
@@ -42,7 +43,7 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-mage.md (cite paper OU project + online)
   xp: 32
   ritual_id: neuro-mage
-order: 23
+order: 53
 requires_rooms_any:
 - nt-checkpoint-paper
 - nt-checkpoint-project

@@ -5,9 +5,9 @@ xp_reward: 30
 unlock_xp: 0
 owners:
 - eletrica
-phase: F2
+phase: F3-elec
 requires_rooms:
-- nt-ground-ref
+- nt-elec-opamp-noise
 course: neurotech
 resources:
 - title: OpenBCI Cyton
@@ -40,7 +40,8 @@ tasks:
   - 1 Hz
 - id: uv-lsb
   type: numeric
-  prompt: 'Faixa ±100 000 µV (após ganho do front-end) em ADC 24-bit (2^24 níveis ≈ 1.678e7).
+  prompt: 'Faixa ±100 000 µV (após ganho do front-end) em ADC 24-bit (2^24 níveis
+    ≈ 1.678e7).
 
     Qual o µV/LSB aproximado? (100000*2 / 2^24). Resposta ~0.0119.
 
@@ -56,4 +57,4 @@ tasks:
   - volts
   - volt
   - V
-order: 8
+order: 17

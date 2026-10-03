@@ -5,9 +5,9 @@ xp_reward: 30
 unlock_xp: 0
 owners:
 - neuroeng
-phase: F2
+phase: F3-elec
 requires_rooms:
-- nt-volume-blur
+- nt-physics-field-lite
 course: neurotech
 resources:
 - title: OpenBCI — EEG Setup
@@ -60,4 +60,4 @@ tasks:
   - noise
   - ruído
   - ruido
-order: 6
+order: 14

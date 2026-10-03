@@ -1,0 +1,43 @@
+id: nt-app-hybrid-p300
+title: Aplicação — P300 speller (paradigma publicado)
+summary: Oddball/P300 literacy com DOI clássico — emulação educacional.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- bci
+- neurociencia
+phase: F11-apps
+pillar: applications
+course: neurotech
+resources:
+- title: Farwell & Donchin 1988 P300 speller
+  url: https://doi.org/10.1016/0013-4694(88)90149-6
+  kind: paper
+tasks:
+- id: latency
+  type: numeric
+  prompt: P300 nomeia positividade cerca de quantos ms pós-estímulo? (número)
+  xp: 12
+  answer: 300
+  tolerance: 50
+- id: odd
+  type: fill
+  prompt: O paradigma com estímulo raro entre frequentes chama-se ___.
+  xp: 10
+  answers:
+  - oddball
+  - odd-ball
+  - odd
+- id: scope
+  type: mcq
+  prompt: 'Esta sala:'
+  xp: 10
+  answer: 0
+  choices:
+  - ensina paradigma publicado — sem claim clínico
+  - diagnostica pacientes
+  - ensina stim invasivo
+  - remove Estuda
+order: 56
+requires_rooms:
+- nt-app-neurofeedback

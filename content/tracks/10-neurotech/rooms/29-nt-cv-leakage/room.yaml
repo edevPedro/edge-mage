@@ -1,0 +1,55 @@
+id: nt-cv-leakage
+title: CV aninhado e vazamento de trial
+summary: Nested CV, scaler no fold, splits honestos.
+xp_reward: 38
+unlock_xp: 0
+order: 37
+owners:
+- bci
+phase: F8-decode
+requires_rooms:
+- nt-hypothesis-power
+course: neurotech
+resources:
+- title: Lotte et al. JNE 2007
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+- title: Varoquaux et al. 2017 — assessing prediction
+  url: https://doi.org/10.1016/j.neuroimage.2016.10.038
+  kind: paper
+tasks:
+- id: leak
+  type: mcq
+  prompt: 'Calcular média/std de normalização com treino+teste juntos tipicamente
+    causa:'
+  xp: 12
+  answer: 0
+  choices:
+  - vazamento e métricas otimistas
+  - atraso de grupo FIR
+  - volume conduction
+  - dual-use automático
+- id: nested
+  type: mcq
+  prompt: 'Em nested CV, hiperparâmetros devem ser escolhidos:'
+  xp: 12
+  answer: 1
+  choices:
+  - no fold de teste externo
+  - no loop interno (treino/validação), nunca olhando o teste externo
+  - depois de publicar
+  - só com κ no hardware clínico
+- id: code
+  type: code
+  prompt: 'Implemente `split_blocked(n_trials, n_folds)` retornando lista de
+
+    (train_idx, test_idx) para folds contíguos sem overlap de índices.
+
+    n_trials deve ser divisível por n_folds.
+
+    '
+  xp: 16
+  code_template: "def split_blocked(n_trials, n_folds):\n    # TODO\n    ...\n"
+  code_tests: "folds = mod.split_blocked(8, 4)\nassert len(folds) == 4\nfor tr, te\
+    \ in folds:\n    assert not set(tr) & set(te)\nall_te = sorted([i for _, te in\
+    \ folds for i in te])\nassert all_te == list(range(8))\n"

@@ -1,0 +1,48 @@
+id: nt-fw-aarch64-bridge
+title: Embedded — Ponte AArch64 / Edge
+summary: Stub vs device real; checklist de ponte ao Edge ML.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- eletrica
+- pedagogo
+phase: F9-fw
+pillar: embedded
+course: neurotech
+resources:
+- title: edge-mage Edge AI track
+  url: https://github.com/edevPedro/edge-mage/blob/main/content/tracks/07-edge-ai/README.md
+  kind: docs
+tasks:
+- id: stub
+  type: mcq
+  prompt: 'cortex_m_stub neste curso é:'
+  xp: 12
+  answer: 0
+  choices:
+  - modelo mental em host Python — não QEMU/CMSIS runtime
+  - silício certificado médico
+  - substituto de IRB
+  - FEM
+- id: gap
+  type: fill
+  prompt: Documentar diferença stub vs device real é um ___ da ponte Embedded.
+  xp: 10
+  answers:
+  - gap
+  - gaps
+  - checklist
+  - gap / checklist
+- id: reuse
+  type: mcq
+  prompt: 'ISA AArch64 profunda neste produto fica principalmente em:'
+  xp: 10
+  answer: 1
+  choices:
+  - só Neurotech repetindo tudo
+  - Edge / systems tracks (reuse)
+  - Belmont Report
+  - SSVEP eletivo
+order: 47
+requires_rooms:
+- nt-fw-fixedpoint

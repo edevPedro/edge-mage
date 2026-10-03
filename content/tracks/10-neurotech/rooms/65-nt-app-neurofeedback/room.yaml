@@ -1,0 +1,50 @@
+id: nt-app-neurofeedback
+title: Aplicação — Neurofeedback (literacy)
+summary: Feedback de banda; closed-loop; sem prescrição clínica.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- bci
+- neurociencia
+phase: F11-apps
+pillar: applications
+course: neurotech
+emulator: online_loop
+animation: closed_loop_timeline
+resources:
+- title: Gruzelier neurofeedback review (example OA path)
+  url: https://doi.org/10.1016/j.neubiorev.2013.09.015
+  kind: paper
+tasks:
+- id: loop
+  type: mcq
+  prompt: 'Neurofeedback educacional neste curso é tipicamente:'
+  xp: 12
+  answer: 0
+  choices:
+  - closed-loop feature→display com ética
+  - cirurgia
+  - lie detection product
+  - sem latência nunca
+- id: band
+  type: fill
+  prompt: Feedback de ritmo occipital clássico usa frequentemente a banda ___.
+  xp: 10
+  answers:
+  - alfa
+  - alpha
+  - α
+  - alfa / alpha
+- id: clin
+  type: mcq
+  prompt: 'Prescrever neurofeedback terapêutico:'
+  xp: 10
+  answer: 1
+  choices:
+  - é o objetivo deste room
+  - está fora de escopo (literacy apenas)
+  - substitui Mago Supremo
+  - exige Q15
+order: 55
+requires_rooms:
+- nt-app-assistive-bci

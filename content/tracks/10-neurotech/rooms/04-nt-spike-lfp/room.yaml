@@ -6,9 +6,9 @@ unlock_xp: 0
 owners:
 - fisica
 - neurociencia
-phase: F1
+phase: F2-physics
 requires_rooms:
-- nt-dipole-scalp
+- nt-physics-rc-tissue
 course: neurotech
 resources:
 - title: Buzsáki et al. — The origin of extracellular fields (PMC4907333)
@@ -52,4 +52,4 @@ tasks:
   - LFP
   - lfp
   - local field potential
-order: 4
+order: 11

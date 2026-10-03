@@ -1,0 +1,46 @@
+id: nt-physics-rc-tissue
+title: Physics — Tecido como RC (lite)
+summary: τ=RC; passa-baixa do tecido — intuição quantitativa.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- fisica
+- neurociencia
+phase: F2-physics
+pillar: physics
+course: neurotech
+resources:
+- title: Einevoll et al. LFP review (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/
+  kind: paper
+- title: Buzsáki et al. LFP (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/
+  kind: paper
+tasks:
+- id: tau
+  type: mcq
+  prompt: 'τ = RC é constante de tempo de um circuito:'
+  xp: 10
+  answer: 0
+  choices:
+  - RC (passa-baixa clássico)
+  - só digital FIR
+  - apenas κ
+  - IRB
+- id: fc
+  type: numeric
+  prompt: fc ≈ 1/(2πRC). Se RC=0.01 s, fc≈? Hz (1 casa)
+  xp: 14
+  answer: 15.9
+  tolerance: 0.5
+- id: role
+  type: fill
+  prompt: O tecido atua qualitativamente como filtro passa-___ para campos finos.
+  xp: 10
+  answers:
+  - baixa
+  - low
+  - baixa / low
+order: 10
+requires_rooms:
+- nt-dipole-scalp

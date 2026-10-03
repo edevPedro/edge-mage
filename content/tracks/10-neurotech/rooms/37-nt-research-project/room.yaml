@@ -1,0 +1,45 @@
+id: nt-research-project
+title: Mini projeto de pesquisa (ritual)
+summary: Executa fatia real; dropa rune-neuro-research.
+xp_reward: 48
+unlock_xp: 0
+order: 63
+owners:
+- pedagogo
+- bci
+- neuroeng
+phase: F13-research
+requires_rooms:
+- nt-thesis-methods
+course: neurotech
+emulator: online_loop
+resources:
+- title: OpenBCI Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: Lotte et al. classification review
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+tasks:
+- id: dod
+  type: mcq
+  prompt: 'O mini-projeto MSc-prep deste curso exige:'
+  xp: 12
+  answer: 0
+  choices:
+  - pipeline + métrica + validação + limites documentados
+  - apenas assistir um vídeo
+  - hackear device clínico
+  - pular Estuda
+- id: rune
+  type: fill
+  prompt: Concluir este ritual materializa a runa ___ (id completo rune-neuro-…).
+  xp: 12
+  answers:
+  - rune-neuro-research
+  - neuro-research
+- id: ritual
+  type: ritual
+  prompt: Artefato study-log/artifacts/neuro-research-project.md
+  xp: 28
+  ritual_id: neuro-research-project

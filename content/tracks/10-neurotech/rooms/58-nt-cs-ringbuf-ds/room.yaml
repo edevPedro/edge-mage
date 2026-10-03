@@ -1,0 +1,53 @@
+id: nt-cs-ringbuf-ds
+title: CS — Ring buffer (estrutura de dados)
+summary: Head/tail, capacidade, overwrite — fundação de stream.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- pedagogo
+- eletrica
+phase: F5-cs
+pillar: cs
+course: neurotech
+emulator: synth_eeg_stream
+tasks:
+- id: wrap
+  type: mcq
+  prompt: 'Em ring buffer, índice após capacity−1 tipicamente:'
+  xp: 10
+  answer: 0
+  choices:
+  - volta a 0 (módulo)
+  - cresce infinito
+  - vira float
+  - chama IRB
+- id: code
+  type: code
+  prompt: '`Ring` com capacity; métodos push(x) e latest() (último valor).
+
+    push sobrescreve o mais antigo quando cheio.
+
+    '
+  xp: 18
+  code_template: "class Ring:\n    def __init__(self, capacity):\n        ...\n  \
+    \  def push(self, x):\n        ...\n    def latest(self):\n        ...\n"
+  code_tests: "r = mod.Ring(3)\nfor v in [1,2,3,4]:\n    r.push(v)\nassert r.latest()\
+    \ == 4\n"
+- id: drop
+  type: fill
+  prompt: Política que descarta o mais antigo chama-se ___ (overwrite).
+  xp: 8
+  answers:
+  - overwrite
+  - sobrescrita
+  - overwrite / sobrescrita
+order: 25
+requires_rooms:
+- nt-cs-complexity
+resources:
+- title: Wikipedia — Circular buffer
+  url: https://en.wikipedia.org/wiki/Circular_buffer
+  kind: docs
+- title: Python collections.deque
+  url: https://docs.python.org/3/library/collections.html#collections.deque
+  kind: docs

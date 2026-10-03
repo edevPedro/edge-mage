@@ -1,0 +1,49 @@
+id: nt-case-bci-comp-iv
+title: Caso emulado — BCI Competition IV
+summary: Protocolo/métricas do benchmark público — emulação educacional.
+xp_reward: 40
+unlock_xp: 0
+owners:
+- bci
+- pedagogo
+phase: F12-cases
+pillar: cases
+course: neurotech
+resources:
+- title: Tangermann et al. 2012 BCI Competition IV review
+  url: https://doi.org/10.1088/1741-2560/9/2/025009
+  kind: paper
+tasks:
+- id: why
+  type: mcq
+  prompt: 'BCI Competition IV serve neste curso como:'
+  xp: 12
+  answer: 0
+  choices:
+  - benchmark publicado com problemas/métricas citáveis
+  - diagnóstico de paciente secreto
+  - stim DIY
+  - alias guide
+- id: metric
+  type: fill
+  prompt: Competitions reportam métricas oficiais do ___ (problem/dataset) — não invente
+    a sua sem declarar.
+  xp: 10
+  answers:
+  - problema
+  - problem
+  - dataset
+  - enunciado
+- id: honesty
+  type: mcq
+  prompt: 'Rodar seu pipeline em synth e comparar ao espírito do competition:'
+  xp: 12
+  answer: 1
+  choices:
+  - permite reivindicar o 1º lugar oficial
+  - é emulação — declare que não é o leaderboard oficial
+  - remove nested CV
+  - é proibido citar DOI
+order: 58
+requires_rooms:
+- nt-case-berlin-mi

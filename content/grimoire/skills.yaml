@@ -236,12 +236,19 @@ skills:
     unlock_room: on-device
     unlock_track: edge-ai
 
-  # --- Neurotech (parallel circle; does not gate Mago Supremo) ---
+  # --- Neurotech (MSc-prep; climax can mint Mago Supremo) ---
   - id: neuro-portal
     name: Portal Neural
     description: "Estuda → Sala + ética básica de BCI educacional."
     glyph: "◈"
     unlock_room: nt-portal
+    unlock_track: neurotech
+
+  - id: neuro-math
+    name: Math Neural
+    description: "Fundação math MSc — vetores→GD lite."
+    glyph: "∑"
+    unlock_room: nt-math-gd-lite
     unlock_track: neurotech
 
   - id: neuro-rhythms
@@ -281,9 +288,24 @@ skills:
 
   - id: neuro-mage
     name: Neuro Mage
-    description: "Boss: 3 runas neuro + paper|projeto + ritual neuro-mage (≠ Mago Supremo)."
+    description: "Boss marco: 3 runas + paper|projeto — depois F11–F14 → Mago Supremo."
     glyph: "✦"
     unlock_room: nt-neuro-mage
+    unlock_track: neurotech
+    elite: true
+
+  - id: neuro-research
+    name: Pesquisa Neural
+    description: "Mini projeto MSc — dropa rune-neuro-research."
+    glyph: "✝"
+    unlock_room: nt-research-project
+    unlock_track: neurotech
+
+  - id: mago-supremo-neuro
+    name: Mago Supremo (Neurotech)
+    description: "Climax MSc — mesmo Mago Supremo global (rota alternativa à Edge)."
+    glyph: "♛"
+    unlock_room: nt-mago-supremo
     unlock_track: neurotech
     elite: true
 

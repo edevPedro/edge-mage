@@ -1,0 +1,46 @@
+id: nt-paper-module-msc
+title: Paper module MSc (padrão real)
+summary: DOI + fatia Methods/figura + crítica — barreira de thesis-prep.
+xp_reward: 46
+unlock_xp: 0
+order: 64
+owners:
+- pedagogo
+- bci
+phase: F13-research
+requires_rooms:
+- nt-research-project
+course: neurotech
+resources:
+- title: Yger et al. Riemannian review (HAL)
+  url: https://inria.hal.science/hal-01394253/document
+  kind: paper
+- title: Barachant et al. DOI
+  url: https://doi.org/10.1109/TBME.2011.2172210
+  kind: paper
+- title: Singh et al. DOI
+  url: https://doi.org/10.3390/s21062173
+  kind: paper
+tasks:
+- id: bar
+  type: mcq
+  prompt: 'O paper module MSc difere do checkpoint F6 principalmente por:'
+  xp: 12
+  answer: 0
+  choices:
+  - exigir DOI/padrão mais rígido + crítica explícita
+  - remover citações
+  - exigir cirurgia
+  - ignorar limits
+- id: doi
+  type: fill
+  prompt: 'Campo obrigatório da fonte estável no artefato (três letras): ___.'
+  xp: 12
+  answers:
+  - DOI
+  - doi
+- id: ritual
+  type: ritual
+  prompt: Artefato study-log/artifacts/neuro-paper-module-msc.md
+  xp: 24
+  ritual_id: neuro-paper-module-msc

@@ -1,0 +1,48 @@
+id: nt-neuro-neuron-hh
+title: Neurociência — Neurônio HH (lite)
+summary: Spike via canais iônicos — ponte célula→LFP (sem overclaim).
+xp_reward: 34
+unlock_xp: 0
+owners:
+- neurociencia
+- fisica
+phase: F4-neuro
+pillar: neuroscience
+course: neurotech
+resources:
+- title: Hodgkin & Huxley 1952
+  url: https://doi.org/10.1113/jphysiol.1952.sp004764
+  kind: paper
+tasks:
+- id: scale
+  type: mcq
+  prompt: 'EEG de escalpo é tipicamente:'
+  xp: 12
+  answer: 0
+  choices:
+  - soma espacial de muitas fontes / sinapses — não um único HH cru
+  - um único neurônio HH resolvido
+  - só alias digital
+  - stim invasivo
+- id: ions
+  type: fill
+  prompt: No modelo HH clássico, canais de ___ e potássio dominam o AP.
+  xp: 10
+  answers:
+  - sódio
+  - sodio
+  - sodium
+  - Na
+- id: link
+  type: mcq
+  prompt: 'LFP relaciona-se mais diretamente a:'
+  xp: 10
+  answer: 1
+  choices:
+  - um bit UART
+  - correntes sinápticas / campos locais (não o AP extracelular puro isolado)
+  - DOI falso
+  - CMRR
+order: 19
+requires_rooms:
+- nt-elec-antialias

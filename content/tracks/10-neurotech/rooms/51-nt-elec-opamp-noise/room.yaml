@@ -1,0 +1,46 @@
+id: nt-elec-opamp-noise
+title: Elétrica — Op-amp, ruído e CMRR
+summary: Ruído de entrada, ganho e CMRR no AFE bio.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+- neuroeng
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+tasks:
+- id: cmrr
+  type: mcq
+  prompt: 'CMRR alto ajuda a rejeitar:'
+  xp: 12
+  answer: 0
+  choices:
+  - interferência de modo comum (ex. rede)
+  - apenas o κ
+  - consentimento
+  - Nyquist
+- id: gain
+  type: mcq
+  prompt: 'Amplificar µV com ganho enorme sem orçamento de ruído:'
+  xp: 12
+  answer: 1
+  choices:
+  - sempre melhora SNR
+  - pode amplificar ruído e saturar
+  - remove volume conduction
+  - é IRB
+- id: en
+  type: fill
+  prompt: Densidade de ruído de tensão do amp é frequentemente denotada e_n em nV/√___.
+  xp: 10
+  answers:
+  - Hz
+  - hz
+order: 16
+requires_rooms:
+- nt-ground-ref

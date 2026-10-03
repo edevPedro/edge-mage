@@ -5,9 +5,9 @@ xp_reward: 28
 unlock_xp: 0
 owners:
 - fisica
-phase: F1
+phase: F2-physics
 requires_rooms:
-- nt-ethics-consent
+- nt-math-gd-lite
 course: neurotech
 resources:
 - title: EEG MI techniques (PMC)
@@ -49,4 +49,4 @@ tasks:
   - elimina artefatos de piscar
   - substitui o filtro notch
   - aumenta fs automaticamente
-order: 3
+order: 9

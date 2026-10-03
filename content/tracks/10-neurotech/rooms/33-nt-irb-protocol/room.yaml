@@ -1,0 +1,53 @@
+id: nt-irb-protocol
+title: IRB e protocolo ético (literacy)
+summary: Belmont, consentimento, dados neurais — sem DIY clínico.
+xp_reward: 36
+unlock_xp: 0
+order: 59
+owners:
+- bci
+- pedagogo
+phase: F13-research
+requires_rooms:
+- nt-case-bci-comp-iv
+course: neurotech
+resources:
+- title: Belmont Report (OHRP)
+  url: https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html
+  kind: docs
+- title: Ienca & Andorno 2017 — neurorights
+  url: https://doi.org/10.1186/s40504-017-0050-1
+  kind: paper
+- title: UNESCO Recommendation on AI Ethics
+  url: https://unesdoc.unesco.org/ark:/48223/pf0000381137
+  kind: docs
+tasks:
+- id: belmont
+  type: mcq
+  prompt: 'Os três princípios Belmont clássicos incluem respeito às pessoas, beneficência
+    e:'
+  xp: 12
+  answer: 0
+  choices:
+  - justiça
+  - maximizar κ offline
+  - open-source obrigatório
+  - stim invasivo
+- id: consent
+  type: fill
+  prompt: Participação em pesquisa com humanos exige ___ informado (informação + compreensão
+    + voluntariedade).
+  xp: 12
+  answers:
+  - consentimento
+  - consent
+- id: dual
+  type: mcq
+  prompt: 'Alfabetização dual-use neste curso significa:'
+  xp: 12
+  answer: 1
+  choices:
+  - ensinar weaponization passo a passo
+  - reconhecer riscos de uso indevido sem fornecer receitas de dano
+  - ignorar ética
+  - pular Estuda

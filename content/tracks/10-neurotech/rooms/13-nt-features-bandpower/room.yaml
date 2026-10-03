@@ -5,10 +5,9 @@ xp_reward: 34
 unlock_xp: 0
 owners:
 - bci
-phase: F4
+phase: F7-paradigm
 requires_rooms:
-- nt-artifacts
-- nt-filter-bank
+- nt-mi-paradigm
 course: neurotech
 resources:
 - title: Yger et al. Riemannian BCI (HAL)
@@ -53,4 +52,4 @@ tasks:
     assert abs(mod.bandpower([0.0, 0.0]) - 0.0) < 1e-9
 
     '
-order: 13
+order: 33

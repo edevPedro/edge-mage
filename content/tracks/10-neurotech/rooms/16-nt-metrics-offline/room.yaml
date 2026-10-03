@@ -5,7 +5,7 @@ xp_reward: 34
 unlock_xp: 0
 owners:
 - bci
-phase: F4
+phase: F8-decode
 requires_rooms:
 - nt-riemann-primer
 course: neurotech
@@ -62,7 +62,8 @@ tasks:
   tolerance: 0.01
 - id: leak-fill
   type: fill
-  prompt: Z-score usando estatística do dataset inteiro antes do split é um exemplo de ___ de trial/dados.
+  prompt: Z-score usando estatística do dataset inteiro antes do split é um exemplo
+    de ___ de trial/dados.
   xp: 10
   answers:
   - vazamento
@@ -80,4 +81,4 @@ tasks:
   - offline
   - off-line
   - off line
-order: 16
+order: 41

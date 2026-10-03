@@ -1,0 +1,47 @@
+id: nt-research-proposal
+title: Proposta de pesquisa (mini)
+summary: Hipótese, dados, métrica, ética, cronograma — gate F9.
+xp_reward: 40
+unlock_xp: 0
+order: 61
+owners:
+- pedagogo
+- bci
+phase: F13-research
+requires_rooms:
+- nt-paper-critique
+course: neurotech
+resources:
+- title: MOABB documentation
+  url: https://neurotechx.github.io/moabb/
+  kind: docs
+- title: SPEC Neurotech
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+  kind: docs
+tasks:
+- id: fields
+  type: mcq
+  prompt: 'Uma proposta mínima neste curso deve incluir:'
+  xp: 12
+  answer: 0
+  choices:
+  - pergunta + hipótese + dados + métrica primária + ética
+  - só o título do boss
+  - receita de implante
+  - XP de Edge apenas
+- id: metric
+  type: fill
+  prompt: A métrica primária recomendada para MI binário neste curso é frequentemente
+    ___ (além da acurácia).
+  xp: 12
+  answers:
+  - κ
+  - kappa
+  - cohen kappa
+  - Cohen's kappa
+  - κ / kappa
+- id: ritual
+  type: ritual
+  prompt: Artefato study-log/artifacts/neuro-research-proposal.md
+  xp: 20
+  ritual_id: neuro-research-proposal

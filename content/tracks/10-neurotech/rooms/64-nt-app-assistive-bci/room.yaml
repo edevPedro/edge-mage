@@ -1,0 +1,51 @@
+id: nt-app-assistive-bci
+title: Aplicação — BCI assistivo (literacy)
+summary: Comando/comunicação; usabilidade + ética — sem claim clínico.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- bci
+- pedagogo
+phase: F11-apps
+pillar: applications
+course: neurotech
+resources:
+- title: Wolpaw BCI principles
+  url: https://doi.org/10.1016/j.clinph.2012.01.010
+  kind: paper
+- title: Singh et al. MI-BCI Sensors 2021
+  url: https://doi.org/10.3390/s21062173
+  kind: paper
+tasks:
+- id: metric
+  type: mcq
+  prompt: 'Além de κ, aplicações assistivas ligam-se a:'
+  xp: 12
+  answer: 0
+  choices:
+  - latência, throughput de bits/comandos, carga do usuário
+  - apenas autovalores
+  - stim DIY
+  - pular consentimento
+- id: claim
+  type: fill
+  prompt: Este curso ___ (proíbe/permite) claims de dispositivo médico certificado.
+  xp: 10
+  answers:
+  - proíbe
+  - proibe
+  - forbids
+  - proíbe claims clínicos
+- id: ethics
+  type: mcq
+  prompt: 'Deploy assistivo com humanos reais exigiria:'
+  xp: 10
+  answer: 0
+  choices:
+  - ética/IRB além do lab synth
+  - só XP Edge
+  - alias
+  - FEM obrigatório
+order: 54
+requires_rooms:
+- nt-neuro-mage

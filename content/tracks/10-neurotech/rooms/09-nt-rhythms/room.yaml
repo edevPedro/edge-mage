@@ -5,9 +5,9 @@ xp_reward: 28
 unlock_xp: 0
 owners:
 - neurociencia
-phase: F3
+phase: F4-neuro
 requires_rooms:
-- nt-adc-bio
+- nt-neuro-synapse
 course: neurotech
 resources:
 - title: EEG MI — Techniques and Challenges (PMC)
@@ -51,4 +51,4 @@ tasks:
   - γ
   - banda gama
   - banda gamma
-order: 9
+order: 21

@@ -64,7 +64,8 @@ tasks:
   xp: 10
   answer: 0
   choices:
-  - reconhecer que BCI pode ser mal usado, sem ensinar weaponização / vigilância não consentida
+  - reconhecer que BCI pode ser mal usado, sem ensinar weaponização / vigilância não
+    consentida
   - ensinar a construir armas neurais
   - ignorar ética se o κ for alto
   - hackear dispositivos clínicos

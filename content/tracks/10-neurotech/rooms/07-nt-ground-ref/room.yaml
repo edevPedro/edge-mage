@@ -6,7 +6,7 @@ unlock_xp: 0
 owners:
 - eletrica
 - neuroeng
-phase: F2
+phase: F3-elec
 requires_rooms:
 - nt-electrode-snr
 course: neurotech
@@ -14,7 +14,8 @@ resources:
 - title: OpenBCI EEG Setup
   url: https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/
   kind: docs
-- title: Ferree et al. — Scalp electrode impedance, infection risk, and EEG data quality (Clin Neurophysiol)
+- title: Ferree et al. — Scalp electrode impedance, infection risk, and EEG data quality
+    (Clin Neurophysiol)
   url: https://doi.org/10.1016/S1388-2457(00)00533-2
   kind: paper
 animation: circuit_pulse
@@ -48,4 +49,4 @@ tasks:
   - notch
   - filtro notch
   - notch filter
-order: 7
+order: 15

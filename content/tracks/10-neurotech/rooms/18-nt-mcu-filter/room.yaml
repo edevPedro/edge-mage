@@ -5,9 +5,10 @@ xp_reward: 36
 unlock_xp: 0
 owners:
 - eletrica
-phase: F5
+phase: F9-fw
 requires_rooms:
-- nt-stream-buffer
+- nt-fw-irq-dma
+- nt-cs-numerics
 course: neurotech
 resources:
 - title: CMSIS-NN (Arm)
@@ -47,7 +48,8 @@ tasks:
   - compila LLVM passes
 - id: arch-fill
   type: fill
-  prompt: 'A profundidade ISA ARM deste ecossistema continua no curso Edge, sala aarch64-___ .
+  prompt: 'A profundidade ISA ARM deste ecossistema continua no curso Edge, sala aarch64-___
+    .
 
     '
   xp: 12
@@ -62,7 +64,8 @@ tasks:
   choices:
   - o mesmo que Filter Bank CSP completo de MI
   - um solver Riemanniano MDRM
-  - um suavizador didático no host Python — não substitui o filter-bank MI da sala nt-filter-bank
+  - um suavizador didático no host Python — não substitui o filter-bank MI da sala
+    nt-filter-bank
   - QEMU com CMSIS-NN
 - id: taps-num
   type: numeric
@@ -70,4 +73,4 @@ tasks:
   xp: 10
   answer: 5
   tolerance: 0.01
-order: 18
+order: 45

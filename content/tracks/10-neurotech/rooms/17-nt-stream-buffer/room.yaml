@@ -6,9 +6,10 @@ unlock_xp: 0
 owners:
 - bci
 - eletrica
-phase: F5
+phase: F9-fw
 requires_rooms:
-- nt-metrics-offline
+- nt-cs-ringbuf-ds
+- nt-filter-bank
 course: neurotech
 resources:
 - title: OpenBCI Cyton stream context
@@ -42,13 +43,14 @@ tasks:
   - ignora Nyquist
 - id: ring-code
   type: code
-  prompt: 'Implemente classe RingBuffer com push e latest(n). Capacidade fixa; latest devolve até n amostras
-    mais recentes (ordem antiga→nova).
+  prompt: 'Implemente classe RingBuffer com push e latest(n). Capacidade fixa; latest
+    devolve até n amostras mais recentes (ordem antiga→nova).
 
     '
   xp: 18
-  code_template: "class RingBuffer:\n    def __init__(self, capacity):\n        # TODO\n        ...\n\
-    \    def push(self, x):\n        ...\n    def latest(self, n):\n        ...\n"
-  code_tests: "b=mod.RingBuffer(3)\nfor i in range(5):\n    b.push(i)\nassert b.latest(3)==[2,3,4]\nassert\
-    \ b.latest(10)==[2,3,4]\n"
-order: 17
+  code_template: "class RingBuffer:\n    def __init__(self, capacity):\n        #\
+    \ TODO\n        ...\n    def push(self, x):\n        ...\n    def latest(self,\
+    \ n):\n        ...\n"
+  code_tests: "b=mod.RingBuffer(3)\nfor i in range(5):\n    b.push(i)\nassert b.latest(3)==[2,3,4]\n\
+    assert b.latest(10)==[2,3,4]\n"
+order: 43

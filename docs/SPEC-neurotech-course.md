@@ -1,31 +1,35 @@
-# SPEC — Neurotech course (e-mage)
+# SPEC — Neurotech course (e-mage) · MSc-prep
 
-Course id: **`neurotech`** — sibling circle to **Edge ML Mage** (`edge`), not a replacement.  
-Product: **e-mage** · content lives under `content/tracks/10-neurotech/` · web mirror via edevs Estudo when wired.
+Course id: **`neurotech`** — sibling to **Edge ML Mage** (`edge`), with an **alternate route to Mago Supremo**.  
+Product: **e-mage** · `content/tracks/10-neurotech/` · web: edevs `/estudo/cursos/neurotech`.
 
-**Pedagogy (mandatory from now on for this course):**
+**Pedagogy (mandatory):**
 
 ```text
 Estuda (lição + história + animação/conceito) → Sala (lab / FLAG / emulator tasks)
 ```
 
-Agents: `agent-pedagogo` + domain skills `agent-bci` · `agent-neuroeng` · `agent-eletrica` · `agent-fisica` · `agent-neurociencia`.
+Agents: `agent-pedagogo` + `agent-bci` · `agent-neuroeng` · `agent-eletrica` · `agent-fisica` · `agent-neurociencia`.
 
 ---
 
-## 1. Goals
+## 1. Goals (master’s-prep, not BCI-only survey)
 
-A learner who finishes Neurotech (target rank **Neuro Mage** — parallel circle) can:
+A learner who finishes the **required path** (climax **Mago Supremo** via Neurotech) can:
 
-| Domain | Outcome |
+| Pillar | Outcome |
 |--------|---------|
-| **BCI** | Explain online vs offline decode; run a MI-style feature→classifier MVP on synthetic or open EEG |
-| **EEG** | Name bands (µ/α/β/γ), artifacts, montages; use filter banks deliberately |
-| **Physics** | Give dipole / volume-conduction intuition for why scalp EEG is blurry |
-| **Math** | Covariance / Riemannian *primer* level; not a full differential-geometry course |
-| **Firmware / embedded** | Sketch acquisition → buffer → filter → packet → decoder stub on MCU-class constraints (AArch64-friendly, reuse Edge) |
+| **Math** | Vectors/matrices/eigen, probability, estimation, GD lite — quantitative labs |
+| **Physics** | Dipole, RC tissue, spike→LFP, volume blur, field distance intuition |
+| **Electrical** | Electrode/SNR, ground/ref, op-amp noise/CMRR, ADC µV, Nyquist/anti-alias |
+| **Neuroscience** | HH lite, synapse/PSP, rhythms, cortical maps 10–20, plasticity/co-adaptation |
+| **CS** | Complexity vs deadline, ring buffer, numerics, test harness |
+| **Firmware / Embedded** | IRQ/DMA, MCU filter stub, Q15, AArch64/Edge bridge, latency budget |
+| **BCI applications** | Offline→online decode, assistive/NFB/P300 literacy (non-clinical) |
+| **Cases** | Emulate **published** paradigms (Berlin MI, BCI Comp IV) — no invented patients |
+| **Research** | IRB literacy, paper critique, proposal, Methods, mini-project, paper module MSc |
 
-Does **not** mint a clinical neurophysiologist or implant surgeon. Complements Edge on-device ML.
+Does **not** mint a clinician or implant surgeon. Educational **noninvasive** BCI only.
 
 ---
 
@@ -33,21 +37,25 @@ Does **not** mint a clinical neurophysiologist or implant surgeon. Complements E
 
 | Concern | Rule |
 |---------|------|
-| **Mago Supremo** | Unchanged: Systems craft runes + Edge on-device evidence (`gamification.ts`). Neurotech **must not** soft-gate or replace those runes. |
-| **Parallel circle** | Neurotech XP / grimório skills / `rune-neuro-*` live in a **parallel** progress slice (same UX patterns, separate course id). |
-| **Shared rooms** | May credit shared cores (`amostragem`, `adc-potencia`, `intro-asm`, Edge latency rooms) via `room_id` — same as Systems↔Edge. |
-| **AArch64** | Deep ISA still Edge/BCI path; Neurotech firmware rooms point to Edge `aarch64-abi` / CMSIS rather than duplicating ISA farms. |
+| **Rota Edge (inalterada)** | Systems craft + Edge on-device + shared math → `mago_supremo` |
+| **Rota Neurotech (alternativa)** | Mago base + 3 runas neuro + Neuro Mage + `rune-neuro-research` + paper-module-msc + ritual `neuro-supremo` → **mesmo** `mago_supremo` |
+| **Neuro Mage** | Marco intermediário (não é o ápice global) |
+| **Shared / Edge reuse** | AArch64 profundo fica no Edge; Neurotech faz ponte (`nt-fw-aarch64-bridge`) |
+| **Edge-only players** | Sem regressão: on-device path intacto |
 
-Suggested Neuro ranks (course-internal, XP + rituals):  
-**Novice → Signal Adept → Decode Adept → Closed-Loop Adept → Neuro Mage** (final ritual = online loop stub artifact **or** paper-module evidence).
+### Supremo checklist (Neurotech)
 
-Suggested runes (do not collide with `rune-llvm-pass` / Edge on-device):
+```text
+mago_base
+  ∧ rune-neuro-acq ∧ rune-neuro-decode ∧ rune-neuro-online
+  ∧ neuro-mage
+  ∧ rune-neuro-research ∧ neuro-paper-module-msc
+  ∧ neuro-supremo   # boss nt-mago-supremo
+→ mago_supremo
+```
 
-| Rune id | Gate |
-|---------|------|
-| `rune-neuro-acq` | Checkpoint: acquisition / filter-bank project slice |
-| `rune-neuro-decode` | Checkpoint: MI decoder MVP or Riemannian toy |
-| `rune-neuro-online` | Ritual: online loop stub + latency budget write-up |
+TUI: `ProgressStore.has_neuro_supremo_path()` · `global_rank_from_flags(has_neuro_supremo=…)`.  
+Web: `evaluateSupremoEvidence` + rooms/rituals sync (edevs).
 
 ---
 
@@ -56,258 +64,141 @@ Suggested runes (do not collide with `rune-llvm-pass` / Edge on-device):
 | Layer | Content |
 |-------|---------|
 | **Estuda** | `story.md` + `concept.md` + `lesson.md` (+ animation when it teaches) |
-| **Sala** | `room.yaml` tasks: mcq / fill / numeric / code / emulator hooks |
-| **Checkpoint** | Whole paper **or** paper module (reproduce figure / reimplement Methods slice) **or** whole/partial real project |
-| **Boss / ritual** | Artifact under `study-log/artifacts/` (e.g. `neuro-online-loop.md`) |
+| **Sala** | `room.yaml` tasks: mcq / fill / numeric / code / ritual |
+| **Checkpoint** | Paper module **or** project slice with real DOI/URL |
+| **Boss / ritual** | Artifact under `study-log/artifacts/` |
 
-Emulators and animations: **teach or omit**.
-
----
-
-## 4. Phase map (F0…F6)
-
-Hours assume ~4–6 h/week. Totals ≈ **35–55 h** study (±), **2–4 months** calendar — Edge-README duration style.
-
-| Phase | Title | Hours (±) | Focus | Owner agents |
-|-------|-------|-----------|-------|--------------|
-| **F0** | Portal & ethics | 2–3 | What BCI is / isn’t; consent; Estuda→Sala habit | pedagogo + bci |
-| **F1** | Physics & tissue lite | 4–6 | Dipole, volume conduction, spike→LFP | fisica + neurociencia |
-| **F2** | Acquisition chain | 5–8 | Electrodes, SNR, filters, ADC, grounding | neuroeng + eletrica |
-| **F3** | EEG rhythms & paradigms | 5–7 | α/β/γ/µ, MI/SSVEP lite, artifacts | neurociencia + bci |
-| **F4** | Decode offline | 6–10 | Features, CSP/Riemannian primer, metrics | bci (+ math spiral) |
-| **F5** | Firmware & edge stub | 5–8 | Buffers, filter bank on device, latency | eletrica + bci (+ Edge reuse) |
-| **F6** | Online loop & checkpoints | 6–10 | Simulated online, paper/project rituals | pedagogo + bci + neuroeng |
-
-### Room stubs (ids · titles · owner)
-
-Format: `room-id` — Title — **owner**
-
-**F0**
-- `nt-portal` — Portal do círculo Neural — **pedagogo+bci**
-- `nt-ethics-consent` — Ética, consentimento, limites — **bci+pedagogo**
-
-**F1**
-- `nt-dipole-scalp` — Dipolo → potencial de escalpo — **fisica**
-- `nt-spike-lfp` — Spike → LFP (intuição) — **fisica+neurociencia**
-- `nt-volume-blur` — Condução de volume e borrão espacial — **fisica**
-
-**F2** (cadeia via `requires_rooms` + `order`: eletrodo → terra/ref → ADC → ritmos → filter-bank)
-- `nt-electrode-snr` — Eletrodo, impedância, SNR — **neuroeng**
-- `nt-ground-ref` — Terra, referência, 50/60 Hz — **eletrica+neuroeng**
-- `nt-adc-bio` — ADC e escala µV — **eletrica**
-- `nt-filter-bank` — Banco de filtros EEG — **eletrica** (após ritmos + ADC)
-
-**F3**
-- `nt-rhythms` — Ritmos α/β/γ/µ — **neurociencia** (após ADC, antes do filter-bank)
-- `nt-mi-paradigm` — Imagética motora (paradigma) — **bci+neurociencia**
-- `nt-artifacts` — Artefatos (EOG/EMG/movimento) — **bci+eletrica**
-
-**F4**
-- `nt-features-bandpower` — Potência de banda / covariância — **bci**
-- `nt-decode-mvp` — Decode MVP (labels → bandpower/cov → LDA toy → κ) — **bci**
-- `nt-riemann-primer` — Primer Riemanniano (SPD toy) — **bci**
-- `nt-metrics-offline` — Acurácia, κ, vazamento de trial — **bci**
-
-**F5**
-- `nt-stream-buffer` — Stream sintético e ring buffer — **bci+eletrica**
-- `nt-mcu-filter` — MCU pipeline stub (MA/FIR host — **≠** FBCSP/filter-bank MI) — **eletrica**
-- `nt-latency-budget` — Orçamento sense→decide→act (`latency_budget` → cortex stub) — **neuroeng+bci**
-
-**F6**
-- `nt-online-stub` — Loop online simulado (window→feature→label→log) — **bci**
-- `nt-checkpoint-paper` — Ritual módulo de paper — **pedagogo+bci**
-- `nt-checkpoint-project` — Ritual fatia de projeto — **pedagogo+neuroeng**
-- `nt-neuro-mage` — Boss Neuro Mage — **pedagogo** (`requires_rooms_any`: paper \| project)
-
-**Shipped rooms (F0→F6 catalog):** 23 salas sob `content/tracks/10-neurotech/rooms/` (pastas `NN-` + campo `order`). TUI **enforces** `requires_rooms` / `requires_rooms_any`. Path: eletrodo→ground→ADC→ritmos→filter→MI→…→decode MVP→…→online→(paper XOR project)→boss.
-
-**Electives (not required for Neuro Mage):** SSVEP paradigm depth; full CSP / FBCSP vs Riemannian bake-off — cite Ang et al. (FBCSP DOI), Yger/Congedo/Barachant; optional OpenBCI live stream after ethics.
-
-**Neurological clinical case rooms:** none invented. Only literature-backed MI/artifact/benchmark paradigms (see §7). Rejected fake “patient diagnosis” rooms without public solved-case URLs.
+Emulators: **teach or omit**.
 
 ---
 
-## 5. Emulator concepts
+## 4. Phase map (MSc) + hours
 
-| Emulator id | Teaches | Notes |
-|-------------|---------|-------|
-| `synth_eeg_stream` | Multichannel colored noise + band-energy probes (µ-burst / suppression) | **Didactic µV-scale**; probes ≠ physiological MI/ERD · **shipped** `edge_mage/emulators/synth_eeg.py` |
-| `artifact_inject` | Blink / EMG / line noise overlays | **shipped** `edge_mage/emulators/artifact_inject.py` |
-| `cortex_m_stub` | ADC → ring buffer → FIR → UART packet + latency | **Python host stub** (Cortex-M *class* mental model) — **not QEMU / not CMSIS runtime**; splits `window_ms` vs `compute_ms` · **shipped** `edge_mage/emulators/cortex_m_stub.py` |
-| `latency_budget` | sense/decide/act ms accounting | **Thin wrapper** → `cortex_m_stub` (`edge_mage/emulators/latency_budget.py`) |
-| `online_loop` | Sliding window → bandpower toy → label → latency log | **shipped** `edge_mage/emulators/online_loop.py` |
-| `impedance_probe` | Contact quality → SNR slider | **Stub / not shipped UI** — honesty note in `nt-electrode-snr` (numeric SNR task instead) |
-| `spd_toy` | 2×2 or small SPD covariances on a grid | **Conceptual / not shipped** — `nt-riemann-primer` uses `emulator: null` + paper toys (honesty note in room) |
+**Guided study estimate (required path):** **~120–200 h** (≈ 2.5–3.5 h/room × 65 salas + reading/research rituals).  
+Calendar: **~4–8 months** at 5–8 h/week. Electives extra.
 
-CLI: `mage emu all` · `python -m edge_mage.emulators [synth|artifact|cortex|latency|online|all]`
+| Phase | Title | Rooms (±) | Hours (±) | Focus |
+|-------|-------|-----------|-----------|--------|
+| **F0** | Portal & ethics | 2 | 3–5 | Estuda→Sala; consent; dual-use literacy |
+| **F1-math** | Math foundations | 6 | 12–18 | Vectors→matrices→eigen→prob→estimation→GD |
+| **F2-physics** | Physics foundations | 5 | 10–15 | Dipole, RC, LFP, blur, field |
+| **F3-elec** | Electrical / AFE | 5 | 10–16 | Electrode→CMRR→ADC→Nyquist |
+| **F4-neuro** | Neuroscience | 5 | 10–15 | HH, synapse, rhythms, maps, plasticity |
+| **F5-cs** | CS foundations | 4 | 8–12 | Complexity, ringbuf, numerics, harness |
+| **F6-dsp** | DSP / acquisition | 4 | 8–14 | Filter-bank, Welch, FIR/IIR, artifacts |
+| **F7-paradigm** | Paradigms | 3 | 6–10 | MI, bandpower, trial design |
+| **F8-decode** | Decode / ML | 8 | 16–28 | Stats, power, CV, LDA, CSP, Riemann, ML |
+| **F9-fw** | Firmware / online | 8 | 14–24 | Stream, IRQ/DMA, MCU, Q15, bridge, online, closed-loop |
+| **F10-mage** | Neuro Mage | 3 | 6–10 | Paper XOR project + boss marco |
+| **F11-apps** | Applications | 3 | 6–10 | Assistive, NFB, P300 (published) |
+| **F12-cases** | Emulated published cases | 2 | 6–10 | Berlin MI; BCI Competition IV |
+| **F13-research** | Thesis-prep | 6 | 16–28 | IRB, critique, proposal, Methods, project, paper MSc |
+| **F14-supremo** | Climax | 1 | 4–8 | Boss **Mago Supremo** (rota Neural) |
+| **elective** | SSVEP / FBCSP / OpenBCI | 3 | +6–12 | Optional |
 
-No real human data required for MVP; optional OpenBCI live path later as elective.
+**Catalog:** **68** rooms (65 required + 3 electives).
 
----
+### Thesis-prep checkpoints
 
-## 6. Animation list (describe only)
+| Gate | Room / ritual | Standard |
+|------|---------------|----------|
+| Proposal | `nt-research-proposal` | question, hypothesis, data, metric, ethics, timeline |
+| Methods | `nt-thesis-methods` | reproducible Methods outline + seeds/versions |
+| Project | `nt-research-project` | executed slice → `rune-neuro-research` |
+| Paper MSc | `nt-paper-module-msc` | DOI + Methods/figure slice + critique |
+| Climax | `nt-mago-supremo` | seals `neuro-supremo` → global Supremo |
 
-| Animation id | What learner sees | Room hooks |
-|--------------|-------------------|------------|
-| `filter_freq_response` | Magnitude curve; poles/zeros lite; band highlight | `nt-filter-bank` |
-| `dipole_field` | Current dipole under skull layers → scalp map | `nt-dipole-scalp` |
-| `spike_to_lfp` | Spike train → synaptic current → slower LFP trace | `nt-spike-lfp` |
-| `rhythm_bands` | Time series with α/β/γ overlays | `nt-rhythms` |
-| `mi_erds` | Cartoon ERD↓ below baseline + ERS↑ rebound above | `nt-mi-paradigm` |
-| `closed_loop_timeline` | Sense → decide → act bars vs deadline | `nt-latency-budget`, `nt-online-stub` |
-| `volume_blur` | Fine source map vs smeared scalp (cartoon ≠ FEM) | `nt-volume-blur` |
-| `artifact_trace` | Blink/EOG spikes + line ripple (≠ rhythm map) | `nt-artifacts` |
+### Reading list (core DOIs / OA — verify)
 
----
-
-## 7. Sample checkpoint table (real open sources)
-
-| Checkpoint | Type | Evidence | Primary sources |
-|------------|------|----------|-----------------|
-| **CP-MI review map** | Paper module | 1-page map of MI-BCI pipeline stages from a review | [Singh et al., Sensors 2021 (PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) · [Padfield et al., Sensors 2019 (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
-| **CP-Riemann figure** | Paper module | Reproduce SPD / distance intuition figure or toy MDRM on synthetic cov | [Yger et al. review (HAL PDF)](https://inria.hal.science/hal-01394253/document) · [Congedo et al. 2017 primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) · [arXiv:2407.20250](https://arxiv.org/abs/2407.20250) |
-| **CP-OpenBCI chain** | Project slice | Document Cyton/GUI → stream → file; or synthetic stand-in + cite setup | [Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) · [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) |
-| **CP-Filter bank** | Project slice | Implement bandpower features for µ/β on synth EEG; tests in harness | OpenBCI docs + F3/F4 rooms |
-| **CP-Decoder MVP** | Project slice | Offline MI binary classify on open or synth set; report κ + no trial leak | Room `nt-decode-mvp` + MI reviews / [Lotte et al. DOI](https://doi.org/10.1088/1741-2560/4/2/R01) |
-| **CP-Online stub** | Project slice | Sliding window → feature → label → latency log artifact | Emulators `online_loop` + `latency_budget` |
-| **CP-Firmware driver** | Project slice | Ring buffer + stub SPI/UART packet parse (no unsafe hardware required) | Edge ADC rooms + F5 |
-
-Artifact template fields (ritual): `paper_or_project`, `url`, `what_reproduced`, `metrics`, `latency_ms` (if online), `limits`.
-
-### Bibliography (expand — prefer OA / DOI / docs)
-
-| Topic | Link |
-|-------|------|
-| MI-BCI review (Sensors 21/2173) | [Singh et al., PMC8003721](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) · DOI [10.3390/s21062173](https://doi.org/10.3390/s21062173) |
-| hDL-BCI review (optional; not Sensors 2173) | [Alzahab et al., Brain Sci. PMC7827826](https://pmc.ncbi.nlm.nih.gov/articles/PMC7827826/) · DOI [10.3390/brainsci11010075](https://doi.org/10.3390/brainsci11010075) |
-| EEG-MI techniques | [Padfield et al., PMC6471241](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
-| Classification review | [Lotte et al., JNE 2007](https://doi.org/10.1088/1741-2560/4/2/R01) |
-| ERD/ERS | [Pfurtscheller & Lopes da Silva](https://doi.org/10.1016/S1388-2457(99)00141-8) |
-| MI activates S1/M1 | [Pfurtscheller & Neuper, Neurosci Lett 1997](https://doi.org/10.1016/S0304-3940(97)00889-6) |
-| Kinesthetic vs visual MI | [Neuper et al., Cogn Brain Res 2005](https://doi.org/10.1016/j.cogbrainres.2005.08.014) |
-| κ in BCI / 4-class MI | [Schlögl et al., JNE 2005](https://doi.org/10.1088/1741-2560/2/4/L02) |
-| Berlin BCI (OA review) | [Blankertz et al., Frontiers PMC5116473](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) |
-| Volume / neocortical EEG | [Nunez, BBS 2000](https://doi.org/10.1017/S0140525X00003253) · prefer OA [Michel & Brunet PMC6700197](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) |
-| sklearn LDA / κ | [LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html) · [cohen_kappa_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html) |
-| MNE-Python | [MNE documentation](https://mne.tools/stable/index.html) |
-| Riemannian BCI | [Yger et al. HAL](https://inria.hal.science/hal-01394253/document) · [Congedo primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) · [Barachant TBME](https://doi.org/10.1109/TBME.2011.2172210) |
-| FBCSP (elective) | [Ang et al. IJCNN 2008](https://doi.org/10.1109/IJCNN.2008.4634130) |
-| LFP / fields | [Buzsáki et al. PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/) · [Einevoll et al. PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) |
-| EEG source / blur | [Michel & Brunet PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) |
-| Artifacts | [Urigüen & Garcia-Zapirain PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC4462641/) |
-| OpenBCI | [Cyton GS](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) · [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) |
-| Streaming | [Lab Streaming Layer](https://labstreaminglayer.readthedocs.io/) |
-| Ethics / dual-use literacy | [UNESCO AI ethics](https://unesdoc.unesco.org/ark:/48223/pf0000381137) · [Ienca & Andorno PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC5447102/) |
-| AFE reference | [TI ADS1299 PDF](https://www.ti.com/lit/ds/symlink/ads1299.pdf) |
+| Topic | Citation |
+|-------|----------|
+| MI-BCI review | Singh et al. DOI [10.3390/s21062173](https://doi.org/10.3390/s21062173) |
+| EEG-MI techniques | Padfield et al. [PMC6471241](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
+| Classification | Lotte et al. DOI [10.1088/1741-2560/4/2/R01](https://doi.org/10.1088/1741-2560/4/2/R01) |
+| κ / MI | Schlögl et al. DOI [10.1088/1741-2560/2/4/L02](https://doi.org/10.1088/1741-2560/2/4/L02) |
+| ERD/ERS | Pfurtscheller & Lopes da Silva DOI [10.1016/S1388-2457(99)00141-8](https://doi.org/10.1016/S1388-2457(99)00141-8) |
+| MI S1/M1 | Pfurtscheller & Neuper DOI [10.1016/S0304-3940(97)00889-6](https://doi.org/10.1016/S0304-3940(97)00889-6) |
+| CSP | Ramoser et al. DOI [10.1109/86.895946](https://doi.org/10.1109/86.895946) |
+| FBCSP | Ang et al. DOI [10.1109/IJCNN.2008.4634130](https://doi.org/10.1109/IJCNN.2008.4634130) |
+| Riemannian MDM | Barachant et al. DOI [10.1109/TBME.2011.2172210](https://doi.org/10.1109/TBME.2011.2172210) |
+| Berlin BCI | Blankertz et al. [PMC5116473](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) · DOI [10.3389/fnins.2016.00530](https://doi.org/10.3389/fnins.2016.00530) |
+| BCI Comp IV | Tangermann et al. DOI [10.1088/1741-2560/9/2/025009](https://doi.org/10.1088/1741-2560/9/2/025009) |
+| P300 speller | Farwell & Donchin DOI [10.1016/0013-4694(88)90149-6](https://doi.org/10.1016/0013-4694(88)90149-6) |
+| SSVEP (elective) | Zhu et al. DOI [10.1088/1741-2560/7/4/041001](https://doi.org/10.1088/1741-2560/7/4/041001) |
+| Stats MEG/EEG | Combrisson & Jerbi DOI [10.1016/j.jneumeth.2015.03.034](https://doi.org/10.1016/j.jneumeth.2015.03.034) |
+| CV pitfalls | Varoquaux et al. DOI [10.1016/j.neuroimage.2016.10.038](https://doi.org/10.1016/j.neuroimage.2016.10.038) |
+| HH | Hodgkin & Huxley DOI [10.1113/jphysiol.1952.sp004764](https://doi.org/10.1113/jphysiol.1952.sp004764) |
+| LFP | Einevoll [PMC3884846](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) · Buzsáki [PMC4907333](https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/) |
+| Source/blur | Michel & Brunet [PMC6700197](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) |
+| BCI principles | Wolpaw DOI [10.1016/j.clinph.2012.01.010](https://doi.org/10.1016/j.clinph.2012.01.010) |
+| Neurorights | Ienca & Andorno DOI [10.1186/s40504-017-0050-1](https://doi.org/10.1186/s40504-017-0050-1) |
+| Belmont | [OHRP Belmont Report](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html) |
+| OpenBCI | [Cyton GS](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) |
+| AFE | [TI ADS1299](https://www.ti.com/lit/ds/symlink/ads1299.pdf) |
 
 ---
 
-## 8. Estimated duration (README style)
+## 5. Emulators
 
-| Slice | Study hours (±) | Calendar (±) |
-|-------|-----------------|--------------|
-| F0–F1 Portal + physics | 6–9 h | 1–2 weeks |
-| F2–F3 Acquisition + rhythms | 10–15 h | 3–5 weeks |
-| F4 Decode offline | 6–10 h | 2–3 weeks |
-| F5–F6 Firmware + online + rituals | 11–18 h | 4–8 weeks |
-| **Neurotech full** → Neuro Mage | **~35–55 h** | **~2–4 months** |
+| Id | Teaches | Status |
+|----|---------|--------|
+| `synth_eeg_stream` | Multichannel synth + µ probes | shipped |
+| `artifact_inject` | Blink/EMG/line | shipped |
+| `cortex_m_stub` | ADC→buffer→FIR→UART latency | shipped (host stub) |
+| `latency_budget` | sense/decide/act | shipped |
+| `online_loop` | window→feature→label→log | shipped |
 
-Faster with Edge ML already done (shared sampling/ADC/latency intuition).
+CLI: `mage emu all`
 
 ---
 
-## 9. Rank / rune hooks (e-mage compatible)
+## 6. Ranks & runes
 
 ```text
-e-mage global:  Mago base → … → Mago Supremo   (UNCHANGED hardcore)
-neurotech:      parallel NEURO_RANKS + runes rune-neuro-* + courseProgress.neurotech
+NEURO_RANKS: Novice → Signal Adept → Decode Adept → Closed-Loop Adept → Neuro Mage
+GLOBAL:      … → Mago Supremo  ← Edge path OR Neurotech climax
 ```
 
-**Course ranks** (`edge_mage/ranks.py` — HUD/ceremony when `--course neurotech`):
-
-`Novice → Signal Adept → Decode Adept → Closed-Loop Adept → Neuro Mage`
-
-| Rank | Gate |
+| Rune | Drop |
 |------|------|
-| Signal Adept | `rune-neuro-acq` |
-| Decode Adept | `rune-neuro-decode` |
-| Closed-Loop Adept | `rune-neuro-online` |
-| Neuro Mage | 3 runas + boss ritual (`neuro-mage` / `nt-neuro-mage`) |
-
-**Rune drops** (persisted in `progress.runes`):
-
-| Rune | Room (or alt) |
-|------|----------------|
-| `rune-neuro-acq` | `nt-filter-bank` **or** electrode chain (`nt-electrode-snr`+`nt-ground-ref`+`nt-adc-bio`) |
+| `rune-neuro-acq` | `nt-filter-bank` (or electrode chain) |
 | `rune-neuro-decode` | `nt-decode-mvp` |
 | `rune-neuro-online` | `nt-online-stub` |
-
-Boss `nt-neuro-mage` unlock also requires the 3 runes (plus online + paper\|project).
-
-Implementation (landed):
-
-- TUI course id `neurotech` in `edge_mage/courses.py` + launcher + `mage --course neurotech`.
-- Grimório: `content/grimoire/skills.yaml` entries `neuro-…` (+ elite `neuro-mage`) — copy matches real drops.
-- Statusline Neuro: `◈runas · mage · %fases` (not Edge on-device).
-- Web Estudo: fourth course `/estudo/cursos/neurotech` + `content/estudo/neurotech/export.json` (soft-gate Mago base like Edge).
-- **Never** require Neurotech rituals for Mago Supremo.
+| `rune-neuro-research` | `nt-research-project` |
 
 ---
 
-## 10. MVP implementation order (YAML rooms first)
+## 7. Safety & scope
 
-Build in this order so Estuda→Sala and emulators land early:
-
-1. **Track skeleton** `10-neurotech/track.yaml` + README  
-2. **`nt-portal`** — pedagogo+bci (habit + ethics teaser)  
-3. **`nt-rhythms`** — neurociencia (bands; animation `rhythm_bands`)  
-4. **`nt-filter-bank`** — eletrica (animation `filter_freq_response`; hooks emulator later)  
-5. Emulator MVP: `synth_eeg_stream` + `artifact_inject` (code in TUI later)  
-6. **`nt-mi-paradigm`** + **`nt-features-bandpower`**  
-7. **`nt-stream-buffer`** + **`nt-latency-budget`**  
-8. Checkpoints CP-Filter bank → CP-Decoder MVP → **`nt-online-stub`** ritual  
-9. Wire course launcher + grimoire + optional web export  
-10. Remaining F1/F2/F4 rooms + paper checkpoint boss  
+- Educational noninvasive BCI + synthetic/open data by default  
+- No pathogen / weapon / DIY invasive implant instructions  
+- Neurological **case** rooms only for **published** paradigms/benchmarks  
+- Clinical claims forbidden  
 
 ---
 
-## 11. Content layout
+## 8. How to try
 
-```text
-content/tracks/10-neurotech/
-  README.md
-  track.yaml
-  rooms/
-    01-nt-portal/
-    02-nt-rhythms/
-    03-nt-filter-bank/
-    …
-docs/SPEC-neurotech-course.md   ← this file
+```bash
+# TUI
+cd edge-mage && mage --course neurotech
+mage emu all
+
+# Web
+# edevs → /estudo/cursos/neurotech
 ```
 
-Each room: `story.md` · `concept.md` · `lesson.md` · `room.yaml`.
+Path: foundations → DSP/decode → firmware/online → **Neuro Mage** → apps → published cases → research → **Mago Supremo**.
 
 ---
 
-## 12. Safety & scope
+## 9. Definition of done (SPEC)
 
-- Educational noninvasive BCI and synthetic data by default  
-- No pathogen / weapon / DIY invasive implant instructions  
-- Ethics rooms required before any “live human optional” elective  
-- Clinical claims forbidden; research literacy encouraged  
-
----
-
-## 13. Definition of done (SPEC)
-
-- [x] Phase map with room stubs and owners  
-- [x] Emulator + animation lists  
-- [x] Checkpoint table with real URLs  
-- [x] Hours estimate  
-- [x] Rank/rune parallel-circle rules  
-- [x] MVP YAML order  
-- [x] Full room catalog authored (F0→F6, 23 salas incl. decode MVP)  
-- [x] TUI course id + web pack (`neurotech` export + launcher)  
-- [x] Emulator MVP: `synth_eeg_stream` + `artifact_inject` + `cortex_m_stub` + `latency_budget` + `online_loop`  
-- [x] Pedagogical `order` + `requires_rooms` enforced in TUI (tested)  
-
+- [x] Multi-pillar MSc phase map (Math→…→Supremo)  
+- [x] Hours **120–200 h** guided documented  
+- [x] Reading list with DOIs  
+- [x] Thesis-prep checkpoints  
+- [x] Alternate Mago Supremo wiring (Edge path preserved)  
+- [x] 68 rooms authored (65 required + 3 electives)  
+- [x] Emulators + Estuda→Sala  
+- [x] Tests: path length, gates, Supremo from neurotech  

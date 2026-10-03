@@ -224,6 +224,36 @@ class ProgressStore:
             or self.state.completed_rooms_by_id.get("nt-neuro-mage")
         )
 
+    def has_neuro_supremo_path(self) -> bool:
+        """
+        Alternate Mago Supremo route via Neurotech MSc climax.
+        Requires Mago base + 3 core runes + Neuro Mage + research rune +
+        paper-module-msc + neuro-supremo ritual/boss.
+        Does not require Edge on-device or Systems boss.
+        """
+        from edge_mage.ranks import NEURO_RUNE_RESEARCH
+
+        self.sync_neuro_runes_from_rooms()
+        core_ok = all(self.has_rune(rid) for rid in NEURO_RUNE_IDS)
+        research_ok = self.has_rune(NEURO_RUNE_RESEARCH)
+        paper_ok = bool(
+            self.has_ritual("neuro-paper-module-msc")
+            or self.state.completed_rooms_by_id.get("nt-paper-module-msc")
+        )
+        climax_ok = bool(
+            self.has_ritual("neuro-supremo")
+            or self.has_ritual("nt-mago-supremo")
+            or self.state.completed_rooms_by_id.get("nt-mago-supremo")
+        )
+        return bool(
+            self.has_mago_base()
+            and core_ok
+            and research_ok
+            and self.has_neuro_mage_boss()
+            and paper_ok
+            and climax_ok
+        )
+
     def neuro_rank(self):
         self.sync_neuro_runes_from_rooms()
         return effective_neuro_rank(
@@ -232,9 +262,11 @@ class ProgressStore:
         )
 
     def neuro_runes_progress(self) -> tuple[int, int]:
+        from edge_mage.ranks import NEURO_RUNE_IDS_ALL
+
         self.sync_neuro_runes_from_rooms()
-        owned = sum(1 for rid in NEURO_RUNE_IDS if self.has_rune(rid))
-        return owned, len(NEURO_RUNE_IDS)
+        owned = sum(1 for rid in NEURO_RUNE_IDS_ALL if self.has_rune(rid))
+        return owned, len(NEURO_RUNE_IDS_ALL)
 
     def course_meta(self, course_id: str) -> dict[str, Any]:
         raw = self.state.courses.get(course_id)
@@ -363,14 +395,22 @@ class ProgressStore:
                     self.state.rituals[room.id] = True
                     if room_id == "nt-neuro-mage" or room.id == "nt-neuro-mage":
                         self.state.rituals["neuro-mage"] = True
+                    if room_id == "nt-mago-supremo" or room.id == "nt-mago-supremo":
+                        self.state.rituals["neuro-supremo"] = True
+                        self.state.rituals["nt-mago-supremo"] = True
                 if is_neuro:
                     newly_runes = self.grant_neuro_runes_for_room(room_id)
                     neuro_meta = self.course_meta(COURSE_NEUROTECH)
+                    from edge_mage.ranks import NEURO_RUNE_IDS_ALL
+
                     neuro_meta["runes"] = sorted(
-                        self.owned_runes() & set(NEURO_RUNE_IDS)
+                        self.owned_runes() & set(NEURO_RUNE_IDS_ALL)
                     )
                     if room_id == "nt-neuro-mage" or room.id == "nt-neuro-mage":
                         neuro_meta["neuro_mage"] = True
+                    if room_id == "nt-mago-supremo" or room.id == "nt-mago-supremo":
+                        neuro_meta["neuro_mage"] = True
+                        neuro_meta["mago_supremo"] = True
                         neuro_meta["cleared"] = True
                     self.state.courses[COURSE_NEUROTECH] = neuro_meta
                 if room_id == "fundamentals-clear" or room.id == "fundamentals-clear":
@@ -446,10 +486,21 @@ class ProgressStore:
                 self.is_room_done(track.id, rid) for rid in room.requires_rooms_any
             ):
                 return False
-        # Neuro Mage boss: 3 parallel runes (acq/decode/online) + existing room gates.
+        # Neuro Mage boss: 3 core runes (acq/decode/online) + existing room gates.
         if room.id == "nt-neuro-mage":
             self.sync_neuro_runes_from_rooms()
             if not all(self.has_rune(rid) for rid in NEURO_RUNE_IDS):
+                return False
+        # Mago Supremo (Neurotech route): core runes + research rune + Neuro Mage.
+        if room.id == "nt-mago-supremo":
+            from edge_mage.ranks import NEURO_RUNE_RESEARCH
+
+            self.sync_neuro_runes_from_rooms()
+            if not all(self.has_rune(rid) for rid in NEURO_RUNE_IDS):
+                return False
+            if not self.has_rune(NEURO_RUNE_RESEARCH):
+                return False
+            if not self.has_neuro_mage_boss():
                 return False
         return True
 
@@ -485,12 +536,21 @@ class ProgressStore:
         systems_progress = bool(
             self.course_meta(COURSE_SYSTEMS).get("started") or self.has_systems_boss()
         )
+        neuro_progress = bool(
+            self.course_meta(COURSE_NEUROTECH).get("started")
+            or self.course_meta(COURSE_NEUROTECH).get("neuro_mage")
+            or any(
+                v and str(k).startswith("nt-")
+                for k, v in self.state.completed_rooms_by_id.items()
+            )
+        )
         return global_rank_from_flags(
             has_mago_base=self.has_mago_base(),
             has_systems_boss=self.has_systems_boss(),
             has_edge_on_device=self.has_ritual("on-device"),
             has_evidence=self.has_evidence(),
-            any_advanced_progress=edge_progress or systems_progress,
+            any_advanced_progress=edge_progress or systems_progress or neuro_progress,
+            has_neuro_supremo=self.has_neuro_supremo_path(),
         )
 
     def profile_summary(self, course_id: str | None = None) -> dict:
@@ -509,9 +569,11 @@ class ProgressStore:
             self.sync_neuro_runes_from_rooms()
             rank = self.neuro_rank()
             nxt = next_neuro_rank(rank)
+            from edge_mage.ranks import NEURO_RUNE_IDS_ALL
+
             runes_owned, runes_total = self.neuro_runes_progress()
             rune_labels = []
-            for rid in NEURO_RUNE_IDS:
+            for rid in NEURO_RUNE_IDS_ALL:
                 glyph, name = NEURO_RUNE_META[rid]
                 mark = "✓" if self.has_rune(rid) else "·"
                 rune_labels.append(f"{mark}{glyph}{name}")
@@ -540,6 +602,7 @@ class ProgressStore:
                 "runes_total": runes_total,
                 "rune_labels": rune_labels,
                 "neuro_mage": self.has_neuro_mage_boss(),
+                "mago_supremo_neuro": self.has_neuro_supremo_path(),
                 "neuro_rooms_done": neuro_rooms,
                 "updated": datetime.now(timezone.utc).isoformat(),
             }

@@ -1,0 +1,44 @@
+id: nt-fw-fixedpoint
+title: Firmware — Fixed-point Q15
+summary: Escala Q15, saturação, erro — lab numérico embarcado.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+phase: F9-fw
+pillar: firmware
+course: neurotech
+tasks:
+- id: scale
+  type: numeric
+  prompt: Em Q15, 1.0 cheio mapeia tipicamente para? (inteiro)
+  xp: 12
+  answer: 32767
+  tolerance: 0.1
+- id: sat
+  type: mcq
+  prompt: 'Overflow em acumulador fixed-point sem saturação:'
+  xp: 12
+  answer: 0
+  choices:
+  - pode wrapear e corromper o sinal
+  - aumenta CMRR
+  - é exigido pelo Belmont
+  - remove alias
+- id: name
+  type: fill
+  prompt: Formato fracionário com 15 bits de fração chama-se ___.
+  xp: 10
+  answers:
+  - Q15
+  - q15
+order: 46
+requires_rooms:
+- nt-mcu-filter
+resources:
+- title: CMSIS-DSP fixed-point overview
+  url: https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html
+  kind: docs
+- title: ARM CMSIS Core docs
+  url: https://www.keil.com/pack/doc/CMSIS/Core/html/index.html
+  kind: docs

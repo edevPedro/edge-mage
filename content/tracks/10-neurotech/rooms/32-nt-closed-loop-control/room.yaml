@@ -1,0 +1,49 @@
+id: nt-closed-loop-control
+title: Closed-loop como sistema de controle
+summary: Planta, delay, ganho de feedback e budget sense→act.
+xp_reward: 36
+unlock_xp: 0
+order: 50
+owners:
+- neuroeng
+- bci
+phase: F9-fw
+requires_rooms:
+- nt-online-stub
+course: neurotech
+emulator: online_loop
+animation: closed_loop_timeline
+resources:
+- title: Wolpaw & Wolpaw BCI principles (Clin Neurophysiol lineage)
+  url: https://doi.org/10.1016/j.clinph.2012.01.010
+  kind: paper
+tasks:
+- id: stages
+  type: mcq
+  prompt: 'No modelo deste curso, closed-loop decompõe-se em:'
+  xp: 12
+  answer: 0
+  choices:
+  - sense → decide → act (com usuário na malha)
+  - só treinar offline para sempre
+  - stim DIY invasivo
+  - pular latência
+- id: delay
+  type: mcq
+  prompt: 'Atraso grande + feedback agressivo tipicamente:'
+  xp: 12
+  answer: 1
+  choices:
+  - melhora sempre a estabilidade
+  - piora a usabilidade / pode induzir “luta” com o feedback
+  - elimina artefatos
+  - concede Mago Supremo sem ritual
+- id: budget
+  type: fill
+  prompt: O orçamento sense/decide/act é medido tipicamente em ___ (unidade de tempo).
+  xp: 12
+  answers:
+  - ms
+  - milissegundos
+  - milliseconds
+  - ms / milissegundos

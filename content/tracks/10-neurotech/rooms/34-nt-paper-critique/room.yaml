@@ -1,0 +1,50 @@
+id: nt-paper-critique
+title: Leitura crítica de papers BCI
+summary: Ficha de crítica — N, CV, claims, o que reproduzir.
+xp_reward: 36
+unlock_xp: 0
+order: 60
+owners:
+- pedagogo
+- bci
+phase: F13-research
+requires_rooms:
+- nt-irb-protocol
+course: neurotech
+resources:
+- title: Singh et al. Sensors 2021 MI-BCI
+  url: https://doi.org/10.3390/s21062173
+  kind: paper
+- title: Padfield et al. Sensors 2019 EEG-MI
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/
+  kind: paper
+tasks:
+- id: redflag
+  type: mcq
+  prompt: 'Red flag comum em paper BCI fraco:'
+  xp: 12
+  answer: 0
+  choices:
+  - N pequeno + deep net + sem nested CV / possível vazamento
+  - citar DOI
+  - reportar limites
+  - usar κ além de acurácia
+- id: fiche
+  type: fill
+  prompt: Na ficha, a fonte deve incluir um ___ ou URL estável (doi.org/…).
+  xp: 12
+  answers:
+  - DOI
+  - doi
+  - DOI/URL
+  - doi.org
+- id: claim
+  type: mcq
+  prompt: 'Claims de “ler pensamentos” / lie detection em BCI educacional devem ser:'
+  xp: 12
+  answer: 1
+  choices:
+  - aceitos sem crítica
+  - rejeitados / tratados como overclaim
+  - implementados em malware
+  - exigidos no boss

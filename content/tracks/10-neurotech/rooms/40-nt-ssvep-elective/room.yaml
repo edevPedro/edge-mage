@@ -1,0 +1,38 @@
+id: nt-ssvep-elective
+title: 'Eletivo: SSVEP paradigm'
+summary: Flicker/harmônicos — opcional; não gateia Supremo.
+xp_reward: 28
+unlock_xp: 0
+order: 66
+owners:
+- bci
+- neurociencia
+phase: elective
+requires_rooms:
+- nt-neuro-mage
+course: neurotech
+resources:
+- title: Zhu et al. SSVEP BCI review JNE 2010
+  url: https://doi.org/10.1088/1741-2560/7/4/041001
+  kind: paper
+tasks:
+- id: what
+  type: mcq
+  prompt: 'SSVEP em BCI tipicamente usa:'
+  xp: 12
+  answer: 0
+  choices:
+  - estímulo visual periódico e picos em f e harmônicos
+  - apenas MI sem visual
+  - stim invasivo obrigatório
+  - pular ética
+- id: elective
+  type: fill
+  prompt: Esta sala é ___ (não obrigatória para o climax Supremo).
+  xp: 10
+  answers:
+  - eletiva
+  - eletivo
+  - elective
+  - opcional
+  - optional

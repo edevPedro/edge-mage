@@ -1,0 +1,54 @@
+id: nt-csp-primer
+title: Primer CSP (filtros espaciais)
+summary: Cov→CSP→log-var; fit só no treino; ponte ao FBCSP eletivo.
+xp_reward: 38
+unlock_xp: 0
+order: 39
+owners:
+- bci
+phase: F8-decode
+requires_rooms:
+- nt-decode-mvp
+- nt-math-eigen
+course: neurotech
+resources:
+- title: Ramoser et al. IEEE TNSRE 2000 — CSP
+  url: https://doi.org/10.1109/86.895946
+  kind: paper
+- title: Ang et al. FBCSP IJCNN 2008
+  url: https://doi.org/10.1109/IJCNN.2008.4634130
+  kind: paper
+- title: Barachant et al. Riemannian MDM
+  url: https://doi.org/10.1109/TBME.2011.2172210
+  kind: paper
+emulator: synth_eeg_stream
+tasks:
+- id: goal
+  type: mcq
+  prompt: 'CSP busca filtros espaciais que:'
+  xp: 12
+  answer: 0
+  choices:
+  - maximizam variância de uma classe vs a outra (discriminação)
+  - aumentam fs automaticamente
+  - fazem stim invasivo
+  - substituem ética IRB
+- id: feat
+  type: fill
+  prompt: Após projetar com CSP, a feature clássica por componente é a log-___.
+  xp: 12
+  answers:
+  - variância
+  - variancia
+  - variance
+  - var
+- id: fit
+  type: mcq
+  prompt: 'Os filtros CSP devem ser estimados:'
+  xp: 12
+  answer: 1
+  choices:
+  - no conjunto de teste para κ máximo
+  - apenas nos dados de treino de cada fold
+  - depois do deploy clínico sem paper
+  - só com QEEG diagnóstico

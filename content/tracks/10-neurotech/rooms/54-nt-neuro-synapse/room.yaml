@@ -1,0 +1,46 @@
+id: nt-neuro-synapse
+title: Neurociência — Sinapses e PSP
+summary: EPSP/IPSP → correntes → ponte ao LFP.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- neurociencia
+phase: F4-neuro
+pillar: neuroscience
+course: neurotech
+resources:
+- title: Einevoll et al. LFP (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/
+  kind: paper
+tasks:
+- id: psp
+  type: mcq
+  prompt: PSPs são tipicamente ___ que o potencial de ação.
+  xp: 10
+  answer: 0
+  choices:
+  - mais lentos / mais longos
+  - mais curtos sempre que um bit
+  - iguais a SSVEP
+  - irrelevantes ao LFP
+- id: eipsp
+  type: fill
+  prompt: EPSP = potencial pós-sináptico ___.
+  xp: 10
+  answers:
+  - excitatório
+  - excitatorio
+  - excitatory
+- id: lfp
+  type: mcq
+  prompt: 'Correntes sinápticas sincronizadas contribuem fortemente para:'
+  xp: 12
+  answer: 0
+  choices:
+  - LFP
+  - somente Cloudflare
+  - LLVM passes
+  - Belmont
+order: 20
+requires_rooms:
+- nt-neuro-neuron-hh

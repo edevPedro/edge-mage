@@ -1,0 +1,54 @@
+id: nt-stats-bci
+title: Stats para BCI (N, κ, chance)
+summary: Níveis de análise, chance level e incerteza — pré-requisito MSc.
+xp_reward: 36
+unlock_xp: 0
+order: 35
+owners:
+- bci
+- pedagogo
+phase: F8-decode
+requires_rooms:
+- nt-trial-design
+- nt-math-estimation
+course: neurotech
+resources:
+- title: Lotte et al. JNE 2007 — classification review
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+- title: Schlögl et al. JNE 2005 — κ / 4-class MI
+  url: https://doi.org/10.1088/1741-2560/2/4/L02
+  kind: paper
+animation: probability_bars
+tasks:
+- id: unit
+  type: mcq
+  prompt: 'Em um paper de BCI, tratar cada amostra de tempo (ms) como N independente
+    tipicamente:'
+  xp: 12
+  answer: 1
+  choices:
+  - é o gold standard de potência estatística
+  - inflaciona N e produz p-valores enganosos (dependência temporal)
+  - substitui consentimento IRB
+  - remove a necessidade de κ
+- id: chance
+  type: numeric
+  prompt: '2 classes equilibradas. Acurácia ao acaso p_e = 0.5.
+
+    Se p_o = 0.65, κ = (p_o − p_e)/(1 − p_e) = ?
+
+    '
+  xp: 12
+  answer: 0.3
+  tolerance: 0.01
+- id: se
+  type: numeric
+  prompt: 'Intuição binomial: SE ≈ √(p(1−p)/N).
+
+    Com p=0.5 e N=100 trials, SE ≈ ? (3 casas)
+
+    '
+  xp: 14
+  answer: 0.05
+  tolerance: 0.002

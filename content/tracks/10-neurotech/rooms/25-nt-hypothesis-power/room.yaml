@@ -1,0 +1,47 @@
+id: nt-hypothesis-power
+title: Hipótese, potência e múltiplos testes
+summary: Pré-registro, α, potência e Bonferroni lite para BCI.
+xp_reward: 34
+unlock_xp: 0
+order: 36
+owners:
+- bci
+- pedagogo
+phase: F8-decode
+requires_rooms:
+- nt-stats-bci
+course: neurotech
+resources:
+- title: Combrisson & Jerbi 2015 — statistical testing MEG/EEG
+  url: https://doi.org/10.1016/j.jneumeth.2015.03.034
+  kind: paper
+- title: Belmont Report (OHRP)
+  url: https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html
+  kind: docs
+tasks:
+- id: fish
+  type: mcq
+  prompt: 'Testar dezenas de bandas/canais e reportar só o p<0.05 sem correção é:'
+  xp: 12
+  answer: 0
+  choices:
+  - fishing / inflação de falso positivo
+  - potência estatística ideal
+  - requisito de OpenBCI
+  - substituto de κ
+- id: bonf
+  type: numeric
+  prompt: 'Bonferroni: α=0.05, m=10 testes. α'' = α/m = ?'
+  xp: 12
+  answer: 0.005
+  tolerance: 0.0001
+- id: power
+  type: fill
+  prompt: A probabilidade de rejeitar H0 quando H1 é verdadeira chama-se ___ (1−β).
+  xp: 12
+  answers:
+  - potência
+  - potencia
+  - power
+  - poder estatístico
+  - poder estatistico

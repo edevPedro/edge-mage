@@ -1,0 +1,52 @@
+id: nt-case-berlin-mi
+title: Caso emulado — Berlin MI (publicado)
+summary: Emula paradigma Berlin BCI MI com citação OA — sem caso clínico inventado.
+xp_reward: 40
+unlock_xp: 0
+owners:
+- bci
+- pedagogo
+phase: F12-cases
+pillar: cases
+course: neurotech
+emulator: synth_eeg_stream
+resources:
+- title: Blankertz et al. Berlin BCI (Frontiers OA)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/
+  kind: paper
+- title: Blankertz et al. related DOI path
+  url: https://doi.org/10.3389/fnins.2016.00530
+  kind: paper
+tasks:
+- id: real
+  type: mcq
+  prompt: 'Casos neste curso devem ser:'
+  xp: 12
+  answer: 0
+  choices:
+  - baseados em paradigmas/resultados publicados com URL/DOI
+  - pacientes inventados sem fonte
+  - diagnóstico caseiro
+  - weaponization
+- id: emu
+  type: fill
+  prompt: Usar synth EEG + pipeline alinhado ao paper é uma ___ educacional (emulação).
+  xp: 10
+  answers:
+  - emulação
+  - emulacao
+  - emulation
+  - emulação / reproduction lite
+- id: limit
+  type: mcq
+  prompt: 'Emular Berlin MI em synth:'
+  xp: 12
+  answer: 1
+  choices:
+  - equivale a republicar o dataset clínico
+  - exige declarar limites ≠ reprodução bit-a-bit dos sujeitos
+  - remove κ
+  - é Mago Supremo sozinho
+order: 57
+requires_rooms:
+- nt-app-hybrid-p300

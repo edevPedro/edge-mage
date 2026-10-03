@@ -3,12 +3,13 @@ title: Decode MVP (labels → LDA → κ)
 summary: 'Pipeline offline mínima: rótulos → bandpower/cov → LDA toy → κ.'
 xp_reward: 38
 unlock_xp: 0
-order: 14
+order: 38
 owners:
 - bci
-phase: F4
+phase: F8-decode
 requires_rooms:
 - nt-features-bandpower
+- nt-cv-leakage
 course: neurotech
 resources:
 - title: Padfield et al. EEG-MI techniques (PMC)
@@ -83,30 +84,38 @@ tasks:
     '
 - id: fit-kappa
   type: code
-  prompt: |
-    Complete o MVP claim↔tasks: fit 1D + κ (sem sklearn no sandbox).
+  prompt: 'Complete o MVP claim↔tasks: fit 1D + κ (sem sklearn no sandbox).
+
 
     `fit_threshold_lda(class0, class1)` — listas de floats (feature 1D por trial).
+
     Retorne `(w, b)` com `w = 1.0` e `b = -(mean0 + mean1) / 2`
+
     (hiperplano equidistante das médias; prediz classe 1 se `w*x + b >= 0`).
 
-    `cohen_kappa(y_true, y_pred)` — listas iguais de 0/1.
-    κ = (p_o − p_e) / (1 − p_e) com p_e pelas margens:
-    p_e = p0_true*p0_pred + p1_true*p1_pred.
-    Se 1 − p_e == 0, retorne 0.0.
-  xp: 18
-  code_template: |
-    def fit_threshold_lda(class0, class1):
-        # TODO
-        ...
 
-    def cohen_kappa(y_true, y_pred):
-        # TODO
-        ...
-  code_tests: |
-    w, b = mod.fit_threshold_lda([0.0, 0.2], [0.8, 1.0])
+    `cohen_kappa(y_true, y_pred)` — listas iguais de 0/1.
+
+    κ = (p_o − p_e) / (1 − p_e) com p_e pelas margens:
+
+    p_e = p0_true*p0_pred + p1_true*p1_pred.
+
+    Se 1 − p_e == 0, retorne 0.0.
+
+    '
+  xp: 18
+  code_template: "def fit_threshold_lda(class0, class1):\n    # TODO\n    ...\n\n\
+    def cohen_kappa(y_true, y_pred):\n    # TODO\n    ...\n"
+  code_tests: 'w, b = mod.fit_threshold_lda([0.0, 0.2], [0.8, 1.0])
+
     assert abs(w - 1.0) < 1e-9
+
     assert abs(b - (-0.5)) < 1e-9
+
     assert abs(mod.cohen_kappa([0, 0, 1, 1], [0, 1, 1, 1]) - 0.5) < 1e-9
+
     assert abs(mod.cohen_kappa([0, 1], [0, 1]) - 1.0) < 1e-9
+
     assert abs(mod.cohen_kappa([0, 0, 0, 0], [0, 0, 0, 0])) < 1e-9
+
+    '

@@ -1,0 +1,42 @@
+id: nt-elec-antialias
+title: Elétrica — Nyquist e anti-alias
+summary: fs>2fmax; filtro antes do ADC — lab quantitativo.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- eletrica
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: numpy/scipy resampling notes
+  url: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.decimate.html
+  kind: docs
+tasks:
+- id: nyq
+  type: numeric
+  prompt: f_max=40 Hz. fs mínima teórica (Nyquist) em Hz?
+  xp: 12
+  answer: 80
+  tolerance: 0.1
+- id: alias
+  type: mcq
+  prompt: 'Sem anti-alias, componentes acima de fs/2:'
+  xp: 12
+  answer: 0
+  choices:
+  - podem aparecer como frequências falsas (alias)
+  - somem magicamente
+  - aumentam κ
+  - ' Cumprem Belmont'
+- id: where
+  type: fill
+  prompt: O filtro anti-alias fica ___ (antes/depois) do ADC.
+  xp: 10
+  answers:
+  - antes
+  - before
+  - antes do ADC
+order: 18
+requires_rooms:
+- nt-adc-bio

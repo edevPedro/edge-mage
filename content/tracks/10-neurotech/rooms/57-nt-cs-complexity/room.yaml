@@ -1,0 +1,49 @@
+id: nt-cs-complexity
+title: CS — Complexidade e budget de compute
+summary: Big-O de cov/filtros vs deadline sense→decide.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- pedagogo
+- eletrica
+phase: F5-cs
+pillar: cs
+course: neurotech
+emulator: cortex_m_stub
+resources:
+- title: Python timeit docs
+  url: https://docs.python.org/3/library/timeit.html
+  kind: docs
+tasks:
+- id: cov
+  type: mcq
+  prompt: 'Covariância naive C×C com W amostras escala aproximadamente:'
+  xp: 12
+  answer: 0
+  choices:
+  - O(C² W)
+  - O(1) sempre
+  - O(κ)
+  - O(DOI)
+- id: trade
+  type: fill
+  prompt: Reduzir canais C reduz o custo ~ C___ (expoente típico naive na cov).
+  xp: 10
+  answers:
+  - ^2
+  - '2'
+  - ²
+  - '**2'
+- id: deadline
+  type: mcq
+  prompt: 'Se compute_ms > deadline da janela:'
+  xp: 10
+  answer: 0
+  choices:
+  - o loop online atrasa / dropa
+  - κ sobe sozinho
+  - Nyquist some
+  - Belmont falha
+order: 24
+requires_rooms:
+- nt-neuro-plasticity

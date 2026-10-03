@@ -1,0 +1,39 @@
+id: nt-openbci-path
+title: 'Eletivo: caminho OpenBCI (stub)'
+summary: Docs Cyton/GUI→stream; synth se sem hardware — opcional.
+xp_reward: 28
+unlock_xp: 0
+order: 68
+owners:
+- neuroeng
+- bci
+phase: elective
+requires_rooms:
+- nt-ethics-consent
+- nt-filter-bank
+course: neurotech
+resources:
+- title: OpenBCI Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: OpenBCI EEG Setup
+  url: https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/
+  kind: docs
+tasks:
+- id: honest
+  type: mcq
+  prompt: 'Sem hardware OpenBCI, o caminho honesto neste curso é:'
+  xp: 12
+  answer: 0
+  choices:
+  - declarar synth/stand-in + citar docs da cadeia real
+  - fingir latências de device clínico
+  - pular ética se for “só demo”
+  - exigir Mago Supremo na hora
+- id: board
+  type: fill
+  prompt: A placa OpenBCI citada no Getting Started deste eletivo é a ___.
+  xp: 10
+  answers:
+  - Cyton
+  - cyton

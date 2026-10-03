@@ -1,0 +1,51 @@
+id: nt-filter-design-depth
+title: FIR vs IIR e atraso de grupo
+summary: Fase linear, delay FIR, causalidade online vs filtfilt.
+xp_reward: 36
+unlock_xp: 0
+order: 30
+owners:
+- eletrica
+- neuroeng
+phase: F6-dsp
+requires_rooms:
+- nt-dsp-welch
+course: neurotech
+emulator: cortex_m_stub
+resources:
+- title: scipy.signal.firwin
+  url: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html
+  kind: docs
+- title: TI ADS1299 datasheet (AFE)
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+animation: filter_freq_response
+tasks:
+- id: filtfilt
+  type: mcq
+  prompt: 'filtfilt (forward-backward) em streaming online causal:'
+  xp: 12
+  answer: 1
+  choices:
+  - é o default correto sem latência
+  - não é causal em tempo real — use só offline / batch
+  - remove a necessidade de ADC
+  - garante κ=1
+- id: delay
+  type: numeric
+  prompt: 'FIR ordem N=65, fs=250 Hz, fase linear.
+
+    delay_s ≈ (N−1)/(2·fs) em segundos?
+
+    '
+  xp: 14
+  answer: 0.128
+  tolerance: 0.002
+- id: iir
+  type: fill
+  prompt: Filtros ___ são eficientes mas costumam ter fase não-linear (atraso de grupo
+    variável).
+  xp: 12
+  answers:
+  - IIR
+  - iir

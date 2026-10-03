@@ -1,0 +1,40 @@
+id: nt-fbcsp-bakeoff
+title: 'Eletivo: FBCSP vs Riemann bake-off'
+summary: Comparar pipelines no mesmo split — opcional.
+xp_reward: 30
+unlock_xp: 0
+order: 67
+owners:
+- bci
+phase: elective
+requires_rooms:
+- nt-csp-primer
+course: neurotech
+resources:
+- title: Ang et al. FBCSP
+  url: https://doi.org/10.1109/IJCNN.2008.4634130
+  kind: paper
+- title: Barachant et al. Riemannian MDM
+  url: https://doi.org/10.1109/TBME.2011.2172210
+  kind: paper
+- title: Yger et al. HAL review
+  url: https://inria.hal.science/hal-01394253/document
+  kind: paper
+tasks:
+- id: fair
+  type: mcq
+  prompt: 'Um bake-off honesto exige:'
+  xp: 12
+  answer: 0
+  choices:
+  - mesmo split/protocolo de validação para os pipelines
+  - escolher o teste depois de ver o vencedor
+  - N=1 sem IC
+  - omitir citações
+- id: fbcsp
+  type: fill
+  prompt: FBCSP = Filter-Bank ___ (sigla de Common Spatial Patterns).
+  xp: 10
+  answers:
+  - CSP
+  - csp

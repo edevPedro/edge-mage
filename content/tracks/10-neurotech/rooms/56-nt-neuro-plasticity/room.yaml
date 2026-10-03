@@ -1,0 +1,48 @@
+id: nt-neuro-plasticity
+title: Neurociência — Plasticidade e co-adaptação
+summary: Usuário aprende o BCI; sessões não são iid eternas.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- neurociencia
+- bci
+phase: F4-neuro
+pillar: neuroscience
+course: neurotech
+resources:
+- title: Wolpaw & Wolpaw BCI principles
+  url: https://doi.org/10.1016/j.clinph.2012.01.010
+  kind: paper
+tasks:
+- id: co
+  type: mcq
+  prompt: 'Em BCI online, co-adaptação significa:'
+  xp: 12
+  answer: 0
+  choices:
+  - usuário e decoder adaptam-se ao longo do tempo
+  - só o FIR muda sozinho sem humano
+  - IRB opcional
+  - alias desejável
+- id: iid
+  type: fill
+  prompt: 'Assumir trials ___ entre dias pode falhar quando o usuário aprende (uma
+    palavra: independentes/iid).'
+  xp: 10
+  answers:
+  - iid
+  - independentes
+  - independent
+- id: train
+  type: mcq
+  prompt: 'Recalibrar / adaptar o decoder entre sessões é:'
+  xp: 10
+  answer: 1
+  choices:
+  - sempre fraude
+  - prática comum e honesta quando documentada
+  - proibido em synth
+  - Mago Supremo automático
+order: 23
+requires_rooms:
+- nt-neuro-maps

@@ -1,0 +1,47 @@
+id: nt-fw-irq-dma
+title: Firmware — IRQ curta e DMA
+summary: ISR mínima; DMA ADC→ring; decide fora da interrupção.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+- neuroeng
+phase: F9-fw
+pillar: firmware
+course: neurotech
+emulator: cortex_m_stub
+resources:
+- title: ARM Cortex-M generic interrupt model (CMSIS docs hub)
+  url: https://www.keil.com/pack/doc/CMSIS/Core/html/index.html
+  kind: docs
+tasks:
+- id: isr
+  type: mcq
+  prompt: 'Dentro da ISR de alta taxa de sample, o padrão correto é:'
+  xp: 12
+  answer: 0
+  choices:
+  - trabalho mínimo (flag/DMA) — decode pesado fora
+  - treinar deep net completa
+  - abrir IRB
+  - calcular FEM
+- id: dma
+  type: fill
+  prompt: Transferência ADC→memória sem CPU a cada sample usa ___.
+  xp: 10
+  answers:
+  - DMA
+  - dma
+- id: jitter
+  type: mcq
+  prompt: 'ISR longa demais tipicamente causa:'
+  xp: 12
+  answer: 1
+  choices:
+  - melhor κ offline
+  - jitter / atraso no sampling ou no loop
+  - Nyquist maior
+  - autovalor negativo
+order: 44
+requires_rooms:
+- nt-stream-buffer

@@ -1,0 +1,45 @@
+id: nt-physics-field-lite
+title: Physics — Campo e distância (lite)
+summary: Potencial vs distância; por que fontes profundas somem.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- fisica
+phase: F2-physics
+pillar: physics
+course: neurotech
+resources:
+- title: Michel & Brunet EEG source imaging OA
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/
+  kind: paper
+tasks:
+- id: deep
+  type: mcq
+  prompt: 'Fontes mais profundas no volume condutor tendem a gerar no escalpo:'
+  xp: 12
+  answer: 0
+  choices:
+  - sinais mais fracos / mais espalhados
+  - sempre γ puro
+  - κ maior
+  - ADC de 1 bit
+- id: model
+  type: fill
+  prompt: O modelo de fonte pontual orientada usado no curso é o ___ de corrente.
+  xp: 10
+  answers:
+  - dipolo
+  - dipole
+- id: fem
+  type: mcq
+  prompt: 'O cartoon 1/r deste curso é:'
+  xp: 10
+  answer: 1
+  choices:
+  - FEM clínico completo
+  - intuição educacional ≠ substituto de FEM
+  - prova de mind-reading
+  - stim DIY
+order: 13
+requires_rooms:
+- nt-volume-blur

@@ -1,0 +1,41 @@
+id: nt-math-probability
+title: Math — Probabilidade e chance level
+summary: Bernoulli, esperança/variância — base para κ e testes.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- pedagogo
+- bci
+phase: F1-math
+pillar: math
+course: neurotech
+resources:
+- title: Schlögl et al. κ in BCI
+  url: https://doi.org/10.1088/1741-2560/2/4/L02
+  kind: paper
+tasks:
+- id: mean
+  type: numeric
+  prompt: Bernoulli p=0.7. E[X]=?
+  xp: 10
+  answer: 0.7
+  tolerance: 0.01
+- id: var
+  type: numeric
+  prompt: Bernoulli p=0.5. Var(X)=p(1-p)=?
+  xp: 12
+  answer: 0.25
+  tolerance: 0.01
+- id: chance
+  type: mcq
+  prompt: 'Em 2 classes equilibradas, acurácia esperada ao acaso é cerca de:'
+  xp: 10
+  answer: 0
+  choices:
+  - '0.5'
+  - '0.99'
+  - '0'
+  - κ automaticamente 1
+order: 6
+requires_rooms:
+- nt-math-eigen

@@ -1,0 +1,42 @@
+id: nt-math-gd-lite
+title: Math — Gradiente descendente lite
+summary: Um passo GD; ponte a ML para dados neurais.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- pedagogo
+phase: F1-math
+pillar: math
+course: neurotech
+resources:
+- title: sklearn SGDClassifier
+  url: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html
+  kind: docs
+tasks:
+- id: step
+  type: numeric
+  prompt: θ=2, η=0.1, ∇L=2θ=4. θ←θ−η∇L ⇒ ?
+  xp: 12
+  answer: 1.6
+  tolerance: 0.01
+- id: lr
+  type: mcq
+  prompt: 'η enorme tipicamente:'
+  xp: 10
+  answer: 0
+  choices:
+  - pode divergir
+  - garante κ=1
+  - remove artefatos
+  - substitui consentimento
+- id: name
+  type: fill
+  prompt: O algoritmo θ←θ−η∇L chama-se gradiente ___.
+  xp: 10
+  answers:
+  - descendente
+  - descent
+  - descendente / descent
+order: 8
+requires_rooms:
+- nt-math-estimation

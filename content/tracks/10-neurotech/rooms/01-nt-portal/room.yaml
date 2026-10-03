@@ -42,7 +42,8 @@ tasks:
   - ignora ética e consentimento
 - id: scope
   type: fill
-  prompt: MVP deste círculo prefere dados ___ (ou datasets abertos), não cirurgia DIY.
+  prompt: MVP deste círculo prefere dados ___ (ou datasets abertos), não cirurgia
+    DIY.
   xp: 8
   answers:
   - sintéticos

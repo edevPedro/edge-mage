@@ -228,6 +228,8 @@ class TaskScreen(MageScreen):
                 "nt-decode-mvp": "MARCO · DECODE MVP",
                 "nt-online-stub": "MARCO · ONLINE LOOP",
                 "nt-neuro-mage": "BOSS · NEURO MAGE",
+                "nt-research-project": "MARCO · RESEARCH RUNE",
+                "nt-mago-supremo": "BOSS · MAGO SUPREMO",
             }
             title = titles.get(self.room.id, "MARCO DO CÍRCULO")
 

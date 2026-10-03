@@ -5,10 +5,11 @@ xp_reward: 32
 unlock_xp: 0
 owners:
 - eletrica
-phase: F2
+phase: F6-dsp
 requires_rooms:
 - nt-rhythms
 - nt-adc-bio
+- nt-cs-harness
 course: neurotech
 resources:
 - title: OpenBCI — Setting up for EEG
@@ -53,14 +54,16 @@ tasks:
   - 125.0
 - id: band-mask
   type: code
-  prompt: 'Implemente `band_mask(freqs, lo, hi)` retornando lista booleana (True se lo <= f < hi).
+  prompt: 'Implemente `band_mask(freqs, lo, hi)` retornando lista booleana (True se
+    lo <= f < hi).
 
     '
   xp: 16
   code_template: "def band_mask(freqs, lo, hi):\n    # TODO\n    ...\n"
-  code_tests: 'assert mod.band_mask([8, 10, 12, 20], 8, 12) == [True, True, False, False]
+  code_tests: 'assert mod.band_mask([8, 10, 12, 20], 8, 12) == [True, True, False,
+    False]
 
     assert mod.band_mask([0, 50, 60], 50, 61) == [False, True, True]
 
     '
-order: 10
+order: 28

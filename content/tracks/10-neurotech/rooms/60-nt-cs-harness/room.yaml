@@ -1,0 +1,48 @@
+id: nt-cs-harness
+title: CS — Harness de testes do pipeline
+summary: Asserts, seeds, regressão de κ — engenharia reprodutível.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- pedagogo
+- bci
+phase: F5-cs
+pillar: cs
+course: neurotech
+resources:
+- title: pytest documentation
+  url: https://docs.pytest.org/
+  kind: docs
+tasks:
+- id: seed
+  type: mcq
+  prompt: 'Fixar seed nos testes de pipeline serve para:'
+  xp: 10
+  answer: 0
+  choices:
+  - reprodutibilidade
+  - aumentar alias
+  - remover ética
+  - hack clínico
+- id: assert
+  type: fill
+  prompt: Verificações automáticas no harness são ___ (asserts/testes).
+  xp: 10
+  answers:
+  - asserts
+  - testes
+  - tests
+  - assertions
+- id: reg
+  type: mcq
+  prompt: 'Se um PR derruba κ toy no synth sem motivo:'
+  xp: 12
+  answer: 0
+  choices:
+  - o harness deve falhar (regressão)
+  - ignorar e shipar
+  - culpar o usuário
+  - apagar DOI
+order: 27
+requires_rooms:
+- nt-cs-numerics

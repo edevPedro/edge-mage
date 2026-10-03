@@ -1,0 +1,47 @@
+id: nt-math-eigen
+title: Math — Autovalores (PCA/CSP lite)
+summary: Av=λv; ponte quantitativa a PCA/CSP.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- pedagogo
+- bci
+phase: F1-math
+pillar: math
+course: neurotech
+resources:
+- title: numpy.linalg.eig
+  url: https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html
+  kind: docs
+- title: Ramoser et al. CSP
+  url: https://doi.org/10.1109/86.895946
+  kind: paper
+tasks:
+- id: def
+  type: mcq
+  prompt: 'Av = λv significa que v é:'
+  xp: 10
+  answer: 0
+  choices:
+  - autovetor com autovalor λ
+  - sempre o bias do LDA
+  - um trial de teste
+  - um DOI
+- id: eig2
+  type: numeric
+  prompt: Para diag(4,1), o maior autovalor é?
+  xp: 12
+  answer: 4
+  tolerance: 0.01
+- id: csp
+  type: fill
+  prompt: CSP envolve um problema de autovalores ___ (uma palavra) entre covariâncias
+    de classe.
+  xp: 10
+  answers:
+  - generalizado
+  - generalised
+  - generalized
+order: 5
+requires_rooms:
+- nt-math-matrices

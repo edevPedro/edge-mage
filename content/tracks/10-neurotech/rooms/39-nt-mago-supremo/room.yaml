@@ -1,0 +1,49 @@
+id: nt-mago-supremo
+title: Boss Mago Supremo (rota Neurotech)
+summary: Climax MSc — concede o mesmo Mago Supremo global que a rota Edge.
+xp_reward: 80
+unlock_xp: 0
+order: 65
+owners:
+- pedagogo
+phase: F14-supremo
+requires_rooms:
+- nt-neuro-mage
+- nt-research-project
+- nt-paper-module-msc
+- nt-case-bci-comp-iv
+course: neurotech
+boss: true
+elite_skill: mago-supremo-neuro
+resources:
+- title: SPEC Neurotech — Supremo path
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+  kind: docs
+animation: closed_loop_timeline
+tasks:
+- id: route
+  type: mcq
+  prompt: 'A rota Neurotech para Mago Supremo:'
+  xp: 14
+  answer: 1
+  choices:
+  - apaga a rota Edge
+  - é alternativa ao on-device Edge — mesmo título global
+  - só dá um título paralelo para sempre
+  - exige implante DIY
+- id: needs
+  type: mcq
+  prompt: 'Além de Mago base, o climax Neurotech exige tipicamente:'
+  xp: 14
+  answer: 0
+  choices:
+  - 3 runas neuro + Neuro Mage + research rune + paper MSc + este ritual
+  - apenas XP alto
+  - só Systems LLVM
+  - só assistir webinar
+- id: ritual
+  type: ritual
+  prompt: Artefato study-log/artifacts/neuro-supremo.md — sele Mago Supremo (rota
+    Neural)
+  xp: 40
+  ritual_id: neuro-supremo

@@ -103,7 +103,7 @@ class ProgressState:
     completed_rooms_by_id: dict[str, bool] = field(default_factory=dict)
     unlocked_skills: dict[str, bool] = field(default_factory=dict)
     rituals: dict[str, bool] = field(default_factory=dict)
-    # Collectible runes (neuro parallel circle; never Mago Supremo gates)
+    # Collectible runes (neuro circle; research+climax can mint Mago Supremo)
     runes: dict[str, bool] = field(default_factory=dict)
     mastery: dict[str, int] = field(default_factory=dict)  # room_key -> 0..3
     streak_days: int = 0

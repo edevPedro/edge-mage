@@ -1,0 +1,47 @@
+id: nt-math-vectors
+title: Math — Vetores e espaços de features
+summary: Epochs como vetores; produto interno e norma — fundação MSc.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- pedagogo
+phase: F1-math
+pillar: math
+course: neurotech
+resources:
+- title: Khan Academy — vectors (intuition)
+  url: https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces
+  kind: docs
+- title: numpy.linalg.norm
+  url: https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html
+  kind: docs
+tasks:
+- id: dim
+  type: mcq
+  prompt: 'Uma epoch com 8 canais × 1 amostra por canal é naturalmente um vetor em:'
+  xp: 10
+  answer: 0
+  choices:
+  - R^8
+  - R^2 sempre
+  - espaço de funções clínicas
+  - só inteiros
+- id: dot
+  type: numeric
+  prompt: ⟨(1,2),(3,4)⟩ = ?
+  xp: 12
+  answer: 11
+  tolerance: 0.01
+- id: code
+  type: code
+  prompt: Implemente `dot(a,b)` e `l2(a)`.
+  xp: 14
+  code_template: "def dot(a, b):\n    ...\ndef l2(a):\n    ...\n"
+  code_tests: 'assert abs(mod.dot([1,2],[3,4]) - 11) < 1e-9
+
+    assert abs(mod.l2([3,4]) - 5) < 1e-9
+
+    '
+order: 3
+requires_rooms:
+- nt-ethics-consent

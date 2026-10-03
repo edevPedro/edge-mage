@@ -6,7 +6,7 @@ unlock_xp: 0
 owners:
 - pedagogo
 - neuroeng
-phase: F6
+phase: F10-mage
 requires_rooms:
 - nt-online-stub
 course: neurotech
@@ -54,4 +54,4 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-project-slice.md
   xp: 20
   ritual_id: neuro-project-slice
-order: 22
+order: 52

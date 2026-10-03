@@ -1,0 +1,50 @@
+id: nt-cs-numerics
+title: CS — Estabilidade numérica
+summary: Cancelamento, scaling, float vs fixed — labs quantitativos.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- pedagogo
+- eletrica
+phase: F5-cs
+pillar: cs
+course: neurotech
+tasks:
+- id: cancel
+  type: mcq
+  prompt: 'Subtrair dois floats quase iguais pode causar:'
+  xp: 12
+  answer: 0
+  choices:
+  - cancelamento catastrófico / perda de precisão
+  - CMRR infinito
+  - κ=1
+  - alias zero
+- id: scale
+  type: fill
+  prompt: Representação fracionária em inteiros no MCU costuma chamar-se ___-point.
+  xp: 10
+  answers:
+  - fixed
+  - ponto-fixo
+  - fixed / ponto-fixo
+- id: order
+  type: mcq
+  prompt: 'Somar muitos valores pequenos a um acumulador grande sem cuidado:'
+  xp: 10
+  answer: 1
+  choices:
+  - é sempre exato em float32
+  - pode perder os pequenos (precisão)
+  - aumenta fs
+  - é Belmont
+order: 26
+requires_rooms:
+- nt-cs-ringbuf-ds
+resources:
+- title: What Every Computer Scientist Should Know About Floating-Point (Goldberg)
+  url: https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+  kind: docs
+- title: numpy floating point notes
+  url: https://numpy.org/doc/stable/user/misc.html
+  kind: docs

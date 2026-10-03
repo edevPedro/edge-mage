@@ -6,7 +6,7 @@ unlock_xp: 0
 owners:
 - pedagogo
 - bci
-phase: F6
+phase: F10-mage
 requires_rooms:
 - nt-online-stub
 course: neurotech
@@ -46,4 +46,4 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-paper-module.md
   xp: 20
   ritual_id: neuro-paper-module
-order: 21
+order: 51

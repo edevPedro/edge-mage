@@ -1,0 +1,47 @@
+id: nt-neuro-maps
+title: Neurociência — Mapas corticais e 10–20
+summary: Homúnculo + C3/C4; ponte a MI sem diagnóstico.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- neurociencia
+- bci
+phase: F4-neuro
+pillar: neuroscience
+course: neurotech
+resources:
+- title: Pfurtscheller & Neuper 1997 MI
+  url: https://doi.org/10.1016/S0304-3940(97)00889-6
+  kind: paper
+tasks:
+- id: c3
+  type: mcq
+  prompt: 'No sistema 10–20, C3 tipicamente fica sobre córtex sensório-motor:'
+  xp: 12
+  answer: 0
+  choices:
+  - esquerdo (mão direita contralateral)
+  - sempre occipital
+  - só cerebelo
+  - no ADC
+- id: mi
+  type: fill
+  prompt: Imagética motora da mão direita costuma modular ritmos µ perto de ___ (eletrodo
+    clássico).
+  xp: 10
+  answers:
+  - C3
+  - c3
+- id: limit
+  type: mcq
+  prompt: 'Mapas educacionais neste curso:'
+  xp: 10
+  answer: 1
+  choices:
+  - substituem laudo clínico
+  - não autorizam diagnóstico
+  - exigem stim DIY
+  - removem consentimento
+order: 22
+requires_rooms:
+- nt-rhythms

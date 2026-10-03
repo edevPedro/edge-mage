@@ -16,24 +16,28 @@ class Rank:
     blurb: str
 
 
-# --- Neurotech parallel circle (rune + boss gated; never Edge ladder) --------
+# --- Neurotech circle (course ranks + alternate path to Mago Supremo) --------
 NEURO_RUNE_ACQ = "rune-neuro-acq"
 NEURO_RUNE_DECODE = "rune-neuro-decode"
 NEURO_RUNE_ONLINE = "rune-neuro-online"
+NEURO_RUNE_RESEARCH = "rune-neuro-research"
+# Core three gate Neuro Mage; research rune gates MSc climax / Supremo path.
 NEURO_RUNE_IDS: tuple[str, ...] = (
     NEURO_RUNE_ACQ,
     NEURO_RUNE_DECODE,
     NEURO_RUNE_ONLINE,
 )
+NEURO_RUNE_IDS_ALL: tuple[str, ...] = NEURO_RUNE_IDS + (NEURO_RUNE_RESEARCH,)
 
-# Room clears that materialize inventory runes (parallel circle).
+# Room clears that materialize inventory runes.
 NEURO_RUNE_DROP_ROOMS: dict[str, str] = {
     "nt-filter-bank": NEURO_RUNE_ACQ,
     "nt-decode-mvp": NEURO_RUNE_DECODE,
     "nt-online-stub": NEURO_RUNE_ONLINE,
+    "nt-research-project": NEURO_RUNE_RESEARCH,
 }
 
-# Alternate acq path: full F2 electrode chain without filter-bank yet.
+# Alternate acq path: full electrode chain without filter-bank yet.
 NEURO_ACQ_CHAIN: tuple[str, ...] = (
     "nt-electrode-snr",
     "nt-ground-ref",
@@ -46,6 +50,8 @@ NEURO_MILESTONE_ROOMS: frozenset[str] = frozenset(
         "nt-decode-mvp",
         "nt-online-stub",
         "nt-neuro-mage",
+        "nt-research-project",
+        "nt-mago-supremo",
     }
 )
 
@@ -53,6 +59,7 @@ NEURO_RUNE_META: dict[str, tuple[str, str]] = {
     NEURO_RUNE_ACQ: ("◈", "Aquisição"),
     NEURO_RUNE_DECODE: ("λ", "Decode"),
     NEURO_RUNE_ONLINE: ("↺", "Online"),
+    NEURO_RUNE_RESEARCH: ("✝", "Pesquisa"),
 }
 
 NEURO_RANKS: tuple[Rank, ...] = (
@@ -94,7 +101,7 @@ NEURO_RANKS: tuple[Rank, ...] = (
         "Neuro Mage",
         4,
         5,
-        "3 runas neuro + boss ritual — círculo paralelo (≠ Mago Supremo).",
+        "3 runas neuro + boss — marco; climax MSc → Mago Supremo (rota Neural).",
     ),
 )
 
@@ -109,6 +116,8 @@ def neuro_runes_earned_from_rooms(completed_room_ids: Iterable[str]) -> set[str]
         earned.add(NEURO_RUNE_DECODE)
     if "nt-online-stub" in done:
         earned.add(NEURO_RUNE_ONLINE)
+    if "nt-research-project" in done:
+        earned.add(NEURO_RUNE_RESEARCH)
     return earned
 
 
@@ -239,7 +248,7 @@ GLOBAL_RANKS: tuple[Rank, ...] = (
         "Supreme Mage",
         0,
         1,
-        "Mago Supremo: Systems LLVM craft + Edge on-device + shared math evidence.",
+        "Mago Supremo: rota Edge (Systems+on-device+math) OU rota Neurotech MSc climax.",
     ),
 )
 
@@ -327,15 +336,25 @@ def global_rank_from_flags(
     has_edge_on_device: bool = False,
     has_evidence: bool = False,
     any_advanced_progress: bool = False,
+    has_neuro_supremo: bool = False,
 ) -> Rank:
     """
     Global path:
       none → Mago base → intermediate → Mago Supremo
-    Mago Supremo gated by systems boss craft + edge on-device + evidence.
+
+    Mago Supremo — alternate routes (either):
+      A) Edge: systems boss craft + edge on-device + shared math evidence
+      B) Neurotech: MSc climax (neuro-supremo) — see ProgressStore.has_neuro_supremo_path
     """
-    if has_mago_base and has_systems_boss and has_edge_on_device and has_evidence:
+    edge_path = has_systems_boss and has_edge_on_device and has_evidence
+    if has_mago_base and (edge_path or has_neuro_supremo):
         return next(r for r in GLOBAL_RANKS if r.id == "mago_supremo")
-    if has_mago_base and (any_advanced_progress or has_systems_boss or has_edge_on_device):
+    if has_mago_base and (
+        any_advanced_progress
+        or has_systems_boss
+        or has_edge_on_device
+        or has_neuro_supremo
+    ):
         return next(r for r in GLOBAL_RANKS if r.id == "intermediate")
     if has_mago_base:
         return next(r for r in GLOBAL_RANKS if r.id == "mago_base")

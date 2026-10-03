@@ -1,0 +1,45 @@
+id: nt-math-estimation
+title: Math — Estimação e erro-padrão
+summary: Média amostral, SE≈σ/√N — fundação para stats BCI.
+xp_reward: 32
+unlock_xp: 0
+owners:
+- pedagogo
+- bci
+phase: F1-math
+pillar: math
+course: neurotech
+resources:
+- title: Combrisson & Jerbi 2015 statistical testing
+  url: https://doi.org/10.1016/j.jneumeth.2015.03.034
+  kind: paper
+tasks:
+- id: se
+  type: numeric
+  prompt: σ=1, N=16 iid. SE≈σ/√N = ?
+  xp: 12
+  answer: 0.25
+  tolerance: 0.01
+- id: n
+  type: mcq
+  prompt: 'Para reduzir SE pela metade (σ fixo), N deve:'
+  xp: 12
+  answer: 0
+  choices:
+  - quadruplicar (×4)
+  - apenas somar +1
+  - virar zero
+  - ser substituído por deep learning
+- id: bias
+  type: fill
+  prompt: Um estimador cujo valor esperado ≠ parâmetro verdadeiro é ___.
+  xp: 10
+  answers:
+  - viesado
+  - enviesado
+  - biased
+  - com viés
+  - vies
+order: 7
+requires_rooms:
+- nt-math-probability

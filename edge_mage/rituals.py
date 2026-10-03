@@ -209,7 +209,8 @@ NEURO_PROJECT_TEMPLATE = """# Ritual — Neurotech project slice
 
 NEURO_MAGE_TEMPLATE = """# Ritual — Neuro Mage (boss)
 
-Parallel circle final evidence. Does NOT replace Mago Supremo gates.
+Milestone of the Neural circle (3 runes + online + paper|project).
+Continue F11–F14 for Mago Supremo via Neurotech.
 
 - paper_or_project: neuro-mage
 - url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
@@ -222,6 +223,92 @@ Parallel circle final evidence. Does NOT replace Mago Supremo gates.
 - [ ] neuro-online-loop artifact
 - [ ] neuro-paper-module OR neuro-project-slice
 - [ ] `mage emu all` exercised
+"""
+
+NEURO_RESEARCH_PROPOSAL_TEMPLATE = """# Ritual — Neurotech research proposal (MSc)
+
+- paper_or_project: research-proposal
+- url: 
+- what_reproduced: proposal fields (question/hypothesis/data/metric/ethics)
+- metrics: primary_metric planned
+- limits: 
+
+## Fields
+- question:
+- hypothesis:
+- data_source:
+- primary_metric:
+- ethics_note:
+- timeline_weeks:
+"""
+
+NEURO_THESIS_METHODS_TEMPLATE = """# Ritual — Neurotech thesis Methods module
+
+- paper_or_project: thesis-methods
+- url: 
+- what_reproduced: Methods sections (acq/preprocess/model/validation)
+- metrics: 
+- limits: 
+
+## Methods outline
+- data:
+- preprocessing:
+- features_model:
+- validation:
+- seeds_versions:
+"""
+
+NEURO_RESEARCH_PROJECT_TEMPLATE = """# Ritual — Neurotech mini research project
+
+Drops rune-neuro-research. Evidence for Mago Supremo (Neurotech route).
+
+- paper_or_project: research-project
+- url: 
+- what_reproduced: 
+- metrics: 
+- latency_ms: 
+- limits: educational noninvasive / synthetic or open data
+
+## DoD
+- [ ] data_source declared (synth|open URL)
+- [ ] pipeline stages
+- [ ] primary_metric value + validation
+- [ ] limits honest
+"""
+
+NEURO_PAPER_MSC_TEMPLATE = """# Ritual — Neurotech paper module (MSc bar)
+
+- paper_or_project: paper-module-msc
+- url: 
+- what_reproduced: 
+- metrics: 
+- limits: 
+
+## MSc bar
+- doi:
+- figure_or_methods_slice:
+- critique_notes:
+- reproduction_notes:
+"""
+
+NEURO_SUPREMO_TEMPLATE = """# Ritual — Mago Supremo via Neurotech
+
+Same global rank as Edge path. Alternate route — does not erase Edge.
+
+- paper_or_project: neuro-supremo
+- url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+- what_reproduced: MSc climax evidence pack
+- metrics: 
+- latency_ms: 
+- limits: educational noninvasive BCI; no clinical claims
+
+## Checklist
+- [ ] Mago base (Fundamentals)
+- [ ] rune-neuro-acq + decode + online
+- [ ] Neuro Mage boss
+- [ ] rune-neuro-research + paper-module-msc
+- [ ] published-case emulation rooms
+- [ ] Edge on-device NOT required on this route
 """
 
 
@@ -264,6 +351,11 @@ def ensure_neuro_templates(repo_root: Path | None = None) -> list[Path]:
         "neuro-paper-module": NEURO_PAPER_TEMPLATE,
         "neuro-project-slice": NEURO_PROJECT_TEMPLATE,
         "neuro-mage": NEURO_MAGE_TEMPLATE,
+        "neuro-research-proposal": NEURO_RESEARCH_PROPOSAL_TEMPLATE,
+        "neuro-thesis-methods": NEURO_THESIS_METHODS_TEMPLATE,
+        "neuro-research-project": NEURO_RESEARCH_PROJECT_TEMPLATE,
+        "neuro-paper-module-msc": NEURO_PAPER_MSC_TEMPLATE,
+        "neuro-supremo": NEURO_SUPREMO_TEMPLATE,
     }
     out: list[Path] = []
     for rid, body in mapping.items():
@@ -281,6 +373,11 @@ def validate_ritual_file(ritual_id: str, repo_root: Path | None = None) -> tuple
         "neuro-paper-module",
         "neuro-project-slice",
         "neuro-mage",
+        "neuro-research-proposal",
+        "neuro-thesis-methods",
+        "neuro-research-project",
+        "neuro-paper-module-msc",
+        "neuro-supremo",
     }
     if not path.exists() and ritual_id in neuro_ids:
         ensure_neuro_templates(repo_root)

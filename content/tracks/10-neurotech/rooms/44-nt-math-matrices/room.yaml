@@ -1,0 +1,51 @@
+id: nt-math-matrices
+title: Math — Matrizes e covariância
+summary: y=Ax, transposta, cov amostral — ponte a CSP/Riemann.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- pedagogo
+- bci
+phase: F1-math
+pillar: math
+course: neurotech
+resources:
+- title: numpy.matmul
+  url: https://numpy.org/doc/stable/reference/generated/numpy.matmul.html
+  kind: docs
+- title: Barachant et al. Riemannian MDM
+  url: https://doi.org/10.1109/TBME.2011.2172210
+  kind: paper
+tasks:
+- id: shape
+  type: mcq
+  prompt: 'Se A é 3×4 e x é 4×1, Ax tem shape:'
+  xp: 10
+  answer: 0
+  choices:
+  - 3×1
+  - 4×3
+  - 1×4
+  - 4×4
+- id: code
+  type: code
+  prompt: '`matvec(A, x)` — A lista-de-listas, x lista; retorne y=Ax.
+
+    '
+  xp: 16
+  code_template: "def matvec(A, x):\n    ...\n"
+  code_tests: 'assert mod.matvec([[1,2],[3,4]], [1,1]) == [3,7]
+
+    '
+- id: cov
+  type: fill
+  prompt: A matriz de ___ captura correlações entre canais (SPD se full rank).
+  xp: 10
+  answers:
+  - covariância
+  - covariancia
+  - covariance
+  - cov
+order: 4
+requires_rooms:
+- nt-math-vectors

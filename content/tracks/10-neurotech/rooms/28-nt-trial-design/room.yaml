@@ -1,0 +1,55 @@
+id: nt-trial-design
+title: Desenho experimental e trials
+summary: Cue/baseline/ITI, balanceamento e markers — literacy MSc.
+xp_reward: 34
+unlock_xp: 0
+order: 34
+owners:
+- bci
+- neurociencia
+phase: F7-paradigm
+requires_rooms:
+- nt-features-bandpower
+course: neurotech
+resources:
+- title: Pfurtscheller & Neuper 1997 — MI activates S1/M1
+  url: https://doi.org/10.1016/S0304-3940(97)00889-6
+  kind: paper
+- title: Blankertz et al. Berlin BCI (OA)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/
+  kind: paper
+- title: Lab Streaming Layer
+  url: https://labstreaminglayer.readthedocs.io/
+  kind: docs
+animation: mi_erds
+tasks:
+- id: struct
+  type: mcq
+  prompt: 'Estrutura típica de trial MI supervisionado inclui:'
+  xp: 12
+  answer: 0
+  choices:
+  - baseline → cue → imagery → rest/ITI
+  - só UART contínuo sem eventos
+  - stim invasivo sem consentimento
+  - treinar no conjunto de teste
+- id: balance
+  type: fill
+  prompt: Classes com contagens muito diferentes enviesam acurácia; prefere-se desenho
+    ___ (ou métricas robustas).
+  xp: 12
+  answers:
+  - balanceado
+  - equilibrado
+  - balanced
+  - balanceado / equilibrado
+- id: marker
+  type: mcq
+  prompt: 'Markers/eventos sincronizados ao stream servem para:'
+  xp: 12
+  answer: 1
+  choices:
+  - aumentar fs além de Nyquist
+  - alinhar epochs ao cue/task na análise
+  - substituir ética
+  - remover artefatos automaticamente sempre

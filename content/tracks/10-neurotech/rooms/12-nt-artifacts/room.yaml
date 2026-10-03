@@ -6,9 +6,9 @@ unlock_xp: 0
 owners:
 - bci
 - eletrica
-phase: F3
+phase: F6-dsp
 requires_rooms:
-- nt-mi-paradigm
+- nt-filter-design-depth
 course: neurotech
 resources:
 - title: OpenBCI EEG Setup
@@ -48,4 +48,4 @@ tasks:
   - 60
   - 60 Hz
   - 60Hz
-order: 12
+order: 31

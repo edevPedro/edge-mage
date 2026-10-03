@@ -1,19 +1,17 @@
-# CHANGELOG — Neurotech gamification P0
+# CHANGELOG — Neurotech gamification / MSc-prep
 
-Make the Neurotech circle feel gameful (Edge-parity loop), not a thin complement.
+## MSc-prep + Mago Supremo route (this release)
 
-## Landed
+- **Curriculum scale:** 23 → **68** rooms (65 required + 3 electives); guided hours **~120–200 h**
+- **Pillars:** Math, Physics, Electrical, Neuroscience, CS, Firmware/Embedded → BCI apps → published-case emulations → research → climax
+- **Mago Supremo via Neurotech:** alternate global route (`has_neuro_supremo_path` / `neuro-supremo` ritual). Edge on-device path **unchanged**
+- **Runes:** + `rune-neuro-research` @ `nt-research-project`; HUD shows 4 runes
+- **Bosses:** Neuro Mage = milestone; `nt-mago-supremo` = same `mago_supremo` global title
+- **SPEC:** phase map, reading list, thesis-prep checkpoints, hours
+- **Web:** edevs export v3 + copy/API Supremo neuro flags
 
-- **`NEURO_RANKS`** + `effective_neuro_rank` — Novice → Signal Adept → Decode Adept → Closed-Loop Adept → Neuro Mage (rune + boss gated; never Edge XP / on-device)
-- **Real rune inventory** in `progress.runes`: `rune-neuro-acq` @ filter-bank (or electrode chain), `rune-neuro-decode` @ decode-mvp, `rune-neuro-online` @ online-stub
-- **Boss gate**: `nt-neuro-mage` requires 3 runas + online + paper\|project; title Neuro Mage needs ritual
-- **HUD**: home / profile / statusline / `:xp` course-aware when `--course neurotech` (`◈runas · mage · %fases`)
-- **Ceremony**: milestone splash + rune drop banners on filter / decode / online / boss
-- **Grimório** copy aligned with real drops
-- **Tests**: ranks, rune persist, boss unlock, Edge ladder isolation
-- **Web (edevs)**: progresso panel (rooms % + runas) on `/estudo/cursos/neurotech`; API `neurotech` slice on mage progress
+## Earlier P0 (gameful circle)
 
-## Parallel circle (unchanged hard rules)
-
-- Neurotech runes / Neuro Mage **do not** gate Mago Supremo
-- Educational BCI only
+- **`NEURO_RANKS`** + `effective_neuro_rank` — Novice → … → Neuro Mage
+- Real rune inventory: acq / decode / online
+- HUD course-aware · grimório · tests · web progresso panel

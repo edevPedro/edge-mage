@@ -1,0 +1,53 @@
+id: nt-ml-neural
+title: ML para dados neurais
+summary: Baselines, regularização, quando NÃO usar deep.
+xp_reward: 38
+unlock_xp: 0
+order: 42
+owners:
+- bci
+phase: F8-decode
+requires_rooms:
+- nt-metrics-offline
+- nt-math-gd-lite
+course: neurotech
+resources:
+- title: Lotte et al. classification review
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+- title: Alzahab et al. Brain Sci. hDL-BCI (OA)
+  url: https://doi.org/10.3390/brainsci11010075
+  kind: paper
+- title: sklearn LinearDiscriminantAnalysis
+  url: https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html
+  kind: docs
+tasks:
+- id: order
+  type: mcq
+  prompt: 'Com poucos trials por classe, a prática MSc-prep recomenda:'
+  xp: 12
+  answer: 0
+  choices:
+  - baseline linear/CSP antes de redes profundas grandes
+  - sempre GPT no loop fechado clínico
+  - pular validação
+  - treinar no teste
+- id: reg
+  type: fill
+  prompt: Penalizar pesos grandes (ex. ridge) é uma forma de ___.
+  xp: 12
+  answers:
+  - regularização
+  - regularizacao
+  - regularization
+  - regularizar
+- id: nsmall
+  type: mcq
+  prompt: 'Deep nets em N≪parâmetros sem regularização forte tendem a:'
+  xp: 12
+  answer: 1
+  choices:
+  - generalizar magicamente sempre
+  - memorizar / overfit
+  - remover artefatos EOG
+  - cumprir Belmont sozinhas
