@@ -23,6 +23,13 @@ AnimKind = Literal[
     "probability_bars",
     "quantize_steps",
     "memory_grid",
+    "rhythm_bands",
+    "filter_freq_response",
+    "dipole_field",
+    "spike_to_lfp",
+    "mi_erds",
+    "closed_loop_timeline",
+    "volume_blur",
     "none",
 ]
 
@@ -364,6 +371,150 @@ def frame_memory_grid(t: float, *, cols: int = 40, rows: int = 10) -> str:
     return f"{header}\n{flatten_grid(grid)}"
 
 
+def frame_rhythm_bands(t: float, *, cols: int = 48, rows: int = 10) -> str:
+    """Séries com overlays α/β/γ (toy)."""
+    canvas = BrailleCanvas(cols, rows)
+    mid = canvas.px_h // 2
+    canvas.line(0, mid, canvas.px_w - 1, mid)
+    phase = (t % 1.0) * 2 * math.pi
+    bands = ((10.0, 1.0), (20.0, 0.55), (40.0, 0.25))  # µ/α, β, γ-ish
+    for freq, amp_s in bands:
+        last = None
+        amp = (mid - 2) * amp_s
+        for i in range(canvas.px_w):
+            ang = (i / max(1, canvas.px_w - 1)) * 4 * math.pi * (freq / 10.0) + phase
+            y = mid - amp * math.sin(ang)
+            if last is not None and i % 2 == 0:
+                canvas.line(last[0], last[1], i, y)
+            last = (i, y)
+    header = "ritmos toy  α/µ≈10  β≈20  γ≈40 Hz  (não clínico)"
+    return f"{header}\n{canvas.render()}"
+
+
+def frame_filter_freq_response(t: float, *, cols: int = 48, rows: int = 10) -> str:
+    """Curva de magnitude com banda mu destacada."""
+    grid = ascii_plot_grid(cols, rows, fill=" ")
+    lo, hi = 8, 12
+    sweep = 0.15 + 0.85 * ((t * 0.5) % 1.0)
+    for i in range(int(cols * sweep)):
+        f = i / max(1, cols - 1) * 50.0  # 0..50 Hz
+        # crude bandpass gain
+        if lo <= f < hi:
+            g = 1.0
+        elif f < lo:
+            g = max(0.05, 1.0 - (lo - f) / lo)
+        else:
+            g = max(0.05, 1.0 - (f - hi) / 40.0)
+        h = max(1, int(g * (rows - 3)))
+        for y in range(rows - 2, rows - 2 - h, -1):
+            grid[y][i] = "▓" if lo <= f < hi else "·"
+    header = f"|H(f)| toy  banda µ {lo}–{hi} Hz destacada  t={t:0.2f}"
+    return f"{header}\n{flatten_grid(grid)}"
+
+
+def frame_dipole_field(t: float, *, cols: int = 40, rows: int = 12) -> str:
+    """Dipolo sob camadas → mapa de escalpo simplificado."""
+    canvas = BrailleCanvas(cols, rows)
+    cx, cy = canvas.px_w / 2, canvas.px_h * 0.65
+    # skull arc
+    canvas.circle(cx, cy - 2, min(cx, cy) * 0.7, steps=60)
+    # dipole
+    ang = (t % 1.0) * math.pi - math.pi / 2
+    dx, dy = 6 * math.cos(ang), -6 * math.sin(ang)
+    canvas.line(cx - dx, cy - dy, cx + dx, cy + dy)
+    # scalp samples
+    for k in range(7):
+        a = math.pi * (0.15 + 0.7 * k / 6)
+        px = cx + (min(cx, cy) * 0.7) * math.cos(a)
+        py = cy - 2 - (min(cx, cy) * 0.7) * math.sin(a) * 0.35
+        canvas.set_pixel(int(px), int(py))
+    header = f"dipolo→escalpo  θ={ang * 180 / math.pi:5.1f}°  (borrão espacial)"
+    return f"{header}\n{canvas.render()}"
+
+
+def frame_spike_to_lfp(t: float, *, cols: int = 48, rows: int = 10) -> str:
+    """Spike train rápido vs LFP mais lento."""
+    canvas = BrailleCanvas(cols, rows)
+    mid = canvas.px_h // 2
+    canvas.line(0, mid, canvas.px_w - 1, mid)
+    phase = int((t % 1.0) * 8)
+    # spikes
+    for i in range(0, canvas.px_w, 6):
+        if (i // 6 + phase) % 3 == 0:
+            canvas.line(i, mid, i, mid - (mid - 2))
+    # slow LFP
+    last = None
+    for i in range(canvas.px_w):
+        y = mid + (mid - 3) * 0.35 * math.sin(i / 8 + t * 2 * math.pi)
+        if last is not None:
+            canvas.line(last[0], last[1], i, y)
+        last = (i, y)
+    header = "spike (barras) → LFP (curva lenta) — escalas diferentes"
+    return f"{header}\n{canvas.render()}"
+
+
+def frame_mi_erds(t: float, *, cols: int = 42, rows: int = 10) -> str:
+    """Cartoon ERD: potência mu cai durante imagética."""
+    grid = ascii_plot_grid(cols, rows, fill=" ")
+    # baseline then dip
+    for i in range(cols):
+        x = i / max(1, cols - 1)
+        cue = 0.35
+        if x < cue:
+            p = 0.85
+        else:
+            # ERD dip then recovery
+            p = 0.85 - 0.5 * math.sin(min(1.0, (x - cue) / 0.4) * math.pi) * (0.5 + 0.5 * math.sin(t * 2 * math.pi))
+        h = max(1, int(max(0.1, p) * (rows - 3)))
+        for y in range(rows - 2, rows - 2 - h, -1):
+            grid[y][i] = "▓"
+    header = "MI cartoon  potência µ  (ERD após cue)  — educacional"
+    return f"{header}\n{flatten_grid(grid)}"
+
+
+def frame_closed_loop_timeline(t: float, *, cols: int = 48, rows: int = 8) -> str:
+    """Sense / decide / act bars vs deadline."""
+    grid = ascii_plot_grid(cols, rows, fill=" ")
+    deadline = int(cols * 0.75)
+    for y in range(1, rows - 1):
+        grid[y][deadline] = "│"
+    stages = [("S", 0.20, 2), ("D", 0.35, 4), ("A", 0.15, 6)]
+    x = 2
+    pulse = int((t % 1.0) * 3)
+    for i, (label, frac, row) in enumerate(stages):
+        w = max(2, int(frac * (deadline - 4)))
+        for j in range(w):
+            if 0 <= x + j < cols and 0 <= row < rows:
+                grid[row][x + j] = "█" if i == pulse else "▓"
+        if x < cols:
+            grid[row][min(cols - 1, x)] = label
+        x += w + 1
+    miss = x > deadline
+    header = f"sense→decide→act  deadline@{deadline}  {'MISS' if miss else 'ok'}  t={t:0.2f}"
+    return f"{header}\n{flatten_grid(grid)}"
+
+
+def frame_volume_blur(t: float, *, cols: int = 40, rows: int = 10) -> str:
+    """Fonte fina vs mapa de escalpo suave."""
+    canvas = BrailleCanvas(cols, rows)
+    # sharp sources
+    for sx in (cols * 0.35, cols * 0.65):
+        canvas.set_pixel(int(sx * (canvas.px_w / cols)), int(canvas.px_h * 0.3))
+    # blurred scalp line
+    cy = canvas.px_h * 0.75
+    last = None
+    for i in range(canvas.px_w):
+        x = i / max(1, canvas.px_w - 1)
+        y = cy - 4 * (
+            math.exp(-((x - 0.35) ** 2) / 0.02) + math.exp(-((x - 0.65) ** 2) / 0.02)
+        ) * (0.7 + 0.3 * math.sin(t * 2 * math.pi))
+        if last is not None:
+            canvas.line(last[0], last[1], i, y)
+        last = (i, y)
+    header = "fonte fina (cima) vs borrão de volume no escalpo (baixo)"
+    return f"{header}\n{canvas.render()}"
+
+
 _FRAME_FN: dict[str, Callable[..., str]] = {
     "unit_circle": frame_unit_circle,
     "sine_wave": frame_sine_wave,
@@ -379,6 +530,13 @@ _FRAME_FN: dict[str, Callable[..., str]] = {
     "probability_bars": frame_probability_bars,
     "quantize_steps": frame_quantize_steps,
     "memory_grid": frame_memory_grid,
+    "rhythm_bands": frame_rhythm_bands,
+    "filter_freq_response": frame_filter_freq_response,
+    "dipole_field": frame_dipole_field,
+    "spike_to_lfp": frame_spike_to_lfp,
+    "mi_erds": frame_mi_erds,
+    "closed_loop_timeline": frame_closed_loop_timeline,
+    "volume_blur": frame_volume_blur,
 }
 
 # heurísticas por id de sala

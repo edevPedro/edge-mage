@@ -236,6 +236,57 @@ skills:
     unlock_room: on-device
     unlock_track: edge-ai
 
+  # --- Neurotech (parallel circle; does not gate Mago Supremo) ---
+  - id: neuro-portal
+    name: Portal Neural
+    description: "Estuda → Sala + ética básica de BCI educacional."
+    glyph: "◈"
+    unlock_room: nt-portal
+    unlock_track: neurotech
+
+  - id: neuro-rhythms
+    name: Ritmos EEG
+    description: "Bandas α/β/γ/µ e ligação com MI."
+    glyph: "≈"
+    unlock_room: nt-rhythms
+    unlock_track: neurotech
+
+  - id: neuro-filter
+    name: Filter Bank EEG
+    description: "Passa-banda / notch / bandpower — rune-neuro-acq."
+    glyph: "▤"
+    unlock_room: nt-filter-bank
+    unlock_track: neurotech
+
+  - id: neuro-decode
+    name: Decode Offline
+    description: "Features + métricas offline — rune-neuro-decode."
+    glyph: "λ"
+    unlock_room: nt-metrics-offline
+    unlock_track: neurotech
+
+  - id: neuro-edge-stub
+    name: Firmware Edge Stub
+    description: "Ring buffer + Cortex-M stub + latência."
+    glyph: "⬡"
+    unlock_room: nt-mcu-filter
+    unlock_track: neurotech
+
+  - id: neuro-online
+    name: Online Loop
+    description: "Loop online simulado — rune-neuro-online."
+    glyph: "↺"
+    unlock_room: nt-online-stub
+    unlock_track: neurotech
+
+  - id: neuro-mage
+    name: Neuro Mage
+    description: "Boss do círculo paralelo — evidência online + paper/projeto."
+    glyph: "✦"
+    unlock_room: nt-neuro-mage
+    unlock_track: neurotech
+    elite: true
+
   - id: elite-codex
     name: Codex Matricial
     description: "Ritual — matmul2 selado no harness."

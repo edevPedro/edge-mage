@@ -56,6 +56,13 @@ class HomeScreen(MageScreen):
                 "║   systems+llvm+math · craft · :sync              ║\n"
                 "╚══════════════════════════════════════════════════╝"
             )
+        elif course == "neurotech":
+            banner = (
+                "╔══════════════════════════════════════════════════╗\n"
+                "║      N E U R O T E C H  ·  CÍRCULO NEURAL         ║\n"
+                "║   Estuda → Sala · synth EEG · Cortex-M stub       ║\n"
+                "╚══════════════════════════════════════════════════╝"
+            )
         else:
             banner = BANNER
         profile = store.profile_summary()

@@ -10,6 +10,23 @@ Estuda (lição + história + animação/conceito) → Sala (lab / FLAG / emulat
 
 Checkpoints = módulo de paper **ou** fatia de projeto real (driver, filter bank, decoder MVP, online stub).
 
+## Como abrir
+
+```bash
+# TUI
+mage --course neurotech
+# ou launcher → Neurotech
+
+# Emuladores (sem hardware)
+mage emu all          # synth EEG + artifacts + Cortex-M stub
+mage emu synth
+mage emu artifact
+mage emu cortex
+python -m edge_mage.emulators synth
+```
+
+Web (edevs Estudo): `/estudo/cursos/neurotech` (export stub + CTA terminal).
+
 ## Agentes
 
 | Domínio | Skill |
@@ -21,14 +38,35 @@ Checkpoints = módulo de paper **ou** fatia de projeto real (driver, filter bank
 | Física | `agent-fisica` |
 | Neurociência | `agent-neurociencia` |
 
-## Salas starter (MVP)
+## Salas (F0→F6)
 
-| Ordem | id | Título | Owners |
-|------:|----|--------|--------|
-| 1 | `nt-portal` | Portal do círculo Neural | pedagogo + bci |
-| 2 | `nt-rhythms` | Ritmos α/β/γ/µ | neurociencia |
-| 3 | `nt-filter-bank` | Banco de filtros EEG | eletrica |
+| Ordem | id | Fase | Título |
+|------:|----|------|--------|
+| 1 | `nt-portal` | F0 | Portal do círculo Neural |
+| 2 | `nt-ethics-consent` | F0 | Ética, consentimento, limites |
+| 3 | `nt-dipole-scalp` | F1 | Dipolo → potencial de escalpo |
+| 4 | `nt-spike-lfp` | F1 | Spike → LFP |
+| 5 | `nt-volume-blur` | F1 | Condução de volume |
+| 6 | `nt-electrode-snr` | F2 | Eletrodo, impedância, SNR |
+| 7 | `nt-rhythms` | F3 | Ritmos α/β/γ/µ |
+| 8 | `nt-filter-bank` | F2 | Banco de filtros EEG |
+| 9 | `nt-adc-bio` | F2 | ADC e escala µV |
+| 10 | `nt-ground-ref` | F2 | Terra, referência, 50/60 Hz |
+| 11 | `nt-mi-paradigm` | F3 | Imagética motora |
+| 12 | `nt-artifacts` | F3 | Artefatos |
+| 13 | `nt-features-bandpower` | F4 | Potência de banda |
+| 14 | `nt-riemann-primer` | F4 | Primer Riemanniano |
+| 15 | `nt-metrics-offline` | F4 | Métricas / vazamento |
+| 16 | `nt-stream-buffer` | F5 | Stream + ring buffer |
+| 17 | `nt-mcu-filter` | F5 | Filter bank embutido (Cortex stub) |
+| 18 | `nt-latency-budget` | F5 | Orçamento de latência |
+| 19 | `nt-online-stub` | F6 | Loop online simulado |
+| 20 | `nt-checkpoint-paper` | F6 | Ritual módulo de paper |
+| 21 | `nt-checkpoint-project` | F6 | Ritual fatia de projeto |
+| 22 | `nt-neuro-mage` | F6 | Boss Neuro Mage |
+
+**Casos neurológicos clínicos inventados:** não incluídos (falta de casos públicos resolvidos citáveis no escopo educacional). Paradigmas MI / artefatos / competições usam papers e docs reais (ver SPEC §7).
 
 ## Duração (±)
 
-Ver SPEC §8 — trilha completa ~35–55 h; starters ~3–5 h.
+Ver SPEC §8 — trilha completa ~35–55 h.

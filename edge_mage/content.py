@@ -1,4 +1,4 @@
-"""Carrega trilhas YAML + lições Markdown + cursos (fundamentals/systems/edge)."""
+"""Carrega trilhas YAML + lições Markdown + cursos (fundamentals/systems/edge/neurotech)."""
 
 from __future__ import annotations
 
@@ -6,8 +6,16 @@ from pathlib import Path
 
 import yaml
 
-from edge_mage.courses import COURSE_EDGE, COURSE_FUNDAMENTALS, COURSE_SYSTEMS
+from edge_mage.courses import (
+    COURSE_EDGE,
+    COURSE_FUNDAMENTALS,
+    COURSE_NEUROTECH,
+    COURSE_SYSTEMS,
+)
 from edge_mage.models import Resource, Room, Task, Track
+
+# Track folder ids that belong to the parallel Neurotech course (not Edge).
+_NEUROTECH_TRACK_IDS = frozenset({"neurotech"})
 
 
 def content_root() -> Path:
@@ -123,16 +131,40 @@ def load_track(track_dir: Path) -> Track:
     )
 
 
-def load_all_tracks(root: Path | None = None) -> list[Track]:
-    """Edge course: content/tracks (current TUI content)."""
+def load_all_tracks(root: Path | None = None, *, exclude_neurotech: bool = True) -> list[Track]:
+    """Edge course: content/tracks (current TUI content). Neurotech is a sibling course."""
     base = root or content_root()
     tracks_dir = base / "tracks"
     tracks: list[Track] = []
     if not tracks_dir.exists():
         return tracks
     for track_dir in sorted(p for p in tracks_dir.iterdir() if p.is_dir()):
-        if (track_dir / "track.yaml").exists():
-            tracks.append(load_track(track_dir))
+        if not (track_dir / "track.yaml").exists():
+            continue
+        track = load_track(track_dir)
+        if exclude_neurotech and (
+            track.id in _NEUROTECH_TRACK_IDS or track.course == COURSE_NEUROTECH
+        ):
+            continue
+        tracks.append(track)
+    tracks.sort(key=lambda t: t.order)
+    return tracks
+
+
+def load_neurotech_tracks(root: Path | None = None) -> list[Track]:
+    """Parallel Neurotech circle: content/tracks/10-neurotech (and any course=neurotech)."""
+    base = root or content_root()
+    tracks_dir = base / "tracks"
+    tracks: list[Track] = []
+    if not tracks_dir.exists():
+        return tracks
+    for track_dir in sorted(p for p in tracks_dir.iterdir() if p.is_dir()):
+        if not (track_dir / "track.yaml").exists():
+            continue
+        track = load_track(track_dir)
+        if track.id in _NEUROTECH_TRACK_IDS or track.course == COURSE_NEUROTECH:
+            track.course = COURSE_NEUROTECH
+            tracks.append(track)
     tracks.sort(key=lambda t: t.order)
     return tracks
 
@@ -355,16 +387,18 @@ def load_fundamentals_tracks() -> list[Track]:
 
 def load_tracks_for_course(course_id: str, root: Path | None = None) -> list[Track]:
     if course_id == COURSE_EDGE:
-        tracks = load_all_tracks(root)
+        tracks = load_all_tracks(root, exclude_neurotech=True)
         for t in tracks:
             if not t.course:
                 t.course = COURSE_EDGE
         return tracks
+    if course_id == COURSE_NEUROTECH:
+        return load_neurotech_tracks(root)
     if course_id == COURSE_SYSTEMS:
         return load_systems_from_pack()
     if course_id == COURSE_FUNDAMENTALS:
         return load_fundamentals_tracks()
-    return load_all_tracks(root)
+    return load_all_tracks(root, exclude_neurotech=True)
 
 
 def find_track(tracks: list[Track], track_id: str) -> Track | None:

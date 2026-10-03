@@ -1,0 +1,47 @@
+id: nt-artifacts
+title: "Artefatos (EOG/EMG/movimento)"
+summary: "Blink, EMG e linha — não confundir com ritmos."
+xp_reward: 32
+unlock_xp: 0
+owners:
+  - bci
+  - eletrica
+phase: F3
+requires_rooms:
+  - nt-mi-paradigm
+course: neurotech
+resources:
+  - title: "OpenBCI EEG Setup"
+    url: "https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/"
+    kind: docs
+animation: rhythm_bands
+emulator: artifact_inject
+tasks:
+  - id: eog
+    type: mcq
+    prompt: "Piscar forte no EEG é tipicamente artefato de tipo:"
+    xp: 10
+    answer: 0
+    choices:
+      - "EOG / ocular"
+      - "puramente mu cortical garantido"
+      - "só quantização int8"
+      - Ethernet
+  - id: danger
+    type: mcq
+    prompt: "Treinar um classificador sem revisar artefatos pode:"
+    xp: 10
+    answer: 2
+    choices:
+      - "garantir κ=1 em produção"
+      - "eliminar volume conduction"
+      - "aprender o artefato como se fosse a classe"
+      - "aumentar consentimento"
+  - id: line-fill
+    type: fill
+    prompt: "Interferência de rede costuma aparecer em 50 ou ___ Hz."
+    xp: 12
+    answers:
+      - 60
+      - "60 Hz"
+      - 60Hz

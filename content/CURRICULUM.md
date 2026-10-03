@@ -119,6 +119,8 @@ Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mag
 Curso id **`neurotech`** — sibling do Edge ML Mage; **não** altera gates do Mago Supremo.
 
 - SPEC: [`docs/SPEC-neurotech-course.md`](../docs/SPEC-neurotech-course.md)
-- Trilha starter: `content/tracks/10-neurotech/` (Estuda → Sala)
+- Trilha: `content/tracks/10-neurotech/` — 22 salas F0→F6 (Estuda → Sala)
+- TUI: `mage --course neurotech` · emuladores: `mage emu all`
+- Web: edevs `/estudo/cursos/neurotech`
 - Domínios: BCI · EEG · física · math · firmware/embedded
 - Agentes: `agent-pedagogo` + `agent-bci` / `neuroeng` / `eletrica` / `fisica` / `neurociencia`

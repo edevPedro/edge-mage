@@ -158,6 +158,84 @@ Apply vectors / gradient / FFT from the shared core on a Systems or Edge lab.
 - What number / plot / IR did the math unlock?
 """
 
+NEURO_REQUIRED_FIELDS = (
+    "paper_or_project",
+    "url",
+    "what_reproduced",
+    "metrics",
+)
+
+NEURO_ONLINE_TEMPLATE = """# Ritual — Neurotech online loop stub
+
+Parallel circle (does NOT gate Mago Supremo).
+
+- paper_or_project: online-stub
+- url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+- what_reproduced: 
+- metrics: 
+- latency_ms: 
+- limits: synthetic EEG only
+
+## Notes
+- Window / hop / feature / decision:
+- Emulator used (`mage emu synth|cortex`):
+"""
+
+NEURO_PAPER_TEMPLATE = """# Ritual — Neurotech paper module
+
+- paper_or_project: paper-module
+- url: 
+- what_reproduced: 
+- metrics: 
+- limits: 
+
+## Notes
+- CP-MI review map or CP-Riemann figure (SPEC §7)
+"""
+
+NEURO_PROJECT_TEMPLATE = """# Ritual — Neurotech project slice
+
+- paper_or_project: project-slice
+- url: 
+- what_reproduced: 
+- metrics: 
+- latency_ms: 
+- limits: 
+
+## Notes
+- CP-Filter bank / decoder MVP / firmware driver / OpenBCI chain
+- Emulators: `mage emu all`
+"""
+
+NEURO_MAGE_TEMPLATE = """# Ritual — Neuro Mage (boss)
+
+Parallel circle final evidence. Does NOT replace Mago Supremo gates.
+
+- paper_or_project: neuro-mage
+- url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+- what_reproduced: 
+- metrics: 
+- latency_ms: 
+- limits: educational noninvasive / synthetic by default
+
+## Checklist
+- [ ] neuro-online-loop artifact
+- [ ] neuro-paper-module OR neuro-project-slice
+- [ ] `mage emu all` exercised
+"""
+
+
+def parse_neuro_checklist(text: str) -> tuple[bool, str, dict[str, str]]:
+    found = _parse_field_map(text)
+    missing = [k for k in NEURO_REQUIRED_FIELDS if k not in found or not found[k]]
+    if missing:
+        return False, f"Faltam campos: {', '.join(missing)}", found
+    if "http" not in found["url"].lower():
+        return False, "url deve ser um link http(s) real", found
+    if len(found["what_reproduced"]) < 8:
+        return False, "what_reproduced: descreva o módulo/fatia", found
+    return True, "Artefato Neurotech válido", found
+
 
 def ensure_on_device_template(repo_root: Path | None = None) -> Path:
     path = artifact_path("on-device", repo_root)
@@ -180,8 +258,32 @@ def ensure_shared_math_template(repo_root: Path | None = None) -> Path:
     return path
 
 
+def ensure_neuro_templates(repo_root: Path | None = None) -> list[Path]:
+    mapping = {
+        "neuro-online-loop": NEURO_ONLINE_TEMPLATE,
+        "neuro-paper-module": NEURO_PAPER_TEMPLATE,
+        "neuro-project-slice": NEURO_PROJECT_TEMPLATE,
+        "neuro-mage": NEURO_MAGE_TEMPLATE,
+    }
+    out: list[Path] = []
+    for rid, body in mapping.items():
+        path = artifact_path(rid, repo_root)
+        if not path.exists():
+            path.write_text(body, encoding="utf-8")
+        out.append(path)
+    return out
+
+
 def validate_ritual_file(ritual_id: str, repo_root: Path | None = None) -> tuple[bool, str]:
     path = artifact_path(ritual_id, repo_root)
+    neuro_ids = {
+        "neuro-online-loop",
+        "neuro-paper-module",
+        "neuro-project-slice",
+        "neuro-mage",
+    }
+    if not path.exists() and ritual_id in neuro_ids:
+        ensure_neuro_templates(repo_root)
     if not path.exists():
         return False, f"Crie o artefato em {path}"
     text = path.read_text(encoding="utf-8")
@@ -194,6 +296,14 @@ def validate_ritual_file(ritual_id: str, repo_root: Path | None = None) -> tuple
     if ritual_id in {"shared-math", "shared_math"}:
         ok, msg, _ = parse_shared_math_checklist(text)
         return ok, msg
+    if ritual_id in neuro_ids:
+        # Templates alone are not enough — require filled fields
+        ok, msg, found = parse_neuro_checklist(text)
+        if not ok:
+            return ok, msg
+        if not found.get("what_reproduced") or found["what_reproduced"].strip() == "":
+            return False, "Preencha what_reproduced no artefato Neurotech"
+        return True, msg
     if len(text.strip()) < 40:
         return False, "Artefato muito curto — documente o ritual."
     return True, "Artefato aceito"

@@ -118,7 +118,9 @@ Format: `room-id` — Title — **owner**
 - `nt-checkpoint-project` — Ritual fatia de projeto — **pedagogo+neuroeng**
 - `nt-neuro-mage` — Boss Neuro Mage — **pedagogo**
 
-Starter rooms shipped in MVP scaffold: `nt-portal`, `nt-rhythms`, `nt-filter-bank` (see track folder).
+**Shipped rooms (F0→F6 catalog):** all stubs in §4 authored under `content/tracks/10-neurotech/rooms/` (22 salas). Pedagogical path places `nt-rhythms` before `nt-filter-bank` even though phase labels are F3/F2.
+
+**Neurological clinical case rooms:** none invented. Only literature-backed MI/artifact/benchmark paradigms (see §7). Rejected fake “patient diagnosis” rooms without public solved-case URLs.
 
 ---
 
@@ -126,11 +128,14 @@ Starter rooms shipped in MVP scaffold: `nt-portal`, `nt-rhythms`, `nt-filter-ban
 
 | Emulator id | Teaches | Notes |
 |-------------|---------|-------|
-| `synth_eeg_stream` | Multichannel colored noise + injected band-limited “µ” bursts | Offline replay + “online” tick mode |
-| `artifact_inject` | Blink / EMG / line noise overlays | Student must detect or notch |
-| `latency_budget` | Pipeline stages with ms costs | Closed-loop miss if sum > deadline |
-| `impedance_probe` | Contact quality → SNR slider | Ties to neuroeng room |
-| `spd_toy` | 2×2 or small SPD covariances on a grid | Riemannian primer without heavy libs |
+| `synth_eeg_stream` | Multichannel colored noise + injected band-limited “µ” bursts | Offline replay + “online” tick mode · **shipped** `edge_mage/emulators/synth_eeg.py` |
+| `artifact_inject` | Blink / EMG / line noise overlays | **shipped** `edge_mage/emulators/artifact_inject.py` |
+| `cortex_m_stub` | ADC → ring buffer → FIR → UART packet + latency | ARM Cortex-M **class** stub (not full QEMU) · **shipped** `edge_mage/emulators/cortex_m_stub.py` |
+| `latency_budget` | Pipeline stages with ms costs | Exercised via Cortex stub `deadline_ms` + room `nt-latency-budget` |
+| `impedance_probe` | Contact quality → SNR slider | Conceptual in `nt-electrode-snr` (slider UI TBD) |
+| `spd_toy` | 2×2 or small SPD covariances on a grid | Conceptual in `nt-riemann-primer` |
+
+CLI: `mage emu all` · `python -m edge_mage.emulators [synth|artifact|cortex|all]`
 
 No real human data required for MVP; optional OpenBCI live path later as elective.
 
@@ -187,11 +192,11 @@ e-mage global:  Mago base → … → Mago Supremo   (UNCHANGED hardcore)
 neurotech:      parallel courseProgress.neurotech + rituals neuro-*
 ```
 
-Implementation notes (do not implement in this SPEC commit unless asked):
+Implementation (landed):
 
-- Add course id `neurotech` beside `fundamentals` | `systems` | `edge` in launcher / `courses.ts` when product is ready.
-- Grimório: `content/grimoire/skills.yaml` entries prefixed `neuro-…`.
-- Web Estudo: document in `edevs/docs/estudo-emage.md` as fourth course **optional**; default soft-gate behind Mago base like Edge.
+- TUI course id `neurotech` in `edge_mage/courses.py` + launcher + `mage --course neurotech`.
+- Grimório: `content/grimoire/skills.yaml` entries `neuro-…` (+ elite `neuro-mage`).
+- Web Estudo: fourth course `/estudo/cursos/neurotech` + `content/estudo/neurotech/export.json` (soft-gate Mago base like Edge).
 - **Never** require Neurotech rituals for Mago Supremo.
 
 ---
@@ -248,5 +253,7 @@ Each room: `story.md` · `concept.md` · `lesson.md` · `room.yaml`.
 - [x] Hours estimate  
 - [x] Rank/rune parallel-circle rules  
 - [x] MVP YAML order  
-- [ ] Full room catalog authored (follow MVP order)  
-- [ ] TUI course id + web pack (product follow-up)  
+- [x] Full room catalog authored (F0→F6, 22 salas)  
+- [x] TUI course id + web pack (`neurotech` export + launcher)  
+- [x] Emulator MVP: `synth_eeg_stream` + `artifact_inject` + `cortex_m_stub`  
+

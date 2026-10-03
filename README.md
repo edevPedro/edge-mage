@@ -75,7 +75,7 @@ Rough hours for **today’s** catalog (~100+ web/TUI rooms + craft bosses), at *
 | **Neurotech** (parallel circle, scaffold) | 35–55 h | 2–4 months |
 | **Full path** → Mago Supremo | **~110–180 h** | **~6–10 months** |
 
-Neurotech (`neurotech`) is a **parallel** course (BCI / EEG / physics / firmware). It does **not** replace Edge on-device or change **Mago Supremo** gates. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · track: `content/tracks/10-neurotech/`. Pedagogy: **Estuda → Sala**.
+Neurotech (`neurotech`) is a **parallel** course (BCI / EEG / physics / firmware). It does **not** replace Edge on-device or change **Mago Supremo** gates. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · track: `content/tracks/10-neurotech/` (22 rooms F0→F6). Pedagogy: **Estuda → Sala**. TUI: `mage --course neurotech` · emulators: `mage emu all`.
 
 Faster if you already code; slower on a first terminal/C contact.
 
@@ -88,7 +88,7 @@ Faster if you already code; slower on a first terminal/C contact.
 | `fundamentals` | Fundamentals | Path to **Mago base** (shared core + clearance) |
 | `systems` | Systems Mage | **Full FLAG catalog** in TUI: systems + llvm + math (same scope as web Systems Mage core) |
 | `edge` | Edge ML Mage | Current math → on-device Edge AI tracks (full TUI UX) — **ARM-first** unchanged |
-| `neurotech` | Neurotech (scaffold) | Parallel BCI/EEG circle — see `docs/SPEC-neurotech-course.md` (not a Mago Supremo gate) |
+| `neurotech` | Neurotech | Parallel BCI/EEG — `mage --course neurotech` · `mage emu all` (not a Mago Supremo gate) |
 
 `mage` opens a **course launcher** first (plus GitHub connect stub). Systems/Edge are soft-gated behind Mago base (preview allowed with a warning).
 

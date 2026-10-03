@@ -1,0 +1,46 @@
+id: nt-electrode-snr
+title: "Eletrodo, impedância, SNR"
+summary: "Contato, ruído e orçamento de SNR antes do decode."
+xp_reward: 30
+unlock_xp: 0
+owners:
+  - neuroeng
+phase: F2
+requires_rooms:
+  - nt-volume-blur
+course: neurotech
+resources:
+  - title: "OpenBCI — EEG Setup"
+    url: "https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/"
+    kind: docs
+animation: null
+emulator: impedance_probe
+tasks:
+  - id: snr-def
+    type: mcq
+    prompt: "SNR alto significa, em intuição:"
+    xp: 10
+    answer: 0
+    choices:
+      - "sinal útil grande frente ao ruído"
+      - "sempre 60 Hz dominante"
+      - "consentimento opcional"
+      - "fs ilegal"
+  - id: contact
+    type: mcq
+    prompt: "Contato de eletrodo ruim costuma:"
+    xp: 10
+    answer: 2
+    choices:
+      - "aumentar magicamente κ do classificador"
+      - "eliminar volume conduction"
+      - "piorar SNR / estabilidade"
+      - "trocar AArch64 por x86"
+  - id: snr-fill
+    type: fill
+    prompt: "A sigla SNR significa signal-to-___ ratio."
+    xp: 10
+    answers:
+      - noise
+      - "ruído"
+      - ruido

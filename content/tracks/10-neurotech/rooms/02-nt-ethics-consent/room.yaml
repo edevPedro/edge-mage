@@ -1,0 +1,52 @@
+id: nt-ethics-consent
+title: "Ética, consentimento, limites"
+summary: "Consentimento, overclaim e limites do BCI educacional."
+xp_reward: 26
+unlock_xp: 0
+owners:
+  - bci
+  - pedagogo
+phase: F0
+requires_rooms:
+  - nt-portal
+course: neurotech
+resources:
+  - title: "OpenBCI — Cyton Getting Started"
+    url: "https://docs.openbci.com/GettingStarted/Boards/CytonGS/"
+    kind: docs
+  - title: "MI-BCI review (Sensors 2021)"
+    url: "https://www.mdpi.com/1424-8220/21/6/2173"
+    kind: paper
+animation: null
+tasks:
+  - id: no-mindread
+    type: mcq
+    prompt: "Neste curso, afirmar que BCI “lê pensamentos” é:"
+    xp: 8
+    answer: 2
+    choices:
+      - "correto para EEG de escalpo"
+      - "ok se tiver XP de Edge"
+      - "overclaim — evitamos"
+      - "obrigatório no portal"
+  - id: consent
+    type: mcq
+    prompt: |
+      Antes de gravar EEG humano em lab eletivo, o passo ético mínimo é:
+    xp: 10
+    answer: 1
+    choices:
+      - "treinar o classificador primeiro"
+      - "consentimento informado do sujeito"
+      - "publicar no GitHub sem aviso"
+      - "aumentar ganho do amp"
+  - id: mvp-data
+    type: fill
+    prompt: |
+      O MVP deste círculo prefere dados ___ (ou datasets abertos citados).
+    xp: 8
+    answers:
+      - "sintéticos"
+      - sinteticos
+      - synthetic
+      - synthetics

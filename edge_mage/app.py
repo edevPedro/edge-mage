@@ -9,7 +9,7 @@ from textual.widgets import Input, TextArea
 
 from edge_mage.commands import parse_command
 from edge_mage.content import find_room, load_tracks_for_course
-from edge_mage.courses import COURSE_EDGE
+from edge_mage.courses import COURSE_EDGE, COURSE_NEUROTECH, COURSE_SYSTEMS
 from edge_mage.git_journal import sync_study_journal
 from edge_mage.grimoire import load_skills
 from edge_mage.models import Track
@@ -23,7 +23,7 @@ from edge_mage.widgets.cmdline import CmdlineScreen
 
 class EdgeMageApp(App[None]):
     TITLE = "e-mage"
-    SUB_TITLE = "Fundamentals · Systems · Edge ML"
+    SUB_TITLE = "Fundamentals · Systems · Edge ML · Neurotech"
     CSS = THEME_CSS
     BINDINGS = [
         Binding("j", "vim_down", show=False, priority=True),
@@ -84,6 +84,9 @@ class EdgeMageApp(App[None]):
         if course_id == COURSE_EDGE:
             self.TITLE = "Edge ML Mage"
             self.SUB_TITLE = "Academia · Math → Edge AI"
+        elif course_id == COURSE_NEUROTECH:
+            self.TITLE = "Neurotech"
+            self.SUB_TITLE = "Círculo Neural · Estuda → Sala · BCI educacional"
         elif course_id == COURSE_SYSTEMS:
             self.TITLE = "Systems Mage"
             self.SUB_TITLE = "FLAG-lab · packs"

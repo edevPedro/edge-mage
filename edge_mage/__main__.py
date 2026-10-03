@@ -9,7 +9,7 @@ import sys
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="mage",
-        description="e-mage — TUI academy (Fundamentals · Systems · Edge ML).",
+        description="e-mage — TUI academy (Fundamentals · Systems · Edge ML · Neurotech).",
     )
     parser.add_argument(
         "-V",
@@ -20,14 +20,21 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["sync", "courses"],
-        help="Optional: sync (packs+progress) or courses (open launcher)",
+        choices=["sync", "courses", "emu"],
+        help="Optional: sync | courses | emu (neurotech emulators)",
     )
     parser.add_argument(
         "--course",
-        choices=["fundamentals", "systems", "edge"],
+        choices=["fundamentals", "systems", "edge", "neurotech"],
         default=None,
         help="Skip launcher and open a course directly",
+    )
+    parser.add_argument(
+        "emu_which",
+        nargs="?",
+        default="all",
+        choices=["synth", "artifact", "cortex", "all"],
+        help="With `emu`: which emulator demo",
     )
     args = parser.parse_args(argv)
 
@@ -39,6 +46,12 @@ def main(argv: list[str] | None = None) -> None:
         if result.warning:
             print(result.warning, file=sys.stderr)
         sys.exit(0 if result.ok else 1)
+
+    if args.command == "emu":
+        from edge_mage.emulators.__main__ import main as emu_main
+
+        emu_main([args.emu_which])
+        sys.exit(0)
 
     from edge_mage.app import run
 

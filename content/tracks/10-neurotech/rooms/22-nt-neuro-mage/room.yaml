@@ -1,0 +1,44 @@
+id: nt-neuro-mage
+title: "Boss Neuro Mage"
+summary: "Ritual final do círculo paralelo — evidência online + paper/projeto."
+xp_reward: 60
+unlock_xp: 0
+owners:
+  - pedagogo
+phase: F6
+requires_rooms:
+  - nt-checkpoint-project
+course: neurotech
+boss: true
+elite_skill: neuro-mage
+resources:
+  - title: "SPEC Neurotech"
+    url: "https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md"
+    kind: docs
+animation: closed_loop_timeline
+tasks:
+  - id: parallel
+    type: mcq
+    prompt: "Neuro Mage em relação ao Mago Supremo:"
+    xp: 14
+    answer: 1
+    choices:
+      - "substitui as runas hardcore"
+      - "círculo paralelo — não altera gates do Mago Supremo"
+      - "obriga implante"
+      - "remove Fundamentals"
+  - id: evidence
+    type: mcq
+    prompt: "Para selar o boss, você precisa de evidência de:"
+    xp: 14
+    answer: 0
+    choices:
+      - "loop online + módulo paper ou fatia de projeto"
+      - "apenas XP de Edge"
+      - "só assistir um vídeo"
+      - "hackear um device clínico"
+  - id: ritual
+    type: ritual
+    prompt: "Artefato study-log/artifacts/neuro-mage.md"
+    xp: 32
+    ritual_id: neuro-mage

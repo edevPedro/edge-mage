@@ -1,4 +1,4 @@
-"""Course catalog for e-mage launcher (fundamentals / systems / edge)."""
+"""Course catalog for e-mage launcher (fundamentals / systems / edge / neurotech)."""
 
 from __future__ import annotations
 
@@ -8,9 +8,10 @@ from dataclasses import dataclass
 COURSE_FUNDAMENTALS = "fundamentals"
 COURSE_SYSTEMS = "systems"
 COURSE_EDGE = "edge"
+COURSE_NEUROTECH = "neurotech"
 
-# Soft gate: Systems + Edge prefer Mago base; preview allowed with warning.
-GATED_COURSES = frozenset({COURSE_SYSTEMS, COURSE_EDGE})
+# Soft gate: Systems + Edge + Neurotech prefer Mago base; preview allowed with warning.
+GATED_COURSES = frozenset({COURSE_SYSTEMS, COURSE_EDGE, COURSE_NEUROTECH})
 
 
 @dataclass(frozen=True)
@@ -42,6 +43,13 @@ COURSES: tuple[CourseInfo, ...] = (
         "Edge ML Mage",
         "Edge ML Mage",
         "Current TUI tracks: math → on-device Edge AI.",
+        requires_mago_base=True,
+    ),
+    CourseInfo(
+        COURSE_NEUROTECH,
+        "Neurotech",
+        "Neurotech",
+        "Círculo paralelo BCI/EEG — Estuda → Sala; não gateia Mago Supremo.",
         requires_mago_base=True,
     ),
 )

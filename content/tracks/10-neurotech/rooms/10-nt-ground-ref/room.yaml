@@ -1,0 +1,47 @@
+id: nt-ground-ref
+title: "Terra, referência, 50/60 Hz"
+summary: "Montagem, referência e interferência de rede."
+xp_reward: 30
+unlock_xp: 0
+owners:
+  - eletrica
+  - neuroeng
+phase: F2
+requires_rooms:
+  - nt-adc-bio
+course: neurotech
+resources:
+  - title: "OpenBCI EEG Setup"
+    url: "https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/"
+    kind: docs
+animation: circuit_pulse
+emulator: artifact_inject
+tasks:
+  - id: line
+    type: mcq
+    prompt: "Interferência típica de rede elétrica aparece perto de:"
+    xp: 10
+    answer: 2
+    choices:
+      - "0.1 Hz só"
+      - "10 kHz só"
+      - "50 ou 60 Hz"
+      - "luz infravermelha"
+  - id: ref
+    type: mcq
+    prompt: "A referência em EEG:"
+    xp: 10
+    answer: 0
+    choices:
+      - "é o potencial contra o qual canais são medidos"
+      - "é o nome do classificador"
+      - "elimina ética"
+      - "substitui fs"
+  - id: notch-fill
+    type: fill
+    prompt: "Filtro estreito para matar 50/60 Hz costuma ser chamado de ___."
+    xp: 10
+    answers:
+      - notch
+      - "filtro notch"
+      - "notch filter"

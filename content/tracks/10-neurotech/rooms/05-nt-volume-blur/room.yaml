@@ -1,0 +1,46 @@
+id: nt-volume-blur
+title: "Condução de volume e borrão espacial"
+summary: "Por que fontes finas viram mapas suaves no escalpo."
+xp_reward: 28
+unlock_xp: 0
+owners:
+  - fisica
+phase: F1
+requires_rooms:
+  - nt-spike-lfp
+course: neurotech
+resources:
+  - title: "EEG MI techniques (PMC)"
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/"
+    kind: paper
+animation: volume_blur
+tasks:
+  - id: blur
+    type: mcq
+    prompt: "Condução de volume no crânio tende a:"
+    xp: 10
+    answer: 1
+    choices:
+      - "aumentar resolução espacial infinitamente"
+      - "espalhar / suavizar potenciais no escalpo"
+      - "eliminar a necessidade de terra"
+      - "criar spikes artificiais"
+  - id: electrodes
+    type: mcq
+    prompt: "Mais eletrodos sozinhos garantem microscopia cortical?"
+    xp: 8
+    answer: 1
+    choices:
+      - "sim, sempre"
+      - "não — física do meio ainda borra"
+      - "sim se fs>1kHz"
+      - "sim se usar Wi‑Fi"
+  - id: term
+    type: fill
+    prompt: |
+      O espalhamento de correntes pelos tecidos chama-se condução de ___.
+    xp: 10
+    answers:
+      - volume
+      - "volume conduction"
+      - "condução de volume"

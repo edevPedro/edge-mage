@@ -1,0 +1,47 @@
+id: nt-spike-lfp
+title: "Spike → LFP (intuição)"
+summary: "Escalas temporais: spike rápido vs LFP/EEG mais lento."
+xp_reward: 28
+unlock_xp: 0
+owners:
+  - fisica
+  - neurociencia
+phase: F1
+requires_rooms:
+  - nt-dipole-scalp
+course: neurotech
+resources:
+  - title: "MI-BCI review (MDPI)"
+    url: "https://www.mdpi.com/1424-8220/21/6/2173"
+    kind: paper
+animation: spike_to_lfp
+tasks:
+  - id: spike-scale
+    type: mcq
+    prompt: "Spikes de potencial de ação são, em escala temporal:"
+    xp: 8
+    answer: 0
+    choices:
+      - "muito rápidos (ms)"
+      - "da ordem de minutos"
+      - "iguais a 0.1 Hz só"
+      - "exclusivos do ECG"
+  - id: scalp
+    type: mcq
+    prompt: "EEG de escalpo tipicamente resolve:"
+    xp: 10
+    answer: 2
+    choices:
+      - "cada spike de um neurônio"
+      - "só raios X"
+      - "ritmos / campos misturados, não spikes isolados"
+      - "impedância zero"
+  - id: lfp-fill
+    type: fill
+    prompt: |
+      O campo local mais lento que o spike costuma ser chamado de ___ (sigla).
+    xp: 10
+    answers:
+      - LFP
+      - lfp
+      - "local field potential"

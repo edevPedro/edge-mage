@@ -3,12 +3,14 @@ title: Neurotech · Círculo Neural
 summary: >-
   BCI educacional — física lite, aquisição EEG, ritmos, decode offline e loop
   online simulado. Sempre Estuda → Sala. Círculo paralelo ao Edge ML Mage;
-  não altera gates do Mago Supremo.
+  não altera gates do Mago Supremo. Emuladores: synth_eeg_stream, artifact_inject,
+  cortex_m_stub.
 order: 10
 unlock_xp: 0
 icon: '◈'
-scaffold: true
+scaffold: false
 course: neurotech
 curriculum_note: >-
   Owners: pedagogo + agent-bci / neuroeng / eletrica / fisica / neurociencia.
   SPEC: docs/SPEC-neurotech-course.md. Pedagogy: Estuda → Sala.
+  TUI: mage --course neurotech · mage emu all

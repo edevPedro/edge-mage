@@ -12,3 +12,11 @@ Projeto fatia **CP-Filter bank** (SPEC §7): implementar bandpower em EEG sinté
 
 - OpenBCI [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/)
 - Riemannian / covariâncias: [HAL Yger et al.](https://inria.hal.science/hal-01394253/document)
+
+
+## Emulador
+
+```bash
+python -m edge_mage.emulators synth
+mage emu synth
+```
