@@ -3,7 +3,7 @@ title: Hipótese, potência e múltiplos testes
 summary: Pré-registro, α, potência e Bonferroni lite para BCI.
 xp_reward: 34
 unlock_xp: 0
-order: 36
+order: 44
 owners:
 - bci
 - pedagogo
@@ -45,3 +45,15 @@ tasks:
   - power
   - poder estatístico
   - poder estatistico
+- id: code-cohens-d
+  type: code
+  prompt: 'Implemente `cohens_d(m1, s1, m2, s2)` calculando o tamanho de efeito de Cohen: (m1 - m2) / sqrt((s1^2 + s2^2)/2).'
+  xp: 14
+  code_template: "def cohens_d(m1, s1, m2, s2):\n    ...\n"
+  code_tests: '
+
+    d = mod.cohens_d(10.0, 2.0, 8.0, 2.0)
+
+    assert abs(d - 1.0) < 1e-5
+
+    '

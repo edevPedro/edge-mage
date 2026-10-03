@@ -10,6 +10,10 @@ requires_rooms:
 - nt-rhythms
 - nt-adc-bio
 - nt-cs-harness
+- nt-cs-realtime-testing
+- nt-elec-shield-power
+- nt-dsp-sampling
+- nt-elec-filters-intro
 course: neurotech
 resources:
 - title: OpenBCI — Setting up for EEG
@@ -66,4 +70,4 @@ tasks:
     assert mod.band_mask([0, 50, 60], 50, 61) == [False, True, True]
 
     '
-order: 28
+order: 36

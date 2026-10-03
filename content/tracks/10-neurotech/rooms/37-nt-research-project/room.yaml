@@ -3,7 +3,7 @@ title: Mini projeto de pesquisa (ritual)
 summary: Executa fatia real; dropa rune-neuro-research.
 xp_reward: 48
 unlock_xp: 0
-order: 63
+order: 72
 owners:
 - pedagogo
 - bci
@@ -43,3 +43,9 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-research-project.md
   xp: 28
   ritual_id: neuro-research-project
+- id: run-end-to-end-pipeline
+  type: code
+  prompt: 'Implemente `run_bci_pipeline(X_trials, y_labels)` executando um pipeline experimental completo de BCI em Python: split em blocos (67% treino, 33% teste), médias de classe, covariância com shrinkage 0.1, pesos w e bias b, predição de teste e cálculo de acurácia, matriz de confusão e Cohen''s Kappa.'
+  xp: 24
+  code_template: "def run_bci_pipeline(X_trials, y_labels):\n    # retorne dict com 'accuracy', 'kappa', 'confusion_matrix'\n    ...\n"
+  code_tests: "\nX = [\n    [10.0, 2.0], [2.0, 10.0],\n    [9.5, 2.5],  [2.5, 9.0],\n    [11.0, 1.8], [1.8, 11.2],\n    [8.5, 3.0],  [3.1, 8.8],\n    [10.2, 2.2], [2.3, 10.5],\n    [9.8, 2.7],  [2.9, 9.4]\n]\ny = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]\nres = mod.run_bci_pipeline(X, y)\nassert res['accuracy'] >= 0.8\nassert res['kappa'] >= 0.6\nassert 'confusion_matrix' in res\n"

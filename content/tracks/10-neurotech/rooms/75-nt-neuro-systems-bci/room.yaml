@@ -1,0 +1,64 @@
+id: nt-neuro-systems-bci
+title: Neuro — Sistemas e circuitos para BCI
+summary: Do neurônio a redes sensorimotoras relevantes a MI/BCI.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- neurociencia
+- bci
+phase: F4-neuro
+pillar: neuroscience
+course: neurotech
+resources:
+- title: Singh et al. — MI-BCI review (PMC8003721)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/
+  kind: paper
+- title: Wolpaw — BCI principles
+  url: https://doi.org/10.1016/j.clinph.2012.01.010
+  kind: paper
+animation: null
+tasks:
+- id: sm1
+  type: mcq
+  prompt: 'Para MI de mão, o sistema cortical mais diretamente relevante é:'
+  xp: 12
+  answer: 0
+  choices:
+  - córtex sensorimotor (S1/M1) e ritmos SMR
+  - apenas cerebelo isolado sem córtex
+  - só nervo óptico
+  - medula óssea
+- id: scale
+  type: fill
+  prompt: EEG de escalpo reflete sobretudo atividade ___ (populacional/single-unit).
+  xp: 10
+  answers:
+  - populacional
+  - de população
+  - population
+  - populacionais
+- id: loop
+  type: mcq
+  prompt: ' treino BCI com feedback envolve plasticidade em nível de:'
+  xp: 10
+  answer: 1
+  choices:
+  - somente o ADC
+  - sistema usuário+decoder (closed loop de aprendizagem)
+  - apenas o resistor de bias
+  - Kirchhoff
+- id: code-erd-calc
+  type: code
+  prompt: Implemente `erd_ers_percent(baseline_power, task_power)` calculando ((P_base - P_task) / P_base) * 100. Positivo indica ERD (dessincronização); negativo indica ERS.
+  xp: 14
+  code_template: "def erd_ers_percent(baseline_power, task_power):\n    ...\n"
+  code_tests: '
+
+    assert abs(mod.erd_ers_percent(100.0, 40.0) - 60.0) < 1e-5
+
+    assert abs(mod.erd_ers_percent(100.0, 120.0) - (-20.0)) < 1e-5
+
+    '
+order: 30
+requires_rooms:
+- nt-neuro-plasticity

@@ -3,7 +3,7 @@ title: Desenho experimental e trials
 summary: Cue/baseline/ITI, balanceamento e markers — literacy MSc.
 xp_reward: 34
 unlock_xp: 0
-order: 34
+order: 42
 owners:
 - bci
 - neurociencia
@@ -35,8 +35,7 @@ tasks:
   - treinar no conjunto de teste
 - id: balance
   type: fill
-  prompt: Classes com contagens muito diferentes enviesam acurácia; prefere-se desenho
-    ___ (ou métricas robustas).
+  prompt: Classes com contagens muito diferentes enviesam acurácia; prefere-se desenho ___ (ou métricas robustas).
   xp: 12
   answers:
   - balanceado
@@ -53,3 +52,15 @@ tasks:
   - alinhar epochs ao cue/task na análise
   - substituir ética
   - remover artefatos automaticamente sempre
+- id: code-max-streak
+  type: code
+  prompt: Implemente `max_streak(labels)` encontrando o maior número consecutivo do mesmo rótulo para auditar viés experimental.
+  xp: 12
+  code_template: "def max_streak(labels):\n    ...\n"
+  code_tests: '
+
+    assert mod.max_streak([0, 1, 1, 1, 0, 1]) == 3
+
+    assert mod.max_streak([0, 1, 0, 1]) == 1
+
+    '

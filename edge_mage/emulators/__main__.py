@@ -15,7 +15,7 @@ def main(argv: list[str] | None = None) -> None:
         "which",
         nargs="?",
         default="all",
-        choices=["synth", "artifact", "cortex", "latency", "online", "all"],
+        choices=["synth", "artifact", "cortex", "thumb2", "spice", "viz", "latency", "online", "all"],
         help="Which emulator demo to run",
     )
     p.add_argument("--seconds", type=float, default=1.0, help="synth duration")
@@ -35,6 +35,21 @@ def main(argv: list[str] | None = None) -> None:
         from edge_mage.emulators.cortex_m_stub import _demo as cortex_demo
 
         cortex_demo()
+        print()
+    if args.which in ("thumb2", "all"):
+        from edge_mage.emulators.cortex_m_emu import _demo as thumb2_demo
+
+        thumb2_demo()
+        print()
+    if args.which in ("spice", "all"):
+        from edge_mage.emulators.spice_lite import _demo as spice_demo
+
+        spice_demo()
+        print()
+    if args.which in ("viz", "all"):
+        from edge_mage.emulators.signal_viz import _demo as viz_demo
+
+        viz_demo()
         print()
     if args.which in ("latency", "all"):
         from edge_mage.emulators.latency_budget import _demo as lat_demo

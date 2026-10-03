@@ -45,6 +45,18 @@ tasks:
   - está fora de escopo (literacy apenas)
   - substitui Mago Supremo
   - exige Q15
-order: 55
+- id: code-nfb-reward
+  type: code
+  prompt: Implemente `nfb_reward(current_alpha, baseline_alpha, scale=10.0)` retornando max(0.0, (current_alpha - baseline_alpha) * scale).
+  xp: 12
+  code_template: "def nfb_reward(current_alpha, baseline_alpha, scale=10.0):\n    ...\n"
+  code_tests: '
+
+    assert abs(mod.nfb_reward(15.0, 10.0, 10.0) - 50.0) < 1e-5
+
+    assert mod.nfb_reward(8.0, 10.0, 10.0) == 0.0
+
+    '
+order: 64
 requires_rooms:
 - nt-app-assistive-bci

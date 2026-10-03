@@ -48,4 +48,14 @@ tasks:
   - 60
   - 60 Hz
   - 60Hz
-order: 31
+- id: code-artifact-flag
+  type: code
+  prompt: Implemente `flag_artifacts(samples, threshold=100.0)` retornando a lista de índices onde |amostra| > threshold.
+  xp: 12
+  code_template: "def flag_artifacts(samples, threshold=100.0):\n    ...\n"
+  code_tests: '
+
+    assert mod.flag_artifacts([10.0, -150.0, 20.0, 110.0], 100.0) == [1, 3]
+
+    '
+order: 39

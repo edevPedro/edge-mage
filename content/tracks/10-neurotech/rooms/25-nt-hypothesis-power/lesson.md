@@ -10,7 +10,11 @@
 
 Para m testes independentes, α' = α/m.
 
-## Fontes
+Para destravar o lab, abra [Combrisson & Jerbi 2015 — statistical testing MEG/EEG](https://doi.org/10.1016/j.jneumeth.2015.03.034) e leia o critério de Combrisson e Jerbi para acurácia acima do acaso em N pequeno, para o Bonferroni e o d de Cohen não virarem overclaim.
 
-- Combrisson & Jerbi — statistical testing in MEG/EEG — DOI [10.1016/j.jneumeth.2015.03.034](https://doi.org/10.1016/j.jneumeth.2015.03.034)
-- Belmont / OHRP literacy (sala IRB)
+## Lab estendido (obrigatório no Estuda)
+
+1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
+2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
+3. Escreva a honesty note em 2 frases.
+4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.

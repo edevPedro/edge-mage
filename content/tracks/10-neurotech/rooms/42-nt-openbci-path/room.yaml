@@ -3,14 +3,13 @@ title: 'Eletivo: caminho OpenBCI (stub)'
 summary: Docs Cyton/GUI→stream; synth se sem hardware — opcional.
 xp_reward: 28
 unlock_xp: 0
-order: 68
+order: 77
 owners:
 - neuroeng
 - bci
 phase: elective
 requires_rooms:
-- nt-ethics-consent
-- nt-filter-bank
+- nt-fbcsp-bakeoff
 course: neurotech
 resources:
 - title: OpenBCI Cyton Getting Started
@@ -37,3 +36,17 @@ tasks:
   answers:
   - Cyton
   - cyton
+- id: code-parse-24bit
+  type: code
+  prompt: Implemente `parse_24bit_signed(b0, b1, b2)` decodificando 3 bytes em complemento de dois de 24 bits (como nos pacotes OpenBCI Cyton ADS1299).
+  xp: 16
+  code_template: "def parse_24bit_signed(b0, b1, b2):\n    ...\n"
+  code_tests: '
+
+    assert mod.parse_24bit_signed(0, 0, 1) == 1
+
+    assert mod.parse_24bit_signed(0xFF, 0xFF, 0xFF) == -1
+
+    assert mod.parse_24bit_signed(0x7F, 0xFF, 0xFF) == 8388607
+
+    '

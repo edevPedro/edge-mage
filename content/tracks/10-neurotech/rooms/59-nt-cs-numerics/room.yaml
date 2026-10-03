@@ -38,7 +38,25 @@ tasks:
   - pode perder os pequenos (precisão)
   - aumenta fs
   - é Belmont
-order: 26
+- id: code-reg-cov
+  type: code
+  prompt: Implemente `regularize_matrix(mat, lambda_reg=1e-3)` somando lambda_reg na diagonal de uma matriz quadrada (shrinkage / Tikhonov).
+  xp: 14
+  code_template: "def regularize_matrix(mat, lambda_reg=1e-3):\n    ...\n"
+  code_tests: '
+
+    m = [[1.0, 0.5], [0.5, 1.0]]
+
+    reg = mod.regularize_matrix(m, 0.1)
+
+    assert abs(reg[0][0] - 1.1) < 1e-5
+
+    assert abs(reg[0][1] - 0.5) < 1e-5
+
+    assert abs(reg[1][1] - 1.1) < 1e-5
+
+    '
+order: 33
 requires_rooms:
 - nt-cs-ringbuf-ds
 resources:

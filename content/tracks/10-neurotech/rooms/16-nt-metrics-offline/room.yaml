@@ -62,8 +62,7 @@ tasks:
   tolerance: 0.01
 - id: leak-fill
   type: fill
-  prompt: Z-score usando estatística do dataset inteiro antes do split é um exemplo
-    de ___ de trial/dados.
+  prompt: Z-score usando estatística do dataset inteiro antes do split é um exemplo de ___ de trial/dados.
   xp: 10
   answers:
   - vazamento
@@ -81,4 +80,21 @@ tasks:
   - offline
   - off-line
   - off line
-order: 41
+- id: code-wolpaw-itr
+  type: code
+  prompt: 'Implemente `wolpaw_itr(n_classes, accuracy, trials_per_min)` computando a Information Transfer Rate em bits/min segundo Wolpaw, e `calculate_cohen_kappa(y_true, y_pred)` calculando o coeficiente Kappa de Cohen ajustado pelo acaso p_e.'
+  xp: 16
+  code_template: "import math\n\ndef wolpaw_itr(n_classes, accuracy, trials_per_min):\n    if accuracy == 1.0:\n        return trials_per_min * math.log2(n_classes)\n    # formula classica de Wolpaw com entropia condicional\n    ...\n\ndef calculate_cohen_kappa(y_true, y_pred):\n    # p_o = acuracia observada\n    # p_e = probabilidade marginal esperada ao acaso\n    # retorne (p_o - p_e) / (1.0 - p_e)\n    ...\n"
+  code_tests: |
+    itr = mod.wolpaw_itr(4, 1.0, 10.0)
+    assert abs(itr - 20.0) < 1e-5
+
+    y_t = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1]
+    y_p = [0, 0, 0, 0, 1, 1, 1, 1, 0, 1]
+    kap = mod.calculate_cohen_kappa(y_t, y_p)
+    assert abs(kap - 0.6) < 1e-4
+
+    # Previsao pura de uma classe: kappa colapsa para zero
+    kap_bias = mod.calculate_cohen_kappa(y_t, [0] * 10)
+    assert abs(kap_bias - 0.0) < 1e-4
+order: 49

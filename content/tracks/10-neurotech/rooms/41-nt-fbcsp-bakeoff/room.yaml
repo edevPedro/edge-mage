@@ -3,12 +3,12 @@ title: 'Eletivo: FBCSP vs Riemann bake-off'
 summary: Comparar pipelines no mesmo split — opcional.
 xp_reward: 30
 unlock_xp: 0
-order: 67
+order: 76
 owners:
 - bci
 phase: elective
 requires_rooms:
-- nt-csp-primer
+- nt-ssvep-elective
 course: neurotech
 resources:
 - title: Ang et al. FBCSP
@@ -38,3 +38,19 @@ tasks:
   answers:
   - CSP
   - csp
+- id: code-fbcsp-features
+  type: code
+  prompt: Implemente `fbcsp_features(band_powers_list)` que concatena potências de múltiplos sub-bancos aplicando ln(p + 1e-6) para formar o vetor de features FBCSP.
+  xp: 16
+  code_template: "def fbcsp_features(band_powers_list):\n    ...\n"
+  code_tests: '
+
+    import math
+
+    feats = mod.fbcsp_features([[10.0], [100.0]])
+
+    assert abs(feats[0] - math.log(10.0 + 1e-6)) < 1e-4
+
+    assert abs(feats[1] - math.log(100.0 + 1e-6)) < 1e-4
+
+    '

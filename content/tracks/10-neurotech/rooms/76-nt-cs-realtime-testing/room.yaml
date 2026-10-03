@@ -1,0 +1,65 @@
+id: nt-cs-realtime-testing
+title: CS — Testes de streaming e tempo real
+summary: 'Harness avançado: deadlines, underrun, testes de loop online.'
+xp_reward: 36
+unlock_xp: 0
+owners:
+- pedagogo
+- bci
+phase: F5-cs
+pillar: cs
+course: neurotech
+resources:
+- title: Varoquaux et al. — CV pitfalls
+  url: https://doi.org/10.1016/j.neuroimage.2016.10.038
+  kind: paper
+animation: null
+tasks:
+- id: underrun
+  type: mcq
+  prompt: 'Underrun num ring buffer de EEG significa tipicamente:'
+  xp: 12
+  answer: 0
+  choices:
+  - consumidor pediu amostras que ainda não existem / buffer esvaziou
+  - κ > 1
+  - Nyquist violado no papel
+  - Belmont falhou
+- id: deadline
+  type: fill
+  prompt: Em online BCI, o tempo máximo aceitável para sense→decide→act chama-se ___.
+  xp: 10
+  answers:
+  - deadline
+  - orçamento de latência
+  - latency budget
+  - prazo
+- id: test
+  type: mcq
+  prompt: 'Teste útil de loop online:'
+  xp: 10
+  answer: 1
+  choices:
+  - só print sem assert
+  - injetar stream sintético e assertar latência/underrun/label log
+  - deletar harness
+  - treinar no conjunto de teste
+- id: code-timing-analysis
+  type: code
+  prompt: Implemente `timing_analysis(timestamps_s, target_interval_s=0.004, max_jitter_s=0.001)` retornando `(mean_jitter, misses_count)` onde miss ocorre se |dt - target| > max_jitter.
+  xp: 16
+  code_template: "def timing_analysis(timestamps_s, target_interval_s=0.004, max_jitter_s=0.001):\n    ...\n"
+  code_tests: '
+
+    ts = [0.0, 0.004, 0.008, 0.014]
+
+    j, m = mod.timing_analysis(ts, 0.004, 0.001)
+
+    assert m == 1
+
+    assert abs(j - (0.0 + 0.0 + 0.002) / 3.0) < 1e-5
+
+    '
+order: 35
+requires_rooms:
+- nt-cs-harness

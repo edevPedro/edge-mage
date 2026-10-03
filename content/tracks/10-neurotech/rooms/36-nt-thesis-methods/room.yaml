@@ -3,7 +3,7 @@ title: Módulo Methods (padrão paper)
 summary: Pré-proc, CV, seeds, exclusões — reproduzível.
 xp_reward: 40
 unlock_xp: 0
-order: 62
+order: 71
 owners:
 - pedagogo
 - bci
@@ -45,3 +45,9 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-thesis-methods.md
   xp: 20
   ritual_id: neuro-thesis-methods
+- id: validate-methods-spec
+  type: code
+  prompt: Implemente `validate_methods_checklist(spec)` auditando se uma especificação de Métodos atende ao padrão rigoroso de reprodutibilidade em neurociência computacional (rejeitando filtros acausais em streaming, divisão aleatória de amostras e ausência de sementes).
+  xp: 22
+  code_template: "def validate_methods_checklist(spec):\n    # spec é um dict com 'sampling_rate', 'channels', 'filter_type', 'cv_scheme', 'seeds'\n    # retorne (is_valid, reason)\n    ...\n"
+  code_tests: "\nvalid_spec = {\n    'sampling_rate': 250,\n    'channels': ['C3', 'Cz', 'C4'],\n    'filter_type': 'causal_iir_sos',\n    'cv_scheme': 'block_wise',\n    'seeds': 42\n}\nok, msg = mod.validate_methods_checklist(valid_spec)\nassert ok is True and 'reproduzivel' in msg.lower()\n\n# Fail on acausal filter in streaming claims\nbad_filter = dict(valid_spec, filter_type='scipy_filtfilt_acausal')\nok2, msg2 = mod.validate_methods_checklist(bad_filter)\nassert ok2 is False and 'acausal' in msg2.lower()\n\n# Fail on random sample split (leakage)\nbad_cv = dict(valid_spec, cv_scheme='random_sample_split')\nok3, msg3 = mod.validate_methods_checklist(bad_cv)\nassert ok3 is False and 'leakage' in msg3.lower()\n"

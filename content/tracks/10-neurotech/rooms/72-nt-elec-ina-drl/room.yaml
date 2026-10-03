@@ -1,0 +1,71 @@
+id: nt-elec-ina-drl
+title: Elétrica — INA, DRL e bias de paciente
+summary: Amp de instrumentação, driven-right-leg/bias e CMRR em biopotencial.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+- neuroeng
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+- title: OpenBCI — Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+animation: null
+tasks:
+- id: ina
+  type: mcq
+  prompt: 'Um instrumentation amp (INA) tipicamente:'
+  xp: 12
+  answer: 0
+  choices:
+  - amplifica diferencial com alto CMRR
+  - é um filtro notch de 60 Hz só
+  - substitui o ADC
+  - mede κ
+- id: drl
+  type: fill
+  prompt: O circuito que injeta sinal de modo comum invertido para melhorar rejeição em EEG clássico chama-se driven-___-leg (ou bias drive).
+  xp: 12
+  answers:
+  - right
+  - Right
+  - RIGHT
+- id: cmrr2
+  type: mcq
+  prompt: 'DRL/bias drive age principalmente sobre:'
+  xp: 10
+  answer: 1
+  choices:
+  - conteúdo semântico do pensamento
+  - interferência de modo comum / estabilidade de bias
+  - ordem Big-O do CSP
+  - consentimento UNESCO
+- id: code-ina-gain
+  type: code
+  prompt: 'Implemente `ina_gain(rg_ohms, r1_ohms=50000.0)` onde G = 1 + (2 * R1 / RG), e `audit_ina_saturation(gain, v_diff_uv, v_offset_dc_mv, v_supply_v=3.3, v_headroom_v=0.2)` verificando se o offset DC galvânico do eletrodo satura o amplificador nos trilhos de alimentação.'
+  xp: 14
+  code_template: "def ina_gain(rg_ohms, r1_ohms=50000.0):\n    return 1.0 + (2.0 * r1_ohms / rg_ohms)\n\ndef audit_ina_saturation(gain, v_diff_uv, v_offset_dc_mv, v_supply_v=3.3, v_headroom_v=0.2):\n    # v_out = gain * ((v_diff_uv * 1e-6) + (v_offset_dc_mv * 1e-3))\n    # retorne (is_linear, v_out, msg)\n    ...\n"
+  code_tests: |
+    assert abs(mod.ina_gain(100000.0) - 2.0) < 1e-5
+    assert abs(mod.ina_gain(10000.0) - 11.0) < 1e-5
+
+    # Ganho 100 com offset DC de 50mV em alimentacao de 3.3V: V_out ~ 5V (SATURAÇÃO)
+    ok1, vout1, msg1 = mod.audit_ina_saturation(100.0, 20.0, 50.0, 3.3, 0.2)
+    assert ok1 is False
+    assert vout1 > 3.3
+    assert "saturação" in msg1.lower()
+
+    # Ganho 10 com offset DC de 50mV em alimentacao de 3.3V: V_out ~ 0.5V (LINEAR / SEGURO)
+    ok2, vout2, msg2 = mod.audit_ina_saturation(10.0, 20.0, 50.0, 3.3, 0.2)
+    assert ok2 is True
+    assert abs(vout2 - 0.5002) < 1e-3
+    assert "linear" in msg2.lower()
+order: 20
+requires_rooms:
+- nt-elec-opamp-noise

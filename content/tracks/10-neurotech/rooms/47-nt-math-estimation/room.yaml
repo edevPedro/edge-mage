@@ -40,6 +40,29 @@ tasks:
   - biased
   - com viés
   - vies
+- id: code-sample-cov
+  type: code
+  prompt: 'Implemente `sample_covariance(X)` (com divisor N-1) e `variance_bias_audit(values)` que retorna `(s2_biased, s2_unbiased, bias_factor)` onde bias_factor = (N - 1) / N, declarando o viés do estimador de máxima verossimilhança.'
+  xp: 16
+  code_template: "def sample_covariance(X):\n    # X é lista de N amostras, cada uma com d features\n    ...\n\ndef variance_bias_audit(values):\n    # retorne (s2_biased, s2_unbiased, bias_factor)\n    ...\n"
+  code_tests: |
+    X = [[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]
+    C = mod.sample_covariance(X)
+    assert len(C) == 2 and len(C[0]) == 2
+    assert abs(C[0][0] - 4.0) < 1e-5
+    assert abs(C[0][1] - 4.0) < 1e-5
+    assert abs(C[1][1] - 4.0) < 1e-5
+
+    s_b, s_u, factor = mod.variance_bias_audit([10.0, 20.0, 30.0, 40.0])
+    assert abs(factor - 0.75) < 1e-5
+    assert abs(s_u - 166.66667) < 1e-3
+    assert abs(s_b - 125.0) < 1e-3
+
+    try:
+        mod.variance_bias_audit([5.0])
+        assert False, "Deveria levantar ValueError para N < 2"
+    except ValueError:
+        pass
 order: 7
 requires_rooms:
 - nt-math-probability

@@ -74,29 +74,58 @@ Emulators: **teach or omit**.
 
 ## 4. Phase map (MSc) + hours
 
-**Guided study estimate (required path):** **~120–200 h** (≈ 2.5–3.5 h/room × 65 salas + reading/research rituals).  
-Calendar: **~4–8 months** at 5–8 h/week. Electives extra.
+**Guided study estimate (required path):** **~210–360 h** (F0-found + foundation→advanced em todos os pilares + Estuda denso + labs + research rituals).  
+Calendar: **~10–16 months** at 5–8 h/week (multi-year band OK at lower weekly load). Electives extra (+10–18 h).
 
-| Phase | Title | Rooms (±) | Hours (±) | Focus |
-|-------|-------|-----------|-----------|--------|
-| **F0** | Portal & ethics | 2 | 3–5 | Estuda→Sala; consent; dual-use literacy |
-| **F1-math** | Math foundations | 6 | 12–18 | Vectors→matrices→eigen→prob→estimation→GD |
-| **F2-physics** | Physics foundations | 5 | 10–15 | Dipole, RC, LFP, blur, field |
-| **F3-elec** | Electrical / AFE | 5 | 10–16 | Electrode→CMRR→ADC→Nyquist |
-| **F4-neuro** | Neuroscience | 5 | 10–15 | HH, synapse, rhythms, maps, plasticity |
-| **F5-cs** | CS foundations | 4 | 8–12 | Complexity, ringbuf, numerics, harness |
-| **F6-dsp** | DSP / acquisition | 4 | 8–14 | Filter-bank, Welch, FIR/IIR, artifacts |
-| **F7-paradigm** | Paradigms | 3 | 6–10 | MI, bandpower, trial design |
-| **F8-decode** | Decode / ML | 8 | 16–28 | Stats, power, CV, LDA, CSP, Riemann, ML |
-| **F9-fw** | Firmware / online | 8 | 14–24 | Stream, IRQ/DMA, MCU, Q15, bridge, online, closed-loop |
-| **F10-mage** | Neuro Mage | 3 | 6–10 | Paper XOR project + boss marco |
-| **F11-apps** | Applications | 3 | 6–10 | Assistive, NFB, P300 (published) |
-| **F12-cases** | Emulated published cases | 2 | 6–10 | Berlin MI; BCI Competition IV |
-| **F13-research** | Thesis-prep | 6 | 16–28 | IRB, critique, proposal, Methods, project, paper MSc |
-| **F14-supremo** | Climax | 1 | 4–8 | Boss **Mago Supremo** (rota Neural) |
-| **elective** | SSVEP / FBCSP / OpenBCI | 3 | +6–12 | Optional |
+**Honesty:** pisos antigos (50–60 h / 75–110 h / 120–200 h) **não** descrevem este catálogo. Com base matemática/física completa (trig→cálculo→complexos→Fourier), EE completa (circuitos→semicondutores→AFE→PCB/EMI→shield/PI), física eletrostática, neuro sistemas, CS/FW realtime e espinha BCI, o claim sobe. **Nunca** recalibrar para baixo. Média ponderada ≈ **2,4–4,0 h/sala** × 92 required.
 
-**Catalog:** **68** rooms (65 required + 3 electives).
+| Phase | Title | Rooms (±) | Hours (±) | Estuda depth | Focus |
+|-------|-------|-----------|-----------|--------------|--------|
+| **F0-found** | Fundamentos pré-MSc | **18** | **30–50** | full | Trig, exp/log, cálculo, complexos, Fourier, ondas, energia/potência, fasores, filtros, fonte de alimentação, amostragem, anatomia neuronal, sistema EEG, binário/bits, C essencial, modelo de memória, classificador linear |
+| **F0** | Portal & ethics | 2 | 6–10 | full | Estuda→Sala; Belmont; consent; dual-use literacy |
+| **F1-math** | Math foundations→advanced | 6 | 14–22 | standard→full | Vectors→matrices→eigen→prob→estimation→GD (CSP/Riemann-ready) |
+| **F2-physics** | Physics foundations→advanced | 6 | 14–22 | standard | Electrostatics→dipole→RC→LFP→blur→field |
+| **F3-elec** | Electrical foundation→advanced | **10** | **28–42** | standard→full | Ohm/KCL→semi→electrode→ref→opamp→**INA/DRL**→ADC→antialias→**PCB/EMI**→**shield/PI** |
+| **F4-neuro** | Neuroscience foundations→systems | 6 | 14–22 | standard→full | HH→synapse→rhythms→maps→plasticity→**systems BCI** |
+| **F5-cs** | CS foundations→realtime | 5 | 12–18 | standard | Complexity→ringbuf→numerics→harness→**RT testing** |
+| **F6-dsp** | DSP / acquisition | 4 | 12–18 | full/standard | Filter-bank, Welch, FIR/IIR, artifacts |
+| **F7-paradigm** | Paradigms | 3 | 10–14 | full/standard | MI, bandpower, trial design |
+| **F8-decode** | Decode / ML | 8 | 22–34 | full/standard | Stats, power, CV, LDA, CSP, Riemann, ML |
+| **F9-fw** | Firmware / online | 9 | 20–32 | standard | Stream, IRQ/DMA, MCU, Q15, bridge, **RT constraints**, latency, online, closed-loop |
+| **F10-mage** | Neuro Mage | 3 | 8–12 | standard (ritual) | Paper XOR project + boss marco |
+| **F11-apps** | Applications | 3 | 8–12 | standard | Assistive, NFB, P300 (published literacy) |
+| **F12-cases** | Emulated published cases | 2 | 8–12 | full | Berlin MI; BCI Competition IV walkthroughs |
+| **F13-research** | Thesis-prep | 6 | 20–32 | full/standard | IRB, critique, proposal, Methods, project, paper MSc |
+| **F14-supremo** | Climax | 1 | 4–8 | standard (ritual) | Boss **Mago Supremo** (rota Neural) |
+| **elective** | SSVEP / FBCSP / OpenBCI | 3 | +10–18 | standard (real Estuda) | Optional depth |
+
+**Catalog:** **95** rooms (**92** required + 3 electives), incluindo **18 salas F0-found de fundamentos pré-MSc**.  
+**Required total (sum of phase bands):** roughly **~210–360 h** guided; electives on top.
+
+### F0-found — Salas de fundamentos (18 salas novas)
+
+| id | Pillar | Pré-requisito de |
+|----|--------|------------------|
+| `nt-found-units-scales` | math | todas |
+| `nt-found-trig` | math | física, DSP, eletrostática |
+| `nt-found-exp-log` | math | ruído, filtros RC, probabilidade |
+| `nt-found-calculus` | math | gradiente descendente, campos |
+| `nt-found-complex-euler` | math | impedância AC, Fourier, filtros |
+| `nt-found-fourier` | math | DSP, banco de filtros, Welch |
+| `nt-physics-waves` | physics | EEG ritmos, superposição, DSP |
+| `nt-physics-energy-power` | physics | SNR, PSD, ruído de AFE |
+| `nt-elec-ac-phasors` | electrical | op-amp, INA, filtros analógicos |
+| `nt-elec-filters-intro` | electrical | banco de filtros, FIR/IIR |
+| `nt-elec-power-supply` | electrical | PCB/EMI, shielding |
+| `nt-dsp-sampling` | dsp | banco de filtros, aliasing |
+| `nt-neuro-cell-anatomy` | neuroscience | HH, sinapse, ritmos |
+| `nt-neuro-eeg-system` | neuroscience | montagem, referência, MI-BCI |
+| `nt-cs-binary-bits` | cs | Q15, DMA, protocolo SPI |
+| `nt-cs-c-basics` | cs | firmware ISR, ponteiros, volatile |
+| `nt-fw-memory-model` | firmware | DMA, IRQ, RT constraints |
+| `nt-ml-linear-classifier` | ml | decode MVP, LDA, CSP |
+
+`estuda_depth` tags (`full` \| `standard` \| `lite`) may appear in room YAML as the schema allows; default pedagogical target for required rooms is **standard or full** — not permanent lite stubs.
 
 ### Thesis-prep checkpoints
 
@@ -195,10 +224,12 @@ Path: foundations → DSP/decode → firmware/online → **Neuro Mage** → apps
 ## 9. Definition of done (SPEC)
 
 - [x] Multi-pillar MSc phase map (Math→…→Supremo)  
-- [x] Hours **120–200 h** guided documented  
+- [x] Hours **180–300 h** guided documented (upward with foundation→advanced EE + pillars; never below MSc-prep band)  
 - [x] Reading list with DOIs  
 - [x] Thesis-prep checkpoints  
 - [x] Alternate Mago Supremo wiring (Edge path preserved)  
-- [x] 68 rooms authored (65 required + 3 electives)  
+- [x] **95** rooms authored (**92** required + 3 electives), incl. **18 salas F0-found de fundamentos pré-MSc** (trig, exp/log, cálculo, complexos/Euler, Fourier, ondas, energia/SNR, fasores AC, filtros, fonte de alimentação, amostragem/Nyquist, anatomia neuronal, sistema EEG/10-20, binário/bits, C essencial, modelo de memória, classificador linear) + EE circuit/semi/INA/PCB/shield + physics/neuro/CS/FW foundation→advanced rooms
+- [x] **83** laboratórios de código Python com testes automatizados (65 originais + 18 novos F0-found), cobrindo desde conversão de unidades e funções trigonométricas até LDA 2D regularizado
 - [x] Emulators + Estuda→Sala  
 - [x] Tests: path length, gates, Supremo from neurotech  
+

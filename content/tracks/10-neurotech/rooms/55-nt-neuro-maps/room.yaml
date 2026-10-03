@@ -26,8 +26,7 @@ tasks:
   - no ADC
 - id: mi
   type: fill
-  prompt: Imagética motora da mão direita costuma modular ritmos µ perto de ___ (eletrodo
-    clássico).
+  prompt: Imagética motora da mão direita costuma modular ritmos µ perto de ___ (eletrodo clássico).
   xp: 10
   answers:
   - C3
@@ -42,6 +41,22 @@ tasks:
   - não autorizam diagnóstico
   - exigem stim DIY
   - removem consentimento
-order: 22
+- id: code-1020-hemi
+  type: code
+  prompt: 'Implemente `channel_hemisphere(ch_name)` retornando ''left'' se o canal terminar em ímpar (ex: C3, O1), ''right'' se par (ex: C4, Fp2), e ''midline'' se terminar em ''z'' ou ''Z'' (ex: Cz, Pz).'
+  xp: 12
+  code_template: "def channel_hemisphere(ch_name):\n    ...\n"
+  code_tests: '
+
+    assert mod.channel_hemisphere("C3") == "left"
+
+    assert mod.channel_hemisphere("C4") == "right"
+
+    assert mod.channel_hemisphere("Cz") == "midline"
+
+    assert mod.channel_hemisphere("Fp1") == "left"
+
+    '
+order: 28
 requires_rooms:
 - nt-rhythms

@@ -14,8 +14,7 @@ resources:
 - title: OpenBCI EEG Setup
   url: https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/
   kind: docs
-- title: Ferree et al. — Scalp electrode impedance, infection risk, and EEG data quality
-    (Clin Neurophysiol)
+- title: Ferree et al. — Scalp electrode impedance, infection risk, and EEG data quality (Clin Neurophysiol)
   url: https://doi.org/10.1016/S1388-2457(00)00533-2
   kind: paper
 animation: circuit_pulse
@@ -49,4 +48,23 @@ tasks:
   - notch
   - filtro notch
   - notch filter
-order: 15
+- id: code-cmrr
+  type: code
+  prompt: 'Implemente `cmrr_db(gain_diff, gain_cm)` retornando 20 * log10(|gain_diff| / |gain_cm|), e `audit_cm_to_diff_noise(v_common_mode_v, z1_ohm, z2_ohm, r_in_ohm, max_allowed_noise_uv=5.0)` calculando a conversão de modo comum para diferencial devido ao desbalanço de impedância |Z1 - Z2|.'
+  xp: 14
+  code_template: "import math\n\ndef cmrr_db(gain_diff, gain_cm):\n    return 20.0 * math.log10(abs(gain_diff) / abs(gain_cm))\n\ndef audit_cm_to_diff_noise(v_common_mode_v, z1_ohm, z2_ohm, r_in_ohm, max_allowed_noise_uv=5.0):\n    # v_diff_uv = v_cm * abs(R_in/(z1 + R_in) - R_in/(z2 + R_in)) * 1e6\n    # retorne (is_safe, v_diff_uv, msg)\n    ...\n"
+  code_tests: |
+    assert abs(mod.cmrr_db(1000.0, 0.01) - 100.0) < 1e-5
+
+    # V_cm = 1V, Delta Z = 20kOhm, R_in = 100MOhm -> ~200 uV de ruído (FALHA no teto de 5 uV)
+    ok1, noise1, msg1 = mod.audit_cm_to_diff_noise(1.0, 5000.0, 25000.0, 100000000.0, 5.0)
+    assert ok1 is False
+    assert noise1 > 100.0
+    assert "excede" in msg1.lower()
+
+    # V_cm = 1V, Delta Z = 20kOhm, R_in = 10GOhm -> ~2 uV de ruído (PASSA no teto de 5 uV)
+    ok2, noise2, msg2 = mod.audit_cm_to_diff_noise(1.0, 5000.0, 25000.0, 1e10, 5.0)
+    assert ok2 is True
+    assert noise2 < 5.0
+    assert "controle" in msg2.lower()
+order: 18

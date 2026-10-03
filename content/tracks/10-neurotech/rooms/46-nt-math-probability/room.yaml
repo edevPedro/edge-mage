@@ -36,6 +36,29 @@ tasks:
   - '0.99'
   - '0'
   - κ automaticamente 1
+- id: code-gaussian
+  type: code
+  prompt: 'Implemente `gaussian_pdf(x, mu=0.0, sigma=1.0)` computando a densidade gaussiana 1D, e `binomial_chance_level(n_trials, p_chance=0.5, alpha=0.05)` computando o limiar de acurácia estatisticamente significativo acima do acaso via aproximação normal com z_{0.95}=1.645.'
+  xp: 14
+  code_template: "import math\n\ndef gaussian_pdf(x, mu=0.0, sigma=1.0):\n    ...\n\ndef binomial_chance_level(n_trials, p_chance=0.5, alpha=0.05):\n    # retorne p_chance + 1.645 * sqrt(p_chance * (1 - p_chance) / n_trials)\n    ...\n"
+  code_tests: |
+    import math
+    p0 = mod.gaussian_pdf(0.0, 0.0, 1.0)
+    assert abs(p0 - (1.0 / math.sqrt(2.0 * math.pi))) < 1e-5
+    p1 = mod.gaussian_pdf(1.0, 0.0, 1.0)
+    assert p1 < p0 and p1 > 0
+
+    th_100 = mod.binomial_chance_level(100, 0.5, 0.05)
+    assert abs(th_100 - 0.58225) < 1e-3
+
+    th_20 = mod.binomial_chance_level(20, 0.5, 0.05)
+    assert th_20 > 0.68
+
+    try:
+        mod.binomial_chance_level(0, 0.5)
+        assert False, "Deveria levantar ValueError para n_trials <= 0"
+    except ValueError:
+        pass
 order: 6
 requires_rooms:
 - nt-math-eigen

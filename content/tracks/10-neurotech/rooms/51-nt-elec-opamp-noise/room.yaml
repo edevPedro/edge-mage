@@ -41,6 +41,45 @@ tasks:
   answers:
   - Hz
   - hz
-order: 16
+- id: code-johnson-noise
+  type: code
+  prompt: Implemente `johnson_noise_voltage(r_ohms, delta_f_hz, temp_kelvin=300.0, kb=1.38e-23)` retornando sqrt(4 * kb * T * R * delta_f) em Volts, e `audit_input_referred_noise(r_elec_ohm, en_nv_rt_hz, bandwidth_hz=100.0, target_signal_uv=10.0)` somando o ruído térmico do eletrodo ao ruído de tensão do amplificador v_amp = en * 1e-9 * sqrt(delta_f) em quadratura v_total = sqrt(v_therm**2 + v_amp**2) em uV, retornando `(is_clean, v_total_noise_uv, snr_db)` onde is_clean é True se snr_db >= 20.0 dB.
+  xp: 16
+  code_template: |
+    import math
+
+    def johnson_noise_voltage(r_ohms, delta_f_hz, temp_kelvin=300.0, kb=1.38e-23):
+        return math.sqrt(4.0 * kb * temp_kelvin * r_ohms * delta_f_hz)
+
+    def audit_input_referred_noise(r_elec_ohm, en_nv_rt_hz, bandwidth_hz=100.0, target_signal_uv=10.0):
+        # v_therm = johnson_noise_voltage(r_elec_ohm, bandwidth_hz)
+        # v_amp = (en_nv_rt_hz * 1e-9) * math.sqrt(bandwidth_hz)
+        # v_tot_v = math.sqrt(v_therm**2 + v_amp**2)
+        # v_tot_uv = v_tot_v * 1e6
+        # snr = target_signal_uv / v_tot_uv
+        # snr_db = 20.0 * math.log10(snr)
+        # retorne (snr_db >= 20.0, v_tot_uv, snr_db)
+        ...
+  code_tests: |
+    import math
+    vn = mod.johnson_noise_voltage(10e3, 100.0)
+    assert vn > 1e-7 and vn < 1e-6
+
+    # Clinical grade: 5 kOhm electrode, 10 nV/rtHz (ADS1299-class), 100 Hz band, 10 uV signal
+    # v_therm = 9.1e-8 V, v_amp = 1.0e-7 V -> v_tot ~ 0.135 uV -> SNR ~ 37.4 dB
+    c_clean, c_noise_uv, c_snr_db = mod.audit_input_referred_noise(5e3, 10.0, 100.0, 10.0)
+    assert c_clean is True
+    assert c_noise_uv < 0.2
+    assert c_snr_db > 30.0
+
+    # Terrible contact: 2 MOhm dry electrode -> thermal noise alone ~ 1.82 uV
+    # Target signal 5.0 uV -> SNR < 10 dB (< 20 dB budget)
+    b_clean, b_noise_uv, b_snr_db = mod.audit_input_referred_noise(2e6, 10.0, 100.0, 5.0)
+    assert b_clean is False
+    assert b_noise_uv > 1.5
+    assert b_snr_db < 15.0
+order: 19
 requires_rooms:
 - nt-ground-ref
+- nt-elec-ac-phasors
+- nt-physics-energy-power

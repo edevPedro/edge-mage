@@ -26,8 +26,7 @@ tasks:
   - alias guide
 - id: metric
   type: fill
-  prompt: Competitions reportam métricas oficiais do ___ (problem/dataset) — não invente
-    a sua sem declarar.
+  prompt: Competitions reportam métricas oficiais do ___ (problem/dataset) — não invente a sua sem declarar.
   xp: 10
   answers:
   - problema
@@ -44,6 +43,18 @@ tasks:
   - é emulação — declare que não é o leaderboard oficial
   - remove nested CV
   - é proibido citar DOI
-order: 58
+- id: code-confusion-matrix
+  type: code
+  prompt: 'Implemente `calc_confusion(y_true, y_pred)` retornando dict `{''tp'': tp, ''fp'': fp, ''tn'': tn, ''fn'': fn}` para rótulos binários 0 e 1.'
+  xp: 14
+  code_template: "def calc_confusion(y_true, y_pred):\n    ...\n"
+  code_tests: '
+
+    cm = mod.calc_confusion([1, 1, 0, 0], [1, 0, 0, 1])
+
+    assert cm[''tp''] == 1 and cm[''fn''] == 1 and cm[''tn''] == 1 and cm[''fp''] == 1
+
+    '
+order: 67
 requires_rooms:
 - nt-case-berlin-mi

@@ -3,13 +3,12 @@ title: ML para dados neurais
 summary: Baselines, regularização, quando NÃO usar deep.
 xp_reward: 38
 unlock_xp: 0
-order: 42
+order: 50
 owners:
 - bci
 phase: F8-decode
 requires_rooms:
 - nt-metrics-offline
-- nt-math-gd-lite
 course: neurotech
 resources:
 - title: Lotte et al. classification review
@@ -51,3 +50,15 @@ tasks:
   - memorizar / overfit
   - remover artefatos EOG
   - cumprir Belmont sozinhas
+- id: code-eegnet-params
+  type: code
+  prompt: Implemente `eegnet_params_first_layers(n_channels, f1=8, d=2, kernel_len=64)` calculando parâmetros da convolução temporal (f1 * kernel_len) + espacial profundidade (f1 * d * n_channels).
+  xp: 14
+  code_template: "def eegnet_params_first_layers(n_channels, f1=8, d=2, kernel_len=64):\n    ...\n"
+  code_tests: '
+
+    p = mod.eegnet_params_first_layers(16, 8, 2, 64)
+
+    assert p == 768
+
+    '

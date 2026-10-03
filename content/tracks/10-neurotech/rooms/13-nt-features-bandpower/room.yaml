@@ -44,12 +44,20 @@ tasks:
   - LLVM IR
 - id: bandpower-code
   type: code
-  prompt: Implemente `bandpower(xs)` = média dos quadrados (potência média).
+  prompt: 'Implemente `bandpower(xs)` (média dos quadrados) e `log_bandpower_2ch(trial_c3, trial_c4)` que retorna o vetor de features [log10(P_C3), log10(P_C4)], normalizando a distribuição de energia para alimentar o classificador linear subsequente.'
   xp: 16
-  code_template: "def bandpower(xs):\n    # TODO\n    ...\n"
-  code_tests: 'assert abs(mod.bandpower([1.0, -1.0, 1.0, -1.0]) - 1.0) < 1e-9
-
+  code_template: "import math\n\ndef bandpower(xs):\n    return sum(x * x for x in xs) / len(xs)\n\ndef log_bandpower_2ch(trial_c3, trial_c4):\n    # p3 = bandpower(trial_c3); p4 = bandpower(trial_c4)\n    # se p3 <= 0 ou p4 <= 0: levante ValueError\n    # retorne [math.log10(p3), math.log10(p4)]\n    ...\n"
+  code_tests: |
+    assert abs(mod.bandpower([1.0, -1.0, 1.0, -1.0]) - 1.0) < 1e-9
     assert abs(mod.bandpower([0.0, 0.0]) - 0.0) < 1e-9
 
-    '
-order: 33
+    feats = mod.log_bandpower_2ch([10.0, -10.0], [1.0, -1.0])
+    assert abs(feats[0] - 2.0) < 1e-5
+    assert abs(feats[1] - 0.0) < 1e-5
+
+    try:
+        mod.log_bandpower_2ch([0.0, 0.0], [1.0, -1.0])
+        assert False, "Deveria levantar ValueError para potencia zero"
+    except ValueError:
+        pass
+order: 41

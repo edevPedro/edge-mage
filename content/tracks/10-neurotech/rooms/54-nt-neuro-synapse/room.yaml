@@ -41,6 +41,18 @@ tasks:
   - somente Cloudflare
   - LLVM passes
   - Belmont
-order: 20
+- id: code-synapse
+  type: code
+  prompt: 'Implemente `alpha_conductance(t, tau=0.005, g_peak=1.0)` computando a função alfa de condutância pós-sináptica: g_peak * (t / tau) * exp(1 - t / tau) para t >= 0.'
+  xp: 14
+  code_template: "def alpha_conductance(t, tau=0.005, g_peak=1.0):\n    ...\n"
+  code_tests: '
+
+    assert abs(mod.alpha_conductance(0.005, 0.005, 1.0) - 1.0) < 1e-5
+
+    assert abs(mod.alpha_conductance(0.0, 0.005, 1.0)) < 1e-5
+
+    '
+order: 26
 requires_rooms:
 - nt-neuro-neuron-hh

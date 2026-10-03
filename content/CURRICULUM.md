@@ -114,13 +114,13 @@ Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 
 Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — **treino → export → quant → runtime → golden** — não só XP acumulado cedo.
 
-## Neurotech (círculo paralelo)
+## Neurotech (círculo paralelo — rota alternativa a Mago Supremo)
 
-Curso id **`neurotech`** — sibling do Edge ML Mage; **não** altera gates do Mago Supremo.
+Curso id **`neurotech`** — sibling do Edge ML Mage, oferecendo uma **rota alternativa honesta e rigorosa ao Mago Supremo** via clímax MSc (F13–F14), preservando integralmente o caminho Edge on-device.
 
 - SPEC: [`docs/SPEC-neurotech-course.md`](../docs/SPEC-neurotech-course.md)
-- Trilha: `content/tracks/10-neurotech/` — 22 salas F0→F6 (Estuda → Sala)
+- Trilha: `content/tracks/10-neurotech/` — 77 salas (74 obrigatórias + 3 eletivas), F0→F14 (Estuda → Sala), ~180–300 h guiadas
 - TUI: `mage --course neurotech` · emuladores: `mage emu all`
 - Web: edevs `/estudo/cursos/neurotech`
-- Domínios: BCI · EEG · física · math · firmware/embedded
+- Domínios: BCI · EEG · física · elétrica · neurociência · math · CS · firmware/embedded · pesquisa
 - Agentes: `agent-pedagogo` + `agent-bci` / `neuroeng` / `eletrica` / `fisica` / `neurociencia`

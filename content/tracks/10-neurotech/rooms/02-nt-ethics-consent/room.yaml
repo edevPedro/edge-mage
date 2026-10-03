@@ -69,4 +69,27 @@ tasks:
   - ensinar a construir armas neurais
   - ignorar ética se o κ for alto
   - hackear dispositivos clínicos
+- id: belmont-beneficence
+  type: fill
+  prompt: 'No Belmont, o princípio que exige maximizar benefício e minimizar dano
+    (e honestidade sobre incerteza) chama-se ___.
+
+    '
+  xp: 8
+  answers:
+  - beneficência
+  - beneficencia
+  - Beneficência
+  - Beneficencia
+  - beneficence
+  - Beneficence
+- id: overclaim-numeric
+  type: numeric
+  prompt: Um decoder 2-classes balanceado tem chance level de acurácia ≈ 0.50. Um
+    pitch reporta 0.94 em N=4 trials sem CV. Quantos princípios Belmont tipicamente
+    falham na comunicação (respeitar limites da evidência + não exagerar benefício),
+    conte 1 ou 2 como inteiro mínimo esperado neste curso?
+  xp: 8
+  answer: 2
+  tolerance: 0
 order: 2

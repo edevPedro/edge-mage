@@ -29,14 +29,22 @@ tasks:
   - 4×4
 - id: code
   type: code
-  prompt: '`matvec(A, x)` — A lista-de-listas, x lista; retorne y=Ax.
-
-    '
+  prompt: 'Implemente `matvec(A, x)` retornando y=Ax, e `channel_covariance_2x2(trials)` computando a matriz de covariância 2x2 com divisor (T-1) após centrar os dados temporais.'
   xp: 16
-  code_template: "def matvec(A, x):\n    ...\n"
-  code_tests: 'assert mod.matvec([[1,2],[3,4]], [1,1]) == [3,7]
-
-    '
+  code_template: "def matvec(A, x):\n    # y = Ax\n    return [sum(row[j] * x[j] for j in range(len(x))) for row in A]\n\ndef channel_covariance_2x2(trials):\n    # trials é lista de T amostras [ch1, ch2]\n    ...\n"
+  code_tests: |
+    assert mod.matvec([[1, 2], [3, 4]], [1, 1]) == [3, 7]
+    trials = [[2.0, 1.0], [0.0, 0.0], [-2.0, -1.0]]
+    cov = mod.channel_covariance_2x2(trials)
+    assert abs(cov[0][0] - 4.0) < 1e-4
+    assert abs(cov[0][1] - 2.0) < 1e-4
+    assert abs(cov[1][0] - 2.0) < 1e-4
+    assert abs(cov[1][1] - 1.0) < 1e-4
+    try:
+        mod.channel_covariance_2x2([[1.0, 2.0]])
+        assert False, "Deveria levantar ValueError para T < 2"
+    except ValueError:
+        pass
 - id: cov
   type: fill
   prompt: A matriz de ___ captura correlações entre canais (SPD se full rank).

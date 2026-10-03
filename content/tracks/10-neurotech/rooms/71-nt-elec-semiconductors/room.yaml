@@ -1,0 +1,79 @@
+id: nt-elec-semiconductors
+title: Elétrica — Semicondutores e polarização
+summary: Diodo, MOSFET/BJT lite e polarização úteis para AFE/digital.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+animation: null
+tasks:
+- id: diode
+  type: mcq
+  prompt: 'Diodo idealizado em condução direta:'
+  xp: 10
+  answer: 0
+  choices:
+  - permite corrente significativa num sentido
+  - é um indutor
+  - remove alias
+  - é consentimento
+- id: mosfet
+  type: fill
+  prompt: O transistor de efeito de campo metal-óxido-semicondutor mais comum em CMOS chama-se ___.
+  xp: 10
+  answers:
+  - MOSFET
+  - mosfet
+  - FET
+  - fet
+- id: bias
+  type: mcq
+  prompt: 'Polarização (bias) de um amp/transistor serve para:'
+  xp: 12
+  answer: 1
+  choices:
+  - eliminar Nyquist
+  - fixar ponto de operação DC estável
+  - medir κ
+  - substituir IRB
+- id: code-esd-clamp
+  type: code
+  prompt: Implemente `esd_clamp(v_in, v_pos=3.3, v_neg=0.0, v_diode=0.7)` limitando tensões entre (v_neg - v_diode) e (v_pos + v_diode), e `audit_diode_leakage_offset(i_leak_na, r_skin_kohm, max_offset_uv=500.0)` calculando o offset DC espúrio gerado pela corrente de fuga reversa do diodo de proteção fluindo pela resistência da pele V_offset = (i_leak_na * 1e-9) * (r_skin_kohm * 1e3) em uV, retornando `(is_safe, offset_uv, offset_uv / max_offset_uv)` onde is_safe é True se offset_uv <= max_offset_uv.
+  xp: 14
+  code_template: |
+    def esd_clamp(v_in, v_pos=3.3, v_neg=0.0, v_diode=0.7):
+        v_max = v_pos + v_diode
+        v_min = v_neg - v_diode
+        return max(v_min, min(v_in, v_max))
+
+    def audit_diode_leakage_offset(i_leak_na, r_skin_kohm, max_offset_uv=500.0):
+        # offset_v = (i_leak_na * 1e-9) * (r_skin_kohm * 1e3)
+        # offset_uv = offset_v * 1e6
+        # retorne (offset_uv <= max_offset_uv, offset_uv, offset_uv / max_offset_uv)
+        ...
+  code_tests: |
+    assert abs(mod.esd_clamp(2.0) - 2.0) < 1e-5
+    assert abs(mod.esd_clamp(10.0) - 4.0) < 1e-5
+    assert abs(mod.esd_clamp(-5.0) - (-0.7)) < 1e-5
+
+    # ADS1299-class low leakage: 0.2 nA (200 pA), 10 kOhm skin -> 2 uV offset (safe)
+    safe1, off1, r1 = mod.audit_diode_leakage_offset(0.2, 10.0, 500.0)
+    assert safe1 is True
+    assert abs(off1 - 2.0) < 1e-4
+    assert r1 < 0.01
+
+    # Cheap standard diode: 20 nA leakage, 50 kOhm skin -> 1000 uV (1 mV) offset (unsafe)
+    safe2, off2, r2 = mod.audit_diode_leakage_offset(20.0, 50.0, 500.0)
+    assert safe2 is False
+    assert abs(off2 - 1000.0) < 1e-4
+    assert r2 > 1.0
+order: 16
+requires_rooms:
+- nt-elec-circuit-fundamentals

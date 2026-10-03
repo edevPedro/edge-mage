@@ -43,6 +43,16 @@ tasks:
   - Edge / systems tracks (reuse)
   - Belmont Report
   - SSVEP eletivo
-order: 47
+- id: code-simd4
+  type: code
+  prompt: Implemente `simd4_dot(a, b)` calculando o produto escalar de 4 elementos simulando uma instrução NEON.
+  xp: 14
+  code_template: "def simd4_dot(a, b):\n    ...\n"
+  code_tests: '
+
+    assert abs(mod.simd4_dot([1.0, 2.0, 3.0, 4.0], [2.0, 0.0, 1.0, -1.0]) - 1.0) < 1e-5
+
+    '
+order: 55
 requires_rooms:
 - nt-fw-fixedpoint

@@ -26,8 +26,7 @@ tasks:
   - alias desejável
 - id: iid
   type: fill
-  prompt: 'Assumir trials ___ entre dias pode falhar quando o usuário aprende (uma
-    palavra: independentes/iid).'
+  prompt: 'Assumir trials ___ entre dias pode falhar quando o usuário aprende (uma palavra: independentes/iid).'
   xp: 10
   answers:
   - iid
@@ -43,6 +42,16 @@ tasks:
   - prática comum e honesta quando documentada
   - proibido em synth
   - Mago Supremo automático
-order: 23
+- id: code-hebb
+  type: code
+  prompt: Implemente `hebbian_update(w, pre, post, lr=0.01)` computando w + lr * pre * post.
+  xp: 12
+  code_template: "def hebbian_update(w, pre, post, lr=0.01):\n    ...\n"
+  code_tests: '
+
+    assert abs(mod.hebbian_update(0.5, 1.0, 2.0, 0.1) - 0.7) < 1e-5
+
+    '
+order: 29
 requires_rooms:
 - nt-neuro-maps

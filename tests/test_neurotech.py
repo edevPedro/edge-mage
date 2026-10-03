@@ -17,7 +17,8 @@ from edge_mage.models import Task, Track
 from edge_mage.progress import ProgressStore
 from edge_mage.validators import validate_task
 
-# Full pedagogical chain (65 required + 3 electives = 68).
+# Full pedagogical chain (74 required + 3 electives = 77).
+# Foundation→advanced pillars: +physics electrostatics, +5 EE, +neuro systems, +CS RT, +FW RT.
 PEDAGOGICAL_IDS = [
     "nt-portal",
     "nt-ethics-consent",
@@ -27,25 +28,33 @@ PEDAGOGICAL_IDS = [
     "nt-math-probability",
     "nt-math-estimation",
     "nt-math-gd-lite",
+    "nt-physics-electrostatics",
     "nt-dipole-scalp",
     "nt-physics-rc-tissue",
     "nt-spike-lfp",
     "nt-volume-blur",
     "nt-physics-field-lite",
+    "nt-elec-circuit-fundamentals",
+    "nt-elec-semiconductors",
     "nt-electrode-snr",
     "nt-ground-ref",
     "nt-elec-opamp-noise",
+    "nt-elec-ina-drl",
     "nt-adc-bio",
     "nt-elec-antialias",
+    "nt-elec-pcb-emc",
+    "nt-elec-shield-power",
     "nt-neuro-neuron-hh",
     "nt-neuro-synapse",
     "nt-rhythms",
     "nt-neuro-maps",
     "nt-neuro-plasticity",
+    "nt-neuro-systems-bci",
     "nt-cs-complexity",
     "nt-cs-ringbuf-ds",
     "nt-cs-numerics",
     "nt-cs-harness",
+    "nt-cs-realtime-testing",
     "nt-filter-bank",
     "nt-dsp-welch",
     "nt-filter-design-depth",
@@ -66,6 +75,7 @@ PEDAGOGICAL_IDS = [
     "nt-mcu-filter",
     "nt-fw-fixedpoint",
     "nt-fw-aarch64-bridge",
+    "nt-fw-rt-constraints",
     "nt-latency-budget",
     "nt-online-stub",
     "nt-closed-loop-control",
@@ -89,8 +99,8 @@ PEDAGOGICAL_IDS = [
     "nt-openbci-path",
 ]
 
-REQUIRED_IDS = PEDAGOGICAL_IDS[:65]
-ELECTIVE_IDS = PEDAGOGICAL_IDS[65:]
+REQUIRED_IDS = PEDAGOGICAL_IDS[:74]
+ELECTIVE_IDS = PEDAGOGICAL_IDS[74:]
 
 
 def _neuro_track() -> Track:
@@ -107,8 +117,8 @@ def test_neurotech_pedagogical_order_locked() -> None:
     track = _neuro_track()
     ids = [r.id for r in track.rooms]
     assert ids == PEDAGOGICAL_IDS
-    assert [r.order for r in track.rooms] == list(range(1, 69))
-    assert len(REQUIRED_IDS) == 65
+    assert [r.order for r in track.rooms] == list(range(1, 78))
+    assert len(REQUIRED_IDS) == 74
     assert len(ELECTIVE_IDS) == 3
 
 
@@ -118,11 +128,20 @@ def test_msc_path_length_and_pillars() -> None:
     # Foundations present
     for rid in (
         "nt-math-vectors",
+        "nt-physics-electrostatics",
         "nt-physics-rc-tissue",
+        "nt-elec-circuit-fundamentals",
+        "nt-elec-semiconductors",
         "nt-elec-opamp-noise",
+        "nt-elec-ina-drl",
+        "nt-elec-pcb-emc",
+        "nt-elec-shield-power",
         "nt-neuro-neuron-hh",
+        "nt-neuro-systems-bci",
         "nt-cs-ringbuf-ds",
+        "nt-cs-realtime-testing",
         "nt-fw-irq-dma",
+        "nt-fw-rt-constraints",
         "nt-app-hybrid-p300",
         "nt-case-berlin-mi",
         "nt-mago-supremo",
@@ -436,3 +455,170 @@ def test_decode_mvp_lda_code_task() -> None:
     )
     ok, msg = validate_task(task, code)
     assert ok, msg
+
+
+def test_technical_rooms_have_code_tasks() -> None:
+    track = _neuro_track()
+    exempt = {
+        "nt-portal",
+        "nt-ethics-consent",
+        "nt-irb-protocol",
+        "nt-checkpoint-paper",
+        "nt-checkpoint-project",
+        "nt-neuro-mage",
+        "nt-paper-critique",
+        "nt-research-proposal",
+        "nt-thesis-methods",
+        "nt-research-project",
+        "nt-paper-module-msc",
+        "nt-mago-supremo",
+    }
+    for room in track.rooms:
+        if room.id in exempt:
+            continue
+        has_code = any(t.type == "code" for t in room.tasks)
+        assert has_code, f"Room {room.id} is a technical room but lacks a code task."
+
+
+def test_neuro_thesis_methods_ritual_validation() -> None:
+    from edge_mage.rituals import parse_neuro_checklist
+
+    # Incomplete text: missing preprocessing, features_model, etc.
+    incomplete = """
+- paper_or_project: thesis-methods
+- url: https://mne.tools/stable/index.html
+- what_reproduced: Reproducible Methods specification for Motor Imagery
+- metrics: accuracy, cohen_kappa
+- data: PhysioNet EEGBCI 64 channels 109 subjects
+"""
+    ok, msg, _ = parse_neuro_checklist(incomplete, "neuro-thesis-methods")
+    assert not ok
+    assert "preprocessing" in msg.lower() or "faltam" in msg.lower()
+
+    # Complete valid text
+    complete = """
+- paper_or_project: thesis-methods
+- url: https://mne.tools/stable/index.html
+- what_reproduced: Reproducible Methods specification for Motor Imagery
+- metrics: cohen_kappa, accuracy
+- data: PhysioNet EEGBCI 64 channels 109 subjects
+- preprocessing: 8-30Hz causal bandpass SOS + 60Hz notch
+- features_model: Common Spatial Patterns (4 filters) + Regularized LDA
+- validation: 5-fold cross-validation grouped by run block (no sample split)
+- seeds_versions: numpy 1.24, scipy 1.10, seed 42
+- limits: noninvasive educational BCI, Belmont consent
+"""
+    ok2, msg2, found = parse_neuro_checklist(complete, "neuro-thesis-methods")
+    assert ok2, msg2
+    assert found["preprocessing"] == "8-30Hz causal bandpass SOS + 60Hz notch"
+
+
+def test_neuro_research_project_ritual_validation() -> None:
+    from edge_mage.rituals import parse_neuro_checklist
+
+    # Missing pipeline_stages
+    incomplete = """
+- paper_or_project: research-project
+- url: https://doi.org/10.1088/1741-2560/4/2/R01
+- what_reproduced: End-to-end motor imagery pipeline with shrinkage LDA
+- data_source: open-access PhysioNet BCI
+- primary_metric: cohen_kappa
+- metric_value: 0.68
+- limits: noninvasive 64-channel wet electrodes
+"""
+    ok, msg, _ = parse_neuro_checklist(incomplete, "neuro-research-project")
+    assert not ok
+    assert "pipeline_stages" in msg.lower()
+
+    # Complete valid text
+    complete = """
+- paper_or_project: research-project
+- url: https://doi.org/10.1088/1741-2560/4/2/R01
+- what_reproduced: End-to-end motor imagery pipeline with shrinkage LDA
+- data_source: open-access PhysioNet BCI
+- pipeline_stages: causal bandpass -> CSP spatial filtering -> Ledoit-Wolf LDA
+- primary_metric: cohen_kappa
+- metric_value: 0.68
+- latency_ms: 38.5
+- limits: noninvasive 64-channel wet electrodes, synthetic baseline comparison
+"""
+    ok2, msg2, found = parse_neuro_checklist(complete, "neuro-research-project")
+    assert ok2, msg2
+    assert found["metric_value"] == "0.68"
+
+
+def test_neuro_paper_module_msc_ritual_validation() -> None:
+    from edge_mage.rituals import parse_neuro_checklist
+
+    # Missing doi
+    incomplete = """
+- paper_or_project: paper-module-msc
+- url: https://doi.org/10.1109/TBME.2011.2172210
+- what_reproduced: Riemannian geometry covariance classification
+- metrics: classification accuracy
+- figure_or_methods_slice: Fig 3 - Riemannian vs Euclidean distance on SPD manifold
+- critique_notes: Computational cost scales as O(N^3) with channel count
+- limits: noninvasive benchmark re-analysis
+"""
+    ok, msg, _ = parse_neuro_checklist(incomplete, "neuro-paper-module-msc")
+    assert not ok
+    assert "doi" in msg.lower()
+
+    # Complete valid text
+    complete = """
+- paper_or_project: paper-module-msc
+- url: https://doi.org/10.1109/TBME.2011.2172210
+- what_reproduced: Riemannian geometry covariance classification
+- metrics: classification accuracy 88.4%
+- doi: 10.1109/TBME.2011.2172210
+- figure_or_methods_slice: Fig 3 - Riemannian vs Euclidean distance on SPD manifold
+- critique_notes: High dimensional stability requires shrinkage when T < C
+- reproduction_notes: Reproduced geometric mean covariance on 22-channel BCI Competition IV dataset
+- limits: noninvasive benchmark re-analysis, no clinical claims
+"""
+    ok2, msg2, found = parse_neuro_checklist(complete, "neuro-paper-module-msc")
+    assert ok2, msg2
+    assert "reproduction_notes" in found
+
+
+def test_neuro_mage_and_supremo_ritual_validation() -> None:
+    from edge_mage.rituals import parse_neuro_checklist
+
+    # Non-numeric latency
+    bad_latency = """
+- paper_or_project: neuro-mage
+- url: https://github.com/edevPedro/edge-mage
+- what_reproduced: Full acquisition to inference loop
+- metrics: kappa 0.72
+- latency_ms: super_fast
+- limits: educational noninvasive
+"""
+    ok, msg, _ = parse_neuro_checklist(bad_latency, "neuro-mage")
+    assert not ok
+    assert "numérico" in msg.lower() or "latency_ms" in msg.lower()
+
+    # Valid neuro-mage
+    valid_mage = """
+- paper_or_project: neuro-mage
+- url: https://github.com/edevPedro/edge-mage
+- what_reproduced: Full acquisition to inference loop with online buffer
+- metrics: kappa 0.72, accuracy 86%
+- latency_ms: 42.5ms
+- limits: educational noninvasive, synthetic by default
+"""
+    ok2, msg2, found = parse_neuro_checklist(valid_mage, "neuro-mage")
+    assert ok2, msg2
+
+    # Valid neuro-supremo
+    valid_supremo = """
+- paper_or_project: neuro-supremo
+- url: https://github.com/edevPedro/edge-mage
+- what_reproduced: MSc climax evidence pack with all 4 runes and thesis methods
+- metrics: kappa 0.78, mean latency 34.0ms
+- latency_ms: 34.0
+- limits: educational noninvasive BCI, no clinical claims
+"""
+    ok3, msg3, found3 = parse_neuro_checklist(valid_supremo, "neuro-supremo")
+    assert ok3, msg3
+
+

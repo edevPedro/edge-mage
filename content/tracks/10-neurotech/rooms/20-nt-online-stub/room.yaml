@@ -57,12 +57,23 @@ tasks:
   ritual_id: neuro-online-loop
 - id: e2e
   type: fill
-  prompt: No stub online deste curso, a sequência é window → bandpower toy → ___ →
-    log de latência.
+  prompt: No stub online deste curso, a sequência é window → bandpower toy → ___ → log de latência.
   xp: 10
   answers:
   - label
   - rótulo
   - rotulo
   - classe
-order: 49
+- id: code-sliding-coords
+  type: code
+  prompt: Implemente `sliding_windows(total_samples, win_len=250, hop=50)` retornando lista de tuplas `(start, end)`.
+  xp: 14
+  code_template: "def sliding_windows(total_samples, win_len=250, hop=50):\n    ...\n"
+  code_tests: '
+
+    w = mod.sliding_windows(350, 250, 50)
+
+    assert w == [(0, 250), (50, 300), (100, 350)]
+
+    '
+order: 58

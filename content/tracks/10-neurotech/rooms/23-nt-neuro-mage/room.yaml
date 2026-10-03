@@ -43,7 +43,39 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-mage.md (cite paper OU project + online)
   xp: 32
   ritual_id: neuro-mage
-order: 53
+- id: audit-neuro-mage-evidence
+  type: code
+  prompt: 'Implemente `audit_pipeline_integrity(evidence)` auditando os 3 marcos de engenharia para selar o boss Neuro Mage: cadeia de aquisição/filtro, decodificador com kappa positivo e loop online com latência < 150ms.'
+  xp: 25
+  code_template: "def audit_pipeline_integrity(evidence):\n    # evidence é dict com 'has_filter', 'test_kappa', 'latency_ms'\n    # retorne (is_valid, msg)\n    ...\n"
+  code_tests: '
+
+    ev_ok = {''has_filter'': True, ''test_kappa'': 0.55, ''latency_ms'': 42.0}
+
+    ok, msg = mod.audit_pipeline_integrity(ev_ok)
+
+    assert ok is True and ''aprovado'' in msg.lower()
+
+
+    # Fail on kappa <= 0 (chance level or worse)
+
+    ev_bad_k = {''has_filter'': True, ''test_kappa'': -0.05, ''latency_ms'': 42.0}
+
+    ok2, msg2 = mod.audit_pipeline_integrity(ev_bad_k)
+
+    assert ok2 is False and ''kappa'' in msg2.lower()
+
+
+    # Fail on excessive latency
+
+    ev_slow = {''has_filter'': True, ''test_kappa'': 0.55, ''latency_ms'': 180.0}
+
+    ok3, msg3 = mod.audit_pipeline_integrity(ev_slow)
+
+    assert ok3 is False and ''latencia'' in msg3.lower()
+
+    '
+order: 62
 requires_rooms_any:
 - nt-checkpoint-paper
 - nt-checkpoint-project

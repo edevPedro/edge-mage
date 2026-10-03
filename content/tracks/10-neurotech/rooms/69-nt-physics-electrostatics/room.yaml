@@ -1,0 +1,84 @@
+id: nt-physics-electrostatics
+title: Física — Eletrostática e potencial
+summary: Carga, campo, potencial e capacitância como base do dipolo EEG.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- fisica
+- neuroeng
+phase: F2-physics
+pillar: physics
+course: neurotech
+resources:
+- title: Michel & Brunet — EEG source imaging (PMC6700197)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/
+  kind: paper
+animation: null
+tasks:
+- id: pot-field
+  type: mcq
+  prompt: 'Potencial elétrico relaciona-se ao campo E aproximadamente como:'
+  xp: 10
+  answer: 1
+  choices:
+  - E é sempre constante no escalpo
+  - E ≈ −∇V (gradiente do potencial)
+  - potencial só existe em DC
+  - campo some com volume conduction
+- id: cap
+  type: fill
+  prompt: A relação Q = C·V define ___.
+  xp: 10
+  answers:
+  - capacitância
+  - capacitancia
+  - capacitance
+- id: units
+  type: mcq
+  prompt: 'Unidade SI de potencial elétrico:'
+  xp: 10
+  answer: 0
+  choices:
+  - volt (V)
+  - ampere (A)
+  - ohm (Ω)
+  - tesla (T)
+- id: code-efield
+  type: code
+  prompt: Implemente `electric_field(q, r, k=8.99e9)` retornando a magnitude do campo elétrico E = k * |q| / r^2 em N/C, e `audit_quasistatic_volume_potential(p_current_dipole_am, distance_m, sigma_s_per_m=0.33, theta_rad=0.0)` calculando o potencial em condutor de volume biológico V = (p * cos(theta)) / (4 * pi * sigma * r^2) em uV, retornando `(is_measurable, v_potential_uv, is_radial)` onde is_measurable é True se |v_potential_uv| >= 1.0 uV e is_radial é True se |cos(theta)| > 0.01.
+  xp: 14
+  code_template: |
+    import math
+
+    def electric_field(q, r, k=8.99e9):
+        return k * abs(q) / (r ** 2)
+
+    def audit_quasistatic_volume_potential(p_current_dipole_am, distance_m, sigma_s_per_m=0.33, theta_rad=0.0):
+        # V_volts = (p_current_dipole_am * math.cos(theta_rad)) / (4.0 * math.pi * sigma_s_per_m * (distance_m ** 2))
+        # V_uv = V_volts * 1e6
+        # is_radial = abs(math.cos(theta_rad)) > 0.01
+        # retorne (abs(V_uv) >= 1.0, V_uv, is_radial)
+        ...
+  code_tests: |
+    import math
+    E = mod.electric_field(1e-9, 0.1)
+    assert abs(E - 899.0) < 1.0
+    assert mod.electric_field(1e-9, 0.2) < E
+
+    # Cortical macro-dipole: p = 1e-7 A*m (100 nA*m), r = 0.03 m (3 cm scalp), theta = 0 rad
+    # V ~ (1e-7) / (4*pi*0.33*0.0009) ~ 26.79 uV -> measurable and radial
+    meas, v_uv, rad = mod.audit_quasistatic_volume_potential(1e-7, 0.03, 0.33, 0.0)
+    assert meas is True
+    assert rad is True
+    assert abs(v_uv - 26.79) < 0.5
+
+    # Tangential orientation: theta = pi/2 -> cos(pi/2) = 0 -> cancellation
+    meas_tang, v_tang, rad_tang = mod.audit_quasistatic_volume_potential(1e-7, 0.03, 0.33, math.pi / 2.0)
+    assert meas_tang is False
+    assert rad_tang is False
+    assert abs(v_tang) < 1e-5
+order: 9
+requires_rooms:
+- nt-math-gd-lite
+- nt-found-trig
+- nt-physics-waves

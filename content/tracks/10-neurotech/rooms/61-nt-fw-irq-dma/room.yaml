@@ -42,6 +42,23 @@ tasks:
   - jitter / atraso no sampling ou no loop
   - Nyquist maior
   - autovalor negativo
-order: 44
+- id: code-dma-irq
+  type: code
+  prompt: Implemente `check_dma_irq(write_ptr, prev_ptr, half_size=512, full_size=1024)` detectando transições de meia transferência (HT) e transferência completa (TC).
+  xp: 14
+  code_template: "def check_dma_irq(write_ptr, prev_ptr, half_size=512, full_size=1024):\n    # retorne (ht_irq, tc_irq)\n    ...\n"
+  code_tests: '
+
+    ht, tc = mod.check_dma_irq(520, 500, 512, 1024)
+
+    assert ht is True and tc is False
+
+    ht2, tc2 = mod.check_dma_irq(10, 1020, 512, 1024)
+
+    assert tc2 is True
+
+    '
+order: 52
 requires_rooms:
 - nt-stream-buffer
+- nt-fw-memory-model

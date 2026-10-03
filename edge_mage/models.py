@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 
-TaskType = Literal["mcq", "numeric", "fill", "code", "ritual"]
+TaskType = Literal["mcq", "numeric", "fill", "code", "ritual", "c_code"]
 ResourceKind = Literal["docs", "video", "paper", "book", "tool", "other"]
 
 
@@ -37,6 +37,9 @@ class Task:
     mastery_variant: bool = False
     # fill: optional regex (Systems FLAG packs from web catalog)
     answer_pattern: str = ""
+    # "python" or "c"
+    language: str = "python"
+
 
 
 @dataclass

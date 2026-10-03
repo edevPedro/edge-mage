@@ -3,14 +3,13 @@ title: Stats para BCI (N, κ, chance)
 summary: Níveis de análise, chance level e incerteza — pré-requisito MSc.
 xp_reward: 36
 unlock_xp: 0
-order: 35
+order: 43
 owners:
 - bci
 - pedagogo
 phase: F8-decode
 requires_rooms:
 - nt-trial-design
-- nt-math-estimation
 course: neurotech
 resources:
 - title: Lotte et al. JNE 2007 — classification review
@@ -23,8 +22,7 @@ animation: probability_bars
 tasks:
 - id: unit
   type: mcq
-  prompt: 'Em um paper de BCI, tratar cada amostra de tempo (ms) como N independente
-    tipicamente:'
+  prompt: 'Em um paper de BCI, tratar cada amostra de tempo (ms) como N independente tipicamente:'
   xp: 12
   answer: 1
   choices:
@@ -52,3 +50,15 @@ tasks:
   xp: 14
   answer: 0.05
   tolerance: 0.002
+- id: code-perm-p
+  type: code
+  prompt: Implemente `permutation_p_value(observed_score, null_scores)` retornando (1 + sum(null >= observed)) / (1 + len(null_scores)).
+  xp: 14
+  code_template: "def permutation_p_value(observed_score, null_scores):\n    ...\n"
+  code_tests: '
+
+    p = mod.permutation_p_value(0.85, [0.5, 0.52, 0.48, 0.86])
+
+    assert abs(p - 2.0 / 5.0) < 1e-5
+
+    '

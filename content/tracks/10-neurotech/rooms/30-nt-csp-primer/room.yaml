@@ -3,13 +3,12 @@ title: Primer CSP (filtros espaciais)
 summary: Cov→CSP→log-var; fit só no treino; ponte ao FBCSP eletivo.
 xp_reward: 38
 unlock_xp: 0
-order: 39
+order: 47
 owners:
 - bci
 phase: F8-decode
 requires_rooms:
 - nt-decode-mvp
-- nt-math-eigen
 course: neurotech
 resources:
 - title: Ramoser et al. IEEE TNSRE 2000 — CSP
@@ -52,3 +51,19 @@ tasks:
   - apenas nos dados de treino de cada fold
   - depois do deploy clínico sem paper
   - só com QEEG diagnóstico
+- id: code-spatial-logvar
+  type: code
+  prompt: Implemente `spatial_filter_logvar(epoch, w)` onde epoch é lista de canais (cada canal uma lista de amostras) e w é vetor de pesos espaciais. Compute y[t] = sum(w[c]*epoch[c][t]), calcule a variância de y e retorne ln(var + 1e-6).
+  xp: 16
+  code_template: "def spatial_filter_logvar(epoch, w):\n    ...\n"
+  code_tests: '
+
+    import math
+
+    epoch = [[1.0, 1.0], [2.0, 2.0]]
+
+    lv = mod.spatial_filter_logvar(epoch, [1.0, 0.0])
+
+    assert abs(lv - math.log(1e-6)) < 1e-4
+
+    '

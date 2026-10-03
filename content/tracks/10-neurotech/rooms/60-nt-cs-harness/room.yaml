@@ -43,6 +43,20 @@ tasks:
   - ignorar e shipar
   - culpar o usuário
   - apagar DOI
-order: 27
+- id: code-drop-detector
+  type: code
+  prompt: Implemente `detect_drops(seqs, max_seq=256)` contando pacotes perdidos a partir de uma lista de números de sequência.
+  xp: 14
+  code_template: "def detect_drops(seqs, max_seq=256):\n    ...\n"
+  code_tests: '
+
+    assert mod.detect_drops([0, 1, 2, 3]) == 0
+
+    assert mod.detect_drops([0, 2, 3]) == 1
+
+    assert mod.detect_drops([255, 1], max_seq=256) == 1
+
+    '
+order: 34
 requires_rooms:
 - nt-cs-numerics

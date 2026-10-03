@@ -43,6 +43,23 @@ tasks:
   - correntes sinápticas / campos locais (não o AP extracelular puro isolado)
   - DOI falso
   - CMRR
-order: 19
+- id: code-lif-step
+  type: code
+  prompt: Implemente `lif_step(v, i_inj, dt=0.001, v_rest=-70.0, r=10.0, tau=0.02, v_thresh=-55.0)` calculando o passo de Euler do neurônio Leaky Integrate-and-Fire. Se v_next >= v_thresh, retorne (v_rest, True), senão (v_next, False).
+  xp: 16
+  code_template: "def lif_step(v, i_inj, dt=0.001, v_rest=-70.0, r=10.0, tau=0.02, v_thresh=-55.0):\n    ...\n"
+  code_tests: '
+
+    v1, s1 = mod.lif_step(-70.0, 0.0)
+
+    assert abs(v1 - (-70.0)) < 1e-5 and not s1
+
+    v2, s2 = mod.lif_step(-56.0, 10.0)
+
+    assert s2 is True and abs(v2 - (-70.0)) < 1e-5
+
+    '
+order: 25
 requires_rooms:
-- nt-elec-antialias
+- nt-elec-shield-power
+- nt-neuro-cell-anatomy

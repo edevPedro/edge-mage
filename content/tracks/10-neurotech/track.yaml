@@ -11,4 +11,4 @@ scaffold: false
 course: neurotech
 curriculum_note: >-
   Owners: pedagogo + agent-bci / neuroeng / eletrica / fisica / neurociencia.
-  SPEC: docs/SPEC-neurotech-course.md. ~120–200 h guided. TUI: mage --course neurotech.
+  SPEC: docs/SPEC-neurotech-course.md. ~180–300 h guided. TUI: mage --course neurotech.

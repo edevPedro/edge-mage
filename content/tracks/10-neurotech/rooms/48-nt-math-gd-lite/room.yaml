@@ -37,6 +37,24 @@ tasks:
   - descendente
   - descent
   - descendente / descent
+- id: code-gd
+  type: code
+  prompt: 'Implemente `gd_step(w, grad, lr=0.01)` atualizando w com w - lr * grad, e `fit_linear_filter_gd(X, y, initial_w, lr=0.1, epochs=50)` treinando pesos lineares por MSE via gradiente descendente iterativo.'
+  xp: 14
+  code_template: "def gd_step(w, grad, lr=0.01):\n    return [wi - lr * gi for wi, gi in zip(w, grad)]\n\ndef fit_linear_filter_gd(X, y, initial_w, lr=0.2, epochs=80):\n    # gradiente MSE = (1/N) * sum((w^T x - y) * x)\n    # a cada epoca: grad = compute_grad; w = gd_step(w, grad, lr)\n    # retorne (final_w, final_loss)\n    ...\n"
+  code_tests: |
+    w = [1.0, -2.0]
+    g = [0.5, 1.0]
+    w_new = mod.gd_step(w, g, lr=0.1)
+    assert abs(w_new[0] - 0.95) < 1e-5
+    assert abs(w_new[1] - (-2.1)) < 1e-5
+
+    X = [[1.0, 0.0], [0.0, 1.0], [1.0, 1.0], [2.0, 1.0]]
+    y = [2.0, -1.0, 1.0, 3.0]
+    w_fit, loss = mod.fit_linear_filter_gd(X, y, [0.0, 0.0], lr=0.2, epochs=80)
+    assert loss < 0.01
+    assert abs(w_fit[0] - 2.0) < 0.05
+    assert abs(w_fit[1] - (-1.0)) < 0.05
 order: 8
 requires_rooms:
 - nt-math-estimation

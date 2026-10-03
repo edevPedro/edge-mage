@@ -3,7 +3,7 @@ title: Paper module MSc (padrão real)
 summary: DOI + fatia Methods/figura + crítica — barreira de thesis-prep.
 xp_reward: 46
 unlock_xp: 0
-order: 64
+order: 73
 owners:
 - pedagogo
 - bci
@@ -44,3 +44,22 @@ tasks:
   prompt: Artefato study-log/artifacts/neuro-paper-module-msc.md
   xp: 24
   ritual_id: neuro-paper-module-msc
+- id: reproduce-reported-metric
+  type: code
+  prompt: Implemente `verify_paper_reproduction(reported_metric, reproduced_metric, tolerance=0.05)` verificando se uma reprodução independente confirma os números publicados dentro do intervalo de tolerância.
+  xp: 22
+  code_template: "def verify_paper_reproduction(reported_metric, reproduced_metric, tolerance=0.05):\n    # retorne (is_reproduced, delta)\n    ...\n"
+  code_tests: '
+
+    ok1, d1 = mod.verify_paper_reproduction(0.75, 0.73, 0.05)
+
+    assert ok1 is True and abs(d1 - (-0.02)) < 1e-5
+
+
+    # Fail on divergent result
+
+    ok2, d2 = mod.verify_paper_reproduction(0.85, 0.62, 0.05)
+
+    assert ok2 is False and abs(d2 - (-0.23)) < 1e-5
+
+    '

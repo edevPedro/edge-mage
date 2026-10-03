@@ -35,13 +35,26 @@ tasks:
   tolerance: 0.01
 - id: csp
   type: fill
-  prompt: CSP envolve um problema de autovalores ___ (uma palavra) entre covariâncias
-    de classe.
+  prompt: CSP envolve um problema de autovalores ___ (uma palavra) entre covariâncias de classe.
   xp: 10
   answers:
   - generalizado
   - generalised
   - generalized
+- id: code-eigen
+  type: code
+  prompt: 'Implemente `power_iteration(A, num_iters=20)` para calcular o autovetor dominante de uma matriz simétrica 2x2, e `principal_component_2x2(cov)` que usa power_iteration para retornar `(eigenvector, eigenvalue)` onde o autovalor é o quociente de Rayleigh λ = v^T cov v.'
+  xp: 16
+  code_template: "def power_iteration(A, num_iters=20):\n    # v inicial = [1.0, 1.0]\n    # a cada passo: v = A * v; v = v / ||v||\n    ...\n\ndef principal_component_2x2(cov):\n    # retorne (v_dominante, autovalor_lambda)\n    ...\n"
+  code_tests: |
+    v = mod.power_iteration([[3.0, 0.0], [0.0, 1.0]], num_iters=15)
+    assert abs(abs(v[0]) - 1.0) < 1e-4
+    assert abs(v[1]) < 1e-4
+    v2 = mod.power_iteration([[1.0, 2.0], [2.0, 1.0]], num_iters=20)
+    assert abs(abs(v2[0]) - abs(v2[1])) < 1e-4
+    vec, val = mod.principal_component_2x2([[4.0, 0.0], [0.0, 1.0]])
+    assert abs(val - 4.0) < 1e-3
+    assert abs(abs(vec[0]) - 1.0) < 1e-3
 order: 5
 requires_rooms:
 - nt-math-matrices

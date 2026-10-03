@@ -1,0 +1,66 @@
+id: nt-elec-pcb-emc
+title: Elétrica — PCB, grounding e EMI/EMC
+summary: Stackup lite, star vs plane, separação A/D e higiene EMI para bio-amps.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+animation: null
+tasks:
+- id: plane
+  type: mcq
+  prompt: 'Para sinais µV misturados com digital rápido, boa prática típica é:'
+  xp: 12
+  answer: 0
+  choices:
+  - separar regiões analógica/digital e cuidar do retorno de corrente
+  - cruzar clocks digitais sob entradas INA sem pensar
+  - ligar tudo num único fio longo de antena
+  - ignorar GND
+- id: stack
+  type: fill
+  prompt: A organização de camadas cobre/dielétrico de uma PCB chama-se ___.
+  xp: 10
+  answers:
+  - stackup
+  - stack-up
+  - stack up
+- id: emi
+  type: mcq
+  prompt: 'EMI/EMC hygiene em bio-amp busca principalmente:'
+  xp: 10
+  answer: 1
+  choices:
+  - aumentar XP Edge
+  - reduzir acoplamento de interferência e emissões indesejadas
+  - eliminar volume conduction biológica
+  - substituir consentimento
+- id: code-induced-emc
+  type: code
+  prompt: 'Implemente `induced_voltage(loop_area_m2, db_dt)` (Faraday: V = Area * dB/dt) e `audit_magnetic_loop_coupling(loop_area_cm2, b_field_ut=1.0, freq_hz=60.0, max_eeg_signal_uv=15.0)` calculando se a área de loop entre o eletrodo e a referência induz tensão eletromagnética maior que o próprio biopotencial cortical.'
+  xp: 12
+  code_template: "import math\n\ndef induced_voltage(loop_area_m2, db_dt):\n    return loop_area_m2 * db_dt\n\ndef audit_magnetic_loop_coupling(loop_area_cm2, b_field_ut=1.0, freq_hz=60.0, max_eeg_signal_uv=15.0):\n    # v_ind_uv = loop_area_cm2 * 1e-4 * 2 * pi * freq_hz * b_field_ut\n    # retorne (is_safe, v_ind_uv, msg)\n    ...\n"
+  code_tests: |
+    assert abs(mod.induced_voltage(0.01, 10.0) - 0.1) < 1e-5
+
+    # Area de 500 cm2 (cabos abertos) em campo de 1 uT a 60 Hz: V_ind ~18.85 uV (FALHA: maior que 15 uV)
+    ok1, vind1, msg1 = mod.audit_magnetic_loop_coupling(500.0, 1.0, 60.0, 15.0)
+    assert ok1 is False
+    assert abs(vind1 - 18.8495) < 1e-3
+    assert "excede" in msg1.lower()
+
+    # Area de 5 cm2 (cabos trançados / twisted-pair): V_ind ~0.188 uV (PASSA com seguranca)
+    ok2, vind2, msg2 = mod.audit_magnetic_loop_coupling(5.0, 1.0, 60.0, 15.0)
+    assert ok2 is True
+    assert vind2 < 0.5
+    assert "controle" in msg2.lower()
+order: 23
+requires_rooms:
+- nt-elec-antialias

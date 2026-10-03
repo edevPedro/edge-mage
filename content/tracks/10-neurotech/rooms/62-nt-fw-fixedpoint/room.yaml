@@ -32,7 +32,21 @@ tasks:
   answers:
   - Q15
   - q15
-order: 46
+- id: code-q15-conv
+  type: code
+  prompt: Implemente `float_to_q15(x)` convertendo float em [-1.0, 1.0) para inteiro Q15 signed de 16 bits [-32768, 32767] com saturação.
+  xp: 14
+  code_template: "def float_to_q15(x):\n    ...\n"
+  code_tests: '
+
+    assert mod.float_to_q15(0.5) == 16384
+
+    assert mod.float_to_q15(-1.0) == -32768
+
+    assert mod.float_to_q15(1.5) == 32767
+
+    '
+order: 54
 requires_rooms:
 - nt-mcu-filter
 resources:

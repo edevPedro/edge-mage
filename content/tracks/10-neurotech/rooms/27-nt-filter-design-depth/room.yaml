@@ -3,7 +3,7 @@ title: FIR vs IIR e atraso de grupo
 summary: Fase linear, delay FIR, causalidade online vs filtfilt.
 xp_reward: 36
 unlock_xp: 0
-order: 30
+order: 38
 owners:
 - eletrica
 - neuroeng
@@ -43,9 +43,51 @@ tasks:
   tolerance: 0.002
 - id: iir
   type: fill
-  prompt: Filtros ___ são eficientes mas costumam ter fase não-linear (atraso de grupo
-    variável).
+  prompt: Filtros ___ são eficientes mas costumam ter fase não-linear (atraso de grupo variável).
   xp: 12
   answers:
   - IIR
   - iir
+- id: code-biquad-step
+  type: code
+  prompt: 'Implemente `biquad_step(x, b, a, state)` calculando a equação em diferenças IIR: y = b[0]*x + b[1]*x1 + b[2]*x2 - a[0]*y1 - a[1]*y2. Retorne (y, [x, x1, y, y1]).'
+  xp: 16
+  code_template: "def biquad_step(x, b, a, state):\n    # state = [x1, x2, y1, y2]\n    # a = [a1, a2], b = [b0, b1, b2]\n    ...\n"
+  code_tests: '
+
+    b = [1.0, 0.0, 0.0]
+
+    a = [0.0, 0.0]
+
+    y, s = mod.biquad_step(5.0, b, a, [0.0, 0.0, 0.0, 0.0])
+
+    assert abs(y - 5.0) < 1e-5
+
+    assert s[0] == 5.0
+
+    '
+- id: code-biquad-design
+  type: code
+  prompt: Implemente `design_butterworth_lowpass_biquad(fs, fc)` calculando os coeficientes normalizados b=[b0, b1, b2] e a=[a1, a2] via Transformada Bilinear com pre-warping (K = tan(pi*fc/fs)), e `audit_filter_stability(a)` verificando a magnitude dos polos de z^2 + a1*z + a2 = 0.
+  xp: 20
+  code_template: "def design_butterworth_lowpass_biquad(fs, fc):\n    # retorne ([b0, b1, b2], [a1, a2])\n    ...\n\ndef audit_filter_stability(a):\n    # a = [a1, a2]\n    # retorne (is_stable, max_pole_magnitude)\n    ...\n"
+  code_tests: '
+
+    b, a = mod.design_butterworth_lowpass_biquad(250.0, 30.0)
+
+    assert len(b) == 3 and len(a) == 2
+
+    stable, mag = mod.audit_filter_stability(a)
+
+    assert stable is True and mag < 1.0
+
+
+    # Build and fail: test an unstable pole configuration (a2 = 1.25)
+
+    unstable_a = [-1.5, 1.25]
+
+    u_stable, u_mag = mod.audit_filter_stability(unstable_a)
+
+    assert u_stable is False and u_mag > 1.0
+
+    '

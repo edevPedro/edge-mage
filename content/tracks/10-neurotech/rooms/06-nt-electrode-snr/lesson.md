@@ -1,9 +1,21 @@
-# Lição — Contato e SNR
+# Lição — Impedância de Eletrodos e Divisor de Entrada
 
-1. Meça/relacione qualidade de contato antes de culpar o modelo.
-2. SNR é orçamento: sinal útil vs artefato/ruído. Em dB: ≈ 20·log₁₀(A_sinal/A_ruído) para amplitudes RMS.
-3. Micro-exemplo: 10 µV de ritmo útil sobre 5 µV de ruído → SNR linear 2 ≈ 6 dB — decode fica difícil.
-4. **Honestidade de ferramenta:** o emulador `impedance_probe` está no SPEC como conceito; **ainda não há UI/slider shipped**. Nesta sala use raciocínio numérico + docs OpenBCI; synth EEG para labs de ruído depois.
+## 1. Contexto Operacional
+O biopotencial de EEG é uma fonte de tensão com altíssima impedância de saída ($Z_{\text{electrode}}$). Se o front-end analógico não possuir uma impedância de entrada ($R_{\text{in}}$) ordens de magnitude maior, a interface sofre atenuação resistiva e distorção espectral severa.
 
-## Fontes
-- OpenBCI [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/)
+## 2. Passo a Passo Matemático
+
+### SNR em Decibéis
+$$\text{SNR}_{\text{dB}} = 10 \times \log_{10}\left(\frac{P_{\text{sinal}}}{P_{\text{ruido}}}\right)$$
+
+### Auditoria do Divisor de Impedância
+Dados $Z_{\text{electrode}}$ e $R_{\text{in}}$ em Ohms:
+1. Se $R_{\text{in}} \le 0$ ou $Z_{\text{electrode}} < 0$, levante `ValueError`.
+2. Calcule o erro percentual de atenuação:
+   $$\text{error\_pct} = \frac{Z_{\text{electrode}}}{Z_{\text{electrode}} + R_{\text{in}}} \times 100$$
+3. Se $\text{error\_pct} > \text{max\_error\_pct}$:
+   retorne `(False, error_pct, f"Atenuação de {error_pct:.2f}% excede spec de {max_error_pct}%")`.
+4. Caso contrário:
+   retorne `(True, error_pct, "Spec de impedância de entrada atendida")`.
+
+Para destravar o lab, abra [OpenBCI — EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) e leia a montagem de eletrodo e a faixa de impedância: é ela que fixa Z antes da conta do divisor.

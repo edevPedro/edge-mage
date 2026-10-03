@@ -47,6 +47,22 @@ tasks:
   - exige declarar limites ≠ reprodução bit-a-bit dos sujeitos
   - remove κ
   - é Mago Supremo sozinho
-order: 57
+- id: code-berlin-erd
+  type: code
+  prompt: Implemente `berlin_erd_ratio(c3_mu, c4_mu)` retornando tupla `(ratio, prediction)` onde ratio = c3_mu / c4_mu; prediz 'right_hand' se ratio < 1.0 (dessincronização contralateral esquerda), senão 'left_hand'.
+  xp: 14
+  code_template: "def berlin_erd_ratio(c3_mu, c4_mu):\n    ...\n"
+  code_tests: '
+
+    ratio, pred = mod.berlin_erd_ratio(5.0, 20.0)
+
+    assert ratio == 0.25 and pred == "right_hand"
+
+    ratio2, pred2 = mod.berlin_erd_ratio(25.0, 10.0)
+
+    assert ratio2 == 2.5 and pred2 == "left_hand"
+
+    '
+order: 66
 requires_rooms:
 - nt-app-hybrid-p300

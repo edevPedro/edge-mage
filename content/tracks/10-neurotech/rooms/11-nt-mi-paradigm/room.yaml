@@ -8,8 +8,6 @@ owners:
 - neurociencia
 phase: F7-paradigm
 requires_rooms:
-- nt-filter-bank
-- nt-neuro-maps
 - nt-artifacts
 course: neurotech
 resources:
@@ -19,8 +17,7 @@ resources:
 - title: Singh et al. MI-BCI review (Sensors 2021, PMC8003721)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/
   kind: paper
-- title: Pfurtscheller & Neuper — Motor imagery activates primary sensorimotor area
-    (Neurosci Lett 1997)
+- title: Pfurtscheller & Neuper — Motor imagery activates primary sensorimotor area (Neurosci Lett 1997)
   url: https://doi.org/10.1016/S0304-3940(97)00889-6
   kind: paper
 - title: Neuper et al. — Imagery of motor actions (Cogn Brain Res 2005)
@@ -69,8 +66,7 @@ tasks:
   - direita (mão)
 - id: laterality
   type: fill
-  prompt: No sistema 10–20, o canal sensorimotor esquerdo clássico perto da mão é
-    C___ (contralateral à mão direita).
+  prompt: No sistema 10–20, o canal sensorimotor esquerdo clássico perto da mão é C___ (contralateral à mão direita).
   xp: 12
   answers:
   - '3'
@@ -83,8 +79,21 @@ tasks:
   answer: 1
   choices:
   - o crânio muda de condutividade a cada sample
-  - plasticidade / adaptação do usuário e drift do sinal fazem o mapa feature→classe
-    mudar com o tempo
+  - plasticidade / adaptação do usuário e drift do sinal fazem o mapa feature→classe mudar com o tempo
   - κ offline garante online para sempre
   - ADC deixa de existir após o treino
-order: 32
+- id: code-slice-epoch
+  type: code
+  prompt: 'Implemente `slice_epoch(signal, trigger_idx, pre=10, post=30)` extraindo o trecho `[trigger_idx - pre : trigger_idx + post]`.'
+  xp: 12
+  code_template: "def slice_epoch(signal, trigger_idx, pre=10, post=30):\n    ...\n"
+  code_tests: '
+
+    sig = list(range(100))
+
+    ep = mod.slice_epoch(sig, 50, 5, 10)
+
+    assert len(ep) == 15 and ep[0] == 45 and ep[-1] == 59
+
+    '
+order: 40

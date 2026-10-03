@@ -10,8 +10,11 @@ Este curso **não** certifica IRB. Ensina perguntas que um MSc deve saber fazer.
 - [ ] dados: coleta, armazenamento, compartilhamento
 - [ ] critérios de inclusão/exclusão
 
-## Fontes
+Para destravar o lab, abra [Belmont Report (OHRP)](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html) e leia os três princípios do Belmont Report (respeito às pessoas, beneficência, justiça) para o protocolo fechar consentimento informado sem caso inventado.
 
-- Belmont Report — [HHS OHRP](https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html)
-- Ienca & Andorno neurorights — DOI [10.1186/s40504-017-0050-1](https://doi.org/10.1186/s40504-017-0050-1)
-- UNESCO AI ethics
+## Lab estendido (obrigatório no Estuda)
+
+1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
+2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
+3. Escreva a honesty note em 2 frases.
+4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.

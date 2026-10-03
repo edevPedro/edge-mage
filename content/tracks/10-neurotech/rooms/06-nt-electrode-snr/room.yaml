@@ -7,7 +7,7 @@ owners:
 - neuroeng
 phase: F3-elec
 requires_rooms:
-- nt-physics-field-lite
+- nt-elec-semiconductors
 course: neurotech
 resources:
 - title: OpenBCI — EEG Setup
@@ -60,4 +60,24 @@ tasks:
   - noise
   - ruído
   - ruido
-order: 14
+- id: code-snr
+  type: code
+  prompt: 'Implemente `snr_db(signal_power, noise_power)` retornando 10 * log10(P_signal / P_noise), e `audit_electrode_divider_error(z_electrode_ohm, r_in_ohm, max_error_pct=1.0)` retornando `(is_valid, error_pct, msg)` que audita a atenuação pelo divisor de tensão formado pela impedância de contato do eletrodo e a impedância de entrada do AFE.'
+  xp: 14
+  code_template: "import math\n\ndef snr_db(signal_power, noise_power):\n    return 10.0 * math.log10(signal_power / noise_power)\n\ndef audit_electrode_divider_error(z_electrode_ohm, r_in_ohm, max_error_pct=1.0):\n    # erro_pct = (Z / (Z + R_in)) * 100\n    # retorne (is_valid, erro_pct, msg)\n    ...\n"
+  code_tests: |
+    assert abs(mod.snr_db(100.0, 1.0) - 20.0) < 1e-5
+    assert abs(mod.snr_db(1.0, 1.0) - 0.0) < 1e-5
+
+    # 50kOhm em amp de bancada comum de 1MOhm: atenuação ~4.76% (FALHA no limite de 1%)
+    ok1, err1, msg1 = mod.audit_electrode_divider_error(50000.0, 1000000.0, 1.0)
+    assert ok1 is False
+    assert abs(err1 - 4.7619) < 1e-3
+    assert "excede" in msg1.lower()
+
+    # 50kOhm em AFE dedicado (TI ADS1299) com R_in = 1GOhm (1e9): atenuação ~0.005% (PASSA)
+    ok2, err2, msg2 = mod.audit_electrode_divider_error(50000.0, 1e9, 1.0)
+    assert ok2 is True
+    assert err2 < 0.01
+    assert "atendida" in msg2.lower()
+order: 17

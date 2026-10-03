@@ -8,14 +8,13 @@ owners:
 - bci
 phase: F9-fw
 requires_rooms:
-- nt-fw-aarch64-bridge
+- nt-fw-rt-constraints
 course: neurotech
 resources:
 - title: Singh et al. — MI-BCI review (online challenges context, PMC8003721)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/
   kind: paper
-- title: Ramsey et al. — Brain–computer interfaces in paralysis (review OA via PMC
-    search)
+- title: Ramsey et al. — Brain–computer interfaces in paralysis (review OA via PMC search)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3497935/
   kind: paper
 - title: OpenBCI docs
@@ -64,9 +63,50 @@ tasks:
   xp: 10
   answer: 0
   choices:
-  - é um stress case — feedback de MI costuma tolerar dezenas–centenas de ms; window_ms
-    sozinho já pode estourar 40 ms
+  - é um stress case — feedback de MI costuma tolerar dezenas–centenas de ms; window_ms sozinho já pode estourar 40 ms
   - é o único prazo clínico válido para todo BCI
   - garante κ=1
   - só existe em SSVEP
-order: 48
+- id: code-latency-budget
+  type: code
+  prompt: Implemente `total_latency_check(stages_ms, max_allowed_ms=100.0)` retornando `(sum_ms, fits_bool)`.
+  xp: 12
+  code_template: "def total_latency_check(stages_ms, max_allowed_ms=100.0):\n    ...\n"
+  code_tests: '
+
+    tot, fits = mod.total_latency_check([10.0, 20.0, 15.0, 5.0], 100.0)
+
+    assert tot == 50.0 and fits is True
+
+    '
+- id: code-bci-pipeline-latency
+  type: code
+  prompt: Implemente `simulate_bci_pipeline_latency(fs, packet_samples, hop_samples, n_channels, biquad_sections, classifier_time_ms, display_refresh_ms, deadline_ms)` simulando os estágios de ingestão, cálculo e atuador, auditando estouro de buffer (overrun) e quebra de prazo sensorial.
+  xp: 20
+  code_template: "def simulate_bci_pipeline_latency(fs, packet_samples, hop_samples, n_channels, biquad_sections, classifier_time_ms, display_refresh_ms, deadline_ms):\n    # retorne dict com 't_ingest_ms', 't_compute_ms', 'total_latency_ms', 'buffer_overrun', 'is_deadline_met'\n    ...\n"
+  code_tests: '
+
+    # Fast setup: meets 50ms deadline
+
+    r1 = mod.simulate_bci_pipeline_latency(250.0, 1, 25, 8, 4, 5.0, 16.6, 50.0)
+
+    assert r1[''is_deadline_met''] is True and not r1[''buffer_overrun'']
+
+    assert abs(r1[''total_latency_ms''] - (4.0 + 5.8 + 16.6)) < 1e-4
+
+
+    # Slow DL model: breaches 50ms deadline
+
+    r2 = mod.simulate_bci_pipeline_latency(250.0, 1, 25, 8, 4, 40.0, 16.6, 50.0)
+
+    assert r2[''is_deadline_met''] is False and r2[''total_latency_ms''] > 50.0
+
+
+    # Massive channel count with short hop: causes buffer overrun
+
+    r3 = mod.simulate_bci_pipeline_latency(250.0, 1, 5, 64, 10, 25.0, 16.6, 50.0)
+
+    assert r3[''buffer_overrun''] is True and r3[''is_deadline_met''] is False
+
+    '
+order: 57

@@ -265,6 +265,10 @@ Drops rune-neuro-research. Evidence for Mago Supremo (Neurotech route).
 - paper_or_project: research-project
 - url: 
 - what_reproduced: 
+- data_source: 
+- pipeline_stages: 
+- primary_metric: 
+- metric_value: 
 - metrics: 
 - latency_ms: 
 - limits: educational noninvasive / synthetic or open data
@@ -285,10 +289,10 @@ NEURO_PAPER_MSC_TEMPLATE = """# Ritual — Neurotech paper module (MSc bar)
 - limits: 
 
 ## MSc bar
-- doi:
-- figure_or_methods_slice:
-- critique_notes:
-- reproduction_notes:
+- doi: 
+- figure_or_methods_slice: 
+- critique_notes: 
+- reproduction_notes: 
 """
 
 NEURO_SUPREMO_TEMPLATE = """# Ritual — Mago Supremo via Neurotech
@@ -312,15 +316,89 @@ Same global rank as Edge path. Alternate route — does not erase Edge.
 """
 
 
-def parse_neuro_checklist(text: str) -> tuple[bool, str, dict[str, str]]:
+def parse_neuro_checklist(
+    text: str, ritual_id: str | None = None
+) -> tuple[bool, str, dict[str, str]]:
     found = _parse_field_map(text)
-    missing = [k for k in NEURO_REQUIRED_FIELDS if k not in found or not found[k]]
+    base_required = ["paper_or_project", "url", "what_reproduced"]
+    missing = [k for k in base_required if k not in found or not found[k]]
     if missing:
         return False, f"Faltam campos: {', '.join(missing)}", found
     if "http" not in found["url"].lower():
         return False, "url deve ser um link http(s) real", found
     if len(found["what_reproduced"]) < 8:
         return False, "what_reproduced: descreva o módulo/fatia", found
+    if not (found.get("metrics") or found.get("primary_metric")):
+        return False, "Faltam campos: metrics (ou primary_metric)", found
+
+    target = (ritual_id or found.get("paper_or_project", "")).lower().replace("_", "-")
+
+    if target in {"neuro-thesis-methods", "thesis-methods"}:
+        has_data = ("data" in found and len(found["data"]) >= 3) or (
+            "participants" in found and len(found["participants"]) >= 3
+        )
+        if not has_data:
+            return (
+                False,
+                "neuro-thesis-methods requer campo 'data' ou 'participants' preenchido",
+                found,
+            )
+        for field in ("preprocessing", "features_model", "validation", "seeds_versions", "limits"):
+            if field not in found or len(found[field]) < 3:
+                return (
+                    False,
+                    f"neuro-thesis-methods requer campo '{field}' preenchido",
+                    found,
+                )
+
+    elif target in {"neuro-research-project", "research-project"}:
+        for field in (
+            "data_source",
+            "pipeline_stages",
+            "primary_metric",
+            "metric_value",
+            "limits",
+        ):
+            if field not in found or len(found[field]) < 2:
+                return (
+                    False,
+                    f"neuro-research-project requer campo '{field}' preenchido",
+                    found,
+                )
+
+    elif target in {"neuro-paper-module-msc", "paper-module-msc"}:
+        if "doi" not in found or len(found["doi"]) < 4:
+            return False, "neuro-paper-module-msc requer campo 'doi' válido", found
+        has_slice = ("figure_slice" in found and len(found["figure_slice"]) >= 3) or (
+            "figure_or_methods_slice" in found
+            and len(found["figure_or_methods_slice"]) >= 3
+        )
+        if not has_slice:
+            return (
+                False,
+                "neuro-paper-module-msc requer campo 'figure_slice' ou 'figure_or_methods_slice'",
+                found,
+            )
+        for field in ("critique_notes", "reproduction_notes", "limits"):
+            if field not in found or len(found[field]) < 4:
+                return (
+                    False,
+                    f"neuro-paper-module-msc requer campo '{field}' preenchido",
+                    found,
+                )
+
+    elif target in {"neuro-mage", "neuro-supremo"}:
+        if "metrics" not in found or len(found["metrics"]) < 2:
+            return False, f"{target} requer campo 'metrics' preenchido", found
+        if "latency_ms" not in found or not found["latency_ms"]:
+            return False, f"{target} requer campo 'latency_ms' preenchido", found
+        try:
+            float(found["latency_ms"].replace("ms", "").strip())
+        except ValueError:
+            return False, f"{target} requer 'latency_ms' numérico", found
+        if "limits" not in found or len(found["limits"]) < 4:
+            return False, f"{target} requer declaração de 'limits' éticos/experimentais", found
+
     return True, "Artefato Neurotech válido", found
 
 
@@ -395,7 +473,7 @@ def validate_ritual_file(ritual_id: str, repo_root: Path | None = None) -> tuple
         return ok, msg
     if ritual_id in neuro_ids:
         # Templates alone are not enough — require filled fields
-        ok, msg, found = parse_neuro_checklist(text)
+        ok, msg, found = parse_neuro_checklist(text, ritual_id=ritual_id)
         if not ok:
             return ok, msg
         if not found.get("what_reproduced") or found["what_reproduced"].strip() == "":

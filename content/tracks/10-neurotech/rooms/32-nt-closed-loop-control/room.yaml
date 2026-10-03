@@ -3,7 +3,7 @@ title: Closed-loop como sistema de controle
 summary: Planta, delay, ganho de feedback e budget sense→act.
 xp_reward: 36
 unlock_xp: 0
-order: 50
+order: 59
 owners:
 - neuroeng
 - bci
@@ -47,3 +47,13 @@ tasks:
   - milissegundos
   - milliseconds
   - ms / milissegundos
+- id: code-ema-smooth
+  type: code
+  prompt: Implemente `ema_update(current_val, prev_smooth, alpha=0.2)` computando alpha * current_val + (1 - alpha) * prev_smooth.
+  xp: 12
+  code_template: "def ema_update(current_val, prev_smooth, alpha=0.2):\n    ...\n"
+  code_tests: '
+
+    assert abs(mod.ema_update(1.0, 0.0, 0.2) - 0.2) < 1e-5
+
+    '

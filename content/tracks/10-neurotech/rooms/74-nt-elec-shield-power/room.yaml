@@ -1,0 +1,85 @@
+id: nt-elec-shield-power
+title: Elétrica — Shielding, layout µV e power integrity
+summary: Blindagem, layout para µV e integridade de alimentação do AFE.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+- neuroeng
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+- title: OpenBCI — EEG Setup
+  url: https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/
+  kind: docs
+animation: null
+tasks:
+- id: shield
+  type: mcq
+  prompt: 'Blindagem (shield) de cabo/eletrodo tipicamente:'
+  xp: 12
+  answer: 0
+  choices:
+  - reduz acoplamento capacitivo de interferência quando bem referenciada
+  - aumenta sempre a impedância de contato para 0
+  - substitui o anti-alias
+  - é apenas cosmética
+- id: pi
+  type: fill
+  prompt: Manter trilhos de alimentação limpos (decoupling, LDOs) para o AFE chama-se power ___.
+  xp: 10
+  answers:
+  - integrity
+  - integridade
+  - Integrity
+- id: uv
+  type: mcq
+  prompt: 'Layout para sinais µV prioriza:'
+  xp: 10
+  answer: 2
+  choices:
+  - trilhas longas como antenas
+  - ignorar decoupling
+  - loops curtos, refs estáveis, analog quiet
+  - máxima área de clock sob INA
+- id: code-psrr
+  type: code
+  prompt: Implemente `psrr_attenuation_db(v_ripple_in, v_ripple_out)` retornando 20 * log10(v_ripple_in / v_ripple_out), e `audit_power_ripple_injection(v_ripple_mv, psrr_db, target_signal_uv=10.0, max_injected_uv=1.0)` calculando o ripple injetado no canal de biopotencial v_injected_uv = (v_ripple_mv * 1000) / (10 ** (psrr_db / 20)) e a SNR resultante em dB snr_db = 20 * log10(target_signal_uv / v_injected_uv), retornando `(is_clean, v_injected_uv, snr_db)` onde is_clean é True se v_injected_uv <= max_injected_uv.
+  xp: 14
+  code_template: |
+    import math
+
+    def psrr_attenuation_db(v_ripple_in, v_ripple_out):
+        return 20.0 * math.log10(float(v_ripple_in) / float(v_ripple_out))
+
+    def audit_power_ripple_injection(v_ripple_mv, psrr_db, target_signal_uv=10.0, max_injected_uv=1.0):
+        # factor = 10.0 ** (float(psrr_db) / 20.0)
+        # v_injected_uv = (float(v_ripple_mv) * 1000.0) / factor
+        # snr = float(target_signal_uv) / v_injected_uv
+        # snr_db = 20.0 * math.log10(snr)
+        # is_clean = v_injected_uv <= max_injected_uv
+        # retorne (is_clean, v_injected_uv, snr_db)
+        ...
+  code_tests: |
+    assert abs(mod.psrr_attenuation_db(1.0, 0.001) - 60.0) < 1e-5
+
+    # High-performance design: 10 mV switcher ripple cleaned by LDO to 90 dB total PSRR
+    # factor = 31622.8 -> v_injected = 10000 / 31622.8 ~ 0.316 uV (< 1.0 uV) -> SNR ~ +30 dB
+    c_clean, c_inj, c_snr = mod.audit_power_ripple_injection(10.0, 90.0, 10.0, 1.0)
+    assert c_clean is True
+    assert abs(c_inj - 0.316) < 0.01
+    assert c_snr > 28.0
+
+    # Poor design: 30 mV ripple straight from buck switcher with only 50 dB PSRR
+    # factor = 316.2 -> v_injected = 30000 / 316.2 ~ 94.87 uV -> destroys 10 uV EEG signal!
+    b_clean, b_inj, b_snr = mod.audit_power_ripple_injection(30.0, 50.0, 10.0, 1.0)
+    assert b_clean is False
+    assert b_inj > 90.0
+    assert b_snr < -15.0
+order: 24
+requires_rooms:
+- nt-elec-pcb-emc

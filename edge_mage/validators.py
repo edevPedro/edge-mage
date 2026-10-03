@@ -119,7 +119,130 @@ _FORBIDDEN = (
 )
 
 
+_FORBIDDEN_C = (
+    "system(",
+    "popen(",
+    "fork(",
+    "execl(",
+    "execv(",
+    "execve(",
+    "socket(",
+    "connect(",
+    "kill(",
+    "remove(",
+    "unlink(",
+)
+
+
+def check_c_code(task: Task, user_code: str) -> tuple[bool, str]:
+    code = user_code.strip("\n")
+    if not code:
+        return False, "Cole ou digite o código C."
+
+    import shutil
+
+    compiler = shutil.which("clang") or shutil.which("gcc")
+    if not compiler:
+        return False, "Compilador C (clang ou gcc) não encontrado no sistema."
+
+    lower = code.lower()
+    for token in _FORBIDDEN_C:
+        if token in lower:
+            return False, f"Construto C bloqueado por segurança: {token}"
+
+    with tempfile.TemporaryDirectory(prefix="edge-mage-c-") as tmp:
+        src_file = Path(tmp) / "main.c"
+        bin_file = Path(tmp) / "runner"
+
+        # Prepend standard safe headers and combine user code with tests
+        combined = (
+            "#include <stdint.h>\n"
+            "#include <stdbool.h>\n"
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include <math.h>\n"
+            "#include <assert.h>\n\n"
+            + code
+            + "\n\n"
+        )
+        if task.code_tests.strip():
+            combined += "/* --- Test Harness --- */\n" + task.code_tests + "\n"
+
+        src_file.write_text(combined, encoding="utf-8")
+
+        # Compile
+        try:
+            compile_proc = subprocess.run(
+                [
+                    compiler,
+                    "-O2",
+                    "-std=c11",
+                    "-Wall",
+                    "-Wno-unused-variable",
+                    "-Wno-unused-function",
+                    str(src_file),
+                    "-o",
+                    str(bin_file),
+                    "-lm",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=5,
+                cwd=tmp,
+            )
+        except subprocess.TimeoutExpired:
+            return False, "Timeout (5s) durante a compilação C."
+
+        if compile_proc.returncode != 0:
+            err = (compile_proc.stderr or compile_proc.stdout or "Erro de compilação").strip()
+            # Return last few relevant lines of error
+            err_lines = err.splitlines()
+            tip = "\n".join(err_lines[-6:]) if len(err_lines) > 6 else err
+            return False, f"Erro de compilação C:\n{tip}"
+
+        # Execute compiled binary
+        try:
+            run_proc = subprocess.run(
+                [str(bin_file)],
+                capture_output=True,
+                text=True,
+                timeout=3,
+                cwd=tmp,
+                env={
+                    "PATH": "/usr/bin:/bin",
+                    "HOME": tmp,
+                    "TMPDIR": tmp,
+                },
+            )
+        except subprocess.TimeoutExpired:
+            return False, "Timeout (3s). O código C excedeu o tempo limite."
+
+        if run_proc.returncode != 0:
+            err = (run_proc.stderr or run_proc.stdout or f"Exit code {run_proc.returncode}").strip()
+            err_lines = err.splitlines()
+            tip = err_lines[-1] if err_lines else f"Código {run_proc.returncode}"
+            return False, f"Execução C falhou:\n{tip}"
+
+        out = run_proc.stdout.strip()
+        if task.expected_stdout.strip():
+            expected = task.expected_stdout.strip()
+            if out == expected or out.endswith(expected):
+                return True, "Feitiço C OK!"
+            return False, f"Stdout esperado:\n{expected}\nObtido:\n{out}"
+
+        if task.code_tests.strip():
+            if "OK" in out or run_proc.returncode == 0:
+                return True, "Testes C passaram — feitiço selado!"
+            return False, f"Saída inesperada:\n{out}"
+
+        return True, "Executou C com sucesso."
+
+
 def check_code(task: Task, user_code: str) -> tuple[bool, str]:
+    if task.type == "c_code" or getattr(task, "language", "") == "c":
+        return check_c_code(task, user_code)
+
     code = user_code.strip("\n")
     if not code:
         return False, "Cole ou digite o código."
@@ -201,8 +324,9 @@ def validate_task(task: Task, user_input: str) -> tuple[bool, str]:
         return check_numeric(task, user_input)
     if task.type == "fill":
         return check_fill(task, user_input)
-    if task.type == "code":
+    if task.type in ("code", "c_code"):
         return check_code(task, user_input)
     if task.type == "ritual":
         return check_ritual(task, user_input)
     return False, f"Tipo desconhecido: {task.type}"
+

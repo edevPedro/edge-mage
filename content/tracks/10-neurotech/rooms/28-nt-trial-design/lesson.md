@@ -9,8 +9,11 @@
 
 Documente fs, montagem, N trials/classe, critérios de rejeição de artefato.
 
-## Fontes
+Para destravar o lab, abra [Blankertz et al. Berlin BCI (OA)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) e leia o desenho de trial e os marcadores em Blankertz (cue, baseline, balanceamento) para o max_streak flagrar bloco antes do decode.
 
-- Pfurtscheller & Neuper MI — DOI [10.1016/S0304-3940(97)00889-6](https://doi.org/10.1016/S0304-3940(97)00889-6)
-- Blankertz et al. Berlin BCI — PMC [PMC5116473](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/)
-- Lab Streaming Layer docs
+## Lab estendido (obrigatório no Estuda)
+
+1. Produza um artefato (tabela, diagrama ASCII ou pseudo-código ≤20 linhas) cobrindo o núcleo desta sala.
+2. Calcule ou estime **um** número com unidade (Hz, µV, ms, dB, κ, Big-O, etc.).
+3. Escreva a honesty note em 2 frases.
+4. Liste pré-requisitos cumpridos (`requires_rooms`) e o que desbloqueia a seguir.

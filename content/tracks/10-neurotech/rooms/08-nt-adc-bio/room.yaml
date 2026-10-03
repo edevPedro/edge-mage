@@ -7,7 +7,7 @@ owners:
 - eletrica
 phase: F3-elec
 requires_rooms:
-- nt-elec-opamp-noise
+- nt-elec-ina-drl
 course: neurotech
 resources:
 - title: OpenBCI Cyton
@@ -40,8 +40,7 @@ tasks:
   - 1 Hz
 - id: uv-lsb
   type: numeric
-  prompt: 'Faixa ±100 000 µV (após ganho do front-end) em ADC 24-bit (2^24 níveis
-    ≈ 1.678e7).
+  prompt: 'Faixa ±100 000 µV (após ganho do front-end) em ADC 24-bit (2^24 níveis ≈ 1.678e7).
 
     Qual o µV/LSB aproximado? (100000*2 / 2^24). Resposta ~0.0119.
 
@@ -57,4 +56,25 @@ tasks:
   - volts
   - volt
   - V
-order: 17
+- id: code-adc-lsb
+  type: code
+  prompt: 'Implemente `adc_lsb_microvolts(vref_volts=2.4, n_bits=24, pga_gain=1)` retornando a resolução LSB em µV, e `audit_adc_resolution(vref_volts, n_bits, pga_gain, target_signal_uv=10.0, max_lsb_uv=2.0)` verificando se o LSB é fino o suficiente para quantizar sinais de 10 µV.'
+  xp: 14
+  code_template: "def adc_lsb_microvolts(vref_volts=2.4, n_bits=24, pga_gain=1):\n    return (vref_volts / ((2 ** (n_bits - 1)) * pga_gain)) * 1e6\n\ndef audit_adc_resolution(vref_volts, n_bits, pga_gain, target_signal_uv=10.0, max_lsb_uv=2.0):\n    # lsb_uv = adc_lsb_microvolts(vref_volts, n_bits, pga_gain)\n    # retorne (is_valid, lsb_uv, msg)\n    ...\n"
+  code_tests: |
+    lsb = mod.adc_lsb_microvolts(2.4, 24, 1)
+    assert abs(lsb - (2.4 / (2**23) * 1e6)) < 1e-5
+    assert abs(mod.adc_lsb_microvolts(2.4, 24, 24) - (lsb / 24.0)) < 1e-5
+
+    # ADC de 12-bit em 3.3V com ganho 1: LSB ~1611 uV (FALHA total contra 10 uV)
+    ok1, lsb1, msg1 = mod.audit_adc_resolution(3.3, 12, 1, 10.0, 2.0)
+    assert ok1 is False
+    assert lsb1 > 1000.0
+    assert "insuficiente" in msg1.lower()
+
+    # ADC de 24-bit (ADS1299) em 2.4V com PGA=24: LSB ~0.0119 uV (PASSA com folga)
+    ok2, lsb2, msg2 = mod.audit_adc_resolution(2.4, 24, 24, 10.0, 2.0)
+    assert ok2 is True
+    assert lsb2 < 0.02
+    assert "adequada" in msg2.lower()
+order: 21

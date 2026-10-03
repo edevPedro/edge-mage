@@ -46,6 +46,7 @@ def _load_tasks(raw_tasks: list) -> list[Task]:
                 ritual_id=str(raw.get("ritual_id") or ""),
                 mastery_variant=bool(raw.get("mastery_variant", False)),
                 answer_pattern=str(raw.get("answer_pattern") or ""),
+                language=str(raw.get("language") or ("c" if raw.get("type") in ("c_code", "c") else "python")),
             )
         )
     return tasks

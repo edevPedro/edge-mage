@@ -16,8 +16,7 @@ resources:
 - title: Michel & Brunet — EEG source imaging (PMC)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/
   kind: paper
-- title: Nunez — Toward a quantitative description of large-scale neocortical dynamic
-    function (BBS 2000)
+- title: Nunez — Toward a quantitative description of large-scale neocortical dynamic function (BBS 2000)
   url: https://doi.org/10.1017/S0140525X00003253
   kind: paper
 animation: volume_blur
@@ -54,9 +53,37 @@ tasks:
   - condução de volume
 - id: layers
   type: numeric
-  prompt: 'Cartoon didático: se 2 fontes pontuais no córtex viram 1 pico largo no
-    escalpo, quantas fontes ''resolvidas'' o escalpo mostra nesse cartoon? (inteiro)'
+  prompt: 'Cartoon didático: se 2 fontes pontuais no córtex viram 1 pico largo no escalpo, quantas fontes ''resolvidas'' o escalpo mostra nesse cartoon? (inteiro)'
   xp: 10
   answer: 1
   tolerance: 0.01
-order: 12
+- id: code-volume-blur
+  type: code
+  prompt: Implemente `spatial_blur_1d(channels, kernel=[0.25, 0.5, 0.25])` simulando a difusão espacial do crânio em uma fita de canais, e `audit_spatial_resolution(source_distance_cm, skull_blur_fwhm_cm=2.5)` avaliando se duas fontes corticais separadas por `source_distance_cm` são resolvíveis no escalpo sob o limite de Rayleigh dado por `skull_blur_fwhm_cm`, retornando `(is_resolvable, resolution_ratio, effective_blur_cm)`.
+  xp: 16
+  code_template: |
+    def spatial_blur_1d(channels, kernel=[0.25, 0.5, 0.25]):
+        # convolucao 1D simples com bordas fixas ou extrapoladas
+        ...
+
+    def audit_spatial_resolution(source_distance_cm, skull_blur_fwhm_cm=2.5):
+        # ratio = source_distance_cm / skull_blur_fwhm_cm
+        # retorne (source_distance_cm >= skull_blur_fwhm_cm, ratio, float(skull_blur_fwhm_cm))
+        ...
+  code_tests: |
+    blurred = mod.spatial_blur_1d([0.0, 100.0, 0.0])
+    assert abs(blurred[1] - 50.0) < 1e-5
+    assert abs(blurred[0] - 25.0) < 1e-5
+    assert abs(blurred[2] - 25.0) < 1e-5
+
+    # Finger representations separated by 1.0 cm in M1: unresolvable on scalp
+    res1, ratio1, fwhm1 = mod.audit_spatial_resolution(1.0, 2.5)
+    assert res1 is False
+    assert abs(ratio1 - 0.4) < 1e-4
+    assert abs(fwhm1 - 2.5) < 1e-4
+
+    # Hand vs Foot representations separated by 4.0 cm: resolvable on scalp
+    res2, ratio2, fwhm2 = mod.audit_spatial_resolution(4.0, 2.5)
+    assert res2 is True
+    assert abs(ratio2 - 1.6) < 1e-4
+order: 13

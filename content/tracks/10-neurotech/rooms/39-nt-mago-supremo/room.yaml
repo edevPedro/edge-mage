@@ -3,7 +3,7 @@ title: Boss Mago Supremo (rota Neurotech)
 summary: Climax MSc — concede o mesmo Mago Supremo global que a rota Edge.
 xp_reward: 80
 unlock_xp: 0
-order: 65
+order: 74
 owners:
 - pedagogo
 phase: F14-supremo
@@ -43,7 +43,12 @@ tasks:
   - só assistir webinar
 - id: ritual
   type: ritual
-  prompt: Artefato study-log/artifacts/neuro-supremo.md — sele Mago Supremo (rota
-    Neural)
+  prompt: Artefato study-log/artifacts/neuro-supremo.md — sele Mago Supremo (rota Neural)
   xp: 40
   ritual_id: neuro-supremo
+- id: verify-supremo-pack
+  type: code
+  prompt: Implemente `verify_supremo_neural_pack(runes_list, rituals_dict, min_kappa=0.4, max_latency_ms=100.0)` auditando programaticamente as 4 runas obrigatorias, rituais completos e limites de latência/métricas para selar o Mago Supremo.
+  xp: 30
+  code_template: "def verify_supremo_neural_pack(runes_list, rituals_dict, min_kappa=0.4, max_latency_ms=100.0):\n    # retorne (is_supremo_cleared, summary_msg)\n    ...\n"
+  code_tests: "\nrunes = ['rune-neuro-acq', 'rune-neuro-decode', 'rune-neuro-online', 'rune-neuro-research']\nrituals = {\n    'neuro-mage': True,\n    'neuro-thesis-methods': True,\n    'neuro-research-project': True,\n    'neuro-paper-module-msc': True,\n    'evaluated_kappa': 0.72,\n    'measured_latency_ms': 32.5\n}\nok, msg = mod.verify_supremo_neural_pack(runes, rituals)\nassert ok is True and 'supremo' in msg.lower()\n\n# Fail on missing research rune\nbad_runes = ['rune-neuro-acq', 'rune-neuro-decode', 'rune-neuro-online']\nok2, msg2 = mod.verify_supremo_neural_pack(bad_runes, rituals)\nassert ok2 is False and 'runa' in msg2.lower()\n\n# Fail on excessive latency (> 100ms)\nbad_latency = dict(rituals, measured_latency_ms=145.0)\nok3, msg3 = mod.verify_supremo_neural_pack(runes, bad_latency)\nassert ok3 is False and 'latencia' in msg3.lower()\n"

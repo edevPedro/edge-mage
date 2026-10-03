@@ -37,6 +37,28 @@ tasks:
   - antes
   - before
   - antes do ADC
-order: 18
+- id: code-aliasing
+  type: code
+  prompt: 'Implemente `check_aliasing(f_signal, f_sampling)` retornando tupla `(is_aliased, f_apparent)`, e `audit_antialias_filter(fc_hz, fs_hz, filter_order=2, min_attenuation_at_nyquist_db=18.0)` que audita a frequência de corte e a atenuação na frequência de Nyquist (fs/2) para um filtro passa-baixas analógico Butterworth.'
+  xp: 14
+  code_template: "import math\n\ndef check_aliasing(f_signal, f_sampling):\n    nyq = f_sampling / 2.0\n    if f_signal <= nyq:\n        return (False, f_signal)\n    f_app = abs(f_signal - round(f_signal / f_sampling) * f_sampling)\n    return (True, f_app)\n\ndef audit_antialias_filter(fc_hz, fs_hz, filter_order=2, min_attenuation_at_nyquist_db=18.0):\n    # nyq = fs / 2\n    # att_db = 10 * log10(1 + (nyq / fc)**(2 * order))\n    # retorne (is_valid, att_db, msg)\n    ...\n"
+  code_tests: |
+    aliased, f_app = mod.check_aliasing(60.0, 250.0)
+    assert not aliased and abs(f_app - 60.0) < 1e-5
+    aliased2, f_app2 = mod.check_aliasing(200.0, 250.0)
+    assert aliased2 and abs(f_app2 - 50.0) < 1e-5
+
+    # fc = 110Hz para fs = 250Hz (Nyq=125Hz): atenuação ~3.8 dB (FALHA no teto de 18 dB)
+    ok1, att1, msg1 = mod.audit_antialias_filter(110.0, 250.0, filter_order=2, min_attenuation_at_nyquist_db=18.0)
+    assert ok1 is False
+    assert att1 < 10.0
+    assert "insuficiente" in msg1.lower() or "corte" in msg1.lower()
+
+    # fc = 40Hz para fs = 250Hz (Nyq=125Hz): atenuação ~19.8 dB (PASSA na spec)
+    ok2, att2, msg2 = mod.audit_antialias_filter(40.0, 250.0, filter_order=2, min_attenuation_at_nyquist_db=18.0)
+    assert ok2 is True
+    assert att2 > 19.0
+    assert "válido" in msg2.lower()
+order: 22
 requires_rooms:
 - nt-adc-bio

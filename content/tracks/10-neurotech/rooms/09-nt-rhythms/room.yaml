@@ -51,4 +51,16 @@ tasks:
   - γ
   - banda gama
   - banda gamma
-order: 21
+- id: code-dominant-rhythm
+  type: code
+  prompt: Implemente `dominant_rhythm(powers_dict)` retornando o nome da banda (chave) com maior potência.
+  xp: 12
+  code_template: "def dominant_rhythm(powers_dict):\n    ...\n"
+  code_tests: '
+
+    p = {"delta": 4.0, "theta": 12.0, "alpha": 35.0, "beta": 15.0}
+
+    assert mod.dominant_rhythm(p) == "alpha"
+
+    '
+order: 27

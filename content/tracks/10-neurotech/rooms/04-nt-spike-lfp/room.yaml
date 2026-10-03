@@ -52,4 +52,39 @@ tasks:
   - LFP
   - lfp
   - local field potential
-order: 11
+- id: code-spike-lfp
+  type: code
+  prompt: Implemente `separate_spike_lfp(signal, win=3)` que decompõe um sinal biológico em LFP (média móvel centrada com janela `win`) e Spike (o resíduo de alta frequência `signal - lfp`), e `audit_spike_detectability(spike_amplitude_uv, distance_um, noise_floor_uv=1.0)` que calcula o decaimento quadrático da amplitude do spike no volume condutor V(r) = V0 * (20.0 / distance_um)**2 (para r >= 20 um) e retorna `(is_detectable, v_detected_uv, snr)`, onde é detectável se SNR >= 2.0.
+  xp: 16
+  code_template: |
+    def separate_spike_lfp(signal, win=3):
+        # retorne (lfp_list, spike_list) com janela centrada
+        ...
+
+    def audit_spike_detectability(spike_amplitude_uv, distance_um, noise_floor_uv=1.0):
+        # Decaimento: V(r) = spike_amplitude_uv * (20.0 / distance_um)**2 (se distance_um >= 20.0, senao spike_amplitude_uv)
+        # snr = V(r) / noise_floor_uv
+        # retorne (snr >= 2.0, V(r), snr)
+        ...
+  code_tests: |
+    sig = [10.0, 10.0, 10.0, 10.0, 10.0]
+    lfp, spike = mod.separate_spike_lfp(sig, win=3)
+    assert abs(lfp[2] - 10.0) < 1e-5
+    assert abs(spike[2]) < 1e-5
+
+    sig2 = [10.0, 10.0, 50.0, 10.0, 10.0]
+    lfp2, spike2 = mod.separate_spike_lfp(sig2, win=3)
+    assert spike2[2] > 0
+
+    # Test microelectrode at 50 um (close to soma)
+    det_micro, v_micro, snr_micro = mod.audit_spike_detectability(100.0, 50.0, 1.0)
+    assert det_micro is True
+    assert abs(v_micro - 16.0) < 1e-4
+    assert abs(snr_micro - 16.0) < 1e-4
+
+    # Test scalp EEG electrode at 20,000 um (2 cm distance)
+    det_scalp, v_scalp, snr_scalp = mod.audit_spike_detectability(100.0, 20000.0, 1.0)
+    assert det_scalp is False
+    assert v_scalp < 0.001
+    assert snr_scalp < 0.01
+order: 12

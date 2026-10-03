@@ -3,7 +3,7 @@ title: CV aninhado e vazamento de trial
 summary: Nested CV, scaler no fold, splits honestos.
 xp_reward: 38
 unlock_xp: 0
-order: 37
+order: 45
 owners:
 - bci
 phase: F8-decode
@@ -20,8 +20,7 @@ resources:
 tasks:
 - id: leak
   type: mcq
-  prompt: 'Calcular média/std de normalização com treino+teste juntos tipicamente
-    causa:'
+  prompt: 'Calcular média/std de normalização com treino+teste juntos tipicamente causa:'
   xp: 12
   answer: 0
   choices:
@@ -50,6 +49,31 @@ tasks:
     '
   xp: 16
   code_template: "def split_blocked(n_trials, n_folds):\n    # TODO\n    ...\n"
-  code_tests: "folds = mod.split_blocked(8, 4)\nassert len(folds) == 4\nfor tr, te\
-    \ in folds:\n    assert not set(tr) & set(te)\nall_te = sorted([i for _, te in\
-    \ folds for i in te])\nassert all_te == list(range(8))\n"
+  code_tests: "folds = mod.split_blocked(8, 4)\nassert len(folds) == 4\nfor tr, te in folds:\n    assert not set(tr) & set(te)\nall_te = sorted([i for _, te in folds for i in te])\nassert all_te == list(range(8))\n"
+- id: code-leakage-audit
+  type: code
+  prompt: Implemente `audit_leakage_effect(X, y, train_idx, test_idx)` demonstrando a ilusão de acurácia inflada em dados de ruído puro gerada por vazamento de dados (seleção de features antes do split) vs uma pipeline honesta (split primeiro, seleção só no treino).
+  xp: 20
+  code_template: "def audit_leakage_effect(X, y, train_idx, test_idx):\n    # retorne (leaky_acc, honest_acc)\n    ...\n"
+  code_tests: '
+
+    import random
+
+    random.seed(123)
+
+    X_noise = [[random.gauss(0, 1) for _ in range(15)] for _ in range(40)]
+
+    y_labels = [0]*20 + [1]*20
+
+    tr_idx = list(range(30))
+
+    te_idx = list(range(30, 40))
+
+
+    leaky_acc, honest_acc = mod.audit_leakage_effect(X_noise, y_labels, tr_idx, te_idx)
+
+    assert leaky_acc >= honest_acc
+
+    assert 0.0 <= honest_acc <= 1.0
+
+    '

@@ -7,7 +7,7 @@ owners:
 - fisica
 phase: F2-physics
 requires_rooms:
-- nt-math-gd-lite
+- nt-physics-electrostatics
 course: neurotech
 resources:
 - title: EEG MI techniques (PMC)
@@ -49,4 +49,19 @@ tasks:
   - elimina artefatos de piscar
   - substitui o filtro notch
   - aumenta fs automaticamente
-order: 9
+- id: code-dipole
+  type: code
+  prompt: 'Implemente `dipole_potential(p, theta_rad, r, eps0=8.854e-12)` (V = p * cos(theta) / (4*pi*eps0*r^2)) e `audit_dipole_attenuation(p, r_near_m=0.015, r_scalp_m=0.035, theta_rad=0.0)` comparando a queda geométrica do potencial cortical até o escalpo.'
+  xp: 16
+  code_template: "import math\n\ndef dipole_potential(p, theta_rad, r, eps0=8.854e-12):\n    return (p * math.cos(theta_rad)) / (4.0 * math.pi * eps0 * (r ** 2))\n\ndef audit_dipole_attenuation(p, r_near_m=0.015, r_scalp_m=0.035, theta_rad=0.0):\n    # v_near = dipole_potential(p, theta_rad, r_near_m)\n    # v_scalp = dipole_potential(p, theta_rad, r_scalp_m)\n    # retorne (v_near, v_scalp, v_near / v_scalp)\n    ...\n"
+  code_tests: |
+    import math
+    v_align = mod.dipole_potential(1e-12, 0.0, 0.02)
+    assert v_align > 0
+    v_perp = mod.dipole_potential(1e-12, math.pi / 2, 0.02)
+    assert abs(v_perp) < 1e-9
+
+    v_n, v_s, ratio = mod.audit_dipole_attenuation(1e-12, 0.015, 0.035, 0.0)
+    assert v_n > v_s
+    assert abs(ratio - ((0.035 / 0.015) ** 2)) < 1e-3
+order: 10

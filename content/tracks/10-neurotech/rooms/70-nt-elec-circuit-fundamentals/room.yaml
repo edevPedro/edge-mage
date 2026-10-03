@@ -1,0 +1,89 @@
+id: nt-elec-circuit-fundamentals
+title: Elétrica — Ohm, Kirchhoff, DC/AC
+summary: Lei de Ohm, KCL/KVL, circuitos DC/AC, impedância e potência.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+phase: F3-elec
+pillar: electrical
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet (contexto AFE)
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+animation: null
+tasks:
+- id: ohm
+  type: numeric
+  prompt: V = 5 V, R = 2.5 kΩ. Corrente I = V/R em mA?
+  xp: 12
+  answer: 2.0
+  tolerance: 0.05
+- id: kcl
+  type: mcq
+  prompt: 'KCL (Kirchhoff current) afirma que num nó:'
+  xp: 10
+  answer: 0
+  choices:
+  - soma algébrica das correntes = 0
+  - tensões são sempre iguais
+  - potência é infinita
+  - fs > 2 fmax
+- id: z-ac
+  type: fill
+  prompt: Em AC, a generalização de resistência que inclui fase é a ___.
+  xp: 10
+  answers:
+  - impedância
+  - impedancia
+  - impedance
+- id: power
+  type: mcq
+  prompt: 'Potência média em resistor ideal com Vrms e R:'
+  xp: 10
+  answer: 1
+  choices:
+  - Vrms · R
+  - Vrms² / R
+  - sempre zero em DC
+  - só existe em RF
+- id: code-vmeas
+  type: code
+  prompt: Implemente `measured_voltage(v_source, r_skin, r_in)` calculando o divisor de tensão na entrada do bioamplificador V_meas = V_source * (R_in / (R_skin + R_in)), e `audit_ac_cable_shunting(v_source_uv, r_skin_kohm, c_cable_pf, freq_hz=60.0, max_loss_pct=5.0)` calculando o divisor AC formado pela resistência de pele e a reatância capacitiva do cabo Xc = 1 / (2*pi*f*C), a tensão resultante v_meas = v_source * (Xc / sqrt(R**2 + Xc**2)) e a porcentagem de perda loss_pct = (1 - v_meas/v_source) * 100, retornando `(loss_pct <= max_loss_pct, v_meas, loss_pct)`.
+  xp: 14
+  code_template: |
+    import math
+
+    def measured_voltage(v_source, r_skin, r_in):
+        return float(v_source) * (float(r_in) / (float(r_skin) + float(r_in)))
+
+    def audit_ac_cable_shunting(v_source_uv, r_skin_kohm, c_cable_pf, freq_hz=60.0, max_loss_pct=5.0):
+        # r_skin = r_skin_kohm * 1e3
+        # c_cable = c_cable_pf * 1e-12
+        # xc = 1.0 / (2.0 * math.pi * freq_hz * c_cable)
+        # v_meas = v_source_uv * (xc / math.sqrt(r_skin**2 + xc**2))
+        # loss_pct = (1.0 - (v_meas / v_source_uv)) * 100.0
+        # retorne (loss_pct <= max_loss_pct, v_meas, loss_pct)
+        ...
+  code_tests: |
+    v = mod.measured_voltage(100.0, 10e3, 1e9)
+    assert v > 99.99
+    v_half = mod.measured_voltage(100.0, 100e3, 100e3)
+    assert abs(v_half - 50.0) < 1e-5
+
+    # Clinical wet electrode: 5 kOhm, 100 pF cable -> negligible loss (< 0.01%)
+    pass_wet, v_wet, loss_wet = mod.audit_ac_cable_shunting(50.0, 5.0, 100.0, 60.0)
+    assert pass_wet is True
+    assert abs(v_wet - 50.0) < 0.1
+    assert loss_wet < 0.1
+
+    # High-impedance dry electrode: 2000 kOhm (2 MOhm), 1000 pF unshielded cable
+    # Xc ~ 2.65 MOhm -> severe voltage attenuation (~20% loss)
+    pass_dry, v_dry, loss_dry = mod.audit_ac_cable_shunting(50.0, 2000.0, 1000.0, 60.0)
+    assert pass_dry is False
+    assert v_dry < 42.0
+    assert loss_dry > 15.0
+order: 15
+requires_rooms:
+- nt-physics-field-lite

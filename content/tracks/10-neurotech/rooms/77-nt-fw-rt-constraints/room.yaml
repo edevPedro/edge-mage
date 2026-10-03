@@ -1,0 +1,61 @@
+id: nt-fw-rt-constraints
+title: Firmware — Restrições realtime e buffers
+summary: ISR budget, prioridades, buffers e filtros on-MCU sob deadline.
+xp_reward: 36
+unlock_xp: 0
+owners:
+- eletrica
+- bci
+phase: F9-fw
+pillar: firmware
+course: neurotech
+resources:
+- title: TI ADS1299 datasheet
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+animation: null
+tasks:
+- id: isr
+  type: mcq
+  prompt: 'Em ISR de amostragem, boa prática é:'
+  xp: 12
+  answer: 0
+  choices:
+  - trabalho mínimo (copiar amostra) e deferir filtro pesado
+  - treinar LDA completo na ISR
+  - bloquear com printf longo
+  - ignorar overrun
+- id: prio
+  type: fill
+  prompt: Amostragem por DMA/IRQ costuma ter prioridade ___ (maior/menor) que logs de UI.
+  xp: 10
+  answers:
+  - maior
+  - higher
+  - mais alta
+  - alta
+- id: stub
+  type: mcq
+  prompt: 'O cortex_m_stub deste curso:'
+  xp: 10
+  answer: 1
+  choices:
+  - é silício real QEMU ciclicamente exato
+  - é host stub didático ≠ QEMU/ciclo-acurado
+  - elimina anti-alias
+  - mede neurorights
+- id: code-rt-safe
+  type: code
+  prompt: Implemente `rt_safe(measured_us, max_deadline_us, headroom_pct=20.0)` verificando se measured_us * (1 + headroom/100) <= max_deadline_us.
+  xp: 12
+  code_template: "def rt_safe(measured_us, max_deadline_us, headroom_pct=20.0):\n    ...\n"
+  code_tests: '
+
+    assert mod.rt_safe(700.0, 1000.0, 20.0) is True
+
+    assert mod.rt_safe(900.0, 1000.0, 20.0) is False
+
+    '
+order: 56
+requires_rooms:
+- nt-fw-aarch64-bridge

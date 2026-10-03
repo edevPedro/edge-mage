@@ -40,6 +40,41 @@ tasks:
   - intuição educacional ≠ substituto de FEM
   - prova de mind-reading
   - stim DIY
-order: 13
+- id: code-field-decay
+  type: code
+  prompt: Implemente `field_decay_ratio(r1, r2, power=2)` retornando (r1 / r2)^power, e `audit_deep_source_snr(v_cortical_uv, d_cortical_cm, d_deep_cm, scalp_noise_uv=1.5)` calculando a atenuação dipolar (potência 2) de uma fonte profunda comparada à cortical, a voltagem resultante no escalpo e a SNR em dB, retornando `(is_detectable, v_deep_scalp_uv, snr_deep_db)` onde is_detectable é True se snr_linear >= 2.0.
+  xp: 16
+  code_template: |
+    import math
+
+    def field_decay_ratio(r1, r2, power=2):
+        return (float(r1) / float(r2)) ** power
+
+    def audit_deep_source_snr(v_cortical_uv, d_cortical_cm, d_deep_cm, scalp_noise_uv=1.5):
+        # ratio = (d_cortical_cm / d_deep_cm)**2
+        # v_deep = v_cortical_uv * ratio
+        # snr = v_deep / scalp_noise_uv
+        # snr_db = 20 * log10(snr)
+        # retorne (snr >= 2.0, v_deep, snr_db)
+        ...
+  code_tests: |
+    assert abs(mod.field_decay_ratio(1.0, 2.0, 2) - 0.25) < 1e-5
+    assert abs(mod.field_decay_ratio(1.0, 2.0, 3) - 0.125) < 1e-5
+
+    # Cortical source (1.5 cm) vs Deep source (7.5 cm, e.g. hippocampus)
+    # v_cortical = 25.0 uV -> v_deep = 25 * (1.5/7.5)^2 = 25 * 0.04 = 1.0 uV
+    # scalp_noise = 1.5 uV -> snr = 1.0 / 1.5 = 0.667 (< 1.0 -> not detectable)
+    det1, v1, snr1_db = mod.audit_deep_source_snr(25.0, 1.5, 7.5, 1.5)
+    assert det1 is False
+    assert abs(v1 - 1.0) < 1e-4
+    assert snr1_db < 0.0
+
+    # Shallow subcortical (3.0 cm) with strong generator (100 uV)
+    # v_deep = 100 * (1.5/3.0)^2 = 25 uV -> snr = 25 / 1.5 = 16.67 (detectable)
+    det2, v2, snr2_db = mod.audit_deep_source_snr(100.0, 1.5, 3.0, 1.5)
+    assert det2 is True
+    assert abs(v2 - 25.0) < 1e-4
+    assert snr2_db > 20.0
+order: 14
 requires_rooms:
 - nt-volume-blur

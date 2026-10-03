@@ -19,8 +19,7 @@ resources:
 - title: arXiv:2407.20250
   url: https://arxiv.org/abs/2407.20250
   kind: paper
-- title: Barachant et al. — Multiclass brain–computer interface classification by
-    Riemannian geometry (IEEE)
+- title: Barachant et al. — Multiclass brain–computer interface classification by Riemannian geometry (IEEE)
   url: https://doi.org/10.1109/TBME.2011.2172210
   kind: paper
 animation: matrix
@@ -55,4 +54,18 @@ tasks:
   - definite
   - Definida
   - definida
-order: 40
+- id: code-riemann-diag
+  type: code
+  prompt: 'Implemente `riemann_diag_dist(d1, d2)` calculando a distância Riemanniana AIRM em matrizes diagonais positivas: sqrt(sum(ln(a_i / b_i)^2)).'
+  xp: 16
+  code_template: "def riemann_diag_dist(d1, d2):\n    ...\n"
+  code_tests: '
+
+    import math
+
+    d = mod.riemann_diag_dist([1.0, math.e], [1.0, 1.0])
+
+    assert abs(d - 1.0) < 1e-5
+
+    '
+order: 48

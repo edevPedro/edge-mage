@@ -8,7 +8,6 @@ owners:
 phase: F9-fw
 requires_rooms:
 - nt-fw-irq-dma
-- nt-cs-numerics
 course: neurotech
 resources:
 - title: CMSIS-NN (Arm)
@@ -48,8 +47,7 @@ tasks:
   - compila LLVM passes
 - id: arch-fill
   type: fill
-  prompt: 'A profundidade ISA ARM deste ecossistema continua no curso Edge, sala aarch64-___
-    .
+  prompt: 'A profundidade ISA ARM deste ecossistema continua no curso Edge, sala aarch64-___ .
 
     '
   xp: 12
@@ -64,8 +62,7 @@ tasks:
   choices:
   - o mesmo que Filter Bank CSP completo de MI
   - um solver Riemanniano MDRM
-  - um suavizador didático no host Python — não substitui o filter-bank MI da sala
-    nt-filter-bank
+  - um suavizador didático no host Python — não substitui o filter-bank MI da sala nt-filter-bank
   - QEMU com CMSIS-NN
 - id: taps-num
   type: numeric
@@ -73,4 +70,20 @@ tasks:
   xp: 10
   answer: 5
   tolerance: 0.01
-order: 45
+- id: code-q15-mac
+  type: code
+  prompt: 'Implemente `q15_mac(acc, a, b)` calculando a operação MAC Q15: acc + ((a * b) >> 15), saturando em [-32768, 32767].'
+  xp: 16
+  code_template: "def q15_mac(acc, a, b):\n    ...\n"
+  code_tests: '
+
+    r = mod.q15_mac(0, 16384, 16384)
+
+    assert abs(r - 8192) <= 1
+
+    sat = mod.q15_mac(30000, 32767, 32767)
+
+    assert sat == 32767
+
+    '
+order: 53
