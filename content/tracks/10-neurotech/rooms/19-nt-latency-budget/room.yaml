@@ -1,0 +1,71 @@
+id: nt-latency-budget
+title: Orçamento de latência closed-loop
+summary: Sense≈window_ms · decide≈compute_ms · act_ms vs deadline (wrapper cortex).
+xp_reward: 36
+unlock_xp: 0
+owners:
+- neuroeng
+- bci
+phase: F5
+requires_rooms:
+- nt-mcu-filter
+course: neurotech
+resources:
+- title: MI-BCI review (online challenges context)
+  url: https://www.mdpi.com/1424-8220/21/6/2173
+  kind: paper
+- title: Ramsey et al. — Brain–computer interfaces in paralysis (review OA via PMC search)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3497935/
+  kind: paper
+- title: OpenBCI docs
+  url: https://docs.openbci.com/
+  kind: docs
+animation: closed_loop_timeline
+emulator: latency_budget
+tasks:
+- id: stages
+  type: mcq
+  prompt: 'As três etapas do orçamento closed-loop neste curso são:'
+  xp: 12
+  answer: 0
+  choices:
+  - sense → decide → act
+  - compile → link → flash só
+  - treino → tweet → deploy
+  - EOG → EMG → ECG
+- id: miss
+  type: mcq
+  prompt: 'Se a soma dos estágios excede o deadline:'
+  xp: 10
+  answer: 2
+  choices:
+  - κ vira 1
+  - Nyquist sobe
+  - há miss de latência / feedback atrasado
+  - o crânio some
+- id: sum
+  type: numeric
+  prompt: Sense 12 ms + decide 25 ms + act 10 ms = quantos ms?
+  xp: 14
+  answer: 47
+  tolerance: 0.01
+- id: map-stages
+  type: fill
+  prompt: Neste curso, sense mapeia sobretudo para window___ (ms para encher a janela).
+  xp: 10
+  answers:
+  - _ms
+  - ms
+  - window_ms
+- id: deadline-class
+  type: mcq
+  prompt: 'Um deadline duro de ~40 ms neste stub:'
+  xp: 10
+  answer: 0
+  choices:
+  - é um stress case — feedback de MI costuma tolerar dezenas–centenas de ms; window_ms sozinho já pode
+    estourar 40 ms
+  - é o único prazo clínico válido para todo BCI
+  - garante κ=1
+  - só existe em SSVEP
+order: 19

@@ -1,5 +1,6 @@
-# Conceito — Bandpower / covariância
+# Conceito
 
-Após isolar uma banda (ex. µ 8–12 Hz), a variância/potência no tempo é feature clássica. Covariâncias entre canais abrem o caminho Riemanniano.
+**Bandpower** ≈ energia do sinal numa banda (proxy: variância do sinal filtrado).
+**Covariância** entre canais resume co-variação espacial — base de CSP/Riemann.
 
-Micro-exemplo: `bandpower(xs) = mean(x²)` no trecho passa-banda — proxy de energia naquela banda.
+Animação desta sala: `sampling_dots` (amostras → estatística), **não** o mapa de ritmos.

@@ -1,52 +1,71 @@
 id: nt-ethics-consent
-title: "Ética, consentimento, limites"
-summary: "Consentimento, overclaim e limites do BCI educacional."
+title: Ética, consentimento, limites
+summary: Consentimento, overclaim e limites do BCI educacional.
 xp_reward: 26
 unlock_xp: 0
 owners:
-  - bci
-  - pedagogo
+- bci
+- pedagogo
 phase: F0
 requires_rooms:
-  - nt-portal
+- nt-portal
 course: neurotech
 resources:
-  - title: "OpenBCI — Cyton Getting Started"
-    url: "https://docs.openbci.com/GettingStarted/Boards/CytonGS/"
-    kind: docs
-  - title: "MI-BCI review (Sensors 2021)"
-    url: "https://www.mdpi.com/1424-8220/21/6/2173"
-    kind: paper
+- title: OpenBCI — Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: MI-BCI review (Sensors 2021)
+  url: https://www.mdpi.com/1424-8220/21/6/2173
+  kind: paper
+- title: UNESCO — Recommendation on the Ethics of AI (2021)
+  url: https://unesdoc.unesco.org/ark:/48223/pf0000381137
+  kind: docs
+- title: Ienca & Andorno — Towards new human rights in the age of neuroscience (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5447102/
+  kind: paper
 animation: null
 tasks:
-  - id: no-mindread
-    type: mcq
-    prompt: "Neste curso, afirmar que BCI “lê pensamentos” é:"
-    xp: 8
-    answer: 2
-    choices:
-      - "correto para EEG de escalpo"
-      - "ok se tiver XP de Edge"
-      - "overclaim — evitamos"
-      - "obrigatório no portal"
-  - id: consent
-    type: mcq
-    prompt: |
-      Antes de gravar EEG humano em lab eletivo, o passo ético mínimo é:
-    xp: 10
-    answer: 1
-    choices:
-      - "treinar o classificador primeiro"
-      - "consentimento informado do sujeito"
-      - "publicar no GitHub sem aviso"
-      - "aumentar ganho do amp"
-  - id: mvp-data
-    type: fill
-    prompt: |
-      O MVP deste círculo prefere dados ___ (ou datasets abertos citados).
-    xp: 8
-    answers:
-      - "sintéticos"
-      - sinteticos
-      - synthetic
-      - synthetics
+- id: no-mindread
+  type: mcq
+  prompt: 'Neste curso, afirmar que BCI “lê pensamentos” é:'
+  xp: 8
+  answer: 2
+  choices:
+  - correto para EEG de escalpo
+  - ok se tiver XP de Edge
+  - overclaim — evitamos
+  - obrigatório no portal
+- id: consent
+  type: mcq
+  prompt: 'Antes de gravar EEG humano em lab eletivo, o passo ético mínimo é:
+
+    '
+  xp: 10
+  answer: 1
+  choices:
+  - treinar o classificador primeiro
+  - consentimento informado do sujeito
+  - publicar no GitHub sem aviso
+  - aumentar ganho do amp
+- id: mvp-data
+  type: fill
+  prompt: 'O MVP deste círculo prefere dados ___ (ou datasets abertos citados).
+
+    '
+  xp: 8
+  answers:
+  - sintéticos
+  - sinteticos
+  - synthetic
+  - synthetics
+- id: dual-use
+  type: mcq
+  prompt: 'Alfabetização dual-use neste curso significa:'
+  xp: 10
+  answer: 0
+  choices:
+  - reconhecer que BCI pode ser mal usado, sem ensinar weaponização / vigilância não consentida
+  - ensinar a construir armas neurais
+  - ignorar ética se o κ for alto
+  - hackear dispositivos clínicos
+order: 2

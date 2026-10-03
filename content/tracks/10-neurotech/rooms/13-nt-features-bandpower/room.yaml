@@ -1,54 +1,56 @@
 id: nt-features-bandpower
-title: "Potência de banda / covariância"
-summary: "Features clássicas pós filter bank."
+title: Potência de banda / covariância
+summary: Features clássicas pós filter bank.
 xp_reward: 34
 unlock_xp: 0
 owners:
-  - bci
+- bci
 phase: F4
 requires_rooms:
-  - nt-artifacts
-  - nt-filter-bank
+- nt-artifacts
+- nt-filter-bank
 course: neurotech
 resources:
-  - title: "Yger et al. Riemannian BCI (HAL)"
-    url: "https://inria.hal.science/hal-01394253/document"
-    kind: paper
-  - title: "Padfield et al. (PMC)"
-    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/"
-    kind: paper
-animation: filter_freq_response
+- title: Yger et al. Riemannian BCI (HAL)
+  url: https://inria.hal.science/hal-01394253/document
+  kind: paper
+- title: Padfield et al. (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/
+  kind: paper
+- title: Lotte et al. — A review of classification algorithms for EEG-based BCI (IOP)
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+animation: sampling_dots
 emulator: synth_eeg_stream
 tasks:
-  - id: what
-    type: mcq
-    prompt: "Bandpower após um passa-banda estima sobretudo:"
-    xp: 10
-    answer: 0
-    choices:
-      - "energia/potência na banda isolada"
-      - "a idade do sujeito"
-      - "o IP do amp"
-      - "o rank global"
-  - id: var
-    type: mcq
-    prompt: "Variância no tempo de um sinal passa-banda é um proxy comum de:"
-    xp: 10
-    answer: 1
-    choices:
-      - "impedância óssea"
-      - "potência / energia na banda"
-      - "checksum UART"
-      - "LLVM IR"
-  - id: bandpower-code
-    type: code
-    prompt: "Implemente `bandpower(xs)` = média dos quadrados (potência média)."
-    xp: 16
-    code_template: |
-      def bandpower(xs):
-          # TODO
-          ...
-    code_tests: |
-      assert abs(mod.bandpower([1.0, -1.0, 1.0, -1.0]) - 1.0) < 1e-9
-      assert abs(mod.bandpower([0.0, 0.0]) - 0.0) < 1e-9
+- id: what
+  type: mcq
+  prompt: 'Bandpower após um passa-banda estima sobretudo:'
+  xp: 10
+  answer: 0
+  choices:
+  - energia/potência na banda isolada
+  - a idade do sujeito
+  - o IP do amp
+  - o rank global
+- id: var
+  type: mcq
+  prompt: 'Variância no tempo de um sinal passa-banda é um proxy comum de:'
+  xp: 10
+  answer: 1
+  choices:
+  - impedância óssea
+  - potência / energia na banda
+  - checksum UART
+  - LLVM IR
+- id: bandpower-code
+  type: code
+  prompt: Implemente `bandpower(xs)` = média dos quadrados (potência média).
+  xp: 16
+  code_template: "def bandpower(xs):\n    # TODO\n    ...\n"
+  code_tests: 'assert abs(mod.bandpower([1.0, -1.0, 1.0, -1.0]) - 1.0) < 1e-9
 
+    assert abs(mod.bandpower([0.0, 0.0]) - 0.0) < 1e-9
+
+    '
+order: 13

@@ -1,0 +1,57 @@
+id: nt-checkpoint-project
+title: Ritual fatia de projeto
+summary: Filter bank / decoder MVP / firmware stub — caminho paralelo ao paper.
+xp_reward: 42
+unlock_xp: 0
+owners:
+- pedagogo
+- neuroeng
+phase: F6
+requires_rooms:
+- nt-online-stub
+course: neurotech
+resources:
+- title: OpenBCI Cyton
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: SPEC Neurotech checkpoints
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+  kind: docs
+animation: null
+emulator: cortex_m_stub
+tasks:
+- id: slice
+  type: mcq
+  prompt: 'Uma fatia de projeto válida NÃO é:'
+  xp: 12
+  answer: 2
+  choices:
+  - bandpower testado em synth EEG
+  - ring buffer + packet stub
+  - receita de estimulação DIY em humano
+  - decoder offline com κ reportado
+- id: path
+  type: mcq
+  prompt: 'Em relação ao checkpoint de paper, esta sala é:'
+  xp: 10
+  answer: 1
+  choices:
+  - obrigatória depois do paper (AND)
+  - caminho alternativo (paper OU projeto para evidência do boss)
+  - substituto do consentimento
+  - QEMU completo
+- id: emu
+  type: fill
+  prompt: 'Para testar sem hardware, rode: mage emu ___ (synth|artifact|cortex).'
+  xp: 10
+  answers:
+  - synth
+  - artifact
+  - cortex
+  - all
+- id: ritual
+  type: ritual
+  prompt: Artefato study-log/artifacts/neuro-project-slice.md
+  xp: 20
+  ritual_id: neuro-project-slice
+order: 22

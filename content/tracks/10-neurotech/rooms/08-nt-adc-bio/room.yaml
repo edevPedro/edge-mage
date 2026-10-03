@@ -1,0 +1,59 @@
+id: nt-adc-bio
+title: ADC e escala µV
+summary: Do analógico bio ao inteiro — fs, faixa, Nyquist.
+xp_reward: 30
+unlock_xp: 0
+owners:
+- eletrica
+phase: F2
+requires_rooms:
+- nt-ground-ref
+course: neurotech
+resources:
+- title: OpenBCI Cyton
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: Texas Instruments — ADS1299 datasheet (EEG AFE reference)
+  url: https://www.ti.com/lit/ds/symlink/ads1299.pdf
+  kind: docs
+animation: adc_ladder
+tasks:
+- id: role
+  type: mcq
+  prompt: 'O ADC na cadeia EEG:'
+  xp: 10
+  answer: 1
+  choices:
+  - gera spikes neurais
+  - converte tensão analógica em amostras digitais
+  - substitui o consentimento
+  - é só Wi‑Fi
+- id: nyquist
+  type: mcq
+  prompt: 'Se fs = 200 Hz, Nyquist é:'
+  xp: 10
+  answer: 0
+  choices:
+  - 100 Hz
+  - 200 Hz
+  - 50 Hz
+  - 1 Hz
+- id: uv-lsb
+  type: numeric
+  prompt: 'Faixa ±100 000 µV (após ganho do front-end) em ADC 24-bit (2^24 níveis ≈ 1.678e7).
+
+    Qual o µV/LSB aproximado? (100000*2 / 2^24). Resposta ~0.0119.
+
+    '
+  xp: 14
+  answer: 0.0119
+  tolerance: 0.002
+- id: uv
+  type: fill
+  prompt: EEG de escalpo costuma ser discutido em escala de micro___ (unidade SI).
+  xp: 8
+  answers:
+  - volts
+  - volt
+  - V
+order: 8

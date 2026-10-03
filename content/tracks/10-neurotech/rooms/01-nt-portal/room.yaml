@@ -4,48 +4,50 @@ summary: Estuda → Sala, offline vs online, ética básica de BCI educacional.
 xp_reward: 24
 unlock_xp: 0
 owners:
-  - pedagogo
-  - bci
+- pedagogo
+- bci
 phase: F0
 course: neurotech
 resources:
-  - title: SPEC Neurotech course
-    url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
-    kind: docs
-  - title: OpenBCI — Cyton Getting Started
-    url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
-    kind: docs
-  - title: MI-BCI review (Sensors 2021, MDPI)
-    url: https://www.mdpi.com/1424-8220/21/6/2173
-    kind: paper
+- title: SPEC Neurotech course
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md
+  kind: docs
+- title: OpenBCI — Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: MI-BCI review (Sensors 2021, MDPI)
+  url: https://www.mdpi.com/1424-8220/21/6/2173
+  kind: paper
 animation: null
 tasks:
-  - id: estuda-sala
-    type: mcq
-    prompt: 'Neste curso, a ordem correta é:'
-    xp: 8
-    answer: 0
-    choices:
-      - Estuda (história/conceito/lição) → Sala (desafio)
-      - Sala primeiro; história só se sobrar tempo
-      - Só FLAG; conceito é opcional
-      - Pular Estuda se já tiver XP de Edge
-  - id: offline-online
-    type: mcq
-    prompt: 'Decode online difere do offline principalmente porque:'
-    xp: 8
-    answer: 1
-    choices:
-      - usa necessariamente implante invasivo
-      - decisões ocorrem em janelas com orçamento de latência
-      - não precisa de amostragem
-      - ignora ética e consentimento
-  - id: scope
-    type: fill
-    prompt: 'MVP deste círculo prefere dados ___ (ou datasets abertos), não cirurgia DIY.'
-    xp: 8
-    answers:
-      - sintéticos
-      - sinteticos
-      - synthetic
-      - synthetics
+- id: estuda-sala
+  type: mcq
+  prompt: 'Neste curso, a ordem correta é:'
+  xp: 8
+  answer: 0
+  choices:
+  - Estuda (história/conceito/lição) → Sala (desafio)
+  - Sala primeiro; história só se sobrar tempo
+  - Só FLAG; conceito é opcional
+  - Pular Estuda se já tiver XP de Edge
+- id: offline-online
+  type: mcq
+  prompt: 'Decode online difere do offline principalmente porque:'
+  xp: 8
+  answer: 1
+  choices:
+  - usa necessariamente implante invasivo
+  - decisões ocorrem em janelas com orçamento de latência
+  - não precisa de amostragem
+  - ignora ética e consentimento
+- id: scope
+  type: fill
+  prompt: MVP deste círculo prefere dados ___ (ou datasets abertos), não cirurgia DIY.
+  xp: 8
+  answers:
+  - sintéticos
+  - sinteticos
+  - synthetic
+  - synthetics
+order: 1
+requires_rooms: []

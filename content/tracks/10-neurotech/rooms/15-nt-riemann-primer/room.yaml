@@ -1,0 +1,58 @@
+id: nt-riemann-primer
+title: Primer Riemanniano (SPD toy)
+summary: Covariâncias SPD e distância — intuição, não DG completa.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- bci
+phase: F4
+requires_rooms:
+- nt-decode-mvp
+course: neurotech
+resources:
+- title: Yger et al. review (HAL PDF)
+  url: https://inria.hal.science/hal-01394253/document
+  kind: paper
+- title: Congedo et al. 2017 primer
+  url: https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192
+  kind: paper
+- title: arXiv:2407.20250
+  url: https://arxiv.org/abs/2407.20250
+  kind: paper
+- title: Barachant et al. — Multiclass brain–computer interface classification by Riemannian geometry
+    (IEEE)
+  url: https://doi.org/10.1109/TBME.2011.2172210
+  kind: paper
+animation: matrix
+emulator: spd_toy
+tasks:
+- id: spd
+  type: mcq
+  prompt: 'Matrizes de covariância de sinais (bem formadas) são:'
+  xp: 10
+  answer: 1
+  choices:
+  - sempre singulares e assimétricas
+  - SPD (simétricas definidas positivas)
+  - só binárias 0/1
+  - arquivos ELF
+- id: why
+  type: mcq
+  prompt: 'Geometria Riemanniana entra em BCI porque:'
+  xp: 12
+  answer: 0
+  choices:
+  - o espaço de covariâncias SPD não é euclidiano ingênuo
+  - EEG não precisa de amostragem
+  - elimina ética
+  - substitui AArch64
+- id: spd-fill
+  type: fill
+  prompt: A sigla SPD (em covariâncias) significa Symmetric Positive ___.
+  xp: 12
+  answers:
+  - Definite
+  - definite
+  - Definida
+  - definida
+order: 15

@@ -344,10 +344,33 @@ class ProgressStore:
         if room.requires_skills:
             if not all(self.is_skill_unlocked(s) for s in room.requires_skills):
                 return False
+        if room.requires_rooms:
+            if not all(
+                self.is_room_done(track.id, rid) for rid in room.requires_rooms
+            ):
+                return False
+        if room.requires_rooms_any:
+            if not any(
+                self.is_room_done(track.id, rid) for rid in room.requires_rooms_any
+            ):
+                return False
         return True
 
     def missing_skills_for_room(self, room: Room) -> list[str]:
         return [s for s in room.requires_skills if not self.is_skill_unlocked(s)]
+
+    def missing_rooms_for_room(self, track: Track, room: Room) -> list[str]:
+        missing = [
+            rid
+            for rid in room.requires_rooms
+            if not self.is_room_done(track.id, rid)
+        ]
+        if room.requires_rooms_any:
+            if not any(
+                self.is_room_done(track.id, rid) for rid in room.requires_rooms_any
+            ):
+                missing.append("any(" + "|".join(room.requires_rooms_any) + ")")
+        return missing
 
     def get_daily_run(self) -> dict[str, Any]:
         return dict(self.state.daily_run or {})

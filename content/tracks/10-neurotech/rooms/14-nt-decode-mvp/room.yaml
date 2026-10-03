@@ -1,0 +1,74 @@
+id: nt-decode-mvp
+title: Decode MVP (labels → LDA → κ)
+summary: 'Pipeline offline mínima: rótulos → bandpower/cov → LDA toy → κ.'
+xp_reward: 38
+unlock_xp: 0
+order: 14
+owners:
+- bci
+phase: F4
+requires_rooms:
+- nt-features-bandpower
+course: neurotech
+resources:
+- title: Padfield et al. EEG-MI techniques (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/
+  kind: paper
+- title: Alzahab et al. MI-BCI review (MDPI Sensors 2021)
+  url: https://www.mdpi.com/1424-8220/21/6/2173
+  kind: paper
+- title: Lotte et al. review of classification algorithms for EEG-BCI (IOP)
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+- title: OpenBCI — Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+animation: probability_bars
+emulator: synth_eeg_stream
+tasks:
+- id: pipeline
+  type: mcq
+  prompt: 'A ordem típica do decode MVP offline neste curso é:'
+  xp: 10
+  answer: 0
+  choices:
+  - rótulos/trials → features (bandpower/cov) → classificador → métrica (κ)
+  - κ → implantar → depois filtrar
+  - só UART sem features
+  - treino no teste e chamar de online
+- id: lda-role
+  type: mcq
+  prompt: 'LDA (toy) neste lab serve para:'
+  xp: 10
+  answer: 1
+  choices:
+  - resolver FEM do crânio
+  - separar classes em um espaço de features linear simples
+  - substituir consentimento
+  - aumentar fs além de Nyquist
+- id: kappa-mvp
+  type: numeric
+  prompt: 'Em 2 classes equilibradas, acerto ao acaso p_e = 0.5.
+
+    Se acurácia observada p_o = 0.75, κ = (p_o − p_e)/(1 − p_e) = ?
+
+    '
+  xp: 14
+  answer: 0.5
+  tolerance: 0.01
+- id: lda-code
+  type: code
+  prompt: 'Implemente `predict_lda(x, w, b)` retornando 0 se w·x + b < 0, senão 1.
+
+    `x` e `w` são listas do mesmo comprimento; `b` é float.
+
+    '
+  xp: 16
+  code_template: "def predict_lda(x, w, b):\n    # TODO\n    ...\n"
+  code_tests: 'assert mod.predict_lda([1.0, 0.0], [1.0, 0.0], -0.5) == 1
+
+    assert mod.predict_lda([0.0, 1.0], [1.0, 0.0], -0.5) == 0
+
+    assert mod.predict_lda([0.2, 0.2], [1.0, 1.0], -0.5) == 0
+
+    '

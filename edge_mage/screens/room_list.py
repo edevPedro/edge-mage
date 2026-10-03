@@ -32,7 +32,13 @@ class RoomListScreen(MageScreen):
                 mark = "✓" if finished else "·"
                 label = f"{mark}  {room.title}"
                 if not unlocked:
-                    label += f"  🔒 {room.unlock_xp} XP"
+                    miss_rooms = store.missing_rooms_for_room(self.track, room)
+                    if miss_rooms:
+                        label += f"  🔒 salas: {', '.join(miss_rooms[:3])}"
+                    elif room.unlock_xp:
+                        label += f"  🔒 {room.unlock_xp} XP"
+                    else:
+                        label += "  🔒"
                 else:
                     label += f"  ({done}/{total} tasks · +{room.xp_reward} XP sala)"
                 options.append(Option(label, id=room.id))
@@ -50,10 +56,13 @@ class RoomListScreen(MageScreen):
         room = next(r for r in self.track.rooms if r.id == room_id)
         store = self.app.store  # type: ignore[attr-defined]
         if not store.is_room_unlocked(self.track, room):
-            self.notify(
-                f"Sala bloqueada — precisa de {room.unlock_xp} XP",
-                severity="warning",
+            miss = store.missing_rooms_for_room(self.track, room)
+            why = (
+                f"salas: {', '.join(miss)}"
+                if miss
+                else f"precisa de {room.unlock_xp} XP"
             )
+            self.notify(f"Sala bloqueada — {why}", severity="warning")
             return
         from edge_mage.screens.room import RoomScreen
 

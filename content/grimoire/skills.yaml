@@ -260,9 +260,9 @@ skills:
 
   - id: neuro-decode
     name: Decode Offline
-    description: "Features + métricas offline — rune-neuro-decode."
+    description: "Decode MVP (LDA/κ) + métricas — rune-neuro-decode."
     glyph: "λ"
-    unlock_room: nt-metrics-offline
+    unlock_room: nt-decode-mvp
     unlock_track: neurotech
 
   - id: neuro-edge-stub

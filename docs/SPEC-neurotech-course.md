@@ -91,34 +91,37 @@ Format: `room-id` — Title — **owner**
 - `nt-spike-lfp` — Spike → LFP (intuição) — **fisica+neurociencia**
 - `nt-volume-blur` — Condução de volume e borrão espacial — **fisica**
 
-**F2** (cadeia via `requires_rooms`: eletrodo → terra/ref → ADC → filter-bank)
+**F2** (cadeia via `requires_rooms` + `order`: eletrodo → terra/ref → ADC → ritmos → filter-bank)
 - `nt-electrode-snr` — Eletrodo, impedância, SNR — **neuroeng**
 - `nt-ground-ref` — Terra, referência, 50/60 Hz — **eletrica+neuroeng**
 - `nt-adc-bio` — ADC e escala µV — **eletrica**
 - `nt-filter-bank` — Banco de filtros EEG — **eletrica** (após ritmos + ADC)
 
 **F3**
-- `nt-rhythms` — Ritmos α/β/γ/µ — **neurociencia** (pode vir antes do filter-bank para intuição de banda)
+- `nt-rhythms` — Ritmos α/β/γ/µ — **neurociencia** (após ADC, antes do filter-bank)
 - `nt-mi-paradigm` — Imagética motora (paradigma) — **bci+neurociencia**
 - `nt-artifacts` — Artefatos (EOG/EMG/movimento) — **bci+eletrica**
 
 **F4**
 - `nt-features-bandpower` — Potência de banda / covariância — **bci**
+- `nt-decode-mvp` — Decode MVP (labels → bandpower/cov → LDA toy → κ) — **bci**
 - `nt-riemann-primer` — Primer Riemanniano (SPD toy) — **bci**
 - `nt-metrics-offline` — Acurácia, κ, vazamento de trial — **bci**
 
 **F5**
 - `nt-stream-buffer` — Stream sintético e ring buffer — **bci+eletrica**
-- `nt-mcu-filter` — Filter bank embutido (stub) — **eletrica**
-- `nt-latency-budget` — Orçamento de latência closed-loop — **neuroeng+bci**
+- `nt-mcu-filter` — MCU pipeline stub (MA/FIR host — **≠** FBCSP/filter-bank MI) — **eletrica**
+- `nt-latency-budget` — Orçamento sense→decide→act (`latency_budget` → cortex stub) — **neuroeng+bci**
 
 **F6**
-- `nt-online-stub` — Loop online simulado — **bci**
+- `nt-online-stub` — Loop online simulado (window→feature→label→log) — **bci**
 - `nt-checkpoint-paper` — Ritual módulo de paper — **pedagogo+bci**
 - `nt-checkpoint-project` — Ritual fatia de projeto — **pedagogo+neuroeng**
-- `nt-neuro-mage` — Boss Neuro Mage — **pedagogo**
+- `nt-neuro-mage` — Boss Neuro Mage — **pedagogo** (`requires_rooms_any`: paper \| project)
 
-**Shipped rooms (F0→F6 catalog):** all stubs in §4 authored under `content/tracks/10-neurotech/rooms/` (22 salas). Pedagogical path: F2 acquisition order eletrodo→ground→ADC→filter; `nt-rhythms` may precede filter-bank for band intuition. **Checkpoints:** paper module **or** project slice (parallel); Neuro Mage evidence = online stub + one of the two — not both required.
+**Shipped rooms (F0→F6 catalog):** 23 salas sob `content/tracks/10-neurotech/rooms/` (pastas `NN-` + campo `order`). TUI **enforces** `requires_rooms` / `requires_rooms_any`. Path: eletrodo→ground→ADC→ritmos→filter→MI→…→decode MVP→…→online→(paper XOR project)→boss.
+
+**Electives (not required for Neuro Mage):** SSVEP paradigm depth; full CSP / FBCSP vs Riemannian bake-off — cite Ang et al. (FBCSP DOI), Yger/Congedo/Barachant; optional OpenBCI live stream after ethics.
 
 **Neurological clinical case rooms:** none invented. Only literature-backed MI/artifact/benchmark paradigms (see §7). Rejected fake “patient diagnosis” rooms without public solved-case URLs.
 
@@ -131,11 +134,12 @@ Format: `room-id` — Title — **owner**
 | `synth_eeg_stream` | Multichannel colored noise + band-energy probes (µ-burst / suppression) | **Didactic µV-scale**; probes ≠ physiological MI/ERD · **shipped** `edge_mage/emulators/synth_eeg.py` |
 | `artifact_inject` | Blink / EMG / line noise overlays | **shipped** `edge_mage/emulators/artifact_inject.py` |
 | `cortex_m_stub` | ADC → ring buffer → FIR → UART packet + latency | **Python host stub** (Cortex-M *class* mental model) — **not QEMU / not CMSIS runtime**; splits `window_ms` vs `compute_ms` · **shipped** `edge_mage/emulators/cortex_m_stub.py` |
-| `latency_budget` | Pipeline stages with ms costs | Exercised via Cortex stub `deadline_ms` + room `nt-latency-budget` |
+| `latency_budget` | sense/decide/act ms accounting | **Thin wrapper** → `cortex_m_stub` (`edge_mage/emulators/latency_budget.py`) |
+| `online_loop` | Sliding window → bandpower toy → label → latency log | **shipped** `edge_mage/emulators/online_loop.py` |
 | `impedance_probe` | Contact quality → SNR slider | **Stub / not shipped UI** — honesty note in `nt-electrode-snr` (numeric SNR task instead) |
 | `spd_toy` | 2×2 or small SPD covariances on a grid | Conceptual in `nt-riemann-primer` |
 
-CLI: `mage emu all` · `python -m edge_mage.emulators [synth|artifact|cortex|all]`
+CLI: `mage emu all` · `python -m edge_mage.emulators [synth|artifact|cortex|latency|online|all]`
 
 No real human data required for MVP; optional OpenBCI live path later as elective.
 
@@ -149,9 +153,10 @@ No real human data required for MVP; optional OpenBCI live path later as electiv
 | `dipole_field` | Current dipole under skull layers → scalp map | `nt-dipole-scalp` |
 | `spike_to_lfp` | Spike train → synaptic current → slower LFP trace | `nt-spike-lfp` |
 | `rhythm_bands` | Time series with α/β/γ overlays | `nt-rhythms` |
-| `mi_erds` | Cartoon ERD/ERS over motor cortex | `nt-mi-paradigm` |
+| `mi_erds` | Cartoon ERD↓ below baseline + ERS↑ rebound above | `nt-mi-paradigm` |
 | `closed_loop_timeline` | Sense → decide → act bars vs deadline | `nt-latency-budget`, `nt-online-stub` |
-| `volume_blur` | Fine source map vs smeared scalp | `nt-volume-blur` |
+| `volume_blur` | Fine source map vs smeared scalp (cartoon ≠ FEM) | `nt-volume-blur` |
+| `artifact_trace` | Blink/EOG spikes + line ripple (≠ rhythm map) | `nt-artifacts` |
 
 ---
 
@@ -163,11 +168,29 @@ No real human data required for MVP; optional OpenBCI live path later as electiv
 | **CP-Riemann figure** | Paper module | Reproduce SPD / distance intuition figure or toy MDRM on synthetic cov | [Yger et al. review (HAL PDF)](https://inria.hal.science/hal-01394253/document) · [Congedo et al. 2017 primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) · [arXiv:2407.20250](https://arxiv.org/abs/2407.20250) |
 | **CP-OpenBCI chain** | Project slice | Document Cyton/GUI → stream → file; or synthetic stand-in + cite setup | [Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) · [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) |
 | **CP-Filter bank** | Project slice | Implement bandpower features for µ/β on synth EEG; tests in harness | OpenBCI docs + F3/F4 rooms |
-| **CP-Decoder MVP** | Project slice | Offline MI binary classify on open or synth set; report κ + no trial leak | MI reviews above |
-| **CP-Online stub** | Project slice | Sliding window → feature → label → latency log artifact | Emulator `latency_budget` |
+| **CP-Decoder MVP** | Project slice | Offline MI binary classify on open or synth set; report κ + no trial leak | Room `nt-decode-mvp` + MI reviews / [Lotte et al. DOI](https://doi.org/10.1088/1741-2560/4/2/R01) |
+| **CP-Online stub** | Project slice | Sliding window → feature → label → latency log artifact | Emulators `online_loop` + `latency_budget` |
 | **CP-Firmware driver** | Project slice | Ring buffer + stub SPI/UART packet parse (no unsafe hardware required) | Edge ADC rooms + F5 |
 
 Artifact template fields (ritual): `paper_or_project`, `url`, `what_reproduced`, `metrics`, `latency_ms` (if online), `limits`.
+
+### Bibliography (expand — prefer OA / DOI / docs)
+
+| Topic | Link |
+|-------|------|
+| MI-BCI review | [Alzahab et al., Sensors 2021](https://www.mdpi.com/1424-8220/21/6/2173) |
+| EEG-MI techniques | [Padfield et al., PMC6471241](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
+| Classification review | [Lotte et al., JNE 2007](https://doi.org/10.1088/1741-2560/4/2/R01) |
+| ERD/ERS | [Pfurtscheller & Lopes da Silva](https://doi.org/10.1016/S1388-2457(99)00141-8) |
+| Riemannian BCI | [Yger et al. HAL](https://inria.hal.science/hal-01394253/document) · [Congedo primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) · [Barachant TBME](https://doi.org/10.1109/TBME.2011.2172210) |
+| FBCSP (elective) | [Ang et al. IJCNN 2008](https://doi.org/10.1109/IJCNN.2008.4634130) |
+| LFP / fields | [Buzsáki et al. PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/) · [Einevoll et al. PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) |
+| EEG source / blur | [Michel & Brunet PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) |
+| Artifacts | [Urigüen & Garcia-Zapirain PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC4462641/) |
+| OpenBCI | [Cyton GS](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) · [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) |
+| Streaming | [Lab Streaming Layer](https://labstreaminglayer.readthedocs.io/) |
+| Ethics / dual-use literacy | [UNESCO AI ethics](https://unesdoc.unesco.org/ark:/48223/pf0000381137) · [Ienca & Andorno PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC5447102/) |
+| AFE reference | [TI ADS1299 PDF](https://www.ti.com/lit/ds/symlink/ads1299.pdf) |
 
 ---
 
@@ -253,7 +276,8 @@ Each room: `story.md` · `concept.md` · `lesson.md` · `room.yaml`.
 - [x] Hours estimate  
 - [x] Rank/rune parallel-circle rules  
 - [x] MVP YAML order  
-- [x] Full room catalog authored (F0→F6, 22 salas)  
+- [x] Full room catalog authored (F0→F6, 23 salas incl. decode MVP)  
 - [x] TUI course id + web pack (`neurotech` export + launcher)  
-- [x] Emulator MVP: `synth_eeg_stream` + `artifact_inject` + `cortex_m_stub`  
+- [x] Emulator MVP: `synth_eeg_stream` + `artifact_inject` + `cortex_m_stub` + `latency_budget` + `online_loop`  
+- [x] Pedagogical `order` + `requires_rooms` enforced in TUI (tested)  
 

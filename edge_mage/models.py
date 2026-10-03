@@ -54,11 +54,15 @@ class Room:
     concept_md: str = ""
     boss: bool = False
     requires_skills: list[str] = field(default_factory=list)
+    requires_rooms: list[str] = field(default_factory=list)
+    # At least one of these rooms must be done (e.g. paper XOR project → boss).
+    requires_rooms_any: list[str] = field(default_factory=list)
+    order: int = 99
     elite_skill: str = ""  # skill id concedida ao concluir boss
     unlocks_track: str = ""  # ex.: edge-ai após Softmax Estável
     resources: list[Resource] = field(default_factory=list)
     shared: bool = False  # shared-core room (single room_id credit)
-    course: str = ""  # optional course tag: fundamentals|systems|edge
+    course: str = ""  # optional course tag: fundamentals|systems|edge|neurotech
 
 
 @dataclass

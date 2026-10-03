@@ -1,7 +1,9 @@
-# Conceito — Imagética motora (paradigma)
+# Conceito
 
-MI-BCI: classes (ex. esquerda/direita), janelas de trial, cues.
+**Imagética motora (MI):** imaginar movimento sem necessariamente executá-lo.
+Marcadores clássicos: **ERD↓** (dessincronização) durante a imagética e possível
+**ERS↑** (rebound) após — em ritmos sensorimotores (µ/β).
 
-Micro-exemplo: após o cue “mão esquerda”, espera-se **ERD↓** (queda de potência µ/β) no sensorimotor direito; depois pode aparecer **ERS↑** (rebound). Isso é sincronização de ritmo, não decodificação semântica.
-
-O stream sintético do curso é um **probe de energia de banda** — não simula ERD cortical.
+**Laterality:** mão direita ↔ córtex motor esquerdo (C3); mão esquerda ↔ C4.
+**Plasticidade / calibração:** o usuário e o sinal mudam; feedback fecha o loop de aprendizagem.
+Não é diagnóstico clínico.

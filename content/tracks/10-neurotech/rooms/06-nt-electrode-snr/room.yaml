@@ -1,55 +1,63 @@
 id: nt-electrode-snr
-title: "Eletrodo, impedância, SNR"
-summary: "Contato, ruído e orçamento de SNR antes do decode."
+title: Eletrodo, impedância, SNR
+summary: Contato, ruído e orçamento de SNR antes do decode.
 xp_reward: 30
 unlock_xp: 0
 owners:
-  - neuroeng
+- neuroeng
 phase: F2
 requires_rooms:
-  - nt-volume-blur
+- nt-volume-blur
 course: neurotech
 resources:
-  - title: "OpenBCI — EEG Setup"
-    url: "https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/"
-    kind: docs
+- title: OpenBCI — EEG Setup
+  url: https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/
+  kind: docs
+- title: OpenBCI — Cyton Getting Started
+  url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
+  kind: docs
+- title: Tallgren et al. — Evaluation of commercially available electrodes (Clin Neurophysiol)
+  url: https://doi.org/10.1016/j.clinph.2004.07.016
+  kind: paper
 animation: null
-# honesty: impedance_probe emulator is SPEC-stub only (no shipped slider UI yet)
 emulator: null
 tasks:
-  - id: snr-def
-    type: mcq
-    prompt: "SNR alto significa, em intuição:"
-    xp: 8
-    answer: 0
-    choices:
-      - "sinal útil grande frente ao ruído"
-      - "sempre 60 Hz dominante"
-      - "consentimento opcional"
-      - "fs ilegal"
-  - id: contact
-    type: mcq
-    prompt: "Contato de eletrodo ruim costuma:"
-    xp: 8
-    answer: 2
-    choices:
-      - "aumentar magicamente κ do classificador"
-      - "eliminar volume conduction"
-      - "piorar SNR / estabilidade"
-      - "trocar AArch64 por x86"
-  - id: snr-db
-    type: numeric
-    prompt: |
-      Sinal RMS = 10 µV, ruído RMS = 5 µV. SNR linear = 2.
-      SNR em dB ≈ 20*log10(2) ≈ ? (responda 6.0)
-    xp: 14
-    answer: 6.0
-    tolerance: 0.3
-  - id: snr-fill
-    type: fill
-    prompt: "A sigla SNR significa signal-to-___ ratio."
-    xp: 8
-    answers:
-      - noise
-      - "ruído"
-      - ruido
+- id: snr-def
+  type: mcq
+  prompt: 'SNR alto significa, em intuição:'
+  xp: 8
+  answer: 0
+  choices:
+  - sinal útil grande frente ao ruído
+  - sempre 60 Hz dominante
+  - consentimento opcional
+  - fs ilegal
+- id: contact
+  type: mcq
+  prompt: 'Contato de eletrodo ruim costuma:'
+  xp: 8
+  answer: 2
+  choices:
+  - aumentar magicamente κ do classificador
+  - eliminar volume conduction
+  - piorar SNR / estabilidade
+  - trocar AArch64 por x86
+- id: snr-db
+  type: numeric
+  prompt: 'Sinal RMS = 10 µV, ruído RMS = 5 µV. SNR linear = 2.
+
+    SNR em dB ≈ 20*log10(2) ≈ ? (responda 6.0)
+
+    '
+  xp: 14
+  answer: 6.0
+  tolerance: 0.3
+- id: snr-fill
+  type: fill
+  prompt: A sigla SNR significa signal-to-___ ratio.
+  xp: 8
+  answers:
+  - noise
+  - ruído
+  - ruido
+order: 6

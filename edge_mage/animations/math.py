@@ -30,6 +30,7 @@ AnimKind = Literal[
     "mi_erds",
     "closed_loop_timeline",
     "volume_blur",
+    "artifact_trace",
     "none",
 ]
 
@@ -496,22 +497,56 @@ def frame_spike_to_lfp(t: float, *, cols: int = 48, rows: int = 12) -> str:
 
 
 def frame_mi_erds(t: float, *, cols: int = 42, rows: int = 10) -> str:
-    """Cartoon ERD: potência mu cai durante imagética."""
+    """Cartoon ERD↓ then ERS↑ rebound above baseline (educational MI)."""
     grid = ascii_plot_grid(cols, rows, fill=" ")
-    # baseline then dip
+    baseline = 0.55
+    pulse = 0.5 + 0.5 * math.sin(t * 2 * math.pi)
     for i in range(cols):
         x = i / max(1, cols - 1)
-        cue = 0.35
+        cue = 0.28
+        mid = 0.62
         if x < cue:
-            p = 0.85
+            p = baseline
+        elif x < mid:
+            # ERD: dip below baseline during imagery
+            u = (x - cue) / (mid - cue)
+            p = baseline - 0.35 * math.sin(u * math.pi) * (0.7 + 0.3 * pulse)
         else:
-            # ERD dip then recovery
-            p = 0.85 - 0.5 * math.sin(min(1.0, (x - cue) / 0.4) * math.pi) * (0.5 + 0.5 * math.sin(t * 2 * math.pi))
-        h = max(1, int(max(0.1, p) * (rows - 3)))
+            # ERS rebound: overshoot above baseline, then settle
+            u = min(1.0, (x - mid) / (1.0 - mid))
+            p = baseline + 0.28 * math.sin(u * math.pi) * (0.75 + 0.25 * pulse)
+            p = p - 0.08 * u  # gentle settle toward baseline at end
+        h = max(1, int(max(0.08, min(0.95, p)) * (rows - 3)))
         for y in range(rows - 2, rows - 2 - h, -1):
             grid[y][i] = "▓"
-    header = "MI cartoon  µ power  ERD↓ após cue · ERS↑ rebound  — educacional"
+        # baseline guide (sparse)
+        by = rows - 2 - max(1, int(baseline * (rows - 3)))
+        if 0 <= by < rows and grid[by][i] == " ":
+            grid[by][i] = "·"
+    header = "MI cartoon  µ power  ERD↓ (abaixo baseline) · ERS↑ rebound (acima)  — educacional"
     return f"{header}\n{flatten_grid(grid)}"
+
+
+def frame_artifact_trace(t: float, *, cols: int = 42, rows: int = 10) -> str:
+    """Blink / line-noise spikes on a quieter EEG-like baseline (≠ rhythm_bands)."""
+    canvas = BrailleCanvas(cols, rows)
+    cy = canvas.px_h * 0.55
+    last = None
+    phase = t * 2 * math.pi
+    for i in range(canvas.px_w):
+        x = i / max(1, canvas.px_w - 1)
+        y = cy + 1.2 * math.sin(x * 18 + phase)  # quiet baseline
+        # ocular blink blobs
+        for bx in (0.22, 0.7):
+            y -= 5.5 * math.exp(-((x - bx) ** 2) / 0.0018) * (0.6 + 0.4 * math.sin(phase))
+        # 50/60-ish ripple bursts
+        if 0.4 < x < 0.55:
+            y += 1.8 * math.sin(x * 90 + phase * 3)
+        if last is not None:
+            canvas.line(last[0], last[1], i, y)
+        last = (i, y)
+    header = "artefatos  blink/EOG (picos) + ripple de linha  — não é mapa de ritmos α/β"
+    return f"{header}\n{canvas.render()}"
 
 
 def frame_closed_loop_timeline(t: float, *, cols: int = 48, rows: int = 8) -> str:
@@ -537,7 +572,7 @@ def frame_closed_loop_timeline(t: float, *, cols: int = 48, rows: int = 8) -> st
 
 
 def frame_volume_blur(t: float, *, cols: int = 40, rows: int = 10) -> str:
-    """Fonte fina vs mapa de escalpo suave."""
+    """Fonte fina vs mapa de escalpo suave (cartoon — not a FEM solver)."""
     canvas = BrailleCanvas(cols, rows)
     # sharp sources
     for sx in (cols * 0.35, cols * 0.65):
@@ -553,7 +588,10 @@ def frame_volume_blur(t: float, *, cols: int = 40, rows: int = 10) -> str:
         if last is not None:
             canvas.line(last[0], last[1], i, y)
         last = (i, y)
-    header = "fonte fina (cima) vs borrão de volume no escalpo (baixo)"
+    header = (
+        "fonte fina (cima) vs borrão de volume no escalpo (baixo)  |  "
+        "cartoon 2D — não é FEM/condutividade real"
+    )
     return f"{header}\n{canvas.render()}"
 
 
@@ -579,6 +617,7 @@ _FRAME_FN: dict[str, Callable[..., str]] = {
     "mi_erds": frame_mi_erds,
     "closed_loop_timeline": frame_closed_loop_timeline,
     "volume_blur": frame_volume_blur,
+    "artifact_trace": frame_artifact_trace,
 }
 
 # heurísticas por id de sala

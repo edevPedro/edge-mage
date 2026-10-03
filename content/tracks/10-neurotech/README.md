@@ -10,6 +10,8 @@ Estuda (lição + história + animação/conceito) → Sala (lab / FLAG / emulat
 
 Checkpoints = módulo de paper **ou** fatia de projeto real (caminhos paralelos; boss pede evidência de **um** + online stub).
 
+Gates TUI: campo `requires_rooms` (+ `requires_rooms_any` no boss). Ordem de lista = `order` no YAML (pastas `NN-` alinhadas).
+
 ## Como abrir
 
 ```bash
@@ -18,14 +20,15 @@ mage --course neurotech
 # ou launcher → Neurotech
 
 # Emuladores (sem hardware)
-mage emu all          # synth EEG + artifacts + Cortex-M stub
+mage emu all          # synth + artifacts + cortex + latency + online
 mage emu synth
 mage emu artifact
 mage emu cortex
-python -m edge_mage.emulators synth
+python -m edge_mage.emulators latency
+python -m edge_mage.emulators online
 ```
 
-Web (edevs Estudo): `/estudo/cursos/neurotech` (export stub + CTA terminal).
+Web (edevs Estudo): `/estudo/cursos/neurotech` (export + CTA terminal).
 
 ## Agentes
 
@@ -38,36 +41,37 @@ Web (edevs Estudo): `/estudo/cursos/neurotech` (export stub + CTA terminal).
 | Física | `agent-fisica` |
 | Neurociência | `agent-neurociencia` |
 
-## Salas (F0→F6)
+## Salas (F0→F6) — ordem pedagógica
 
-| Ordem pedagógica | id | Fase | Título |
-|------:|----|------|--------|
+| # | id | Fase | Título |
+|--:|----|------|--------|
 | 1 | `nt-portal` | F0 | Portal do círculo Neural |
-| 2 | `nt-ethics-consent` | F0 | Ética, consentimento, limites |
+| 2 | `nt-ethics-consent` | F0 | Ética, consentimento, dual-use |
 | 3 | `nt-dipole-scalp` | F1 | Dipolo → potencial de escalpo |
 | 4 | `nt-spike-lfp` | F1 | Spike → LFP |
 | 5 | `nt-volume-blur` | F1 | Condução de volume |
 | 6 | `nt-electrode-snr` | F2 | Eletrodo, impedância, SNR |
 | 7 | `nt-ground-ref` | F2 | Terra, referência, 50/60 Hz |
 | 8 | `nt-adc-bio` | F2 | ADC e escala µV |
-| 9 | `nt-rhythms` | F3 | Ritmos α/β/γ/µ (antes do filter p/ intuição) |
+| 9 | `nt-rhythms` | F3 | Ritmos α/β/γ/µ (antes do filter) |
 | 10 | `nt-filter-bank` | F2 | Banco de filtros EEG |
 | 11 | `nt-mi-paradigm` | F3 | Imagética motora (ERD↓/ERS↑) |
 | 12 | `nt-artifacts` | F3 | Artefatos |
 | 13 | `nt-features-bandpower` | F4 | Potência de banda |
-| 14 | `nt-riemann-primer` | F4 | Primer Riemanniano |
-| 15 | `nt-metrics-offline` | F4 | Métricas / vazamento |
-| 16 | `nt-stream-buffer` | F5 | Stream + ring buffer |
-| 17 | `nt-mcu-filter` | F5 | Filter bank embutido (host stub) |
-| 18 | `nt-latency-budget` | F5 | Orçamento de latência |
-| 19 | `nt-online-stub` | F6 | Loop online simulado |
-| 20 | `nt-checkpoint-paper` | F6 | Ritual módulo de paper (∥ projeto) |
-| 21 | `nt-checkpoint-project` | F6 | Ritual fatia de projeto (∥ paper) |
-| 22 | `nt-neuro-mage` | F6 | Boss Neuro Mage |
+| 14 | `nt-decode-mvp` | F4 | Decode MVP (LDA → κ) |
+| 15 | `nt-riemann-primer` | F4 | Primer Riemanniano |
+| 16 | `nt-metrics-offline` | F4 | Métricas / vazamento |
+| 17 | `nt-stream-buffer` | F5 | Stream + ring buffer |
+| 18 | `nt-mcu-filter` | F5 | MCU stub MA/FIR (≠ FBCSP) |
+| 19 | `nt-latency-budget` | F5 | Orçamento sense/decide/act |
+| 20 | `nt-online-stub` | F6 | Loop online simulado |
+| 21 | `nt-checkpoint-paper` | F6 | Ritual módulo de paper (∥ projeto) |
+| 22 | `nt-checkpoint-project` | F6 | Ritual fatia de projeto (∥ paper) |
+| 23 | `nt-neuro-mage` | F6 | Boss Neuro Mage |
 
-Pasta `NN-nt-*` no disco ainda reflete ordem de scaffold; gates/docs usam a tabela acima.
+**Cadeia F2:** eletrodo → terra/ref → ADC → ritmos → filter-bank → MI…
 
-**Casos neurológicos clínicos inventados:** não incluídos (falta de casos públicos resolvidos citáveis no escopo educacional). Paradigmas MI / artefatos / competições usam papers e docs reais (ver SPEC §7).
+**Casos neurológicos clínicos inventados:** não incluídos. SSVEP / CSP profundo = eletivos (SPEC).
 
 ## Duração (±)
 

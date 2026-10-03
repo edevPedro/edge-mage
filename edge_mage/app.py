@@ -367,8 +367,11 @@ class EdgeMageApp(App[None]):
         track, room = nxt
         if not self.store.is_room_unlocked(track, room):
             missing = self.store.missing_skills_for_room(room)
+            miss_rooms = self.store.missing_rooms_for_room(track, room)
             why = f"precisa {room.unlock_xp} XP"
-            if missing:
+            if miss_rooms:
+                why = f"salas: {', '.join(miss_rooms)}"
+            elif missing:
                 why = f"skills: {', '.join(missing)}"
             if track.requires_ritual and not self.store.has_ritual(track.requires_ritual):
                 why = f"ritual `{track.requires_ritual}`"
@@ -458,10 +461,13 @@ class EdgeMageApp(App[None]):
                 return
             track, room = found
             if not self.store.is_room_unlocked(track, room):
-                self.notify(
-                    f"sala bloqueada — precisa de {room.unlock_xp} XP",
-                    severity="warning",
+                miss = self.store.missing_rooms_for_room(track, room)
+                why = (
+                    f"salas: {', '.join(miss)}"
+                    if miss
+                    else f"precisa de {room.unlock_xp} XP"
                 )
+                self.notify(f"sala bloqueada — {why}", severity="warning")
                 return
             from edge_mage.screens.room import RoomScreen
 

@@ -73,15 +73,25 @@ def _read_md(path: Path, fallback: str = "") -> str:
     return fallback
 
 
+def _as_str_list(raw) -> list[str]:
+    if raw is None:
+        return []
+    if isinstance(raw, str):
+        return [raw]
+    return [str(x) for x in raw]
+
+
 def load_room(room_dir: Path) -> Room:
     meta_path = room_dir / "room.yaml"
     meta = yaml.safe_load(meta_path.read_text(encoding="utf-8"))
     lesson = _read_md(room_dir / "lesson.md")
     story = _read_md(room_dir / "story.md", str(meta.get("story") or ""))
     concept = _read_md(room_dir / "concept.md", str(meta.get("concept") or ""))
-    req = meta.get("requires_skills") or []
-    if isinstance(req, str):
-        req = [req]
+    # Fallback order from NN- folder prefix when yaml omits `order`.
+    folder_order = 99
+    name = room_dir.name
+    if len(name) >= 2 and name[:2].isdigit():
+        folder_order = int(name[:2])
     return Room(
         id=str(meta["id"]),
         title=str(meta["title"]),
@@ -95,7 +105,10 @@ def load_room(room_dir: Path) -> Room:
         path=str(room_dir),
         animation=str(meta.get("animation") or ""),
         boss=bool(meta.get("boss", False)),
-        requires_skills=[str(x) for x in req],
+        requires_skills=_as_str_list(meta.get("requires_skills")),
+        requires_rooms=_as_str_list(meta.get("requires_rooms")),
+        requires_rooms_any=_as_str_list(meta.get("requires_rooms_any")),
+        order=int(meta.get("order", folder_order)),
         elite_skill=str(meta.get("elite_skill") or ""),
         unlocks_track=str(meta.get("unlocks_track") or ""),
         resources=_load_resources(meta.get("resources")),
@@ -112,6 +125,7 @@ def load_track(track_dir: Path) -> Track:
         for room_dir in sorted(p for p in rooms_root.iterdir() if p.is_dir()):
             if (room_dir / "room.yaml").exists():
                 rooms.append(load_room(room_dir))
+    rooms.sort(key=lambda r: (r.order, r.id))
     req = meta.get("requires_skills") or []
     if isinstance(req, str):
         req = [req]

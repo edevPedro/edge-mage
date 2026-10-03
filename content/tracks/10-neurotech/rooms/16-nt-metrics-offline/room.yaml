@@ -1,0 +1,74 @@
+id: nt-metrics-offline
+title: Acurácia, κ, vazamento de trial
+summary: Métricas offline honestas e anti-vazamento.
+xp_reward: 34
+unlock_xp: 0
+owners:
+- bci
+phase: F4
+requires_rooms:
+- nt-riemann-primer
+course: neurotech
+resources:
+- title: Padfield et al. (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/
+  kind: paper
+- title: Alzahab et al. (MDPI)
+  url: https://www.mdpi.com/1424-8220/21/6/2173
+  kind: paper
+- title: Schlögl et al. — Evaluation framework for BCI (Clin Neurophysiol / DOI)
+  url: https://doi.org/10.1016/j.clinph.2007.07.020
+  kind: paper
+animation: null
+tasks:
+- id: leak
+  type: mcq
+  prompt: 'Vazamento de trial ocorre quando:'
+  xp: 10
+  answer: 0
+  choices:
+  - informação do conjunto de teste contamina o treino
+  - fs>Nyquist
+  - usa-se notch
+  - há consentimento
+- id: kappa
+  type: mcq
+  prompt: 'Cohen’s κ é útil porque:'
+  xp: 8
+  answer: 1
+  choices:
+  - mede temperatura do amp
+  - ajusta acurácia pelo acerto ao acaso
+  - substitui SNR
+  - é um opcode A64
+- id: kappa-num
+  type: numeric
+  prompt: 'p_o = 0.80 (acurácia observada), p_e = 0.50 (acerto ao acaso).
+
+    κ = (p_o - p_e) / (1 - p_e) = ?
+
+    '
+  xp: 14
+  answer: 0.6
+  tolerance: 0.01
+- id: leak-fill
+  type: fill
+  prompt: Z-score usando estatística do dataset inteiro antes do split é um exemplo de ___ de trial/dados.
+  xp: 10
+  answers:
+  - vazamento
+  - leakage
+  - data leakage
+  - vazamento de dados
+  - trial leakage
+- id: offline
+  type: fill
+  prompt: 'Avaliação em dataset gravado, sem latência de loop, chama-se decode ___.
+
+    '
+  xp: 8
+  answers:
+  - offline
+  - off-line
+  - off line
+order: 16

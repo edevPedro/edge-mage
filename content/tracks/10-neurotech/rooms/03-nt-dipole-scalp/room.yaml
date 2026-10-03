@@ -1,47 +1,52 @@
 id: nt-dipole-scalp
-title: "Dipolo → potencial de escalpo"
-summary: "Intuição de dipolo de corrente e por que o escalpo é borrado."
+title: Dipolo → potencial de escalpo
+summary: Intuição de dipolo de corrente e por que o escalpo é borrado.
 xp_reward: 28
 unlock_xp: 0
 owners:
-  - fisica
+- fisica
 phase: F1
 requires_rooms:
-  - nt-ethics-consent
+- nt-ethics-consent
 course: neurotech
 resources:
-  - title: "EEG MI techniques (PMC)"
-    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/"
-    kind: paper
+- title: EEG MI techniques (PMC)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/
+  kind: paper
+- title: Michel & Brunet — EEG source imaging (PMC review)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/
+  kind: paper
 animation: dipole_field
 tasks:
-  - id: not-pixel
-    type: mcq
-    prompt: "O potencial num eletrodo de escalpo tipicamente:"
-    xp: 10
-    answer: 1
-    choices:
-      - "copia 1:1 um neurônio logo abaixo"
-      - "reflete uma mistura espacial atenuada de fontes"
-      - "mede só temperatura craniana"
-      - "ignora o crânio"
-  - id: dipole-word
-    type: fill
-    prompt: |
-      A aproximação clássica da fonte em EEG de escalpo é um ___ de corrente.
-    xp: 10
-    answers:
-      - dipolo
-      - dipole
-      - "dipolo elétrico"
-      - "dipolo de corrente"
-  - id: orient
-    type: mcq
-    prompt: "Orientação do dipolo importa porque:"
-    xp: 8
-    answer: 0
-    choices:
-      - "muda o padrão de potenciais no escalpo"
-      - "elimina artefatos de piscar"
-      - "substitui o filtro notch"
-      - "aumenta fs automaticamente"
+- id: not-pixel
+  type: mcq
+  prompt: 'O potencial num eletrodo de escalpo tipicamente:'
+  xp: 10
+  answer: 1
+  choices:
+  - copia 1:1 um neurônio logo abaixo
+  - reflete uma mistura espacial atenuada de fontes
+  - mede só temperatura craniana
+  - ignora o crânio
+- id: dipole-word
+  type: fill
+  prompt: 'A aproximação clássica da fonte em EEG de escalpo é um ___ de corrente.
+
+    '
+  xp: 10
+  answers:
+  - dipolo
+  - dipole
+  - dipolo elétrico
+  - dipolo de corrente
+- id: orient
+  type: mcq
+  prompt: 'Orientação do dipolo importa porque:'
+  xp: 8
+  answer: 0
+  choices:
+  - muda o padrão de potenciais no escalpo
+  - elimina artefatos de piscar
+  - substitui o filtro notch
+  - aumenta fs automaticamente
+order: 3

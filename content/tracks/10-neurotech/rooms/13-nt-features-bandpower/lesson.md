@@ -1,10 +1,6 @@
-# Lição — Potência de banda
+# Lição
 
-1. Filter bank → um sinal por banda/canal (ou PSD → integrar banda).
-2. Feature simples: média dos quadrados (potência média) na janela do trial.
-3. Micro-exemplo: synth com `schedule_mu_burst` (probe de energia) deve subir bandpower µ — **não** chame isso de ERD fisiológico.
-4. Unidades: synth em µV didáticos; potências ficam em µV² (didático).
-5. Implemente `bandpower` na Sala; depois pense covariância multicanal.
-
-## Fontes
-- [Yger et al. HAL](https://inria.hal.science/hal-01394253/document)
+1. Filtre → calcule potência por banda/canal (ou trial).
+2. Empilhe features → classificador (próxima sala: Decode MVP).
+3. Emulator `synth_eeg_stream` para contrastes didáticos.
+4. Cite Lotte et al. / Padfield para o papel das features em MI-BCI.

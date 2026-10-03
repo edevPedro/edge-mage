@@ -1,9 +1,6 @@
-# Lição — Ética antes do lab
+# Lição
 
-1. Trate overclaim (“ler pensamentos”) como erro conceitual.
-2. Prefira **sintético** ou datasets com licença/consentimento documentados.
-3. Hardware vivo (OpenBCI) só como eletivo, com consentimento local.
-
-## Fontes
-- OpenBCI [Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/)
-- MI-BCI review (contexto de aplicação, não clínica): [MDPI Sensors 2021](https://www.mdpi.com/1424-8220/21/6/2173)
+1. Overclaim ≠ marketing ok.
+2. Preferir synth / datasets abertos citados.
+3. Dual-use: discutir riscos em alto nível; zero receita ofensiva.
+Leituras: UNESCO AI ethics; Ienca & Andorno (PMC).

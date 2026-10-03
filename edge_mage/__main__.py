@@ -33,7 +33,7 @@ def main(argv: list[str] | None = None) -> None:
         "emu_which",
         nargs="?",
         default="all",
-        choices=["synth", "artifact", "cortex", "all"],
+        choices=["synth", "artifact", "cortex", "latency", "online", "all"],
         help="With `emu`: which emulator demo",
     )
     args = parser.parse_args(argv)
