@@ -63,6 +63,8 @@ class Room:
     resources: list[Resource] = field(default_factory=list)
     shared: bool = False  # shared-core room (single room_id credit)
     course: str = ""  # optional course tag: fundamentals|systems|edge|neurotech
+    # Emulator id from room.yaml; empty/None = none or conceptual stub (e.g. spd_toy honesty)
+    emulator: str = ""
 
 
 @dataclass

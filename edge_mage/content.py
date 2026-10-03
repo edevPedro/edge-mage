@@ -114,6 +114,7 @@ def load_room(room_dir: Path) -> Room:
         resources=_load_resources(meta.get("resources")),
         shared=bool(meta.get("shared", False)),
         course=str(meta.get("course") or ""),
+        emulator="" if meta.get("emulator") is None else str(meta.get("emulator") or ""),
     )
 
 

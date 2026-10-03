@@ -137,7 +137,7 @@ Format: `room-id` — Title — **owner**
 | `latency_budget` | sense/decide/act ms accounting | **Thin wrapper** → `cortex_m_stub` (`edge_mage/emulators/latency_budget.py`) |
 | `online_loop` | Sliding window → bandpower toy → label → latency log | **shipped** `edge_mage/emulators/online_loop.py` |
 | `impedance_probe` | Contact quality → SNR slider | **Stub / not shipped UI** — honesty note in `nt-electrode-snr` (numeric SNR task instead) |
-| `spd_toy` | 2×2 or small SPD covariances on a grid | Conceptual in `nt-riemann-primer` |
+| `spd_toy` | 2×2 or small SPD covariances on a grid | **Conceptual / not shipped** — `nt-riemann-primer` uses `emulator: null` + paper toys (honesty note in room) |
 
 CLI: `mage emu all` · `python -m edge_mage.emulators [synth|artifact|cortex|latency|online|all]`
 
@@ -164,7 +164,7 @@ No real human data required for MVP; optional OpenBCI live path later as electiv
 
 | Checkpoint | Type | Evidence | Primary sources |
 |------------|------|----------|-----------------|
-| **CP-MI review map** | Paper module | 1-page map of MI-BCI pipeline stages from a review | [Alzahab et al., Sensors 2021 (MDPI)](https://www.mdpi.com/1424-8220/21/6/2173) · [Padfield et al., Sensors 2019 (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
+| **CP-MI review map** | Paper module | 1-page map of MI-BCI pipeline stages from a review | [Singh et al., Sensors 2021 (PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) · [Padfield et al., Sensors 2019 (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
 | **CP-Riemann figure** | Paper module | Reproduce SPD / distance intuition figure or toy MDRM on synthetic cov | [Yger et al. review (HAL PDF)](https://inria.hal.science/hal-01394253/document) · [Congedo et al. 2017 primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) · [arXiv:2407.20250](https://arxiv.org/abs/2407.20250) |
 | **CP-OpenBCI chain** | Project slice | Document Cyton/GUI → stream → file; or synthetic stand-in + cite setup | [Cyton Getting Started](https://docs.openbci.com/GettingStarted/Boards/CytonGS/) · [EEG Setup](https://docs.openbci.com/GettingStarted/Biosensing-Setups/EEGSetup/) |
 | **CP-Filter bank** | Project slice | Implement bandpower features for µ/β on synth EEG; tests in harness | OpenBCI docs + F3/F4 rooms |
@@ -178,10 +178,18 @@ Artifact template fields (ritual): `paper_or_project`, `url`, `what_reproduced`,
 
 | Topic | Link |
 |-------|------|
-| MI-BCI review | [Alzahab et al., Sensors 2021](https://www.mdpi.com/1424-8220/21/6/2173) |
+| MI-BCI review (Sensors 21/2173) | [Singh et al., PMC8003721](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/) · DOI [10.3390/s21062173](https://doi.org/10.3390/s21062173) |
+| hDL-BCI review (optional; not Sensors 2173) | [Alzahab et al., Brain Sci. PMC7827826](https://pmc.ncbi.nlm.nih.gov/articles/PMC7827826/) · DOI [10.3390/brainsci11010075](https://doi.org/10.3390/brainsci11010075) |
 | EEG-MI techniques | [Padfield et al., PMC6471241](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/) |
 | Classification review | [Lotte et al., JNE 2007](https://doi.org/10.1088/1741-2560/4/2/R01) |
 | ERD/ERS | [Pfurtscheller & Lopes da Silva](https://doi.org/10.1016/S1388-2457(99)00141-8) |
+| MI activates S1/M1 | [Pfurtscheller & Neuper, Neurosci Lett 1997](https://doi.org/10.1016/S0304-3940(97)00889-6) |
+| Kinesthetic vs visual MI | [Neuper et al., Cogn Brain Res 2005](https://doi.org/10.1016/j.cogbrainres.2005.08.014) |
+| κ in BCI / 4-class MI | [Schlögl et al., JNE 2005](https://doi.org/10.1088/1741-2560/2/4/L02) |
+| Berlin BCI (OA review) | [Blankertz et al., Frontiers PMC5116473](https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/) |
+| Volume / neocortical EEG | [Nunez, BBS 2000](https://doi.org/10.1017/S0140525X00003253) · prefer OA [Michel & Brunet PMC6700197](https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/) |
+| sklearn LDA / κ | [LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html) · [cohen_kappa_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html) |
+| MNE-Python | [MNE documentation](https://mne.tools/stable/index.html) |
 | Riemannian BCI | [Yger et al. HAL](https://inria.hal.science/hal-01394253/document) · [Congedo primer](https://www.tandfonline.com/doi/full/10.1080/2326263X.2017.1297192) · [Barachant TBME](https://doi.org/10.1109/TBME.2011.2172210) |
 | FBCSP (elective) | [Ang et al. IJCNN 2008](https://doi.org/10.1109/IJCNN.2008.4634130) |
 | LFP / fields | [Buzsáki et al. PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/) · [Einevoll et al. PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/) |

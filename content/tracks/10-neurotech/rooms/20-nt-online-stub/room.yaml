@@ -16,8 +16,8 @@ resources:
 - title: OpenBCI Cyton
   url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
   kind: docs
-- title: Blankertz et al. — The Berlin BCI (review / DOI)
-  url: https://doi.org/10.1016/j.neuroimage.2007.05.046
+- title: Blankertz et al. — The Berlin Brain-Computer Interface (Frontiers OA, PMC5116473)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5116473/
   kind: paper
 animation: closed_loop_timeline
 emulator: online_loop

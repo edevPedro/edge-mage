@@ -7,4 +7,5 @@
 ## Fontes
 
 - [Padfield et al., EEG MI techniques & challenges (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/)
-- [Alzahab et al., MI-BCI review (MDPI)](https://www.mdpi.com/1424-8220/21/6/2173)
+- [Singh et al., MI-BCI review (Sensors 2021, PMC8003721)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/)
+- Lembre: beta “ativo” **não** significa ↑ potência em MI — convenção do curso é ERD↓ (ver conceito).

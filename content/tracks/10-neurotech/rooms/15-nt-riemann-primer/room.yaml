@@ -24,7 +24,7 @@ resources:
   url: https://doi.org/10.1109/TBME.2011.2172210
   kind: paper
 animation: matrix
-emulator: spd_toy
+emulator: null
 tasks:
 - id: spd
   type: mcq

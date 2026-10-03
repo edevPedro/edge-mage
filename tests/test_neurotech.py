@@ -202,6 +202,48 @@ def test_decode_mvp_lda_code_task() -> None:
     assert ok, msg
 
 
+def test_decode_mvp_fit_kappa_code_task() -> None:
+    room = next(r for r in _neuro_track().rooms if r.id == "nt-decode-mvp")
+    task = next(t for t in room.tasks if t.id == "fit-kappa")
+    code = """
+def fit_threshold_lda(class0, class1):
+    mean0 = sum(class0) / len(class0)
+    mean1 = sum(class1) / len(class1)
+    return 1.0, -(mean0 + mean1) / 2
+
+def cohen_kappa(y_true, y_pred):
+    n = len(y_true)
+    po = sum(a == b for a, b in zip(y_true, y_pred)) / n
+    p0_t = sum(y == 0 for y in y_true) / n
+    p1_t = 1.0 - p0_t
+    p0_p = sum(y == 0 for y in y_pred) / n
+    p1_p = 1.0 - p0_p
+    pe = p0_t * p0_p + p1_t * p1_p
+    if 1.0 - pe == 0.0:
+        return 0.0
+    return (po - pe) / (1.0 - pe)
+"""
+    ok, msg = validate_task(task, code)
+    assert ok, msg
+
+
+def test_citation_p0_singh_not_alzahab_on_sensors_2173() -> None:
+    """Sensors 21/2173 is Singh et al. (PMC8003721), not Alzahab."""
+    track = _neuro_track()
+    for room in track.rooms:
+        for res in room.resources:
+            blob = f"{res.title} {res.url}".lower()
+            if "2173" in blob or "s21062173" in blob or "pmc8003721" in blob:
+                assert "alzahab" not in blob, room.id
+                assert "singh" in blob or "pmc8003721" in blob, room.id
+
+
+def test_spd_toy_emulator_null() -> None:
+    room = next(r for r in _neuro_track().rooms if r.id == "nt-riemann-primer")
+    assert room.emulator == ""
+    assert "não há emulador shipped" in room.lesson_md.lower() or "conceitual" in room.lesson_md.lower()
+
+
 def test_ring_buffer_code_task() -> None:
     room = next(r for r in _neuro_track().rooms if r.id == "nt-stream-buffer")
     task = next(t for t in room.tasks if t.id == "ring-code")

@@ -14,12 +14,21 @@ resources:
 - title: Padfield et al. EEG-MI techniques (PMC)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6471241/
   kind: paper
-- title: Alzahab et al. MI-BCI review (MDPI Sensors 2021)
-  url: https://www.mdpi.com/1424-8220/21/6/2173
+- title: Singh et al. MI-BCI review (Sensors 2021, PMC8003721)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/
   kind: paper
 - title: Lotte et al. review of classification algorithms for EEG-BCI (IOP)
   url: https://doi.org/10.1088/1741-2560/4/2/R01
   kind: paper
+- title: sklearn — LinearDiscriminantAnalysis
+  url: https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html
+  kind: docs
+- title: sklearn — cohen_kappa_score
+  url: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html
+  kind: docs
+- title: MNE-Python documentation
+  url: https://mne.tools/stable/index.html
+  kind: docs
 - title: OpenBCI — Cyton Getting Started
   url: https://docs.openbci.com/GettingStarted/Boards/CytonGS/
   kind: docs
@@ -72,3 +81,32 @@ tasks:
     assert mod.predict_lda([0.2, 0.2], [1.0, 1.0], -0.5) == 0
 
     '
+- id: fit-kappa
+  type: code
+  prompt: |
+    Complete o MVP claim↔tasks: fit 1D + κ (sem sklearn no sandbox).
+
+    `fit_threshold_lda(class0, class1)` — listas de floats (feature 1D por trial).
+    Retorne `(w, b)` com `w = 1.0` e `b = -(mean0 + mean1) / 2`
+    (hiperplano equidistante das médias; prediz classe 1 se `w*x + b >= 0`).
+
+    `cohen_kappa(y_true, y_pred)` — listas iguais de 0/1.
+    κ = (p_o − p_e) / (1 − p_e) com p_e pelas margens:
+    p_e = p0_true*p0_pred + p1_true*p1_pred.
+    Se 1 − p_e == 0, retorne 0.0.
+  xp: 18
+  code_template: |
+    def fit_threshold_lda(class0, class1):
+        # TODO
+        ...
+
+    def cohen_kappa(y_true, y_pred):
+        # TODO
+        ...
+  code_tests: |
+    w, b = mod.fit_threshold_lda([0.0, 0.2], [0.8, 1.0])
+    assert abs(w - 1.0) < 1e-9
+    assert abs(b - (-0.5)) < 1e-9
+    assert abs(mod.cohen_kappa([0, 0, 1, 1], [0, 1, 1, 1]) - 0.5) < 1e-9
+    assert abs(mod.cohen_kappa([0, 1], [0, 1]) - 1.0) < 1e-9
+    assert abs(mod.cohen_kappa([0, 0, 0, 0], [0, 0, 0, 0])) < 1e-9

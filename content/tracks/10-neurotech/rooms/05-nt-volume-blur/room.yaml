@@ -16,8 +16,8 @@ resources:
 - title: Michel & Brunet — EEG source imaging (PMC)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6700197/
   kind: paper
-- title: Nunez — Toward a quantitative description of large-scale neocortical dynamic function (review)
-  url: https://doi.org/10.1017/S0140525X00020059
+- title: Nunez — Toward a quantitative description of large-scale neocortical dynamic function (BBS 2000)
+  url: https://doi.org/10.1017/S0140525X00003253
   kind: paper
 animation: volume_blur
 tasks:

@@ -11,14 +11,14 @@ requires_rooms:
 - nt-dipole-scalp
 course: neurotech
 resources:
-- title: MI-BCI review (MDPI)
-  url: https://www.mdpi.com/1424-8220/21/6/2173
-  kind: paper
-- title: Buzsáki et al. — The origin of extracellular fields (PMC)
+- title: Buzsáki et al. — The origin of extracellular fields (PMC4907333)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC4907333/
   kind: paper
-- title: Einevoll et al. — Modelling and analysis of LFP (PMC)
+- title: Einevoll et al. — Modelling and analysis of LFP (PMC3884846)
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3884846/
+  kind: paper
+- title: Singh et al. — MI-BCI review context (Sensors 2021, PMC8003721)
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC8003721/
   kind: paper
 animation: spike_to_lfp
 tasks:
