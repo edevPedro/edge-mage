@@ -53,5 +53,19 @@ def config_path() -> Path:
     return mage_home() / "config.json"
 
 
+def evidence_dir() -> Path:
+    """Evidence log root for verifiable labs: ~/.mage/evidence/."""
+    d = mage_home() / "evidence"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def labs_work_dir(lab_id: str) -> Path:
+    """Student working directory for a lab: ~/.mage/labs/<id>/work/."""
+    d = mage_home() / "labs" / lab_id / "work"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
 def legacy_home() -> Path:
     return Path.home() / LEGACY_HOME_NAME

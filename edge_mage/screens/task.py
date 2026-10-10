@@ -73,6 +73,13 @@ class TaskScreen(MageScreen):
                         f"Artefato: study-log/artifacts/{self.quest.ritual_id or self.quest.id}.md",
                         classes="accent",
                     )
+                if self.quest.type == "lab":
+                    lab_id = self.quest.lab_id or self.quest.id
+                    yield Static(
+                        f"Lab verificável `{lab_id}` — rode `mage lab run {lab_id}` "
+                        "(compila + testes + benchmark) e digite ok.",
+                        classes="accent",
+                    )
                 if done and not self.mastery and not self.daily:
                     yield Static(
                         "✓ Já concluída — pode refazer sem XP (use M para mastery).",
@@ -85,6 +92,11 @@ class TaskScreen(MageScreen):
             elif self.quest.type == "ritual":
                 yield Input(
                     placeholder="digite ok após preencher o artefato",
+                    id="answer",
+                )
+            elif self.quest.type == "lab":
+                yield Input(
+                    placeholder="digite ok após rodar o lab com sucesso",
                     id="answer",
                 )
             else:

@@ -20,8 +20,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["sync", "courses", "emu"],
-        help="Optional: sync | courses | emu (neurotech emulators)",
+        choices=["sync", "courses", "emu", "lab"],
+        help="Optional: sync | courses | emu | lab list|init|run|latest",
     )
     parser.add_argument(
         "--course",
@@ -30,11 +30,10 @@ def main(argv: list[str] | None = None) -> None:
         help="Skip launcher and open a course directly",
     )
     parser.add_argument(
-        "emu_which",
-        nargs="?",
-        default="all",
-        choices=["synth", "artifact", "cortex", "thumb2", "spice", "viz", "latency", "online", "all"],
-        help="With `emu`: which emulator demo",
+        "arg",
+        nargs="*",
+        default=[],
+        help="Args for `emu` (which) or `lab` (list|init|run|latest <id>)",
     )
     args = parser.parse_args(argv)
 
@@ -50,8 +49,13 @@ def main(argv: list[str] | None = None) -> None:
     if args.command == "emu":
         from edge_mage.emulators.__main__ import main as emu_main
 
-        emu_main([args.emu_which])
+        emu_main([args.arg[0] if args.arg else "all"])
         sys.exit(0)
+
+    if args.command == "lab":
+        from edge_mage.labs.cli import main as lab_main
+
+        sys.exit(lab_main(args.arg))
 
     from edge_mage.app import run
 

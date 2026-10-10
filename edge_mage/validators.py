@@ -317,6 +317,20 @@ def check_ritual(task: Task, user_input: str) -> tuple[bool, str]:
     return validate_ritual_file(rid)
 
 
+def check_lab(task: Task) -> tuple[bool, str]:
+    """Roda o verificador real de um lab C++ (compile + tests + bench)."""
+    from edge_mage.labs import run_lab
+
+    lab_id = task.lab_id or task.id
+    try:
+        result = run_lab(lab_id)
+    except Exception as exc:  # noqa: BLE001 - nunca derrubar a TUI
+        return False, f"Falha ao rodar o lab `{lab_id}`: {exc}"
+    if result.ok:
+        return True, f"Lab `{lab_id}` verificado — evidência em ~/.mage/evidence/."
+    return False, result.message
+
+
 def validate_task(task: Task, user_input: str) -> tuple[bool, str]:
     if task.type == "mcq":
         return check_mcq(task, user_input)
@@ -328,5 +342,7 @@ def validate_task(task: Task, user_input: str) -> tuple[bool, str]:
         return check_code(task, user_input)
     if task.type == "ritual":
         return check_ritual(task, user_input)
+    if task.type == "lab":
+        return check_lab(task)
     return False, f"Tipo desconhecido: {task.type}"
 

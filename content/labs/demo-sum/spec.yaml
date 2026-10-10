@@ -1,0 +1,27 @@
+id: demo-sum
+title: "Demo — soma vetorial verificável"
+summary: >
+  Lab de referência do motor de verificação (Fase 1). Implementa mage_sum e
+  passa testes de correção + benchmark com percentis. Header-only.
+language: cpp
+std: c++20
+flags: ["-O2", "-pthread"]
+solution: []              # header-only: sum.hpp é incluído pelos testes/bench
+test_sources: ["test_sum.cpp"]
+bench_source: "bench_sum.cpp"
+bench_reps: 7
+bench_warmup: 2
+noise_cv: 0.20
+timeout:
+  build_s: 30
+  run_s: 10
+limits:
+  memory_mb: 512
+  cpu_seconds: 10
+requirements:
+  - metric: latency_ns.p50
+    op: "<="
+    value: 150000
+  - metric: latency_ns.p99
+    op: "<="
+    value: 400000

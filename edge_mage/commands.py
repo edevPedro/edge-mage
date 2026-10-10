@@ -51,6 +51,8 @@ _ALIASES: dict[str, str] = {
     "courses": "courses",
     "cursos": "courses",
     "launcher": "launcher",
+    "lab": "lab",
+    "laboratorio": "lab",
 }
 
 
@@ -145,6 +147,7 @@ COMANDOS (:)
   :anim [kind]        toggle animação
   :xp                 XP / rank / skills / mana
   :sync               packs + progress API + diário git
+  :lab <id>           roda um lab verificável C++ (mg lab run <id>)
   :courses / :cursos  launcher de cursos
   :help / :ajuda      esta ajuda
 

@@ -499,6 +499,17 @@ class EdgeMageApp(App[None]):
             from edge_mage.screens.launcher import LauncherScreen
 
             self.push_screen(LauncherScreen())
+        elif cmd.name == "lab":
+            from edge_mage.labs import format_result, run_lab
+
+            if not cmd.args:
+                self.notify("uso: :lab <id> — veja `mage lab list`", severity="information")
+                return
+            result = run_lab(cmd.args[0])
+            head = "[PASS]" if result.ok else "[FAIL] " + result.stage
+            self.notify(
+                f"{head} {result.message}", severity="information" if result.ok else "warning"
+            )
         elif cmd.name == "room":
             room_id = cmd.args[0]
             found = None

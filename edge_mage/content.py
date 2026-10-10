@@ -44,6 +44,7 @@ def _load_tasks(raw_tasks: list) -> list[Task]:
                 expected_stdout=str(raw.get("expected_stdout") or ""),
                 hint=str(raw.get("hint") or ""),
                 ritual_id=str(raw.get("ritual_id") or ""),
+                lab_id=str(raw.get("lab_id") or ""),
                 mastery_variant=bool(raw.get("mastery_variant", False)),
                 answer_pattern=str(raw.get("answer_pattern") or ""),
                 language=str(raw.get("language") or ("c" if raw.get("type") in ("c_code", "c") else "python")),

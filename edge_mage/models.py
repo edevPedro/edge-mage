@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 
-TaskType = Literal["mcq", "numeric", "fill", "code", "ritual", "c_code"]
+TaskType = Literal["mcq", "numeric", "fill", "code", "ritual", "c_code", "lab"]
 ResourceKind = Literal["docs", "video", "paper", "book", "tool", "other"]
 
 
@@ -34,6 +34,8 @@ class Task:
     hint: str = ""
     # ritual: nome do artefato em study-log/artifacts/<id>.md
     ritual_id: str = ""
+    # lab verificável: id do diretório em content/labs/<lab_id>/
+    lab_id: str = ""
     mastery_variant: bool = False
     # fill: optional regex (Systems FLAG packs from web catalog)
     answer_pattern: str = ""
