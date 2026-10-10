@@ -1,0 +1,43 @@
+id: c05-pretrade-risk
+track: A
+title: Mini pré-trade risk com parser FIX
+summary: >-
+  Implemente um gateway pré-trade com parser FIX 4.4, limites de risco e
+  validação. Prove robustez com fuzzing sem crash e meça throughput.
+timebox_days: 21
+
+work_dir: ""
+
+exit_criteria:
+  metric: fuzz_crashes
+  target: "0 crashes sob fuzzing e throughput documentado"
+
+sources:
+  - name: "FIX Trading Community — FIX 4.4 (especificação pública)"
+    url: "https://www.fixtrading.org/standards/fix-4-4/"
+    section: "tags e validação de mensagens"
+    why: "parser do protocolo"
+  - name: "libFuzzer / LLVM docs"
+    url: "https://llvm.org/docs/LibFuzzer.html"
+    section: "fuzzing"
+    why: "provar robustez"
+  - name: "B3 — documentação pública de mensagens FIX"
+    url: "https://www.b3.com.br/"
+    section: "perfis de mensagem"
+    why: "caso brasileiro"
+
+daily_goals:
+  - {id: g1, goal: "parsear NewOrderSingle/Cancel (FIX 4.4)", verify: "make test"}
+  - {id: g2, goal: "regras de risco (limite de notional, cooldown)", verify: "make test-risk"}
+  - {id: g3, goal: "fuzz sem crash + throughput", verify: "make fuzz"}
+  - {id: g4, goal: "explicar o resultado (3 linhas)", verify: "true", lens: null}
+
+lens: null
+
+verify:
+  cmd: "make verify"
+  timeout_s: 240
+  runs: 3
+
+artifact:
+  readme_sections: ["O que medi", "O que me surpreendeu", "O que faria depois"]

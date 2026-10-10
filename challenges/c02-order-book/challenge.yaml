@@ -1,0 +1,44 @@
+id: c02-order-book
+track: A
+title: Limit order book (add/cancel/modify/match, prioridade preço-tempo)
+summary: >-
+  Implemente um livro de ofertas com prioridade preço-tempo: add, cancel,
+  modify e match. Compare std::map vs layout plano (array de níveis + ring de
+  ordens) medindo ns/op e cache misses.
+timebox_days: 21
+
+work_dir: ""
+
+exit_criteria:
+  metric: ns_per_op
+  target: "layout plano < std::map e sem regressão nos testes de propriedade"
+
+sources:
+  - name: "Nasdaq TotalView-ITCH 5.0 (especificação pública)"
+    url: "https://www.nasdaqtrader.com/content/technicalsupport/specifications/dataprotocols/Nasdaq-ITCH-Specification.pdf"
+    section: "mensagens Add/Cancel/Modify/Executed"
+    why: "semântica real de eventos do livro"
+  - name: "Heard on the Street (T. Crack) — microestrutura"
+    url: ""
+    section: "prioridade preço-tempo"
+    why: "modelo de matching"
+  - name: "Intel — otimização de memória / Agner Fog"
+    url: "https://www.agner.org/optimize/"
+    section: "layout de dados"
+    why: "layout plano vs árvore"
+
+daily_goals:
+  - {id: g1, goal: "add/cancel/modify corretos (FIFO no nível)", verify: "make test"}
+  - {id: g2, goal: "match com prioridade preço-tempo", verify: "make test-match"}
+  - {id: g3, goal: "benchmark ns/op: std::map vs layout plano", verify: "make bench"}
+  - {id: g4, goal: "explicar o resultado (3 linhas)", verify: "true", lens: null}
+
+lens: null
+
+verify:
+  cmd: "make verify"
+  timeout_s: 180
+  runs: 3
+
+artifact:
+  readme_sections: ["O que medi", "O que me surpreendeu", "O que faria depois"]

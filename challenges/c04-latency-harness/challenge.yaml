@@ -1,0 +1,45 @@
+id: c04-latency-harness
+track: A
+title: Harness de latência tick-to-trade em loopback UDP
+summary: >-
+  Meça jitter ponta a ponta num loopback UDP e documente o efeito de pinning,
+  huge pages e isolcpus (quando disponíveis). Registre `degraded: true` fora do
+  Linux. Prove a melhoria com percentis antes/depois.
+timebox_days: 21
+
+# Sem scaffold versionado ainda — crie o harness no work dir.
+work_dir: ""
+
+exit_criteria:
+  metric: jitter_p99_us
+  target: "p99 antes/depois de pinning/huge pages/isolcpus documentado"
+
+sources:
+  - name: "man pages: sched_setaffinity, mmap, perf_event_open"
+    url: "https://man7.org/linux/man-pages/"
+    section: "pinning, huge pages"
+    why: "reduzir jitter do scheduler"
+  - name: "Linux kernel docs: boot parameters (isolcpus), cgroups"
+    url: "https://docs.kernel.org/admin-guide/kernel-parameters.html"
+    section: "isolcpus"
+    why: "isolar cores"
+  - name: "Jitter em loopback UDP (RFC 3550 — conceito de jitter)"
+    url: "https://www.rfc-editor.org/rfc/rfc3550"
+    section: "jitter"
+    why: "definição de jitter"
+
+daily_goals:
+  - {id: g1, goal: "loopback UDP ida-e-volta com timestamp corretos", verify: "make test"}
+  - {id: g2, goal: "harness mede jitter com warmup e percentis", verify: "make bench"}
+  - {id: g3, goal: "comparar antes/depois de pinning/huge pages/isolcpus", verify: "make bench-compare"}
+  - {id: g4, goal: "explicar o resultado (3 linhas)", verify: "true", lens: null}
+
+lens: null
+
+verify:
+  cmd: "make verify"
+  timeout_s: 240
+  runs: 3
+
+artifact:
+  readme_sections: ["O que medi", "O que me surpreendeu", "O que faria depois"]

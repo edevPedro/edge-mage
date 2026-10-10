@@ -1,0 +1,45 @@
+id: c01-spsc-ring
+track: A
+title: Fila SPSC lock-free vs fila com mutex
+summary: >-
+  Implemente uma fila single-producer/single-consumer lock-free com head/tail
+  atômicos e padding de cache line; compare p50/p99/p99,9 com uma fila protegida
+  por mutex e demonstre/corrija false sharing.
+timebox_days: 21
+
+# work_dir vazio → ~/mage-work/c01-spsc-ring (repositório público do artefato).
+work_dir: ""
+
+exit_criteria:
+  metric: p99_ns
+  target: "< baseline com mutex e documentar false sharing"
+
+sources:
+  - name: "cppreference: std::atomic"
+    url: "https://en.cppreference.com/w/cpp/atomic"
+    section: "memory_order (acquire/release)"
+    why: "ordenação de memória correta no ring"
+  - name: "Drepper — What Every Programmer Should Know About Memory"
+    url: "https://people.freebsd.org/~lstewart/articles/cpumemory.pdf"
+    section: "caches e false sharing"
+    why: "alinhamento de cache line"
+  - name: "Agner Fog — Optimizing software in C++"
+    url: "https://www.agner.org/optimize/"
+    section: "multi-threading e cache"
+    why: "medir e reduzir contenção"
+
+daily_goals:
+  - {id: g1, goal: "push/pop corretos (FIFO + wraparound + concorrência)", verify: "make test"}
+  - {id: g2, goal: "benchmark com warmup e percentis (p50/p99)", verify: "make bench"}
+  - {id: g3, goal: "corrigir false sharing e comparar com mutex", verify: "make bench-compare"}
+  - {id: g4, goal: "explicar o resultado (3 linhas)", verify: "true", lens: null}
+
+lens: null
+
+verify:
+  cmd: "make verify"
+  timeout_s: 180
+  runs: 3
+
+artifact:
+  readme_sections: ["O que medi", "O que me surpreendeu", "O que faria depois"]

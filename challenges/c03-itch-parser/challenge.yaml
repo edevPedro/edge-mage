@@ -1,0 +1,44 @@
+id: c03-itch-parser
+track: A
+title: Parser de feed binário estilo ITCH, zero-copy
+summary: >-
+  Parseie um feed binário estilo Nasdaq ITCH sem alocações no hot path e sem
+  cópias desnecessárias. Meça msgs/s por core e prove zero alocação com um hook
+  de alocador.
+timebox_days: 21
+
+work_dir: ""
+
+exit_criteria:
+  metric: msgs_per_s
+  target: "zero alocação no hot path e msgs/s documentado por core"
+
+sources:
+  - name: "Nasdaq TotalView-ITCH 5.0 (especificação pública)"
+    url: "https://www.nasdaqtrader.com/content/technicalsupport/specifications/dataprotocols/Nasdaq-ITCH-Specification.pdf"
+    section: "formatos de mensagem"
+    why: "layout binário real"
+  - name: "cppreference: reinterpret_cast e rules de aliasing"
+    url: "https://en.cppreference.com/w/cpp/language/reinterpret_cast"
+    section: "acesso a bytes"
+    why: "zero-copy sem UB"
+  - name: "Agner Fog — otimização / branch prediction"
+    url: "https://www.agner.org/optimize/"
+    section: "loops e branchless"
+    why: "throughput do parser"
+
+daily_goals:
+  - {id: g1, goal: "parsear Add/Delete/Cancel corretamente", verify: "make test"}
+  - {id: g2, goal: "hot path sem alocação (hook de alocador)", verify: "make test-alloc"}
+  - {id: g3, goal: "medir msgs/s por core", verify: "make bench"}
+  - {id: g4, goal: "explicar o resultado (3 linhas)", verify: "true", lens: null}
+
+lens: null
+
+verify:
+  cmd: "make verify"
+  timeout_s: 180
+  runs: 3
+
+artifact:
+  readme_sections: ["O que medi", "O que me surpreendeu", "O que faria depois"]
