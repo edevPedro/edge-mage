@@ -351,6 +351,8 @@ class EdgeMageApp(App[None]):
                 self.action_go_home()
             elif key == "r":
                 self.action_go_grimoire()
+            elif key == "o":
+                self.action_go_today()
             return
 
         if event.character == "g":
@@ -408,6 +410,11 @@ class EdgeMageApp(App[None]):
 
         self.push_screen(DailyRunScreen())
 
+    def action_go_today(self) -> None:
+        from edge_mage.screens.today import TodayScreen
+
+        self.push_screen(TodayScreen())
+
     def action_go_continue(self) -> None:
         from edge_mage.curriculum import next_open_room
         from edge_mage.screens.room import RoomScreen
@@ -446,6 +453,8 @@ class EdgeMageApp(App[None]):
             self.action_go_grimoire()
         elif cmd.name == "daily":
             self.action_go_daily()
+        elif cmd.name == "today":
+            self.action_go_today()
         elif cmd.name == "continue":
             self.action_go_continue()
         elif cmd.name == "home":

@@ -45,6 +45,10 @@ _ALIASES: dict[str, str] = {
     "daily": "daily",
     "hoje": "daily",
     "run": "daily",
+    "today": "today",
+    "plataforma": "today",
+    "tronco": "today",
+    "roadmap": "today",
     "continue": "continue",
     "continuar": "continue",
     "c": "continue",
@@ -137,12 +141,14 @@ LEADER (g + tecla)
   g r         grimório
   g t         trilhas
   g h         home
+  g o         HOJE (plataforma)
 
 COMANDOS (:)
   :q / :sair          sair
   :tracks / :trilhas  lista de trilhas
   :continue / :c      próxima porta pedagógica
   :daily / :hoje      run de hoje (~20 min)
+  :today / :plataforma  HOJE — meta do tronco (verificar/fechar/gráfico)
   :profile / :perfil  perfil e ranks
   :grimorio / :grim   grimório de habilidades
   :home               tela inicial
