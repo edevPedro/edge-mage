@@ -53,11 +53,50 @@ def config_path() -> Path:
     return mage_home() / "config.json"
 
 
+def repo_root() -> Path:
+    """Repository root (parent of the edge_mage package), used for roadmap/ and challenges/."""
+    here = Path(__file__).resolve().parent.parent
+    if (here / "roadmap").exists() or (here / "content").exists():
+        return here
+    return Path.cwd()
+
+
+def roadmap_dir() -> Path:
+    override = os.environ.get("MAGE_ROADMAP_ROOT", "").strip()
+    if override:
+        return Path(override).expanduser()
+    return repo_root() / "roadmap"
+
+
+def challenges_dir() -> Path:
+    override = os.environ.get("MAGE_CHALLENGES_ROOT", "").strip()
+    if override:
+        return Path(override).expanduser()
+    return repo_root() / "challenges"
+
+
+def practice_dir() -> Path:
+    """Default location for challenge working dirs (public artifact repos)."""
+    override = os.environ.get("MAGE_WORK_ROOT", "").strip()
+    if override:
+        p = Path(override).expanduser()
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    p = Path.home() / "mage-work"
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+
 def evidence_dir() -> Path:
-    """Evidence log root for verifiable labs: ~/.mage/evidence/."""
+    """Evidence log root for verifiable labs/challenges: ~/.mage/evidence/."""
     d = mage_home() / "evidence"
     d.mkdir(parents=True, exist_ok=True)
     return d
+
+
+def daily_path() -> Path:
+    """Daily state (active challenge, rollovers, closed days): ~/.mage/daily.json."""
+    return mage_home() / "daily.json"
 
 
 def labs_work_dir(lab_id: str) -> Path:

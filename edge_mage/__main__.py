@@ -20,8 +20,11 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["sync", "courses", "emu", "publish", "lab"],
-        help="Optional: sync | courses | emu | publish <boss> | lab list|init|run|latest",
+        choices=[
+            "sync", "courses", "emu", "publish", "lab",
+            "today", "verify", "close", "week", "roadmap", "init",
+        ],
+        help="Optional: sync | courses | emu | publish <boss> | lab … | today | verify | close | week | roadmap | init",
     )
     parser.add_argument(
         "--course",
@@ -31,9 +34,8 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument(
         "arg",
-        nargs="*",
-        default=[],
-        help="Args for `emu` (which), `publish` (boss id) or `lab` (list|init|run|latest <id>)",
+        nargs=argparse.REMAINDER,
+        help="Args for `emu`/`publish`/`lab` or flags for `verify`/`close`/`init`",
     )
     args = parser.parse_args(argv)
 
@@ -56,6 +58,11 @@ def main(argv: list[str] | None = None) -> None:
         from edge_mage.labs.cli import main as lab_main
 
         sys.exit(lab_main(args.arg))
+
+    if args.command in ("today", "verify", "close", "week", "roadmap", "init"):
+        from edge_mage.roadmap.cli import main as daily_main
+
+        sys.exit(daily_main([args.command, *args.arg]))
 
     if args.command == "publish":
         from edge_mage.publish import known_bosses, publish_boss, status_report

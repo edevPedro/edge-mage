@@ -1,0 +1,64 @@
+# Roadmap da plataforma diária — ver PLATFORM.md §3/§5.
+# Tronco = Trilha A (C++ de baixa latência), desafios 1..5. Ramos abrem por
+# evidência OU calendário e têm teto semanal.
+version: 1
+daily_minutes: 60
+weekend_review: true
+trunk_track: A
+
+trunk_order:
+  - c01-spsc-ring
+  - c02-order-book
+  - c03-itch-parser
+  - c04-latency-harness
+  - c05-pretrade-risk
+
+rules:
+  trunk_min_pct: 65
+  branches_max_pct: 35
+  max_active_branches: 2
+  stagnation_weeks: 2
+  dispersion_alert_pct: 10
+  rollover_max: 1
+
+branches:
+  - id: leetcode-cpp
+    title: LeetCode (C++, cronometrado)
+    opens_when: {week: 1}
+    weekly_cap_pct: 15
+    content: "2-3 problemas/semana; sai quando mediums < 25 min"
+  - id: arch-memory
+    title: Arquitetura e memória
+    opens_when: {challenge: c01-spsc-ring, week: 3}
+    weekly_cap_pct: 10
+    content: "Modelo de memória, caches, ordenação, ABI, leitura de asm"
+  - id: prob-stat
+    title: Probabilidade/estatística
+    opens_when: {week: 5}
+    weekly_cap_pct: 20
+    content: "Problemas resolvidos à mão"
+  - id: microstructure
+    title: Microestrutura e protocolos
+    opens_when: {challenge: c02-order-book}
+    weekly_cap_pct: 10
+    content: "ITCH, FIX, order book, risco"
+  - id: os-tuning
+    title: Tuning de SO/hardware
+    opens_when: {challenge: c03-itch-parser}
+    weekly_cap_pct: 0
+    content: "isolcpus, pinning, huge pages, perf (dentro do tronco)"
+  - id: track-bc
+    title: Escolha B ou C (matmul ou ADC+DMA+FIR)
+    opens_when: {challenge: c04-latency-harness}
+    weekly_cap_pct: 0
+    content: "B: matmul/roofline. C: ADC+DMA+FIR (escolher um)"
+  - id: compilers
+    title: Compiladores/LLVM
+    opens_when: {week: 13}
+    weekly_cap_pct: 10
+    content: "LangRef, IR, passes, ligação com performance"
+  - id: ml-systems
+    title: ML systems / quant
+    opens_when: {week: 13}
+    weekly_cap_pct: 10
+    content: "Inferência, quantização, séries temporais"
