@@ -67,6 +67,10 @@ def _parse_field_map(text: str) -> dict[str, str]:
     return found
 
 
+# Public alias for the publish module / external tooling.
+parse_field_map = _parse_field_map
+
+
 def parse_on_device_checklist(text: str) -> tuple[bool, str, dict[str, str]]:
     """Valida markdown com campos latency_ms / ram_mb / model / device."""
     found = _parse_field_map(text)

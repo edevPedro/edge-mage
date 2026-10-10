@@ -499,6 +499,19 @@ class EdgeMageApp(App[None]):
             from edge_mage.screens.launcher import LauncherScreen
 
             self.push_screen(LauncherScreen())
+        elif cmd.name == "publish":
+            from edge_mage.publish import known_bosses, publish_boss
+
+            if not cmd.args:
+                self.notify(
+                    "uso: :publish <boss> — " + ", ".join(known_bosses()),
+                    severity="information",
+                )
+                return
+            result = publish_boss(cmd.args[0])
+            self.notify(result.message, severity="information" if result.ok else "warning")
+            if result.ok and result.next_steps:
+                self.notify("próximo: " + result.next_steps[1], severity="information")
         elif cmd.name == "lab":
             from edge_mage.labs import format_result, run_lab
 

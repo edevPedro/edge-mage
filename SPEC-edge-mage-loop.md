@@ -16,12 +16,15 @@ Ctrl+w (História | Conceito | Desafio | Anim | Tarefas), grimório e animaçõe
 ## Ranks
 
 ### Curso Edge (interno)
-- Ranks intermediários: **só XP** (`ranks.rank_from_xp`).
-- **Edge Mage**: `effective_rank(xp, has_on_device_ritual)` — exige XP ≥ 2900 **e** ritual `on-device`.
-- Sem o checklist, o título fica em Arquimago mesmo com XP alto.
+- Ranks intermediários: **só XP** (`ranks.rank_from_xp`), mas o topo é um **teto**.
+- **Edge Mage**: `effective_rank(xp, has_on_device_ritual, has_published_artifact)` — exige XP ≥ 2900, ritual `on-device` **e** artefato publicado (`mage publish on-device`).
+- Sem o artefato, o título fica em Arquimago mesmo com XP alto.
 
 ### Global (e-mage)
-- none → **Mago base** (Fundamentals clear) → intermediate → **Mago Supremo** (systems boss craft + edge on-device + evidence).
+- none → **Mago base** (Fundamentals clear) → intermediate → **Mago Supremo**.
+- **Teto de XP (Fase 3):** o rank global só passa de Mago base com ≥1 boss aprovado **e** artefato publicado.
+- Mago Supremo: systems boss craft + edge on-device + shared math evidence (todos publicados) **ou** rota Neurotech MSc climax.
+
 
 ## Validators
 
@@ -77,3 +80,16 @@ Pré-requisitos Edge AI (após Softmax ritual): layout → FLOPs → SIMD → AA
 ## Cerimônia
 
 `CeremonyScreen`: banner `+XP`, barra de nível, skill glyph, combo, level-up / rank-up.
+
+## Artefato público (Fase 3)
+
+- `mage publish <boss>` / `:publish <boss>` → `ARTIFACT/<boss>/` (README de uma página + `evidence.json` + gráficos ASCII do evidence log). **Não envia nada**; imprime `git add/commit/push`.
+- README: seções **O que medi / O que me surpreendeu / O que faria depois** + Como reproduzir.
+- Boss aprovado = ritual passa em `validate_ritual_file`; artefato publicado = README/`evidence.json` válidos (`publish.approved_published_bosses`).
+- Sem `ARTIFACT/` publicado, o rank (global e Edge Mage) fica no teto.
+
+## Qualidade (Fase 4)
+
+- `tests/test_runner_sandbox.py`: PASS, FAIL, timeout, compilação quebrada, ruído alto (stdout ≤ 20k chars).
+- CI (`.github/workflows/test.yml`): `pytest` + `lint_resources.py` + `scripts/benchmark_smoke.py` em Linux.
+- `scripts/lint_resources.py`: resources, teoria curta, prova verificável (não só MCQ), sem segredos.

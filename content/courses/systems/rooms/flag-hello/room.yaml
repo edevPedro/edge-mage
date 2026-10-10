@@ -4,6 +4,7 @@ summary: Offline stub until catalog sync fills ~/.mage/packs/systems.json.
 xp_reward: 15
 unlock_xp: 0
 course: systems
+mcq_only_ok: true
 resources:
   - title: CSAPP (CMU)
     url: https://csapp.cs.cmu.edu/

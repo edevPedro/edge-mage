@@ -165,13 +165,46 @@ Dev: `make install-dev` · `make test` · `USE_PIPX=1 ./install.sh`
 | `g` + `p`/`r`/`t`/`h` | profile / grimoire / tracks / home |
 | `:courses` | back to launcher |
 | `:sync` | packs + API + study journal |
+| `:publish <boss>` | build `ARTIFACT/<boss>/` (does not send/push) |
 | `q` | quit |
+
+## Boss artifacts (`mage publish`)
+
+Every boss produces a GitHub-ready `ARTIFACT/<boss>/`:
+
+```bash
+mage publish                 # list bosses + ritual/published status
+mage publish on-device       # validate ritual, then generate the artifact
+```
+
+It writes a one-page `README.md` with the sections **O que medi / O que me
+surpreendeu / O que faria depois** (+ reproduction steps), an `evidence.json`,
+and ASCII charts built from the evidence log (`study-log/completions.jsonl`).
+It **never** sends or pushes anything — it prints the next git steps.
+
+Content stays clean by design: no proprietary code, internal protocols, or real
+employer/broker data. Theory rooms are short and every room ships a verifiable
+exercise (not MCQ-only); `scripts/lint_resources.py` enforces this.
 
 ## Ranks
 
-**Global:** none → **Mago base** (Fundamentals clear) → intermediate → **Mago Supremo** (systems boss craft + edge on-device + evidence).
+Ranks climb only with an **approved boss + published artifact** — XP keeps
+accruing, but alone it hits a ceiling (`mage publish <boss>` is the gate).
 
-**Edge course (internal):** Novice → … → Archmage → **Edge Mage** (XP ≥ 2900 **and** on-device ritual).
+**Global:** none → **Mago base** (Fundamentals clear) → intermediate (≥1
+published boss) → **Mago Supremo** (systems Boss craft + edge on-device + shared
+math, all published; or the Neurotech MSc route).
+
+**Edge course (internal):** Novice → … → Archmage (XP ceiling) → **Edge Mage**
+(XP ≥ 2900 **and** on-device ritual **and** `mage publish on-device`).
+
+## Quality & CI
+
+- Runner tests (`tests/test_runner_sandbox.py`): PASS, FAIL, timeout, broken
+  compilation, and high-noise output (capped at 20k chars).
+- GitHub Actions runs `pytest`, `scripts/lint_resources.py`, and a Linux
+  `scripts/benchmark_smoke.py` runner benchmark.
+
 
 ## License
 

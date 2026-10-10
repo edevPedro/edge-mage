@@ -51,6 +51,9 @@ _ALIASES: dict[str, str] = {
     "courses": "courses",
     "cursos": "courses",
     "launcher": "launcher",
+    "publish": "publish",
+    "publicar": "publish",
+    "pub": "publish",
     "lab": "lab",
     "laboratorio": "lab",
 }
@@ -147,14 +150,16 @@ COMANDOS (:)
   :anim [kind]        toggle animação
   :xp                 XP / rank / skills / mana
   :sync               packs + progress API + diário git
+  :publish [boss]     prepara ARTIFACT/<boss> (não envia) e mostra passos
   :lab <id>           roda um lab verificável C++ (mg lab run <id>)
   :courses / :cursos  launcher de cursos
   :help / :ajuda      esta ajuda
 
 LOOP
   quiz (MCQ/num) → feitiço (code+tests) → ritual (artifact/boss)
-  Edge course: Edge Mage = XP≥2900 + checklist on-device
-  Global: Mago base (Fundamentals) → Mago Supremo (evidence)
+  Rank sobe com boss aprovado + artefato publicado (mage publish <boss>)
+  Edge course: Edge Mage = XP≥2900 + on-device + ARTIFACT publicado
+  Global: Mago base (Fundamentals) → Mago Supremo (evidence + boss publish)
   Mastery: M numa sala limpa (3/3)
   Streak≥3 → mana ×1.25
 """

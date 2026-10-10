@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "e-mage"
-version = "0.2.0"
+version = "0.3.0"
 description = "e-mage — TUI academy: Fundamentals, Systems Mage, Edge ML Mage"
 readme = "README.md"
 requires-python = ">=3.11"

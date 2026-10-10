@@ -48,15 +48,24 @@ def test_validators_and_xp(tmp_path: Path) -> None:
     from edge_mage.ranks import effective_rank, global_rank_from_flags
 
     assert effective_rank(2900, False).id == "arquimago"
-    assert effective_rank(2900, True).id == "edge_mage"
+    assert effective_rank(2900, True).id == "arquimago"
+    assert effective_rank(2900, True, True).id == "edge_mage"
     assert global_rank_from_flags(has_mago_base=False).id == "none"
     assert global_rank_from_flags(has_mago_base=True).id == "mago_base"
+    # sem boss publicado o rank global não sobe do teto
+    assert (
+        global_rank_from_flags(
+            has_mago_base=True, any_advanced_progress=True
+        ).id
+        == "mago_base"
+    )
     assert (
         global_rank_from_flags(
             has_mago_base=True,
             has_systems_boss=True,
             has_edge_on_device=True,
             has_evidence=True,
+            has_published_boss=True,
         ).id
         == "mago_supremo"
     )

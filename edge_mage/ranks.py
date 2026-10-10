@@ -232,7 +232,7 @@ GLOBAL_RANKS: tuple[Rank, ...] = (
         "Base Mage",
         0,
         1,
-        "Fundamentals concluído — Systems e Edge liberados (soft gate).",
+        "Fundamentals concluído — teto até publicar um boss (arte vetorial).",
     ),
     Rank(
         "intermediate",
@@ -240,7 +240,7 @@ GLOBAL_RANKS: tuple[Rank, ...] = (
         "Intermediate",
         0,
         1,
-        "Progresso em Systems e/ou Edge — ainda sem evidência completa.",
+        "Boss aprovado + artefato publicado — ainda sem evidência completa.",
     ),
     Rank(
         "mago_supremo",
@@ -308,15 +308,22 @@ def rank_from_xp(xp: int) -> Rank:
     return current
 
 
-def effective_rank(xp: int, has_on_device_ritual: bool) -> Rank:
+def effective_rank(
+    xp: int,
+    has_on_device_ritual: bool,
+    has_published_artifact: bool = False,
+) -> Rank:
     """
-    Edge-course ranks: intermediários = XP.
-    Edge Mage exige ritual on-device além do XP floor (2900).
+    Edge-course ranks.
+
+    Ranks intermediários sobem com XP, mas **sem boss aprovado + artefato gerado
+    o topo fica no teto** (Arquimago). Edge Mage exige, além do XP floor (2900),
+    o ritual on-device **e** o artefato publicado (`mage publish on-device`).
     """
     by_xp = rank_from_xp(xp)
     if by_xp.id != "edge_mage":
         return by_xp
-    if has_on_device_ritual:
+    if has_on_device_ritual and has_published_artifact:
         return by_xp
     return next(r for r in EDGE_RANKS if r.id == "arquimago")
 
@@ -335,6 +342,7 @@ def global_rank_from_flags(
     has_systems_boss: bool = False,
     has_edge_on_device: bool = False,
     has_evidence: bool = False,
+    has_published_boss: bool = False,
     any_advanced_progress: bool = False,
     has_neuro_supremo: bool = False,
 ) -> Rank:
@@ -342,14 +350,18 @@ def global_rank_from_flags(
     Global path:
       none → Mago base → intermediate → Mago Supremo
 
+    Regra de teto (Fase 3): rank global só passa de **Mago base** com pelo menos
+    um boss aprovado **e** artefato publicado (`has_published_boss`). XP sozinho
+    não sobe o rank global.
+
     Mago Supremo — alternate routes (either):
       A) Edge: systems boss craft + edge on-device + shared math evidence
       B) Neurotech: MSc climax (neuro-supremo) — see ProgressStore.has_neuro_supremo_path
     """
     edge_path = has_systems_boss and has_edge_on_device and has_evidence
-    if has_mago_base and (edge_path or has_neuro_supremo):
+    if has_mago_base and has_published_boss and (edge_path or has_neuro_supremo):
         return next(r for r in GLOBAL_RANKS if r.id == "mago_supremo")
-    if has_mago_base and (
+    if has_mago_base and has_published_boss and (
         any_advanced_progress
         or has_systems_boss
         or has_edge_on_device

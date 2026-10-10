@@ -15,6 +15,7 @@ from edge_mage.courses import (
 )
 from edge_mage.models import ProgressState, Room, Track
 from edge_mage.paths import progress_path
+from edge_mage.publish import approved_published_bosses
 from edge_mage.ranks import (
     NEURO_MILESTONE_ROOMS,
     NEURO_RUNE_DROP_ROOMS,
@@ -52,8 +53,9 @@ def default_progress_path() -> Path:
 
 
 class ProgressStore:
-    def __init__(self, path: Path | None = None) -> None:
+    def __init__(self, path: Path | None = None, repo_root: Path | None = None) -> None:
         self.path = path or default_progress_path()
+        self.repo_root = repo_root
         self.state = self._load()
 
     def _load(self) -> ProgressState:
@@ -300,6 +302,18 @@ class ProgressStore:
             or self.has_ritual("shared-math")
         )
 
+    def published_bosses(self) -> set[str]:
+        """Bosses com ritual aprovado + ARTIFACT/ publicado (gate de rank Fase 3)."""
+        return approved_published_bosses(self.repo_root)
+
+    def has_published_boss(self) -> bool:
+        """Pelo menos um boss aprovado + artefato publicado."""
+        return bool(self.published_bosses())
+
+    def has_published_on_device(self) -> bool:
+        """Artefato on-device publicado — destrava Edge Mage."""
+        return "on-device" in self.published_bosses()
+
     def unlock_skills(self, skill_ids: list[str]) -> list[str]:
         newly: list[str] = []
         for sid in skill_ids:
@@ -358,7 +372,9 @@ class ProgressStore:
         if is_neuro:
             before_rank = self.neuro_rank()
         else:
-            before_rank = effective_rank(self.state.xp, self.has_ritual("on-device"))
+            before_rank = effective_rank(
+                self.state.xp, self.has_ritual("on-device"), self.has_published_on_device()
+            )
 
         first_completion = False
         mastery_bump = 0
@@ -426,7 +442,9 @@ class ProgressStore:
         if is_neuro:
             after_rank = self.neuro_rank()
         else:
-            after_rank = effective_rank(self.state.xp, self.has_ritual("on-device"))
+            after_rank = effective_rank(
+                self.state.xp, self.has_ritual("on-device"), self.has_published_on_device()
+            )
         return {
             "gained": gained,
             "first_completion": first_completion,
@@ -549,6 +567,7 @@ class ProgressStore:
             has_systems_boss=self.has_systems_boss(),
             has_edge_on_device=self.has_ritual("on-device"),
             has_evidence=self.has_evidence(),
+            has_published_boss=self.has_published_boss(),
             any_advanced_progress=edge_progress or systems_progress or neuro_progress,
             has_neuro_supremo=self.has_neuro_supremo_path(),
         )
@@ -607,9 +626,11 @@ class ProgressStore:
                 "updated": datetime.now(timezone.utc).isoformat(),
             }
 
-        rank = effective_rank(xp, has_od)
+        rank = effective_rank(xp, has_od, self.has_published_on_device())
         nxt = next_rank(xp)
-        if rank.id == "arquimago" and xp >= 2900 and not has_od:
+        if rank.id == "arquimago" and xp >= 2900 and not (
+            has_od and self.has_published_on_device()
+        ):
             from edge_mage.ranks import EDGE_RANKS
 
             nxt = next(r for r in EDGE_RANKS if r.id == "edge_mage")
@@ -631,6 +652,7 @@ class ProgressStore:
             "skills_done": sum(1 for v in self.state.unlocked_skills.values() if v),
             "rituals_done": sum(1 for v in self.state.rituals.values() if v),
             "on_device": has_od,
+            "published_bosses": sorted(self.published_bosses()),
             "course": course_id or "",
             "updated": datetime.now(timezone.utc).isoformat(),
         }

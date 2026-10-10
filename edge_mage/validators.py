@@ -12,6 +12,9 @@ from pathlib import Path
 
 from edge_mage.models import Task
 
+# Cap de stdout: evita que soluções "ruidosas" estourem memória/tempo do runner.
+MAX_OUTPUT_CHARS = 20_000
+
 
 def normalize_text(value: str) -> str:
     s = value.strip().lower()
@@ -224,7 +227,12 @@ def check_c_code(task: Task, user_code: str) -> tuple[bool, str]:
             tip = err_lines[-1] if err_lines else f"Código {run_proc.returncode}"
             return False, f"Execução C falhou:\n{tip}"
 
-        out = run_proc.stdout.strip()
+        out = run_proc.stdout
+        if len(out) > MAX_OUTPUT_CHARS:
+            return False, (
+                f"Saída excessiva ({len(out)} chars) — reduza prints (ruído)."
+            )
+        out = out.strip()
         if task.expected_stdout.strip():
             expected = task.expected_stdout.strip()
             if out == expected or out.endswith(expected):
@@ -295,7 +303,12 @@ def check_code(task: Task, user_code: str) -> tuple[bool, str]:
             tip = err[-1] if err else "falhou"
             return False, f"Execução falhou: {tip}"
 
-        out = proc.stdout.strip()
+        out = proc.stdout
+        if len(out) > MAX_OUTPUT_CHARS:
+            return False, (
+                f"Saída excessiva ({len(out)} chars) — reduza prints (ruído)."
+            )
+        out = out.strip()
         if task.expected_stdout.strip():
             expected = task.expected_stdout.strip()
             if out == expected or out.endswith(expected):

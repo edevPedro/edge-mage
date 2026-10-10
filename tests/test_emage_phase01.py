@@ -68,15 +68,26 @@ def test_fundamentals_and_systems_load() -> None:
 def test_global_ranks() -> None:
     assert global_rank_from_flags(has_mago_base=False).id == "none"
     assert global_rank_from_flags(has_mago_base=True).id == "mago_base"
-    assert global_rank_from_flags(
-        has_mago_base=True, any_advanced_progress=True
-    ).id == "intermediate"
+    # XP/progresso sozinho não passa do teto — precisa de boss publicado
+    assert (
+        global_rank_from_flags(has_mago_base=True, any_advanced_progress=True).id
+        == "mago_base"
+    )
+    assert (
+        global_rank_from_flags(
+            has_mago_base=True,
+            any_advanced_progress=True,
+            has_published_boss=True,
+        ).id
+        == "intermediate"
+    )
     assert (
         global_rank_from_flags(
             has_mago_base=True,
             has_systems_boss=True,
             has_edge_on_device=True,
             has_evidence=True,
+            has_published_boss=True,
         ).id
         == "mago_supremo"
     )

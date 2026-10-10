@@ -15,13 +15,13 @@ def main(argv: list[str] | None = None) -> None:
         "-V",
         "--version",
         action="version",
-        version="e-mage 0.2.0",
+        version="e-mage 0.3.0",
     )
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["sync", "courses", "emu", "lab"],
-        help="Optional: sync | courses | emu | lab list|init|run|latest",
+        choices=["sync", "courses", "emu", "publish", "lab"],
+        help="Optional: sync | courses | emu | publish <boss> | lab list|init|run|latest",
     )
     parser.add_argument(
         "--course",
@@ -33,7 +33,7 @@ def main(argv: list[str] | None = None) -> None:
         "arg",
         nargs="*",
         default=[],
-        help="Args for `emu` (which) or `lab` (list|init|run|latest <id>)",
+        help="Args for `emu` (which), `publish` (boss id) or `lab` (list|init|run|latest <id>)",
     )
     args = parser.parse_args(argv)
 
@@ -56,6 +56,21 @@ def main(argv: list[str] | None = None) -> None:
         from edge_mage.labs.cli import main as lab_main
 
         sys.exit(lab_main(args.arg))
+
+    if args.command == "publish":
+        from edge_mage.publish import known_bosses, publish_boss, status_report
+
+        if not args.arg:
+            print(status_report())
+            print(f"\nuso: mage publish <boss>   #{', '.join(known_bosses())}")
+            sys.exit(0)
+        result = publish_boss(args.arg[0])
+        print(result.message)
+        if result.next_steps:
+            print("\nPróximos passos:")
+            for step in result.next_steps:
+                print(f"  - {step}")
+        sys.exit(0 if result.ok else 1)
 
     from edge_mage.app import run
 

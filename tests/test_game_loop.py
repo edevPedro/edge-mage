@@ -19,7 +19,9 @@ from edge_mage.validators import validate_task
 def test_edge_mage_requires_ritual() -> None:
     assert rank_from_xp(2900).id == "edge_mage"
     assert effective_rank(2900, False).id == "arquimago"
-    assert effective_rank(2900, True).id == "edge_mage"
+    # ritual without published artifact caps at arquimago (Fase 3)
+    assert effective_rank(2900, True).id == "arquimago"
+    assert effective_rank(2900, True, True).id == "edge_mage"
 
 
 def test_numeric_near_miss_hint() -> None:

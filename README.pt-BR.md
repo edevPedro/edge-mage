@@ -167,13 +167,46 @@ Dev: `make install-dev` · `make test` · `USE_PIPX=1 ./install.sh`
 | `g` + `p`/`r`/`t`/`h` | perfil / grimório / trilhas / home |
 | `:courses` | voltar ao launcher |
 | `:sync` | packs + API + diário |
+| `:publish <boss>` | gera `ARTIFACT/<boss>/` (não envia/pusha) |
 | `q` | sair |
+
+## Artefatos de boss (`mage publish`)
+
+Cada boss gera um `ARTIFACT/<boss>/` pronto para o GitHub:
+
+```bash
+mage publish                 # lista bosses + status ritual/publicado
+mage publish on-device       # valida o ritual e gera o artefato
+```
+
+Gera um `README.md` de uma página com as seções **O que medi / O que me
+surpreendeu / O que faria depois** (+ instruções de reprodução), um
+`evidence.json` e gráficos ASCII montados do evidence log
+(`study-log/completions.jsonl`). **Não envia nada** sozinho — apenas imprime os
+próximos passos de git.
+
+Conteúdo limpo por princípio: sem código proprietário, protocolo interno ou dado
+real de empregador/corretora. Salas de teoria são curtas e toda sala traz um
+exercício verificável (não só MCQ); `scripts/lint_resources.py` garante isso.
 
 ## Ranks
 
-**Global:** nenhum → **Mago base** (Fundamentos) → intermediário → **Mago Supremo** (boss systems + on-device edge + evidência).
+O rank sobe **só com boss aprovado + artefato publicado** — o XP continua
+acumulando, mas sozinho bate num teto (`mage publish <boss>` é o portão).
 
-**Curso Edge (interno):** Noviço → … → Arquimago → **Edge Mage** (XP ≥ 2900 **e** ritual on-device).
+**Global:** nenhum → **Mago base** (Fundamentos) → intermediário (≥1 boss
+publicado) → **Mago Supremo** (boss systems + on-device edge + shared math,
+todos publicados; ou a rota MSc do Neurotech).
+
+**Curso Edge (interno):** Noviço → … → Arquimago (teto de XP) → **Edge Mage**
+(XP ≥ 2900 **e** ritual on-device **e** `mage publish on-device`).
+
+## Qualidade e CI
+
+- Testes do runner (`tests/test_runner_sandbox.py`): PASS, FAIL, timeout,
+  compilação quebrada e ruído alto (stdout limitado a 20k chars).
+- GitHub Actions roda `pytest`, `scripts/lint_resources.py` e um benchmark smoke
+  do runner (`scripts/benchmark_smoke.py`) em Linux.
 
 ## Licença
 

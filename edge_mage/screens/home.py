@@ -124,8 +124,14 @@ class HomeScreen(MageScreen):
                         extra = " — limpe online-stub"
                     yield Static(f"Próximo: {nxt.title}{extra}", classes="accent")
                 else:
-                    if nxt.id == "edge_mage" and not profile.get("on_device"):
-                        extra = " + ritual on-device"
+                    if nxt.id == "edge_mage":
+                        need = []
+                        if not profile.get("on_device"):
+                            need.append("ritual on-device")
+                        if "on-device" not in (profile.get("published_bosses") or []):
+                            need.append("mage publish on-device")
+                        if need:
+                            extra = " + " + " + ".join(need)
                     yield Static(
                         f"Próximo: {nxt.title} (≥{nxt.min_xp} XP{extra})",
                         classes="accent",
