@@ -99,6 +99,13 @@ def daily_path() -> Path:
     return mage_home() / "daily.json"
 
 
+def charts_dir() -> Path:
+    """Generated SVG/Markdown charts for `wsh view`: ~/.mage/charts/."""
+    d = mage_home() / "charts"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
 def labs_work_dir(lab_id: str) -> Path:
     """Student working directory for a lab: ~/.mage/labs/<id>/work/."""
     d = mage_home() / "labs" / lab_id / "work"

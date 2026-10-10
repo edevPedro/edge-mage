@@ -112,6 +112,22 @@ def render(summary: WeekSummary, *, rules=None) -> str:
     return "\n".join(lines)
 
 
+def _daily_counts(summary: WeekSummary, records: list) -> list[int]:
+    from datetime import timedelta
+
+    counts = [0] * 7
+    for rec in records:
+        if not rec.is_pass or not rec.timestamp:
+            continue
+        try:
+            rd = datetime.fromisoformat(rec.timestamp).date()
+        except ValueError:
+            continue
+        if summary.start <= rd <= summary.end:
+            counts[(rd - summary.start).days] += 1
+    return counts
+
+
 def cmd_week(argv: list[str]) -> int:
     try:
         roadmap = load_roadmap()
@@ -122,4 +138,12 @@ def cmd_week(argv: list[str]) -> int:
         return 1
     summary = build_summary(roadmap=roadmap, state=state, records=records)
     print(render(summary, rules=roadmap.rules))
+    if "--svg" in argv:
+        from edge_mage.paths import charts_dir
+        from edge_mage.roadmap import charts as charts_mod
+
+        counts = _daily_counts(summary, records)
+        svg = charts_mod.weekly_bar_svg(charts_mod.week_labels(summary.start), counts)
+        out = charts_mod.write_svg(charts_dir() / "week.svg", svg)
+        print(f"\nsvg: {out}")
     return 0

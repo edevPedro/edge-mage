@@ -6,7 +6,9 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from edge_mage.paths import practice_dir
+from edge_mage.paths import charts_dir, practice_dir
+from edge_mage.roadmap import branches as branches_mod
+from edge_mage.roadmap import charts as charts_mod
 from edge_mage.roadmap import daily as daily_mod
 from edge_mage.roadmap import evidence as evidence_mod
 from edge_mage.roadmap.errors import RoadmapError
@@ -21,7 +23,10 @@ _USAGE = """uso: mage <comando>
   verify [--runs N]  roda o verificador da meta de hoje e grava evidência
   close --explain "l1; l2; l3"
                      fecha o dia (explicação de 3 linhas obrigatória)
-  week               painel semanal (horas, metas, evidência, dispersão)
+  week [--svg]       painel semanal (horas, metas, evidência, dispersão)
+  branch <id>        ativa um ramo (--off <id> desativa; sem args, lista)
+  chart [--challenge <id>] [--metric <m>] [--stat p99]
+                     gera SVG da curva da métrica no tempo (~/.mage/charts/)
   init [<challenge>] cria o diretório de trabalho a partir do scaffold
 """
 
@@ -60,9 +65,20 @@ def cmd_roadmap(argv: list[str]) -> int:
         print(f"    {status} · timebox {ch.timebox_days}d · {ch.dir.name}")
     if roadmap.branches:
         print("\nramos (abrem por evidência ou calendário):")
-        for b in roadmap.branches:
-            mark = "*" if b.id in state.branches_active else " "
-            print(f"{mark} {b.id:22s} abre: {b.opens_when.describe():28s} teto {b.weekly_cap_pct:.0f}%")
+        for st in branches_mod.statuses(roadmap, state):
+            b = st.branch
+            mark = "*" if st.active else ("o" if st.open else " ")
+            state_txt = "ativo" if st.active else ("aberto" if st.open else st.reason)
+            print(f"{mark} {b.id:22s} {state_txt:30s} teto {b.weekly_cap_pct:.0f}%")
+            if st.active and b.title:
+                print(f"    {b.title}")
+    warn = branches_mod.stagnation_warning(roadmap, state, records)
+    if warn:
+        print(f"\n! {warn}")
+    pct, _tn, tot = branches_mod.trunk_share(records, roadmap)
+    if tot and pct < roadmap.rules.trunk_min_pct:
+        print(f"! tronco em {pct:.0f}% (< {roadmap.rules.trunk_min_pct:.0f}%) na última semana — "
+              f"mantenha ramos ≤ {roadmap.rules.branches_max_pct:.0f}% (§3)")
     return 0
 
 
@@ -269,6 +285,83 @@ def cmd_init(argv: list[str]) -> int:
     return 0
 
 
+def cmd_branch(argv: list[str]) -> int:
+    try:
+        roadmap, state, records = _load()
+    except RoadmapError as exc:
+        print(f"erro: {exc}", file=sys.stderr)
+        return 1
+    action = "on"
+    ids: list[str] = []
+    for tok in argv:
+        if tok in ("--off", "off"):
+            action = "off"
+        elif tok in ("--on", "on"):
+            action = "on"
+        elif tok.startswith("-"):
+            print(f"argumento desconhecido: {tok}", file=sys.stderr)
+            return 2
+        else:
+            ids.append(tok)
+    if not ids:
+        print("ramos (o=aberto, *=ativo):")
+        for st in branches_mod.statuses(roadmap, state):
+            mark = "*" if st.active else ("o" if st.open else " ")
+            state_txt = "ativo" if st.active else ("aberto" if st.open else st.reason)
+            print(f"  {mark} {st.branch.id:22s} {state_txt}")
+        return 0
+    for bid in ids:
+        if action == "off":
+            ok = branches_mod.deactivate(state, bid)
+            print(f"ramo '{bid}' desativado" if ok else f"ramo '{bid}' não estava ativo")
+        else:
+            ok, msg = branches_mod.activate(roadmap, state, bid)
+            print(msg)
+            if not ok:
+                daily_mod.save_state(state)
+                return 1
+    daily_mod.save_state(state)
+    return 0
+
+
+def cmd_chart(argv: list[str]) -> int:
+    challenge_id = ""
+    metric = ""
+    stat = "p99"
+    rest = list(argv)
+    while rest:
+        tok = rest.pop(0)
+        if tok == "--challenge" and rest:
+            challenge_id = rest.pop(0)
+        elif tok.startswith("--challenge="):
+            challenge_id = tok.split("=", 1)[1]
+        elif tok == "--metric" and rest:
+            metric = rest.pop(0)
+        elif tok.startswith("--metric="):
+            metric = tok.split("=", 1)[1]
+        elif tok == "--stat" and rest:
+            stat = rest.pop(0)
+        elif tok.startswith("--stat="):
+            stat = tok.split("=", 1)[1]
+        else:
+            print(f"argumento desconhecido: {tok}", file=sys.stderr)
+            return 2
+    records = _records()
+    pts = charts_mod.metric_series(
+        records, challenge_id=challenge_id or None, metric=metric or None, stat=stat
+    )
+    label = metric or "auto"
+    title = f"{challenge_id or 'todos'} · {label} · {stat} (n={len(pts)})"
+    svg = charts_mod.line_chart_svg(pts, title=title)
+    out = charts_dir() / f"curve-{(challenge_id or 'all')}-{label}-{stat}.svg"
+    charts_mod.write_svg(out, svg)
+    print(f"pontos: {len(pts)}")
+    if len(pts) < 2:
+        print("aviso: menos de 2 pontos — uma única execução não conta (§7); rode mais.")
+    print(f"svg: {out}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = list(argv or [])
     if not args or args[0] in ("-h", "--help", "help"):
@@ -285,6 +378,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_close(rest)
     if cmd == "init":
         return cmd_init(rest)
+    if cmd == "branch":
+        return cmd_branch(rest)
+    if cmd == "chart":
+        return cmd_chart(rest)
     if cmd == "week":
         from edge_mage.roadmap.weekreport import cmd_week
 
