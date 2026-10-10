@@ -3,7 +3,7 @@ title: FIR vs IIR e atraso de grupo
 summary: Fase linear, delay FIR, causalidade online vs filtfilt.
 xp_reward: 36
 unlock_xp: 0
-order: 38
+order: 26
 owners:
 - eletrica
 - neuroeng

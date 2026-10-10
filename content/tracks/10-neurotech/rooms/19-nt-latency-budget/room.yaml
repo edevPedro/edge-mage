@@ -109,4 +109,4 @@ tasks:
     assert r3[''buffer_overrun''] is True and r3[''is_deadline_met''] is False
 
     '
-order: 57
+order: 18

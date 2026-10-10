@@ -21,72 +21,36 @@ from edge_mage.validators import validate_task
 # Foundation→advanced pillars: +physics electrostatics, +5 EE, +neuro systems, +CS RT, +FW RT.
 PEDAGOGICAL_IDS = [
     "nt-portal",
-    "nt-ethics-consent",
-    "nt-math-vectors",
-    "nt-math-matrices",
-    "nt-math-eigen",
-    "nt-math-probability",
-    "nt-math-estimation",
-    "nt-math-gd-lite",
-    "nt-physics-electrostatics",
     "nt-dipole-scalp",
-    "nt-physics-rc-tissue",
     "nt-spike-lfp",
     "nt-volume-blur",
-    "nt-physics-field-lite",
-    "nt-elec-circuit-fundamentals",
-    "nt-elec-semiconductors",
     "nt-electrode-snr",
     "nt-ground-ref",
-    "nt-elec-opamp-noise",
-    "nt-elec-ina-drl",
     "nt-adc-bio",
-    "nt-elec-antialias",
-    "nt-elec-pcb-emc",
-    "nt-elec-shield-power",
-    "nt-neuro-neuron-hh",
-    "nt-neuro-synapse",
     "nt-rhythms",
-    "nt-neuro-maps",
-    "nt-neuro-plasticity",
-    "nt-neuro-systems-bci",
-    "nt-cs-complexity",
-    "nt-cs-ringbuf-ds",
-    "nt-cs-numerics",
-    "nt-cs-harness",
-    "nt-cs-realtime-testing",
     "nt-filter-bank",
-    "nt-dsp-welch",
-    "nt-filter-design-depth",
-    "nt-artifacts",
     "nt-mi-paradigm",
+    "nt-artifacts",
     "nt-features-bandpower",
-    "nt-trial-design",
-    "nt-stats-bci",
-    "nt-hypothesis-power",
-    "nt-cv-leakage",
     "nt-decode-mvp",
-    "nt-csp-primer",
     "nt-riemann-primer",
     "nt-metrics-offline",
-    "nt-ml-neural",
     "nt-stream-buffer",
-    "nt-fw-irq-dma",
     "nt-mcu-filter",
-    "nt-fw-fixedpoint",
-    "nt-fw-aarch64-bridge",
-    "nt-fw-rt-constraints",
     "nt-latency-budget",
     "nt-online-stub",
-    "nt-closed-loop-control",
     "nt-checkpoint-paper",
     "nt-checkpoint-project",
     "nt-neuro-mage",
-    "nt-app-assistive-bci",
-    "nt-app-neurofeedback",
-    "nt-app-hybrid-p300",
-    "nt-case-berlin-mi",
-    "nt-case-bci-comp-iv",
+    "nt-stats-bci",
+    "nt-hypothesis-power",
+    "nt-dsp-welch",
+    "nt-filter-design-depth",
+    "nt-trial-design",
+    "nt-cv-leakage",
+    "nt-csp-primer",
+    "nt-ml-neural",
+    "nt-closed-loop-control",
     "nt-irb-protocol",
     "nt-paper-critique",
     "nt-research-proposal",
@@ -97,10 +61,45 @@ PEDAGOGICAL_IDS = [
     "nt-ssvep-elective",
     "nt-fbcsp-bakeoff",
     "nt-openbci-path",
+    "nt-math-vectors",
+    "nt-math-matrices",
+    "nt-math-eigen",
+    "nt-math-probability",
+    "nt-math-estimation",
+    "nt-math-gd-lite",
+    "nt-physics-rc-tissue",
+    "nt-physics-field-lite",
+    "nt-elec-opamp-noise",
+    "nt-elec-antialias",
+    "nt-neuro-neuron-hh",
+    "nt-neuro-synapse",
+    "nt-neuro-maps",
+    "nt-neuro-plasticity",
+    "nt-cs-complexity",
+    "nt-cs-ringbuf-ds",
+    "nt-cs-numerics",
+    "nt-cs-harness",
+    "nt-fw-irq-dma",
+    "nt-fw-fixedpoint",
+    "nt-fw-aarch64-bridge",
+    "nt-app-assistive-bci",
+    "nt-app-neurofeedback",
+    "nt-app-hybrid-p300",
+    "nt-case-berlin-mi",
+    "nt-case-bci-comp-iv",
+    "nt-physics-electrostatics",
+    "nt-elec-circuit-fundamentals",
+    "nt-elec-semiconductors",
+    "nt-elec-ina-drl",
+    "nt-elec-pcb-emc",
+    "nt-elec-shield-power",
+    "nt-neuro-systems-bci",
+    "nt-cs-realtime-testing",
+    "nt-fw-rt-constraints",
 ]
 
-REQUIRED_IDS = PEDAGOGICAL_IDS[:74]
-ELECTIVE_IDS = PEDAGOGICAL_IDS[74:]
+REQUIRED_IDS = PEDAGOGICAL_IDS[:73]
+ELECTIVE_IDS = PEDAGOGICAL_IDS[73:]
 
 
 def _neuro_track() -> Track:
@@ -117,8 +116,8 @@ def test_neurotech_pedagogical_order_locked() -> None:
     track = _neuro_track()
     ids = [r.id for r in track.rooms]
     assert ids == PEDAGOGICAL_IDS
-    assert [r.order for r in track.rooms] == list(range(1, 78))
-    assert len(REQUIRED_IDS) == 74
+    assert [r.order for r in track.rooms] == list(range(1, 77))
+    assert len(REQUIRED_IDS) == 73
     assert len(ELECTIVE_IDS) == 3
 
 
@@ -178,14 +177,13 @@ def test_requires_rooms_enforced_in_unlock(tmp_path) -> None:
     track = _neuro_track()
     store = ProgressStore(tmp_path / "neuro-progress.json")
     portal = next(r for r in track.rooms if r.id == "nt-portal")
-    ethics = next(r for r in track.rooms if r.id == "nt-ethics-consent")
     math_v = next(r for r in track.rooms if r.id == "nt-math-vectors")
     ground = next(r for r in track.rooms if r.id == "nt-ground-ref")
     assert store.is_room_unlocked(track, portal)
-    assert not store.is_room_unlocked(track, ethics)
+    assert store.is_room_unlocked(track, math_v)  # portal is base
     store.state.completed_rooms_by_id["nt-portal"] = True
-    assert store.is_room_unlocked(track, ethics)
-    assert not store.is_room_unlocked(track, math_v)
+    # ethics removed
+    assert store.is_room_unlocked(track, math_v)
     assert not store.is_room_unlocked(track, ground)
 
     # Neuro Mage needs online + (paper OR project) + 3 neuro runes
@@ -261,7 +259,11 @@ def test_neuro_ranks_and_runes() -> None:
     assert NEURO_RUNE_RESEARCH in neuro_runes_earned_from_rooms({"nt-research-project"})
 
 
-def test_neuro_mage_alone_not_supremo(tmp_path) -> None:
+def test_neuro_mage_alone_not_supremo(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(
+        "edge_mage.progress.approved_published_bosses",
+        lambda repo_root=None: {"neuro-mage"},
+    )
     store = ProgressStore(tmp_path / "runes.json")
     store.state.courses["fundamentals"] = {"cleared": True, "mago_base": True}
     store.state.completed_rooms_by_id["nt-filter-bank"] = True
@@ -274,7 +276,11 @@ def test_neuro_mage_alone_not_supremo(tmp_path) -> None:
     assert store.global_rank().id == "intermediate"
 
 
-def test_neurotech_climax_grants_mago_supremo(tmp_path) -> None:
+def test_neurotech_climax_grants_mago_supremo(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(
+        "edge_mage.progress.approved_published_bosses",
+        lambda repo_root=None: {"neuro-supremo"},
+    )
     store = ProgressStore(tmp_path / "supremo.json")
     store.state.courses["fundamentals"] = {"cleared": True, "mago_base": True}
     for rid in (
@@ -306,6 +312,7 @@ def test_edge_supremo_path_unchanged() -> None:
             has_systems_boss=True,
             has_edge_on_device=True,
             has_evidence=True,
+            has_published_boss=True,
         ).id
         == "mago_supremo"
     )
@@ -313,6 +320,7 @@ def test_edge_supremo_path_unchanged() -> None:
         global_rank_from_flags(
             has_mago_base=True,
             has_neuro_supremo=True,
+            has_published_boss=True,
         ).id
         == "mago_supremo"
     )
@@ -323,6 +331,7 @@ def test_edge_supremo_path_unchanged() -> None:
             has_systems_boss=True,
             has_edge_on_device=False,
             has_evidence=True,
+            has_published_boss=True,
         ).id
         != "mago_supremo"
     )
@@ -370,7 +379,11 @@ def test_neuro_rune_drops_persist(tmp_path) -> None:
     assert p["neuro_mage"] is True
 
 
-def test_neuro_profile_not_edge_on_device(tmp_path) -> None:
+def test_neuro_profile_not_edge_on_device(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(
+        "edge_mage.progress.approved_published_bosses",
+        lambda repo_root=None: {"on-device"},
+    )
     store = ProgressStore(tmp_path / "p.json")
     store.state.xp = 3000
     store.state.rituals["on-device"] = True
@@ -461,8 +474,7 @@ def test_technical_rooms_have_code_tasks() -> None:
     track = _neuro_track()
     exempt = {
         "nt-portal",
-        "nt-ethics-consent",
-        "nt-irb-protocol",
+            "nt-irb-protocol",
         "nt-checkpoint-paper",
         "nt-checkpoint-project",
         "nt-neuro-mage",
@@ -616,7 +628,7 @@ def test_neuro_mage_and_supremo_ritual_validation() -> None:
 - what_reproduced: MSc climax evidence pack with all 4 runes and thesis methods
 - metrics: kappa 0.78, mean latency 34.0ms
 - latency_ms: 34.0
-- limits: educational noninvasive BCI, no clinical claims
+- limits: nonclinical neuroengineering literacy, no clinical claims
 """
     ok3, msg3, found3 = parse_neuro_checklist(valid_supremo, "neuro-supremo")
     assert ok3, msg3

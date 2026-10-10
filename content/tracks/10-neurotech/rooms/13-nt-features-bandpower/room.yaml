@@ -60,4 +60,4 @@ tasks:
         assert False, "Deveria levantar ValueError para potencia zero"
     except ValueError:
         pass
-order: 41
+order: 12

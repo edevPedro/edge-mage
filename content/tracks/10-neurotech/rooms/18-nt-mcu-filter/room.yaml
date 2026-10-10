@@ -86,4 +86,4 @@ tasks:
     assert sat == 32767
 
     '
-order: 53
+order: 17

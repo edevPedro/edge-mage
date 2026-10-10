@@ -57,6 +57,6 @@ tasks:
     assert mod.detect_drops([255, 1], max_seq=256) == 1
 
     '
-order: 34
+order: 59
 requires_rooms:
 - nt-cs-numerics

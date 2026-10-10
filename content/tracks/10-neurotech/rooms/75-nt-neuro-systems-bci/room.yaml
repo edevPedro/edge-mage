@@ -59,6 +59,6 @@ tasks:
     assert abs(mod.erd_ers_percent(100.0, 120.0) - (-20.0)) < 1e-5
 
     '
-order: 30
+order: 74
 requires_rooms:
 - nt-neuro-plasticity

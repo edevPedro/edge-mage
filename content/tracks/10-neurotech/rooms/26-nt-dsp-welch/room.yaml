@@ -3,7 +3,7 @@ title: DSP — Welch e vazamento espectral
 summary: Periodograma vs Welch; Δf≈1/T; parâmetros honestos.
 xp_reward: 36
 unlock_xp: 0
-order: 37
+order: 25
 owners:
 - eletrica
 - bci

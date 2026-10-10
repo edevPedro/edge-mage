@@ -68,4 +68,4 @@ tasks:
     assert mod.band_mask([0, 50, 60], 50, 61) == [False, True, True]
 
     '
-order: 36
+order: 9

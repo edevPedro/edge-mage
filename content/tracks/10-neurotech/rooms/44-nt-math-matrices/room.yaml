@@ -54,6 +54,6 @@ tasks:
   - covariancia
   - covariance
   - cov
-order: 4
+order: 43
 requires_rooms:
 - nt-math-vectors

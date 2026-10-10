@@ -55,6 +55,6 @@ tasks:
     assert loss < 0.01
     assert abs(w_fit[0] - 2.0) < 0.05
     assert abs(w_fit[1] - (-1.0)) < 0.05
-order: 8
+order: 47
 requires_rooms:
 - nt-math-estimation

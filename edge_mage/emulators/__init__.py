@@ -35,3 +35,25 @@ __all__ = [
     "run_online_stub",
 ]
 
+from edge_mage.emulators.spike_stream import SpikeStream, SpikeStreamConfig, SpikeEvent
+from edge_mage.emulators.ecog_stream import EcogStream, EcogConfig
+from edge_mage.emulators.stim_safety import StimSafetyStub, StimConfig, Pulse
+from edge_mage.emulators.neuromod_loop import NeuromodLoop, NMLConfig
+from edge_mage.emulators.spike_eeg_bridge import synth_spike_lfp_correlated
+
+__all__.extend([
+    "SpikeStream",
+    "SpikeStreamConfig",
+    "SpikeEvent",
+    "EcogStream",
+    "EcogConfig",
+    "StimSafetyStub",
+    "StimConfig",
+    "Pulse",
+    "NeuromodLoop",
+    "NMLConfig",
+    "synth_spike_lfp_correlated",
+])
+from edge_mage.emulators.neuron_cli_stub import NeuronCLIStub, NeuronSimConfig
+__all__.append("NeuronCLIStub")
+__all__.append("NeuronSimConfig")

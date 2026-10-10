@@ -66,6 +66,6 @@ tasks:
     assert ok2 is True
     assert abs(vout2 - 0.5002) < 1e-3
     assert "linear" in msg2.lower()
-order: 20
+order: 71
 requires_rooms:
 - nt-elec-opamp-noise

@@ -46,7 +46,7 @@ tasks:
     assert mod.float_to_q15(1.5) == 32767
 
     '
-order: 54
+order: 61
 requires_rooms:
 - nt-mcu-filter
 resources:

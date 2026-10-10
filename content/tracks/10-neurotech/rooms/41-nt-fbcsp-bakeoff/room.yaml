@@ -3,7 +3,7 @@ title: 'Eletivo: FBCSP vs Riemann bake-off'
 summary: Comparar pipelines no mesmo split — opcional.
 xp_reward: 30
 unlock_xp: 0
-order: 76
+order: 40
 owners:
 - bci
 phase: elective

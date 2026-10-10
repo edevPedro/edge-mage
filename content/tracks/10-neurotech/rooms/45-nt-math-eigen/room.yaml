@@ -55,6 +55,6 @@ tasks:
     vec, val = mod.principal_component_2x2([[4.0, 0.0], [0.0, 1.0]])
     assert abs(val - 4.0) < 1e-3
     assert abs(abs(vec[0]) - 1.0) < 1e-3
-order: 5
+order: 44
 requires_rooms:
 - nt-math-matrices

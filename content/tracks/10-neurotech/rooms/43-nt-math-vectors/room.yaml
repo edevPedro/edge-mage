@@ -45,6 +45,5 @@ tasks:
     \ - 1.0) < 1e-7\nassert abs(wn[0] - 0.6) < 1e-7 and abs(wn[1] - 0.8) < 1e-7\n\
     try:\n    mod.normalize_spatial_filter([0.0, 0.0])\n    assert False, \"Deveria\
     \ levantar ValueError para norma zero\"\nexcept ValueError:\n    pass\n"
-order: 3
-requires_rooms:
-- nt-ethics-consent
+order: 42
+requires_rooms: []

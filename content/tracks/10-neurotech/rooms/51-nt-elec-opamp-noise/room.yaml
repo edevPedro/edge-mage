@@ -94,6 +94,6 @@ tasks:
     assert b_snr_db < 15.0
 
     '
-order: 19
+order: 50
 requires_rooms:
 - nt-ground-ref

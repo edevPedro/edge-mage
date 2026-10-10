@@ -3,7 +3,7 @@ title: ML para dados neurais
 summary: Baselines, regularização, quando NÃO usar deep.
 xp_reward: 38
 unlock_xp: 0
-order: 50
+order: 30
 owners:
 - bci
 phase: F8-decode

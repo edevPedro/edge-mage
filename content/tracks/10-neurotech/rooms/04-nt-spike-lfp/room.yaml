@@ -87,4 +87,4 @@ tasks:
     assert det_scalp is False
     assert v_scalp < 0.001
     assert snr_scalp < 0.01
-order: 12
+order: 3

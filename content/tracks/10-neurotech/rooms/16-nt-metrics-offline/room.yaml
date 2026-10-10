@@ -97,4 +97,4 @@ tasks:
     # Previsao pura de uma classe: kappa colapsa para zero
     kap_bias = mod.calculate_cohen_kappa(y_t, [0] * 10)
     assert abs(kap_bias - 0.0) < 1e-4
-order: 49
+order: 15

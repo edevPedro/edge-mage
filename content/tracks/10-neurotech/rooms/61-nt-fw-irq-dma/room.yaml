@@ -60,6 +60,6 @@ tasks:
     assert tc2 is True
 
     '
-order: 52
+order: 60
 requires_rooms:
 - nt-stream-buffer

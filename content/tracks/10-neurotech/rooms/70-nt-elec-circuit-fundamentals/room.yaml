@@ -84,6 +84,6 @@ tasks:
     assert pass_dry is False
     assert v_dry < 42.0
     assert loss_dry > 15.0
-order: 15
+order: 69
 requires_rooms:
 - nt-physics-field-lite

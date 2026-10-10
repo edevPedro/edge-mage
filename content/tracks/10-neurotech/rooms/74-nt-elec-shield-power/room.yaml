@@ -80,6 +80,6 @@ tasks:
     assert b_clean is False
     assert b_inj > 90.0
     assert b_snr < -15.0
-order: 24
+order: 73
 requires_rooms:
 - nt-elec-pcb-emc

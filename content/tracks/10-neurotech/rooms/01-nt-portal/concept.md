@@ -25,7 +25,7 @@ A cadeia completa de aquisição e processamento compreende:
 2. **Ignorar Latência e Causalidade:** Utilizar filtros não-causais bidirecionais (como `scipy.signal.filtfilt`) no treinamento offline e descobrir no hardware em tempo real que o algoritmo exige dados do futuro, tornando o sistema inoperante.
 
 ## O Que a Próxima Sala Assume
-A próxima sala (`nt-ethics-consent`) — **Ética, consentimento, limites** — estabelece o arcabouço ético formal (Relatório Belmont, Declaração de Helsinque e neurodireitos) indispensável antes de qualquer aquisição com participantes humanos.
+Os fundamentos éticos (Relatório Belmont, neurodireitos e limites do escopo educacional) são tratados ao longo do percurso de pesquisa.
 
 ## Artigos de Apoio e Leituras Recomendadas
 - [SPEC Neurotech course](https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-neurotech-course.md) — *Documentação Técnica*: Leitura fundamental para fundamentar os conceitos teóricos e destravar a implementação técnica do laboratório.

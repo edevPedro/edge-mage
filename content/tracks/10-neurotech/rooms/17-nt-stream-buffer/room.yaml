@@ -52,4 +52,4 @@ tasks:
     \ n):\n        ...\n"
   code_tests: "b=mod.RingBuffer(3)\nfor i in range(5):\n    b.push(i)\nassert b.latest(3)==[2,3,4]\n\
     assert b.latest(10)==[2,3,4]\n"
-order: 51
+order: 16

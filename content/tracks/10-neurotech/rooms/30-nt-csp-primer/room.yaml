@@ -3,7 +3,7 @@ title: Primer CSP (filtros espaciais)
 summary: Cov→CSP→log-var; fit só no treino; ponte ao FBCSP eletivo.
 xp_reward: 38
 unlock_xp: 0
-order: 47
+order: 29
 owners:
 - bci
 phase: F8-decode

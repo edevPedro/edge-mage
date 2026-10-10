@@ -67,4 +67,4 @@ tasks:
     assert ok2 is True
     assert noise2 < 5.0
     assert "controle" in msg2.lower()
-order: 18
+order: 6

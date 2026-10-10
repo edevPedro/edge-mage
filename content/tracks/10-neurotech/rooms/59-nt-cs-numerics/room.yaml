@@ -56,7 +56,7 @@ tasks:
     assert abs(reg[1][1] - 1.1) < 1e-5
 
     '
-order: 33
+order: 58
 requires_rooms:
 - nt-cs-ringbuf-ds
 resources:

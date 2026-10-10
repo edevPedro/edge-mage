@@ -62,6 +62,6 @@ tasks:
     assert s2 is True and abs(v2 - (-70.0)) < 1e-5
 
     '
-order: 25
+order: 52
 requires_rooms:
 - nt-elec-shield-power

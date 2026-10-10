@@ -26,10 +26,15 @@ A learner who finishes the **required path** (climax **Mago Supremo** via Neurot
 | **CS** | Complexity vs deadline, ring buffer, numerics, test harness |
 | **Firmware / Embedded** | IRQ/DMA, MCU filter stub, Q15, AArch64/Edge bridge, latency budget |
 | **BCI applications** | Offline→online decode, assistive/NFB/P300 literacy (non-clinical) |
+| **Invasive & Microtechnology** | ECoG, LFP/MUA/SUA, microelectrode arrays (MEA), Utah arrays, Neuropixels (data acquisition/processing, interface models), computational/engineering literacy |
+| **Neuromodulation** | Noninvasive (tDCS/tACS/rTMS) + invasive (DBS/SCS/VNS), adaptive/closed-loop, biomarker-driven, safety (charge balance) |
+| **Neuroprostheses** | Motor/sensory BMI, FES+BMI, closed-loop sensory feedback, user-in-the-loop |
+| **Spinal Cord Injury (SCI)** | Pathophysiology, ASIA, plasticity, assistive technologies, evidence-based critique |
+| **Preclinical/Translational** | 3Rs, ARRIVE, in-silico vs in-vivo, computational models (NEURON-lite), translation gap, reproducibility |
 | **Cases** | Emulate **published** paradigms (Berlin MI, BCI Comp IV) — no invented patients |
 | **Research** | IRB literacy, paper critique, proposal, Methods, mini-project, paper module MSc |
 
-Does **not** mint a clinician or implant surgeon. Educational **noninvasive** BCI only.
+Does **not** mint a clinician or implant surgeon. Educational focus is **nonclinical neuroengineering literacy** (computational/modeling + signal/decoding analysis). No surgical or implant procedural instructions.
 
 ---
 
@@ -74,8 +79,8 @@ Emulators: **teach or omit**.
 
 ## 4. Phase map (MSc) + hours
 
-**Guided study estimate (required path):** **~210–360 h** (F0-found + foundation→advanced em todos os pilares + Estuda denso + labs + research rituals).  
-Calendar: **~10–16 months** at 5–8 h/week (multi-year band OK at lower weekly load). Electives extra (+10–18 h).
+**Guided study estimate (required path):** **~230–380 h** (F0-found + foundation→advanced em todos os pilares + Estuda denso + labs + research rituals).  
+Calendar: **~12–16 months** at 5–8 h/week (multi-year band OK at lower weekly load). Electives extra (+10–18 h).
 
 **Honesty:** pisos antigos (50–60 h / 75–110 h / 120–200 h) **não** descrevem este catálogo. Com base matemática/física completa (trig→cálculo→complexos→Fourier), EE completa (circuitos→semicondutores→AFE→PCB/EMI→shield/PI), física eletrostática, neuro sistemas, CS/FW realtime e espinha BCI, o claim sobe. **Nunca** recalibrar para baixo. Média ponderada ≈ **2,4–4,0 h/sala** × 92 required.
 
@@ -99,8 +104,8 @@ Calendar: **~10–16 months** at 5–8 h/week (multi-year band OK at lower weekl
 | **F14-supremo** | Climax | 1 | 4–8 | standard (ritual) | Boss **Mago Supremo** (rota Neural) |
 | **elective** | SSVEP / FBCSP / OpenBCI | 3 | +10–18 | standard (real Estuda) | Optional depth |
 
-**Catalog:** **95** rooms (**92** required + 3 electives), incluindo **18 salas F0-found de fundamentos pré-MSc**.  
-**Required total (sum of phase bands):** roughly **~210–360 h** guided; electives on top.
+**Catalog:** **109** rooms (**105** required + 4 electives), incluindo **18 salas F0-found de fundamentos pré-MSc** (com ampliação para invasivo, microarrays/Neuropixels, neuromodulação, neuropróteses, LM e modelos pré-clínicos).  
+**Required total (sum of phase bands):** roughly **~230–380 h** guided; electives on top.
 
 ### F0-found — Salas de fundamentos (18 salas novas)
 
@@ -199,10 +204,12 @@ GLOBAL:      … → Mago Supremo  ← Edge path OR Neurotech climax
 
 ## 7. Safety & scope
 
-- Educational noninvasive BCI + synthetic/open data by default  
-- No pathogen / weapon / DIY invasive implant instructions  
+- Nonclinical neuroengineering literacy: noninvasive + invasive (computational/modeling only), with synthetic/open data by default  
+- No pathogen / weapon / DIY invasive implant or surgical instructions  
 - Neurological **case** rooms only for **published** paradigms/benchmarks  
 - Clinical claims forbidden  
+- Animal model literacy limited to ethics + methods critique (3Rs, ARRIVE); no experimental procedures details  
+- Focus on signal analysis, decoding, interface modeling, safety concepts (charge balance), and ethics; no procedural implant design steps  
 
 ---
 
@@ -224,7 +231,7 @@ Path: foundations → DSP/decode → firmware/online → **Neuro Mage** → apps
 ## 9. Definition of done (SPEC)
 
 - [x] Multi-pillar MSc phase map (Math→…→Supremo)  
-- [x] Hours **180–300 h** guided documented (upward with foundation→advanced EE + pillars; never below MSc-prep band)  
+- [x] Hours **230–380 h** guided documented (upward with foundation→advanced EE + pillars; never below MSc-prep band)  
 - [x] Reading list with DOIs  
 - [x] Thesis-prep checkpoints  
 - [x] Alternate Mago Supremo wiring (Edge path preserved)  

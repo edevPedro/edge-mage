@@ -63,4 +63,4 @@ tasks:
     assert mod.dominant_rhythm(p) == "alpha"
 
     '
-order: 27
+order: 8

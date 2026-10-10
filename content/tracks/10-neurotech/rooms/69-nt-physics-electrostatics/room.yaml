@@ -93,6 +93,6 @@ tasks:
     assert abs(v_tang) < 1e-5
 
     '
-order: 9
+order: 68
 requires_rooms:
 - nt-math-gd-lite

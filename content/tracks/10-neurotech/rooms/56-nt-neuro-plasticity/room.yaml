@@ -52,6 +52,6 @@ tasks:
     assert abs(mod.hebbian_update(0.5, 1.0, 2.0, 0.1) - 0.7) < 1e-5
 
     '
-order: 29
+order: 55
 requires_rooms:
 - nt-neuro-maps

@@ -3,7 +3,7 @@ title: Decode MVP (labels → LDA → κ)
 summary: 'Pipeline offline mínima: rótulos → bandpower/cov → LDA toy → κ.'
 xp_reward: 38
 unlock_xp: 0
-order: 46
+order: 13
 owners:
 - bci
 phase: F8-decode

@@ -86,4 +86,4 @@ tasks:
     res2, ratio2, fwhm2 = mod.audit_spatial_resolution(4.0, 2.5)
     assert res2 is True
     assert abs(ratio2 - 1.6) < 1e-4
-order: 13
+order: 4

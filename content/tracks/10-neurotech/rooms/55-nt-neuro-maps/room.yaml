@@ -57,6 +57,6 @@ tasks:
     assert mod.channel_hemisphere("Fp1") == "left"
 
     '
-order: 28
+order: 54
 requires_rooms:
 - nt-rhythms

@@ -75,6 +75,6 @@ tasks:
     assert det2 is True
     assert abs(v2 - 25.0) < 1e-4
     assert snr2_db > 20.0
-order: 14
+order: 49
 requires_rooms:
 - nt-volume-blur

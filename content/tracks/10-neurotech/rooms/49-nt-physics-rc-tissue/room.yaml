@@ -88,6 +88,6 @@ tasks:
     assert att_fast < -30.0
 
     '
-order: 11
+order: 48
 requires_rooms:
 - nt-dipole-scalp

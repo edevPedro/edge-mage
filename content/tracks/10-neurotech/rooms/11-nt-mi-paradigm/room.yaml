@@ -96,4 +96,4 @@ tasks:
     assert len(ep) == 15 and ep[0] == 45 and ep[-1] == 59
 
     '
-order: 40
+order: 10

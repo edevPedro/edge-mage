@@ -77,4 +77,4 @@ tasks:
     assert ok2 is True
     assert lsb2 < 0.02
     assert "adequada" in msg2.lower()
-order: 21
+order: 7

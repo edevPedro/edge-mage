@@ -59,6 +59,6 @@ tasks:
     assert ok2 is True
     assert att2 > 19.0
     assert "válido" in msg2.lower()
-order: 22
+order: 51
 requires_rooms:
 - nt-adc-bio

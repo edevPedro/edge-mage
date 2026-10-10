@@ -3,7 +3,7 @@ title: CV aninhado e vazamento de trial
 summary: Nested CV, scaler no fold, splits honestos.
 xp_reward: 38
 unlock_xp: 0
-order: 45
+order: 28
 owners:
 - bci
 phase: F8-decode

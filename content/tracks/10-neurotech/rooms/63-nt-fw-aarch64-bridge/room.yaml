@@ -53,6 +53,6 @@ tasks:
     assert abs(mod.simd4_dot([1.0, 2.0, 3.0, 4.0], [2.0, 0.0, 1.0, -1.0]) - 1.0) < 1e-5
 
     '
-order: 55
+order: 62
 requires_rooms:
 - nt-fw-fixedpoint

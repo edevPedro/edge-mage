@@ -75,7 +75,7 @@ tasks:
     assert ok3 is False and ''latencia'' in msg3.lower()
 
     '
-order: 62
+order: 22
 requires_rooms_any:
 - nt-checkpoint-paper
 - nt-checkpoint-project

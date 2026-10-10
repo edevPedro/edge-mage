@@ -58,4 +58,4 @@ tasks:
     assert mod.flag_artifacts([10.0, -150.0, 20.0, 110.0], 100.0) == [1, 3]
 
     '
-order: 39
+order: 11

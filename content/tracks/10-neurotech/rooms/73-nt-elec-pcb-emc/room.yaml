@@ -61,6 +61,6 @@ tasks:
     assert ok2 is True
     assert vind2 < 0.5
     assert "controle" in msg2.lower()
-order: 23
+order: 72
 requires_rooms:
 - nt-elec-antialias

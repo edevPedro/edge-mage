@@ -58,6 +58,6 @@ tasks:
     assert mod.within_deadline(64, 500, 0.5, 1000.0) is False
 
     '
-order: 31
+order: 56
 requires_rooms:
 - nt-neuro-systems-bci

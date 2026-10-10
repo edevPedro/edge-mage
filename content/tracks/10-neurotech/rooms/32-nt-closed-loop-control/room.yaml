@@ -3,7 +3,7 @@ title: Closed-loop como sistema de controle
 summary: Planta, delay, ganho de feedback e budget sense→act.
 xp_reward: 36
 unlock_xp: 0
-order: 59
+order: 31
 owners:
 - neuroeng
 - bci

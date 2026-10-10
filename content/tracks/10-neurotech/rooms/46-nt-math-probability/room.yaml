@@ -59,6 +59,6 @@ tasks:
         assert False, "Deveria levantar ValueError para n_trials <= 0"
     except ValueError:
         pass
-order: 6
+order: 45
 requires_rooms:
 - nt-math-eigen

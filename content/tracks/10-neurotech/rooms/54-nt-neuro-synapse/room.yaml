@@ -53,6 +53,6 @@ tasks:
     assert abs(mod.alpha_conductance(0.0, 0.005, 1.0)) < 1e-5
 
     '
-order: 26
+order: 53
 requires_rooms:
 - nt-neuro-neuron-hh
