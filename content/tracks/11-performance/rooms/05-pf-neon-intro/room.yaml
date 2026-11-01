@@ -45,5 +45,30 @@ tasks:
   - intrinsics
   - intrinsic
   - Intrinsics
+- id: neon-add
+  type: c_code
+  prompt: |
+    Complete a função para somar dois arrays usando NEON.
+    Use vld1q_f32, vaddq_f32, vst1q_f32.
+  xp: 18
+  code_template: |
+    #include <arm_neon.h>
+    void add_arrays(const float* a, const float* b, float* c, int n) {
+        for (int i = 0; i + 4 <= n; i += 4) {
+            // TODO: load a[i..i+3], load b[i..i+3], add, store to c[i..i+3]
+        }
+    }
+  code_tests: |
+    #include <cmath>
+    int main() {
+        float a[] = {1,2,3,4,5,6,7,8};
+        float b[] = {8,7,6,5,4,3,2,1};
+        float c[8] = {0};
+        add_arrays(a, b, c, 8);
+        for (int i = 0; i < 8; i++) {
+            if (fabs(c[i] - 9.0f) > 1e-5) return 1;
+        }
+        return 0;
+    }
 requires_rooms:
 - pf-aarch64-perf
