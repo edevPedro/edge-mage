@@ -1,8 +1,11 @@
 # e-mage
 
-Academia no terminal (TUI Textual): **Fundamentos** → **Systems Mage** → **Edge ML Mage**, mais especializações **Performance Mage** e **Neurotech**.  
-Nome do produto: **e-mage**. Repositório GitHub (por enquanto): [edevPedro/edge-mage](https://github.com/edevPedro/edge-mage).  
-CLIs: `mage` · `emage` · `edge-mage`.
+Academia no terminal (TUI Textual): **uma jornada contínua** — engenharia de performance low-level → arch CPU → SIMD → HPC → GPU → otimização de inferência → co-design HW/SW.  
+Rótulos legados (Systems / Performance / Edge / Neurotech) são **fases ou ramos**, não cursos rivais na home.  
+Produto: **e-mage**. GitHub: [edevPedro/edge-mage](https://github.com/edevPedro/edge-mage).  
+CLIs: `mage` · `emage` · `edge-mage` · id primário **`emage`**.
+
+Arquitetura: [`docs/SPEC-emage-single-track.md`](docs/SPEC-emage-single-track.md) · diagnóstico: [`docs/DIAGNOSTIC-emage-pre-unification.md`](docs/DIAGNOSTIC-emage-pre-unification.md).
 
 [English](README.md)
 
@@ -29,15 +32,17 @@ Ao fechar o círculo (Fundamentos + Systems craft + Edge on-device), o nível t�
 
 Isso **não** te transforma automaticamente em sênior de compilador ou red team. Te deixa **acima de “só fiz curso de Python”**: pronto para contribuir em projetos low-level/ML edge, entrevistar para estágio hardcore, e continuar sozinho.
 
-### Por curso
+### Fases da jornada (um caminho)
 
-| Curso | Objetivo | Nível ao concluir |
-|-------|----------|-------------------|
-| **Fundamentos** → *Mago base* | Perder medo do PC/terminal; ordem, erro, math útil; primeira página/craft | Consegue seguir um lab, capturar FLAG, publicar 1 artefato simples |
-| **Systems Mage** | Máquina nua → IR → AArch64 → DIY/RE | Consegue contribuir em discussões/PRs de systems/LLVM e caçar bugs de memória/ABI |
-| **Edge ML Mage** | Math → sinal → modelo → **on-device** | Consegue um ritual edge (latência/RAM reais) e falar trade-offs de deploy no device |
-| **Performance Mage** | NEON → Roofline → Metal → co-design | Entrega bosses Performance (2 impls + medir + provar) |
-| **Neurotech** | Círculo paralelo BCI/EEG | Literacia de neuroengenharia não-clínica (rota Suprema alternativa) |
+| Fase | Rótulo interno | Ao concluir |
+|------|----------------|-------------|
+| **P0** Fundamentos | shared + clearance | *Mago base* |
+| **P1** Systems | pack FLAG + craft | ABI/IR + evidência publicada |
+| **P2–P5** Arch → SIMD → HPC → GPU | salas Performance | Medir → explicar → provar |
+| **P6** Inferência | trilhas Edge ML + ponte | Ritual on-device (latência/RAM) |
+| **P7** Co-design | RTL/HLS lite | Boss acelerador pedagógico |
+| **Forge** | projeto cumulativo | Mesmo motivo evolui nas fases |
+| **Ramo** Neurotech | opcional | BCI/EEG — rota Suprema alt.; não é a home |
 
 ### O que *não* prometer
 
@@ -67,44 +72,40 @@ O curso **ensina a ler máquina**, não a memorizar três ISAs inteiras. Papel d
 
 Leitura pedida: conseguir abrir Godbolt / `objdump`, apontar registradores de arg/retorno e não entrar em pânico — depois o IR do LLVM amarra as pontas.
 
-## Duração (± formação atual)
+## Duração (± jornada única)
 
-Números **aproximados** da grade de hoje (~100+ salas web/TUI + bosses craft). Ritmo assume **4–6 h/semana** com labs + 1 craft quando pedido.
+Caminho sustentável de **1–3 anos** a **4–8 h/semana**. Spine (P0–P7 + Forge) ≈ **400–650 h** guiadas.
 
-| Fatia | Horas de estudo (±) | Calendário (±) |
-|-------|---------------------|----------------|
-| **Fundamentos** → Mago base | 25–40 h | 5–10 semanas |
-| **Systems Mage** (systems + LLVM + bosses) | 50–90 h | 3–5 meses |
-| **Edge ML Mage** (math → on-device) | 30–50 h | 2–3 meses |
-| **Performance Mage** (especialização) | **~200–280 h** scaffold · faixa aspiracional **~310–415 h** | ~10–14 meses a 6–8 h/sem |
-| **Neurotech** (círculo paralelo) | ver SPEC Neurotech (MSc-prep denso) | multi-mês |
-| **Núcleo** → Mago Supremo (Fund+Systems+Edge) | **~110–180 h** | **~6–10 meses** |
+| Fatia | Horas (±) | Notas |
+|-------|-----------|--------|
+| **P0** Fundamentos | 25–40 h | → Mago base |
+| **P1** Systems | 50–90 h | FLAG + craft |
+| **P2–P5 + P7** fases Performance | ~200–280 h scaffold | Arch→SIMD→HPC→GPU→co-design |
+| **P6** Inferência / Edge | 50–90 h | Na spine **depois** da GPU |
+| **Forge** | overlap com bosses | Evidência cumulativa |
+| **Ramo Neurotech** | ver SPEC | Opcional |
 
-**Academia vs especialização:** Fundamentos + Systems + Edge = formação núcleo (Mago Supremo). **Performance** e **Neurotech** aprofundam a academia; não a substituem.
+Caveats M4: µarch ≠ Cortex-A; sem SVE; Metal ≠ CUDA.  
+SPECs: [`SPEC-emage-single-track.md`](docs/SPEC-emage-single-track.md) · Performance · Neurotech.
 
-**Performance** (`performance`) **não** é hard gate do Edge ML / Mago Supremo (só soft deps). SPEC: [`docs/SPEC-performance-mage.md`](docs/SPEC-performance-mage.md) · trilha: `content/tracks/11-performance/` · TUI: `mage --course performance`. **Caveats M4:** µarch Apple ≠ Cortex-A; sem SVE no M4; Metal ≠ CUDA.
+> **O currículo evolui.** Números são snapshot, não diploma fixo. C++ pro ≠ pular arch/SIMD/GPU automaticamente.
 
-**Neurotech** (`neurotech`) é círculo **paralelo** (BCI / EEG / física / firmware). Não substitui o on-device do Edge. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · trilha: `content/tracks/10-neurotech/`. Pedagogia: **Estuda → Sala**. TUI: `mage --course neurotech` · emuladores: `mage emu all`.
+## Jornada e browser de módulos
 
-Mais rápido se você já programa; mais lento se for o primeiro contato com terminal/C.
+| id | Papel |
+|----|--------|
+| **`emage`** | **Jornada primária** (`mage` / `mage --course emage`) |
+| `fundamentals` | Alias · P0 |
+| `systems` | Alias · P1 FLAG |
+| `performance` | Alias · salas P2–P7 |
+| `edge` | Alias · P6 Edge ML |
+| `neurotech` | **Ramo** opcional |
 
-> **O currículo evolui de propósito.** Salas, bosses e eletivas (ex.: RISC-V) entram e saem. Trate estes tempos como snapshot da formação *atual*, não como diploma com carga horária fixa. O alvo de habilidade (tabela acima) permanece; o caminho fica mais afiado com o tempo.
+`mage` abre o launcher com **Continuar jornada** primeiro; ids legados ficam no módulo browser (soft gate / preview OK).
 
-## Cursos
+### Fase Systems no TUI
 
-| id | Curso | Papel |
-|----|--------|------|
-| `fundamentals` | Fundamentos | Caminho até **Mago base** (núcleo compartilhado + clearance) |
-| `systems` | Systems Mage | **Catálogo FLAG completo** no TUI: systems + llvm + math (mesmo escopo do núcleo Systems na web) |
-| `edge` | Edge ML Mage | Trilhas atuais math → Edge AI on-device (UX TUI completa) — **ARM-first** inalterado |
-| `performance` | Performance Mage | NEON / Roofline / Metal / co-design — especialização; **não** hard gate do Edge |
-| `neurotech` | Neurotech | Círculo paralelo BCI/EEG — `mage --course neurotech` · `mage emu all` (rota Suprema alternativa) |
-
-`mage` abre o **seletor de cursos** primeiro (e stub de GitHub). Systems/Edge/Performance/Neurotech têm soft gate atrás de Mago base (preview com aviso).
-
-### Systems Mage no TUI
-
-Abrir **Systems** carrega muitas salas FLAG offline (não é stub hello):
+A jornada (ou alias **Systems**) carrega muitas salas FLAG offline (não é stub hello):
 
 - Snapshot no pacote: `content/packs/systems.json` (exportado de edevs `systems.ts` / `llvm.ts` / `math.ts`)
 - O install copia para `~/.mage/packs/systems.json` — primeira abertura já vem cheia
@@ -156,6 +157,19 @@ Dev: `make install-dev` · `make test` · `USE_PIPX=1 ./install.sh`
 | **Arch** | `sudo pacman -S python python-pip git` |
 | **Windows** | Use **WSL2** (Ubuntu) e siga o fluxo Debian |
 | **Termux** | `pkg install python git`; rode `./install.sh` (coloque `~/.local/bin` no PATH) |
+
+## Estudar offline (M4 / sem rede)
+
+O TUI é a **fonte da verdade**. Lições em `content/` (`story` · `concept` · `lesson` · `room.yaml`). Links externos são opcionais — o Estuda ensina a fundação antes da Sala.
+
+```bash
+cd /Users/epedro/eCodes/edevs/edge-mage
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e .
+mage --course emage
+```
+
+Sem rede: conteúdo + `content/packs/systems.json` + progresso em `~/.mage/`. `mage sync` / GitHub / web só quando online.
 
 ## Offline e sync
 

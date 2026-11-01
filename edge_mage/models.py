@@ -86,6 +86,10 @@ class Track:
     requires_skills: list[str] = field(default_factory=list)
     requires_ritual: str = ""
     course: str = ""
+    # Single-journey metadata (optional)
+    phase: str = ""  # e.g. P2, P6, B
+    elective: bool = False
+    module_label: str = ""  # internal label: Systems / SIMD / …
 
 
 @dataclass

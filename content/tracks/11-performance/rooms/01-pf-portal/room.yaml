@@ -1,6 +1,6 @@
 id: pf-portal
-title: Portal · Performance Mage
-summary: 'Especialização modular: pilares, Performance Boss, caveats M4; Estuda→Sala.'
+title: Portal · Arch phase (P2)
+summary: 'Fases da jornada única: pilares, Performance Boss, caveats M4; Estuda→Sala.'
 xp_reward: 22
 unlock_xp: 0
 phase: F0
@@ -9,7 +9,10 @@ course: performance
 order: 1
 boss: false
 resources:
-- title: SPEC Performance Mage
+- title: SPEC single-track
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-emage-single-track.md
+  kind: docs
+- title: SPEC Performance Mage (module detail)
   url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
   kind: docs
 - title: Arm Architecture Reference Manual (DDI0487)
@@ -19,24 +22,24 @@ animation: null
 tasks:
 - id: estuda-sala
   type: mcq
-  prompt: 'Ordem pedagógica correta neste curso:'
+  prompt: 'Ordem pedagógica correta neste módulo da jornada:'
   xp: 8
   answer: 0
   choices:
   - Estuda → Sala → (projetos/boss com medida)
   - Só quiz sem Estuda
-  - Edge on-device antes de tudo
+  - Edge on-device antes de arch/SIMD/GPU
   - Pular bosses se tiver XP de Systems
-- id: edge-modular
+- id: single-track
   type: mcq
-  prompt: 'Performance Mage em relação a Edge ML / Mago Supremo:'
+  prompt: 'Estas salas Performance na jornada `emage` são:'
   xp: 8
-  answer: 1
+  answer: 0
   choices:
-  - Hard gate obrigatório para todo Edge
-  - Especialização modular; soft deps só onde avançado
-  - Substitui Systems Mage
-  - Substitui Neurotech
+  - Fases da progressão única (P2–P7), não um curso rival
+  - Um produto separado que substitui Edge
+  - Obrigatório hard-gate de todo Neurotech
+  - Só quiz sem Forge
 - id: m4-sve
   type: fill
   prompt: No Apple Silicon M4, a extensão vetorial profunda nativa de lab é ___ (não

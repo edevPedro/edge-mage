@@ -1,4 +1,4 @@
-"""Course launcher — first screen for `mage`."""
+"""Course launcher — primary journey first; module browser secondary."""
 
 from __future__ import annotations
 
@@ -7,20 +7,13 @@ from textual.containers import Vertical
 from textual.widgets import OptionList, Static
 from textual.widgets.option_list import Option
 
-from edge_mage.courses import (
-    COURSE_EDGE,
-    COURSE_FUNDAMENTALS,
-    COURSE_NEUROTECH,
-    COURSE_PERFORMANCE,
-    COURSE_SYSTEMS,
-    COURSES,
-)
+from edge_mage.courses import COURSE_EMAGE, COURSES, primary_course
 from edge_mage.screens.base import MageScreen
 
 BANNER = r"""
 ╔══════════════════════════════════════════════════╗
-║         e - m a g e   ·   LAUNCHER               ║
-║  Fundamentals · Systems · Edge · Perf · Neuro    ║
+║         e - m a g e   ·   JOURNEY                ║
+║   One path · phases · optional Neurotech branch  ║
 ╚══════════════════════════════════════════════════╝
 """
 
@@ -38,26 +31,37 @@ class LauncherScreen(MageScreen):
         g = profile.get("global_rank")
         mago = "✓ Mago base" if profile.get("mago_base") else "○ Mago base pendente"
         g_title = g.title if g else "Sem rank"
+        primary = primary_course()
 
         with Vertical():
             yield Static(BANNER, id="banner")
-            yield Static("CURSOS", classes="panel-title")
+            yield Static("JORNADA PRINCIPAL", classes="panel-title")
             yield Static(
                 f"Rank global: [{g_title}]  ·  {mago}",
                 classes="rank",
             )
             yield Static(
-                "Systems/Edge/Perf/Neurotech: soft gate — preview OK sem Mago base.",
+                "Uma progressão: Foundations → Systems → Arch → SIMD → HPC → "
+                "GPU → Inference → Co-design. Módulos legados = browser.",
                 classes="muted",
             )
             yield Static("j/k · Enter  ·  q sair", classes="muted")
-            options: list[Option] = []
+            options: list[Option] = [
+                Option(
+                    f"▶  Continuar jornada  —  {primary.blurb}",
+                    id=COURSE_EMAGE,
+                ),
+            ]
+            options.append(Option("── Módulo browser (alias) ──", id="_sep", disabled=True))
             for c in COURSES:
+                if c.primary:
+                    continue
                 lock = ""
                 if c.requires_mago_base and not profile.get("mago_base"):
                     lock = "  [? preview]"
+                prefix = "⌥  " if c.elective else "·  "
                 options.append(
-                    Option(f"{c.title_pt}{lock}  —  {c.blurb}", id=c.id)
+                    Option(f"{prefix}{c.title_pt}{lock}  —  {c.blurb}", id=c.id)
                 )
             options.append(Option("⌥  Conectar GitHub (device flow stub)", id="github"))
             options.append(Option("↻  Sync packs / progress", id="sync"))
@@ -86,12 +90,13 @@ class LauncherScreen(MageScreen):
         if oid == "quit":
             self.app.exit()
             return
+        if oid == "_sep":
+            return
         if oid == "github":
             from edge_mage.auth import github_connect_instructions
 
             msg = github_connect_instructions()
             self.app.notify(msg.split("\n")[0], severity="information")
-            # full text on a simple overlay screen
             from edge_mage.screens.github_auth import GitHubAuthScreen
 
             self.app.push_screen(GitHubAuthScreen())
@@ -106,20 +111,22 @@ class LauncherScreen(MageScreen):
                 self.app.notify(result.warning[:120], severity="warning")
             return
 
-        if oid in {
-            COURSE_FUNDAMENTALS,
-            COURSE_SYSTEMS,
-            COURSE_EDGE,
-            COURSE_PERFORMANCE,
-            COURSE_NEUROTECH,
-        }:
+        known = {c.id for c in COURSES}
+        if oid in known:
             preview = False
-            if oid != COURSE_FUNDAMENTALS and not mago:
+            info = next(c for c in COURSES if c.id == oid)
+            if info.requires_mago_base and not mago:
                 preview = True
                 self.app.notify(
                     "Sem Mago base — entrando em preview. "
-                    "Conclua Fundamentals para liberar o caminho completo.",
+                    "Conclua Foundations (P0) na jornada para o caminho completo.",
                     severity="warning",
+                )
+            elif oid == COURSE_EMAGE and not mago:
+                self.app.notify(
+                    "Jornada única: comece em Foundations (P0). "
+                    "Fases avançadas pedem Mago base (preview liberado).",
+                    severity="information",
                 )
             self._enter(oid, preview=preview)
 

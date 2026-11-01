@@ -9,7 +9,10 @@ import sys
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="mage",
-        description="e-mage — TUI academy (Fundamentals · Systems · Edge · Performance · Neurotech).",
+        description=(
+            "e-mage — one continuous journey (emage): "
+            "systems → arch → SIMD → HPC → GPU → inference → co-design."
+        ),
     )
     parser.add_argument(
         "-V",
@@ -28,9 +31,16 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument(
         "--course",
-        choices=["fundamentals", "systems", "edge", "performance", "neurotech"],
+        choices=[
+            "emage",
+            "fundamentals",
+            "systems",
+            "edge",
+            "performance",
+            "neurotech",
+        ],
         default=None,
-        help="Skip launcher and open a course directly",
+        help="Skip launcher: emage = primary journey; others = module browser aliases",
     )
     parser.add_argument(
         "--today",

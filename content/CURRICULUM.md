@@ -104,51 +104,48 @@ Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 
 ## Princípios pedagógicos aplicados
 
-- **Pré-requisitos**: cada sala só assume o que as anteriores desbloqueiam.
+- **Foundations-first**: o Estuda (`concept.md`) ensina a fundação necessária **antes** do Spell/Boss; nunca NEON/GPU/inferência sem arch/memória/numerics que tornem a solução inteligível. Links externos = leitura opcional (offline = repo).
+- **Pré-requisitos**: cada sala só assume o que as anteriores desbloqueiam (`requires_rooms` / rituais).
 - **Spiral**: trig/matrizes voltam em robótica; matmul/FLOPs voltam em Edge AI; gradiente → autograd → export.
 - **Narrativa**: a história motiva o cálculo; o conceito ensina; as tasks comprovam.
 - **Grimório**: skills nomeadas amarram conhecimento a progresso persistente.
 - **Idioma**: português claro e profissional.
-- **Fontes**: preferir guias oficiais de framework; papers (arXiv) só quando amarrados a lab.
+- **Fontes**: preferir guias oficiais quando linkados; o ensino principal fica no markdown in-repo.
 - **ISA**: profundidade **só** em AArch64 no caminho Edge/BCI; x86_64 e RISC-V = literacia de relance.
 
 ## Como completar até Edge Mage
 
 Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — **treino → export → quant → runtime → golden** — não só XP acumulado cedo.
 
-## Mapa da academia (núcleo + especializações)
+## Mapa da academia (jornada única)
 
 ```text
-Fundamentals ──► Systems Mage ──► Edge ML Mage  ──► Mago Supremo (rota Edge)
-                      │                 ▲
-                      │                 │ soft deps (opcional)
-                      ├──────────► Performance Mage   (NEON · Roofline · Metal · co-design)
-                      │
-                      └──────────► Neurotech          (círculo paralelo · rota Suprema alt.)
+emage (jornada primária)
+  P0 Foundations ──► P1 Systems ──► P2 Arch ──► P3 SIMD ──► P4 HPC
+       ──► P5 GPU ──► P6 Inference (Edge ML ON spine) ──► P7 Co-design
+       └── Forge (projeto cumulativo ao longo das fases)
+
+  Enrichment (sinais / elétrica / robótica) …… eletivas após o spine
+  Neurotech ……………………………………… ramo de aplicação (não compete na home)
 ```
 
-**Performance não gateia Edge.** Neurotech não substitui on-device.
+SPEC: [`docs/SPEC-emage-single-track.md`](../docs/SPEC-emage-single-track.md) · diagnóstico pré-unificação: [`docs/DIAGNOSTIC-emage-pre-unification.md`](../docs/DIAGNOSTIC-emage-pre-unification.md).
 
-## Performance Mage (especialização)
+TUI: `mage` / `mage --course emage` · aliases de módulo: `fundamentals|systems|performance|edge|neurotech`.
 
-Curso id **`performance`** — especialização universitária em engenharia de performance sobre a base Systems/AArch64.
+## Performance (fases P2–P5 / P7 na jornada)
 
-- SPEC: [`docs/SPEC-performance-mage.md`](../docs/SPEC-performance-mage.md)
-- Trilha: `content/tracks/11-performance/` — 20 salas F0→F6 (Estuda → Sala + **Performance Boss**)
-- TUI: `mage --course performance`
-- Web: edevs `/estudo/cursos/performance`
-- Pilares: arquitetura/memória · ARM/NEON · numerical/Roofline · Metal(+CUDA eletiva) · ponte inference → Edge · RTL/HLS
-- Bosses: ARM Math Library · Physics Simulation · Metal Compute Engine · Hardware Accelerator
-- Horas: scaffold ~200–280 h; faixa aspiracional README **~310–415 h** (densificar labs com o tempo)
+Conteúdo em `content/tracks/11-performance/` — na jornada `emage` é **fatiado** em trilhas `emage-arch` … `emage-codesign` para a inferência (P6) ficar **depois** da GPU e **antes** do co-design.
+
+- Detalhe de módulo: [`docs/SPEC-performance-mage.md`](../docs/SPEC-performance-mage.md)
+- Alias: `mage --course performance`
 - Caveats M4: µarch ≠ Cortex-A; sem SVE; Metal ≠ CUDA
 
-## Neurotech (círculo paralelo — rota alternativa a Mago Supremo)
+## Neurotech (ramo opcional — rota alternativa a Mago Supremo)
 
-Curso id **`neurotech`** — sibling do Edge ML Mage, oferecendo uma **rota alternativa honesta e rigorosa ao Mago Supremo** via clímax MSc (F13–F14), preservando integralmente o caminho Edge on-device.
+Ramo id **`neurotech`** — acessível sem quebrar a história de **uma spine**. Não substitui on-device na rota Edge.
 
 - SPEC: [`docs/SPEC-neurotech-course.md`](../docs/SPEC-neurotech-course.md)
-- Trilha: `content/tracks/10-neurotech/` — catálogo denso F0→F14 (+ F15-dl-inf), Estuda → Sala
-- TUI: `mage --course neurotech` · emuladores: `mage emu all`
+- Trilha: `content/tracks/10-neurotech/`
+- TUI: `mage --course neurotech` · `mage emu all`
 - Web: edevs `/estudo/cursos/neurotech`
-- Domínios: BCI · EEG · física · elétrica · neurociência · math · CS · firmware/embedded · pesquisa
-- Agentes: `agent-pedagogo` + `agent-bci` / `neuroeng` / `eletrica` / `fisica` / `neurociencia`

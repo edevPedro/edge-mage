@@ -1,0 +1,37 @@
+id: forge-portal
+title: Forge · portal
+summary: 'Mapa do projeto cumulativo; critérios objetivos em cada estágio.'
+xp_reward: 20
+unlock_xp: 0
+phase: Forge
+course: emage
+order: 1
+boss: false
+resources:
+- title: SPEC single-track (Forge)
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-emage-single-track.md
+  kind: docs
+- title: Performance Boss template
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/rituals/performance-boss-template.md
+  kind: docs
+animation: null
+tasks:
+- id: forge-rule
+  type: mcq
+  prompt: 'Em todo estágio Forge, o ritual exige:'
+  xp: 8
+  answer: 0
+  choices:
+  - Baseline + otimizado (ou dois caminhos), medida, gargalo, golden numérico
+  - Só XP alto
+  - Só screenshot sem números
+  - Pular correção se for mais rápido
+- id: spine
+  type: fill
+  prompt: 'A jornada primária (id do curso) é ___ .'
+  xp: 8
+  answers:
+  - emage
+  - e-mage
+  - Emage
+requires_rooms: []

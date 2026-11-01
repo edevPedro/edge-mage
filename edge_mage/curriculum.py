@@ -5,12 +5,16 @@ from __future__ import annotations
 from edge_mage.models import Room, Track
 
 
-def pedagogical_rooms(tracks: list[Track]) -> list[tuple[Track, Room]]:
+def pedagogical_rooms(
+    tracks: list[Track], *, include_elective: bool = True
+) -> list[tuple[Track, Room]]:
     """Salas na ordem CURRICULUM (track.order, depois dir/ordem de rooms)."""
-    ordered = sorted(tracks, key=lambda t: t.order)
+    ordered = sorted(tracks, key=lambda t: (t.order, t.id))
     out: list[tuple[Track, Room]] = []
     for t in ordered:
         if t.scaffold:
+            continue
+        if not include_elective and t.elective:
             continue
         for r in t.rooms:
             out.append((t, r))
@@ -18,13 +22,19 @@ def pedagogical_rooms(tracks: list[Track]) -> list[tuple[Track, Room]]:
 
 
 def next_open_room(store, tracks: list[Track]) -> tuple[Track, Room] | None:
-    """Próxima sala pedagoógica ainda não concluída e desbloqueada."""
-    for track, room in pedagogical_rooms(tracks):
-        if store.is_room_done(track.id, room.id):
-            continue
-        if not store.is_room_unlocked(track, room):
-            continue
-        return track, room
+    """Próxima sala pedagógica ainda não concluída e desbloqueada.
+
+    Prefers non-elective spine (phases / Forge) before enrichment / Neurotech.
+    """
+    for include_elective in (False, True):
+        for track, room in pedagogical_rooms(
+            tracks, include_elective=include_elective
+        ):
+            if store.is_room_done(track.id, room.id):
+                continue
+            if not store.is_room_unlocked(track, room):
+                continue
+            return track, room
     # fallback: primeira incompleta mesmo bloqueada (para mensagem)
     for track, room in pedagogical_rooms(tracks):
         if not store.is_room_done(track.id, room.id):

@@ -1,0 +1,39 @@
+id: forge-f3-metal
+title: Forge F3 · Metal
+summary: Caminho Metal (ou fallback documentado)
+xp_reward: 25
+unlock_xp: 0
+phase: Forge
+course: emage
+order: 5
+boss: true
+resources:
+- title: SPEC single-track (Forge)
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-emage-single-track.md
+  kind: docs
+- title: Performance Boss template
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/rituals/performance-boss-template.md
+  kind: docs
+animation: null
+tasks:
+- id: ack-criteria
+  type: mcq
+  prompt: 'Este estágio Forge só fecha com:'
+  xp: 10
+  answer: 0
+  choices:
+  - Artefato com baseline+otimizado, medida, gargalo e golden/tolerância
+  - Só commit vazio
+  - Só XP de quiz
+  - Pular se já fez Systems
+- id: artifact-path
+  type: fill
+  prompt: Escreva o artefato em study-log/artifacts/___.md (id curto do estágio).
+  xp: 10
+  answers:
+  - forge-f3-metal
+  - forge/forge-f3-metal
+requires_rooms:
+- forge-f2-roofline
+- pf-metal-intro
+- pf-boss-metal

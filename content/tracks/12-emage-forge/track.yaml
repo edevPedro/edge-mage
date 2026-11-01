@@ -1,0 +1,13 @@
+id: emage-forge
+title: Forge · cumulative project
+summary: >-
+  One evolving artifact across the journey: scalar → SIMD → Roofline → Metal →
+  inference → optional accelerator. Performance Boss + on-device evidence rules.
+order: 15
+unlock_xp: 0
+icon: '🔨'
+scaffold: false
+course: emage
+curriculum_note: >-
+  SPEC: docs/SPEC-emage-single-track.md §6. Stages unlock with spine phases;
+  do not treat empty harness TODOs as hours earned.

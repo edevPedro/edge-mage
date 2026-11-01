@@ -60,7 +60,9 @@ def test_performance_in_catalog() -> None:
     assert any(c.id == COURSE_PERFORMANCE for c in COURSES)
     info = next(c for c in COURSES if c.id == COURSE_PERFORMANCE)
     assert info.requires_mago_base is True
-    assert "soft" in info.blurb.lower() or "Edge" in info.blurb
+    assert info.primary is False
+    blob = info.blurb.lower()
+    assert "spine" in blob or "phase" in blob or "p2" in blob or "neon" in blob
 
 
 def test_performance_track_loads_and_order() -> None:

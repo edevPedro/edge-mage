@@ -1,4 +1,4 @@
-"""App Textual principal do e-mage (Edge ML course keeps Edge Mage UX)."""
+"""App Textual principal do e-mage (single journey + module aliases)."""
 
 from __future__ import annotations
 
@@ -11,6 +11,8 @@ from edge_mage.commands import parse_command
 from edge_mage.content import find_room, load_tracks_for_course
 from edge_mage.courses import (
     COURSE_EDGE,
+    COURSE_EMAGE,
+    COURSE_FUNDAMENTALS,
     COURSE_NEUROTECH,
     COURSE_PERFORMANCE,
     COURSE_SYSTEMS,
@@ -28,7 +30,7 @@ from edge_mage.widgets.cmdline import CmdlineScreen
 
 class EdgeMageApp(App[None]):
     TITLE = "e-mage"
-    SUB_TITLE = "Fundamentals · Systems · Edge ML · Neurotech"
+    SUB_TITLE = "One journey · Arch → SIMD → HPC → GPU → Inference → Co-design"
     CSS = THEME_CSS
     BINDINGS = [
         Binding("j", "vim_down", show=False, priority=True),
@@ -63,7 +65,9 @@ class EdgeMageApp(App[None]):
         self.open_today = open_today
         self.preview_mode = False
         self.tracks: list[Track] = (
-            load_tracks_for_course(course) if course else load_tracks_for_course(COURSE_EDGE)
+            load_tracks_for_course(course)
+            if course
+            else load_tracks_for_course(COURSE_EMAGE)
         )
         self.skills = load_skills()
         self.skills_total = len(self.skills)
@@ -96,21 +100,27 @@ class EdgeMageApp(App[None]):
         meta = self.store.course_meta(course_id)
         if not meta.get("started"):
             self.store.set_course_flag(course_id, started=True)
-        if course_id == COURSE_EDGE:
-            self.TITLE = "Edge ML Mage"
-            self.SUB_TITLE = "Academia · Math → Edge AI"
+        if course_id == COURSE_EMAGE:
+            self.TITLE = "e-mage"
+            self.SUB_TITLE = "Jornada · P0→P7 · Forge · ramo Neurotech"
+        elif course_id == COURSE_EDGE:
+            self.TITLE = "Module · Inference / Edge ML"
+            self.SUB_TITLE = "P6 alias · Math → Edge AI"
         elif course_id == COURSE_PERFORMANCE:
-            self.TITLE = "Performance Mage"
-            self.SUB_TITLE = "NEON · Roofline · Metal · Co-design · Estuda → Sala"
+            self.TITLE = "Module · Performance phases"
+            self.SUB_TITLE = "P2–P7 alias · NEON · Roofline · Metal · Co-design"
         elif course_id == COURSE_NEUROTECH:
-            self.TITLE = "Neurotech"
-            self.SUB_TITLE = "Círculo Neural · Estuda → Sala · BCI educacional"
+            self.TITLE = "Branch · Neurotech"
+            self.SUB_TITLE = "Ramo opcional · Estuda → Sala · BCI educacional"
         elif course_id == COURSE_SYSTEMS:
-            self.TITLE = "Systems Mage"
-            self.SUB_TITLE = "FLAG-lab · packs"
+            self.TITLE = "Module · Systems"
+            self.SUB_TITLE = "P1 alias · FLAG-lab · packs"
+        elif course_id == COURSE_FUNDAMENTALS:
+            self.TITLE = "Module · Foundations"
+            self.SUB_TITLE = "P0 alias · Path to Mago base"
         else:
-            self.TITLE = "Fundamentals"
-            self.SUB_TITLE = "Path to Mago base"
+            self.TITLE = "e-mage"
+            self.SUB_TITLE = "Jornada única"
         # leave launcher under home so h can return
         self.push_screen(HomeScreen())
 

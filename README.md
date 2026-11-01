@@ -1,8 +1,11 @@
 # e-mage
 
-Terminal academy (Textual TUI): **Fundamentals** → **Systems Mage** → **Edge ML Mage**, plus specializations **Performance Mage** and **Neurotech**.  
-Product name: **e-mage**. GitHub repo (for now): [edevPedro/edge-mage](https://github.com/edevPedro/edge-mage).  
-CLI entrypoints: `mage` · `emage` · `edge-mage`.
+Terminal academy (Textual TUI): **one continuous journey** from low-level performance engineering through CPU arch → SIMD → HPC → GPU → inference optimization → HW/SW co-design.  
+Legacy labels (Systems / Performance / Edge / Neurotech) are **phases or branches**, not competing course picks.  
+Product name: **e-mage**. GitHub: [edevPedro/edge-mage](https://github.com/edevPedro/edge-mage).  
+CLI: `mage` · `emage` · `edge-mage` · primary id **`emage`**.
+
+Architecture: [`docs/SPEC-emage-single-track.md`](docs/SPEC-emage-single-track.md) · pre-change diagnosis: [`docs/DIAGNOSTIC-emage-pre-unification.md`](docs/DIAGNOSTIC-emage-pre-unification.md).
 
 [Português (pt-BR)](README.pt-BR.md)
 
@@ -29,15 +32,17 @@ After closing the loop (Fundamentals + Systems craft + Edge on-device), the inte
 
 This does **not** mint you a senior compiler engineer or red-teamer overnight. It puts you **ahead of “I only finished a Python course”**: ready to contribute to low-level / edge-ML projects, interview for hardcore internships, and keep going solo.
 
-### Per course
+### Journey phases (one path)
 
-| Course | Goal | Level when done |
-|--------|------|-----------------|
-| **Fundamentals** → *Mago base* | Stop fearing the PC/terminal; order, failure, useful math; first page/craft | Follow a lab, capture a FLAG, ship one simple artifact |
-| **Systems Mage** | Bare metal → IR → AArch64 → DIY/RE | Join systems/LLVM discussions/PRs; hunt memory/ABI bugs |
-| **Edge ML Mage** | Math → signal → model → **on-device** | Complete an edge ritual (real latency/RAM) and discuss device deploy trade-offs |
-| **Performance Mage** | NEON → Roofline → Metal → co-design | Ship Performance Boss artifacts (2 impls + measure + prove) |
-| **Neurotech** | Parallel BCI/EEG circle | Nonclinical neuroengineering literacy (alternate Supremo route) |
+| Phase | Module label | Goal when done |
+|-------|--------------|----------------|
+| **P0** Foundations | shared core + clearance | *Mago base* — lab literacy + first craft |
+| **P1** Systems | systems / llvm / math / craft | ABI/IR literacy + published craft evidence |
+| **P2–P5** Arch → SIMD → HPC → GPU | Performance rooms | Measure → explain → prove (NEON / Roofline / Metal) |
+| **P6** Inference | Edge ML tracks + bridge | On-device ritual with latency/RAM evidence |
+| **P7** Co-design | RTL/HLS lite | Pedagogical accelerator boss (FPGA board optional) |
+| **Forge** | cumulative project | Same motif evolves scalar→SIMD→Metal→inference |
+| **Branch** Neurotech | optional | BCI/EEG circle — alternate Supremo route; not the home UX |
 
 ### What we do *not* promise
 
@@ -65,44 +70,42 @@ e-mage teaches you to **read the machine**, not memorize three full ISAs.
 **Why keep x86_64?** PC host dumps + classic RE — one compare room, not opcode farm.  
 **Why light RISC-V?** Open silicon literacy (`lw`/`sw`, `a0`); skip privileged ISA / Vector `V` / core design.
 
-## Duration (± current formation)
+## Duration (± single journey)
 
-Rough hours for **today’s** catalog (~100+ web/TUI rooms + craft bosses), at **4–6 h/week**.
+Sustainable **1–3 year** path at **4–8 h/week**. Spine (P0–P7 + Forge) ≈ **400–650 h** guided; enrichment + Neurotech + denser labs push the upper end.
 
-| Slice | Study hours (±) | Calendar (±) |
-|-------|-----------------|--------------|
-| **Fundamentals** → Mago base | 25–40 h | 5–10 weeks |
-| **Systems Mage** (systems + LLVM + bosses) | 50–90 h | 3–5 months |
-| **Edge ML Mage** | 30–50 h | 2–3 months |
-| **Performance Mage** (specialization scaffold) | **~200–280 h** scaffold · aspirational band **~310–415 h** | ~10–14 months at 6–8 h/wk |
-| **Neurotech** (parallel circle) | see Neurotech SPEC (dense MSc-prep) | multi-month |
-| **Core path** → Mago Supremo (Fund+Systems+Edge) | **~110–180 h** | **~6–10 months** |
+| Slice | Study hours (±) | Notes |
+|-------|-----------------|--------|
+| **P0** Foundations | 25–40 h | → Mago base |
+| **P1** Systems | 50–90 h | FLAG pack + craft |
+| **P2–P5 + P7** Perf phases | ~200–280 h scaffold (aspirational denser band higher) | Arch→SIMD→HPC→GPU→co-design |
+| **P6** Inference / Edge | 50–90 h | On spine **after** GPU foundations |
+| **Forge** | overlap with phase bosses | Cumulative evidence |
+| **Neurotech branch** | see Neurotech SPEC | Optional; not required for Edge Supremo |
 
-**Academy vs specialization:** Fundamentals + Systems + Edge remain the core formation (Mago Supremo). **Performance** and **Neurotech** are modular specializations — they deepen the academy; they do **not** replace it.
+**M4 caveats:** Apple µarch ≠ Cortex-A; no SVE on M4; Metal ≠ CUDA.  
+Detail SPECs: [`SPEC-emage-single-track.md`](docs/SPEC-emage-single-track.md) · [`SPEC-performance-mage.md`](docs/SPEC-performance-mage.md) · [`SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md).
 
-Performance (`performance`) is **not** a hard gate for Edge ML / Mago Supremo (soft deps OK for advanced rooms). SPEC: [`docs/SPEC-performance-mage.md`](docs/SPEC-performance-mage.md) · track: `content/tracks/11-performance/` · TUI: `mage --course performance`. **M4 caveats:** Apple µarch ≠ Cortex-A; no SVE on M4; Metal ≠ CUDA.
+Faster if you already code; slower on a first terminal/C contact. Pro C++ ≠ automatic skip of arch/SIMD/GPU — progressive assessment.
 
-Neurotech (`neurotech`) is a **parallel** course (BCI / EEG / physics / firmware). It does **not** replace Edge on-device. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · track: `content/tracks/10-neurotech/`. Pedagogy: **Estuda → Sala**. TUI: `mage --course neurotech` · emulators: `mage emu all`.
+> **The curriculum evolves.** Rooms and electives will be added or retired. Numbers are a snapshot, not a diploma contract.
 
-Faster if you already code; slower on a first terminal/C contact.
+## Journey & module browser
 
-> **The curriculum is meant to evolve.** Rooms, bosses, and electives (e.g. RISC-V) will be added or retired. Treat these numbers as a snapshot of the *current* formation, not a fixed diploma workload. The skill target (table above) stays; the path gets sharper over time.
+| id | Role |
+|----|------|
+| **`emage`** | **Primary journey** — all phases sequenced (`mage` / `mage --course emage`) |
+| `fundamentals` | Module alias · P0 |
+| `systems` | Module alias · P1 FLAG catalog |
+| `performance` | Module alias · P2–P7 rooms as one track |
+| `edge` | Module alias · P6 Edge ML tracks |
+| `neurotech` | **Branch** · optional BCI/EEG (`mage emu all`) |
 
-## Courses
+`mage` opens the launcher: **Continue journey** first; legacy ids live under the module browser (soft-gated behind Mago base; preview OK).
 
-| id | Course | Role |
-|----|--------|------|
-| `fundamentals` | Fundamentals | Path to **Mago base** (shared core + clearance) |
-| `systems` | Systems Mage | **Full FLAG catalog** in TUI: systems + llvm + math (same scope as web Systems Mage core) |
-| `edge` | Edge ML Mage | Current math → on-device Edge AI tracks (full TUI UX) — **ARM-first** unchanged |
-| `performance` | Performance Mage | NEON / Roofline / Metal / co-design — specialization; **not** an Edge hard gate |
-| `neurotech` | Neurotech | Parallel BCI/EEG — `mage --course neurotech` · `mage emu all` (alternate Supremo route) |
+### Systems phase on the TUI
 
-`mage` opens a **course launcher** first (plus GitHub connect stub). Systems/Edge/Performance/Neurotech are soft-gated behind Mago base (preview allowed with a warning).
-
-### Systems Mage on the TUI
-
-Opening **Systems** loads many FLAG rooms offline (not a hello stub):
+Opening the journey (or **Systems** module alias) loads many FLAG rooms offline (not a hello stub):
 
 - Bundled snapshot: `content/packs/systems.json` (exported from edevs `systems.ts` / `llvm.ts` / `math.ts`)
 - Install seeds `~/.mage/packs/systems.json` so first launch is full
@@ -110,7 +113,7 @@ Opening **Systems** loads many FLAG rooms offline (not a hello stub):
 - Shared cores (`vectors`, `bits`, …) still credit once via `room_id`
 - `mage sync` / `:sync` refreshes the pack from `GET /api/estudo/mage/catalog` (`systemsMagePack`) when online; offline keeps the bundled catalog
 
-Edge ML Mage stays the ARM-deep on-device path — Systems does **not** replace Edge AI tracks.
+Inference (Edge ML) stays the ARM-deep on-device **phase** after GPU foundations — Systems does **not** replace it.
 
 Shared core rooms live under `content/shared/` (`vectors`, `bits`, `intro-asm`, `isa-x86-aarch64`, `riscv-lite`) with stable `room_id` credit.
 
@@ -154,6 +157,29 @@ Dev: `make install-dev` · `make test` · `USE_PIPX=1 ./install.sh`
 | **Arch** | `sudo pacman -S python python-pip git` |
 | **Windows** | Use **WSL2** (Ubuntu), then Debian steps |
 | **Termux** | `pkg install python git`; run `./install.sh` (symlink `~/.local/bin` into PATH) |
+
+## Study offline (M4 / no network)
+
+TUI is the **source of truth**. Lessons live under `content/` (`story.md` · `concept.md` · `lesson.md` · `room.yaml`). External links are optional further reading — Estuda must teach the foundation before Sala.
+
+```bash
+cd /Users/epedro/eCodes/edevs/edge-mage
+python3 -m venv .venv && source .venv/bin/activate   # once
+pip install -e ".[dev]"                              # or: make install-dev
+mage --course emage                                  # primary journey
+# equivalents:
+python -m edge_mage --course emage
+mage                    # launcher → Continuar jornada
+```
+
+| Offline | Online-only (optional) |
+|---------|------------------------|
+| All Estuda/Sala/Forge content in `content/` | `mage sync` catalog refresh |
+| Bundled Systems pack `content/packs/systems.json` | GitHub device-auth stub |
+| Progress `~/.mage/` | POST progress to edevs API |
+| Labs/spells with local compiler/Python | Web Estudo mirror |
+
+**M4 caveats stay in-portal:** µarch ≠ Cortex-A; no SVE; Metal ≠ CUDA.
 
 ## Offline progress & sync
 

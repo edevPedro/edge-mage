@@ -1,13 +1,15 @@
-"""Carrega trilhas YAML + lições Markdown + cursos (fundamentals/systems/edge/performance/neurotech)."""
+"""Carrega trilhas YAML + lições Markdown + jornada única (`emage`) / módulos legados."""
 
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 
 import yaml
 
 from edge_mage.courses import (
     COURSE_EDGE,
+    COURSE_EMAGE,
     COURSE_FUNDAMENTALS,
     COURSE_NEUROTECH,
     COURSE_PERFORMANCE,
@@ -15,10 +17,79 @@ from edge_mage.courses import (
 )
 from edge_mage.models import Resource, Room, Task, Track
 
-# Sibling courses that must not appear inside the Edge track list.
+# Sibling courses that must not appear inside the Edge-only track list.
 _NEUROTECH_TRACK_IDS = frozenset({"neurotech"})
 _PERFORMANCE_TRACK_IDS = frozenset({"performance"})
-_SIBLING_COURSE_IDS = frozenset({COURSE_NEUROTECH, COURSE_PERFORMANCE})
+_FORGE_TRACK_IDS = frozenset({"emage-forge"})
+_SIBLING_COURSE_IDS = frozenset({COURSE_NEUROTECH, COURSE_PERFORMANCE, COURSE_EMAGE})
+
+# Performance rooms sliced into spine phases (inclusive order indices on room.order).
+_PERF_PHASE_SLICES: tuple[tuple[str, str, str, int, int, int, str], ...] = (
+    # track_id, title, phase, order_lo, order_hi, journey_order, icon
+    (
+        "emage-arch",
+        "P2 · CPU Arch & Memory",
+        "P2",
+        1,
+        4,
+        30,
+        "▣",
+    ),
+    (
+        "emage-simd",
+        "P3 · SIMD / ARM Perf",
+        "P3",
+        5,
+        8,
+        40,
+        "⚡",
+    ),
+    (
+        "emage-hpc",
+        "P4 · Numerical / HPC",
+        "P4",
+        9,
+        12,
+        50,
+        "∑",
+    ),
+    (
+        "emage-gpu",
+        "P5 · GPU / Metal",
+        "P5",
+        13,
+        16,
+        60,
+        "◈",
+    ),
+    (
+        "emage-inf-bridge",
+        "P6 · Inference bridge",
+        "P6",
+        17,
+        17,
+        78,
+        "⟷",
+    ),
+    (
+        "emage-codesign",
+        "P7 · HW/SW Co-design",
+        "P7",
+        18,
+        20,
+        85,
+        "⬡",
+    ),
+)
+
+# Edge enrichment tracks (not spine blockers).
+_ENRICHMENT_TRACK_IDS = frozenset(
+    {"fisica-sinais", "eletrica-edge", "robotica", "programacao"}
+)
+# Edge spine for P6 (math → ML → bosses → on-device).
+_INFERENCE_TRACK_IDS = frozenset(
+    {"fundamentos", "otimizacao", "ml-math", "rituais", "edge-ai"}
+)
 
 
 def content_root() -> Path:
@@ -157,7 +228,7 @@ def load_all_tracks(
     exclude_siblings: bool = True,
     exclude_neurotech: bool | None = None,
 ) -> list[Track]:
-    """Edge course: content/tracks. Neurotech + Performance are sibling courses."""
+    """Edge module: content/tracks. Neurotech / Performance / Forge stay out by default."""
     if exclude_neurotech is not None:
         exclude_siblings = exclude_neurotech
     base = root or content_root()
@@ -172,11 +243,144 @@ def load_all_tracks(
         if exclude_siblings and (
             track.id in _NEUROTECH_TRACK_IDS
             or track.id in _PERFORMANCE_TRACK_IDS
+            or track.id in _FORGE_TRACK_IDS
             or track.course in _SIBLING_COURSE_IDS
         ):
             continue
         tracks.append(track)
     tracks.sort(key=lambda t: t.order)
+    return tracks
+
+
+def _slice_performance_phases(root: Path | None = None) -> list[Track]:
+    """Split Performance rooms into spine phases without moving markdown on disk."""
+    perf_tracks = load_performance_tracks(root)
+    if not perf_tracks:
+        return []
+    src = perf_tracks[0]
+    by_order = {r.order: r for r in src.rooms}
+    out: list[Track] = []
+    for track_id, title, phase, lo, hi, journey_order, icon in _PERF_PHASE_SLICES:
+        rooms = [deepcopy(by_order[o]) for o in range(lo, hi + 1) if o in by_order]
+        if not rooms:
+            continue
+        # Progress credit stays on room_id; keep course tag for filters.
+        for r in rooms:
+            r.course = COURSE_EMAGE
+        requires_ritual = ""
+        if phase == "P7":
+            # Prefer on-device evidence before co-design boss path; preview still possible
+            # via room-level requires on pf-rtl-intro (inference-bridge).
+            requires_ritual = ""
+        out.append(
+            Track(
+                id=track_id,
+                title=title,
+                summary=src.summary,
+                order=journey_order,
+                unlock_xp=0,
+                icon=icon,
+                rooms=rooms,
+                path=src.path,
+                scaffold=False,
+                requires_skills=[],
+                requires_ritual=requires_ritual,
+                course=COURSE_EMAGE,
+                phase=phase,
+                elective=False,
+                module_label="Performance",
+            )
+        )
+    return out
+
+
+def load_forge_tracks(root: Path | None = None) -> list[Track]:
+    base = root or content_root()
+    track_dir = base / "tracks" / "12-emage-forge"
+    if not (track_dir / "track.yaml").exists():
+        return []
+    track = load_track(track_dir)
+    track.course = COURSE_EMAGE
+    track.phase = "Forge"
+    track.module_label = "Forge"
+    return [track]
+
+
+def load_emage_journey(root: Path | None = None) -> list[Track]:
+    """
+    One primary progression: P0→P7 + Forge + enrichment + Neurotech branch.
+
+    Legacy module content is reused; Performance is phase-sliced for pedagogical order
+    so inference (Edge) sits after GPU and before co-design.
+    """
+    tracks: list[Track] = []
+
+    # P0 — Foundations
+    for t in load_fundamentals_tracks():
+        t = deepcopy(t)
+        t.order = 10
+        t.course = COURSE_EMAGE
+        t.phase = "P0"
+        t.module_label = "Foundations"
+        tracks.append(t)
+
+    # Forge cumulative project (runs alongside spine)
+    for t in load_forge_tracks(root):
+        t = deepcopy(t)
+        t.order = 15
+        tracks.append(t)
+
+    # P1 — Systems craft
+    for t in load_systems_from_pack():
+        t = deepcopy(t)
+        base_order = {"systems": 20, "llvm": 21, "math": 22, "craft": 23}.get(t.id, 20)
+        t.order = base_order
+        t.course = COURSE_EMAGE
+        t.phase = "P1"
+        t.module_label = "Systems"
+        tracks.append(t)
+
+    # P2–P5, bridge, P7 — Performance phases
+    tracks.extend(_slice_performance_phases(root))
+
+    # Enrichment (after P0 conceptually; ordered after GPU so spine Continuar prefers perf)
+    edge = load_all_tracks(root, exclude_siblings=True)
+    for t in edge:
+        t = deepcopy(t)
+        if t.id in _ENRICHMENT_TRACK_IDS:
+            # After spine (P7=85) so :continue prefers core phases first.
+            t.order = 100 + int(t.order)
+            t.course = COURSE_EMAGE
+            t.phase = "E"
+            t.elective = True
+            t.module_label = "Enrichment"
+            tracks.append(t)
+        elif t.id in _INFERENCE_TRACK_IDS:
+            # P6 — Inference / Edge ML ON spine (after GPU order 60, before codesign 85)
+            remap = {
+                "fundamentos": 70,
+                "otimizacao": 72,
+                "ml-math": 74,
+                "rituais": 76,
+                "edge-ai": 79,
+            }
+            t.order = remap.get(t.id, 75)
+            t.course = COURSE_EMAGE
+            t.phase = "P6"
+            t.module_label = "Inference"
+            tracks.append(t)
+
+    # Branch — Neurotech (after enrichment)
+    for t in load_neurotech_tracks(root):
+        t = deepcopy(t)
+        t.order = 120
+        t.course = COURSE_EMAGE
+        t.phase = "B"
+        t.elective = True
+        t.module_label = "Neurotech"
+        tracks.append(t)
+
+    tracks.sort(key=lambda x: (x.order, x.id))
     return tracks
 
 
@@ -433,6 +637,9 @@ def load_fundamentals_tracks() -> list[Track]:
 
 
 def load_tracks_for_course(course_id: str, root: Path | None = None) -> list[Track]:
+    """Load tracks for a journey id or legacy module alias."""
+    if course_id in (COURSE_EMAGE, None, ""):
+        return load_emage_journey(root)
     if course_id == COURSE_EDGE:
         tracks = load_all_tracks(root, exclude_siblings=True)
         for t in tracks:
@@ -447,7 +654,8 @@ def load_tracks_for_course(course_id: str, root: Path | None = None) -> list[Tra
         return load_systems_from_pack()
     if course_id == COURSE_FUNDAMENTALS:
         return load_fundamentals_tracks()
-    return load_all_tracks(root, exclude_siblings=True)
+    # Unknown id → primary journey (fail open to single path)
+    return load_emage_journey(root)
 
 
 def find_track(tracks: list[Track], track_id: str) -> Track | None:
