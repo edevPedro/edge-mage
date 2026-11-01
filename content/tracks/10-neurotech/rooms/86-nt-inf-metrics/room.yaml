@@ -1,0 +1,79 @@
+id: nt-inf-metrics
+title: Métricas de inferência e roofline
+summary: >-
+  TTFT, ITL, tokens/s, RTF, percentis (p50/p95/p99), operações/memória
+  (FLOPs vs bytes) e o modelo roofline para achar o gargalo.
+xp_reward: 40
+unlock_xp: 0
+order: 86
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-quantization
+course: neurotech
+resources:
+- title: "Latency & throughput reference (Hugging Face LLM perf)"
+  url: https://www.huggingface.co/blog/llm-inference
+  kind: blog
+- title: "Roofline model (LLNL / Berkeley)"
+  url: https://hpc.lbl.gov/publications/roofline-analytical-model
+  kind: paper
+- title: "NVIDIA — profiling inference (Nsight)"
+  url: https://developer.nvidia.com/nsight-systems
+  kind: docs
+- title: "Speed, latency and stability: LLM inference (Anyscale)"
+  url: https://www.anyscale.com/blog/continuous-batching-llm-inference
+  kind: blog
+tasks:
+- id: ttft-def
+  type: mcq
+  prompt: 'TTFT mede:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'o tempo da quantização'
+  - 'o tempo até o primeiro token gerado (prefill sentido)'
+  - 'o tempo de treino'
+  - 'a latência do ADC'
+- id: p99-why
+  type: mcq
+  prompt: 'Em SLAs de inferência, p99 importa mais que a média porque:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'a média esconde filas; cauda lenta frustra usuário e satura fila'
+  - 'é mais simples de calcular'
+  - 'a média sempre viola orçamento'
+  - 'p99 é a acurácia do kappa'
+- id: roofline
+  type: mcq
+  prompt: 'Roofline pergunta, antes de otimizar:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'qual a marca da GPU'
+  - 'quantas requisições o SLA do VP pede'
+  - 'se o kernel é bound por calculo (ops) ou por memória (bytes)'
+  - 'qual o tamanho do batch de treino'
+- id: code-metrics
+  type: code
+  prompt: 'Implemente `tokens_per_second(n, s)` (n/s), `inter_token_latency_ms(n, elapsed_ms)` (elapsed_ms/n) e `percentile(xs, p)` — é ordena a lista e retorna o valor na posição do percentil inteiro `ceil(p/100 * len) - 1` (0-indexed; convenção didática).'
+  xp: 14
+  code_template: "def tokens_per_second(n, s):\n    ...\n\ndef inter_token_latency_ms(n, elapsed_ms):\n    ...\n\ndef percentile(xs, p):\n    ...\n"
+  code_tests: '
+
+    assert mod.tokens_per_second(10, 2.0) == 5.0
+
+        assert abs(mod.inter_token_latency_ms(200, 1000.0) - 5.0) < 1e-9
+
+        assert mod.percentile([1, 2, 3, 4, 5], 50) == 3
+
+        assert mod.percentile([1, 2, 3, 4, 5], 0) == 1
+
+        assert mod.percentile([1, 2, 3, 4, 5], 100) == 5
+
+        assert mod.percentile([10, 20, 30, 40], 25) == 20
+
+    '

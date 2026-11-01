@@ -22,16 +22,16 @@ Web: `/estudo/cursos/neurotech`.
 
 | | |
 |--|--|
-| Rooms | **95** (92 required + 3 electives) |
-| Salas F0-found | **18 novas** salas de fundamentos pré-MSc |
-| Hours guided | **~210–360 h** (fundamentos completos + MSc-prep em todos os pilares) |
+| Rooms | **89** (85 required + 4 electives) |
+| Módulo F15-dl-inf | **13 salas de Deep Learning & Inference Engineering** (do roadmap.sh), anexo pós-Supremo |
+| Hours guided | **~240–400 h** (fundamentos completos + MSc-prep em todos os pilares + DL/inferência) |
 | Climax | **Mago Supremo** (rota Neural) — Edge path preserved |
 
-Horas sobem com novas salas de fundamentos (trig, cálculo, Fourier, fasores, etc.) e densidade Estuda — **não** recalibrar para baixo.
+Horas sobem com novas salas de fundamentos (trig, cálculo, Fourier, fasores, etc.), DL/Inference e densidade Estuda — **não** recalibrar para baixo.
 
 ## Pilares → clímax
 
-**F0-found** (trig, exp/log, cálculo, complexos/Euler, Fourier, ondas, energia, fasores AC, filtros, fonte de alimentação, amostragem, anatomia neuronal, sistema EEG, bits/binário, C essencial, modelo de memória MCU, classificador linear) → Math → Physics → Elétrica → Neurociência → CS → DSP → paradigmas → decode → firmware/online → **Neuro Mage** → apps → casos publicados → research → **Mago Supremo**.
+**F0-found** (trig, exp/log, cálculo, complexos/Euler, Fourier, ondas, energia, fasores AC, filtros, fonte de alimentação, amostragem, anatomia neuronal, sistema EEG, bits/binário, C essencial, modelo de memória MCU, classificador linear) → Math → Physics → Elétrica → Neurociência → CS → DSP → paradigmas → decode → firmware/online → **Neuro Mage** → apps → casos publicados → research → **Mago Supremo** → **F15-dl-inf** (opcional pós-supremo): MLP/CNN ao Transformers na paleta do [roadmap.sh/inference-engineering](https://roadmap.sh/inference-engineering) — KV cache, quantização, serving/batching, multimodais.
 
 ## Estuda density
 

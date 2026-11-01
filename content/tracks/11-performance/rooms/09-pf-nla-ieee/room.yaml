@@ -1,0 +1,49 @@
+id: pf-nla-ieee
+title: NLA · IEEE 754
+summary: Álgebra linear numérica lite, rounding, erro; por que fast-math mente.
+xp_reward: 22
+unlock_xp: 0
+phase: F3-hpc
+pillar: numerical
+course: performance
+order: 9
+boss: false
+resources:
+- title: IEEE 754-2019 overview
+  url: https://ieeexplore.ieee.org/document/8766229
+  kind: docs
+- title: What Every Computer Scientist Should Know About Floating-Point (Goldberg)
+  url: https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+  kind: paper
+animation: null
+tasks:
+- id: assoc
+  type: mcq
+  prompt: Em float IEEE754, (a+b)+c == a+(b+c) sempre?
+  xp: 10
+  answer: 2
+  choices:
+  - Sempre
+  - Nunca em hardware
+  - Não necessariamente
+  - Só com SVE
+- id: tol
+  type: mcq
+  prompt: 'Golden tests de kernels float devem:'
+  xp: 8
+  answer: 0
+  choices:
+  - Declarar tolerância (abs/rel) explícita
+  - Exigir bit-exact sempre
+  - Ignorar NaN forever sem nota
+  - Usar só int8
+- id: ulp
+  type: fill
+  prompt: 'Unidade típica de erro em ponto flutuante (sigla): ___.'
+  xp: 8
+  answers:
+  - ULP
+  - ulp
+  - unit in the last place
+requires_rooms:
+- pf-boss-arm-math

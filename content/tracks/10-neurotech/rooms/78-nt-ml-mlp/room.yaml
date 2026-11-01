@@ -1,0 +1,75 @@
+id: nt-ml-mlp
+title: MLP — forward e parâmetros
+summary: >-
+  Rede fully-connected one-hidden-layer: forward com ReLU, contagem de
+  parâmetros e "profundidade ≠ largura".
+xp_reward: 38
+unlock_xp: 0
+order: 78
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-dl-portal
+course: neurotech
+resources:
+- title: Deep Learning book — MLP / backprop (Goodfellow, caps. 6)
+  url: https://www.deeplearningbook.org/contents/mlp.html
+  kind: paper
+- title: CS231n — Neural Networks overview
+  url: https://cs231n.github.io/neural-networks-1/
+  kind: docs
+- title: PyTorch — nn.Linear documentation
+  url: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
+  kind: docs
+- title: "Lotte et al. — quando modelos simples bastam em EEG-BCI"
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+tasks:
+- id: linear-map
+  type: mcq
+  prompt: 'A camada fully-connected aprende:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'uma filtragem passa-banda fixa'
+  - 'o endereço MAC do ADC'
+  - 'uma transformação afim W·x + b sobre o vetor de features'
+  - 'a impedância dos eletrodos'
+- id: relu
+  type: mcq
+  prompt: 'ReLU(z) = max(0, z) existe principalmente para:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'diminuir o número de canais'
+  - 'introduzir não-linearidade (senão a rede colapsa em uma afim)'
+  - 'substituir o filtro de 60 Hz'
+  - 'economizar memória flash'
+- id: depth-vs-width
+  type: mcq
+  prompt: 'Em dados neurais escassos, profundidade extra (vs largura) tende a:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'trazer composição de features, mas mais parâmetros — precisa regularizar'
+  - 'sempre reduzir a latência do ADC'
+  - 'eliminar a necessidade de validação'
+  - 'aumentar bela a bateria'
+- id: code-mlp-forward
+  type: code
+  prompt: 'Implemente `relu(z)` (max(0,z)) e `mlp_forward(x, W1, b1, W2, b2)` retornando a lista de saídas `out = W2 @ relu(W1 @ x + b1) + b2` (multiplicação de matriz-lista).'
+  xp: 14
+  code_template: "def relu(z):\n    ...\n\ndef matvec(M, v):\n    ...\n\ndef mlp_forward(x, W1, b1, W2, b2):\n    ...\n"
+  code_tests: '
+
+    assert mod.relu(-3.0) == 0.0
+
+        assert mod.relu(2.5) == 2.5
+
+        assert mod.mlp_forward([1.0, -1.0], [[1.0, 0.0], [0.0, 1.0]], [0.0, 0.0], [[1.0, 1.0]], [0.0]) == [1.0]
+
+        assert abs(mod.mlp_forward([1.0, 1.0], [[1.0, -1.0], [1.0, 1.0]], [0.0, 1.0], [[1.0, 1.0], [1.0, 1.0]], [0.5, 0.5])[0] - 3.5) < 1e-9
+
+    '

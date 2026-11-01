@@ -1,0 +1,44 @@
+id: dl-pipeline
+title: Pipeline de DL até o device
+summary: >-
+  Export → arena TFLM/CMSIS → delegate + otimizações; verificação por golden
+  tests; a pipeline end-to-end com headroom de latência e energia.
+xp_reward: 56
+unlock_xp: 3300
+requires_skills:
+  - on-device
+  - local-llm
+animation: quantize_steps
+resources:
+  - title: LiteRT Microcontrollers — get started + delegate
+    url: https://developers.google.com/edge/litert/microcontrollers/get_started
+    kind: docs
+  - title: TFLM — Memory Management (tensor arena)
+    url: https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/docs/memory_management.md
+    kind: docs
+  - title: ONNX Runtime — mobile / edge
+    url: https://onnxruntime.ai/docs/tutorials/mobile/
+    kind: docs
+tasks:
+  - id: golden
+    type: mcq
+    prompt: 'Golden test na pipeline edge é:'
+    xp: 14
+    answer: 2
+    choices:
+      - testar só no CI do servidor
+      - comparar saídas do runtime embarcado contra o modelo de referência (float/int8 golden)
+      - rodar docker
+      - usar só imagens
+  - id: headroom
+    type: numeric
+    prompt: 'Pipeline [acquire 5, preproc 8, infer 25, post 4] ms, deadline 60 ms. Headroom (ms)?'
+    xp: 14
+    answer: 18
+    tolerance: 0
+  - id: code-pipeline
+    type: code
+    prompt: 'Implemente `pipeline_ok(stages_ms, deadline_ms)` = True se soma(stages)<=deadline; `headroom_ms(stages_ms, deadline_ms)` = deadline - soma (>= 0); `utilization(stages_ms, deadline_ms)` = soma/deadline.'
+    xp: 28
+    code_template: "def pipeline_ok(stages_ms, deadline_ms):\n    # TODO\n    ...\n\ndef headroom_ms(stages_ms, deadline_ms):\n    # TODO\n    ...\n\ndef utilization(stages_ms, deadline_ms):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.pipeline_ok([5,8,25,4], 60)==True\nassert mod.pipeline_ok([5,8,25,30], 60)==False\nassert mod.headroom_ms([5,8,25,4], 60)==18\nassert abs(mod.utilization([5,8,25,4], 60)-0.7)<1e-9\n"

@@ -1,0 +1,49 @@
+id: pf-neon-intro
+title: NEON / ASIMD · primeiros vetores
+summary: Registradores V, lanes, intrinsics vs autovec — lab em Apple Silicon / AArch64.
+xp_reward: 22
+unlock_xp: 0
+phase: F2-arm
+pillar: neon
+course: performance
+order: 5
+boss: false
+resources:
+- title: Arm Neon Intrinsics Reference
+  url: https://developer.arm.com/documentation/102581/latest
+  kind: docs
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: width
+  type: mcq
+  prompt: 'NEON clássico em AArch64 frequentemente trabalha com vetores de:'
+  xp: 8
+  answer: 1
+  choices:
+  - 8-bit só
+  - 128-bit (com lanes tipadas)
+  - Obrigatoriamente 2048-bit SVE no M4
+  - Somente scalars FP64
+- id: no-sve-m4
+  type: mcq
+  prompt: 'No lab M4 deste curso, SVE:'
+  xp: 8
+  answer: 2
+  choices:
+  - É obrigatório em todo boss
+  - Substitui NEON
+  - É literacy; lab nativo foca NEON/ASIMD
+  - É o mesmo que Metal
+- id: intrinsic
+  type: fill
+  prompt: API C de operações NEON tipicamente chamada de ___ (palavra).
+  xp: 8
+  answers:
+  - intrinsics
+  - intrinsic
+  - Intrinsics
+requires_rooms:
+- pf-aarch64-perf

@@ -1,0 +1,77 @@
+id: nt-model-formats
+title: Formatos de modelo e runtime alvo
+summary: >-
+  ONNX, GGUF/llama.cpp, TensorFlow Lite/ExecuTorch, MLX: decidir o formato e
+  o runtime pelo target (server, mobile, MCU) e contagem de bytes.
+xp_reward: 38
+unlock_xp: 0
+order: 87
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-inf-metrics
+course: neurotech
+resources:
+- title: ONNX Runtime — docs
+  url: https://onnxruntime.ai/docs/
+  kind: docs
+- title: llama.cpp / GGUF (quantized file format)
+  url: https://github.com/ggml-org/llama.cpp
+  kind: docs
+- title: ExecuTorch (PyTorch Edge)
+  url: https://pytorch.org/executorch/
+  kind: docs
+- title: Google — LiteRT (TF Lite successor)
+  url: https://ai.google.dev/edge/litert
+  kind: docs
+tasks:
+- id: model-vs-weights
+  type: mcq
+  prompt: '"Formato de modelo" (ex.: ONNX, GGUF) descreve principalmente:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'o idioma de treino do modelo'
+  - 'a cor do tensor de saída'
+  - 'o schema de grafo + pesos (com quantização) que um runtime executa'
+  - 'uma rede social de pesos'
+- id: target-choice
+  type: mcq
+  prompt: 'Para um decoder embarcado em MCU com 512 kB RAM, o formato mais adequado é:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'GGUF fp32'
+  - 'LiteRT/ExecuTorch com int8 (e kernel TFLM vectorizado)'
+  - 'ONNX fp16 em servidor'
+  - 'um checkpoint PyTorch puro'
+- id: gguf-niche
+  type: mcq
+  prompt: 'GGUF/llama.cpp brilha especialmente:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'em LLMs quantizados rodando em CPU/edge com mmap'
+  - 'em treino distribuído'
+  - 'como formato de dataset EEG'
+  - 'em servidores GPU high-end exclusivo'
+- id: code-format
+  type: code
+  prompt: 'Implemente `bytes_for_params(n_params, bits=8)` → `n_params * bits / 8`; e `suggest_runtime(ram_mb, has_int8_accel, is_llm)` → `"litert"` se `has_int8_accel`, `"gguf"` se `is_llm` e não accel, `"onnx"` caso contrário.'
+  xp: 14
+  code_template: "def bytes_for_params(n_params, bits=8):\n    ...\n\ndef suggest_runtime(ram_mb, has_int8_accel, is_llm):\n    ...\n"
+  code_tests: '
+
+    assert mod.bytes_for_params(1000, 8) == 1000
+
+        assert mod.bytes_for_params(1000, 32) == 4000
+
+        assert mod.suggest_runtime(64, True, False) == "litert"
+
+        assert mod.suggest_runtime(4096, False, True) == "gguf"
+
+        assert mod.suggest_runtime(4096, False, False) == "onnx"
+
+    '

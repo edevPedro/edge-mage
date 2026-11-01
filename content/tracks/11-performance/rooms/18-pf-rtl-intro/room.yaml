@@ -1,0 +1,39 @@
+id: pf-rtl-intro
+title: Digital logic · Verilog lite
+summary: Comb/seq, RTL intro — alfabetização para co-design (não curso de ASIC completo).
+xp_reward: 22
+unlock_xp: 0
+phase: F6-hw
+pillar: codesign
+course: performance
+order: 18
+boss: false
+resources:
+- title: IEEE 1364 Verilog (overview refs)
+  url: https://ieeexplore.ieee.org/document/469089
+  kind: docs
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: seq
+  type: mcq
+  prompt: 'Lógica sequencial tipicamente atualiza estado em:'
+  xp: 8
+  answer: 0
+  choices:
+  - Bordas de clock
+  - Somente em Python GC
+  - SVE faults
+  - HTTP requests
+- id: rtl
+  type: fill
+  prompt: 'Nível de descrição com registradores/transferências: ___ (sigla).'
+  xp: 8
+  answers:
+  - RTL
+  - rtl
+  - Register Transfer Level
+requires_rooms:
+- pf-inference-bridge

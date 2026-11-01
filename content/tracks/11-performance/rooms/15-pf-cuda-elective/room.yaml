@@ -1,0 +1,37 @@
+id: pf-cuda-elective
+title: Eletiva · CUDA literacy
+summary: 'Complemento: grids/blocks, memória, ecossistema — não substitui Metal no
+  Mac.'
+xp_reward: 22
+unlock_xp: 0
+phase: F4-gpu
+pillar: gpu
+course: performance
+order: 15
+boss: false
+resources:
+- title: CUDA C++ Programming Guide
+  url: https://docs.nvidia.com/cuda/cuda-c-programming-guide/
+  kind: docs
+animation: null
+tasks:
+- id: elective
+  type: mcq
+  prompt: 'CUDA neste currículo:'
+  xp: 8
+  answer: 1
+  choices:
+  - Obrigatória no M4 nativo
+  - Eletiva/complemento; Metal first no Mac
+  - Substitui Roofline
+  - Remove bosses ARM
+- id: warp
+  type: fill
+  prompt: 'Grupo de threads em lockstep no modelo NVIDIA clássico: ___.'
+  xp: 8
+  answers:
+  - warp
+  - Warp
+requires_rooms:
+- pf-gpu-kernels
+elective: true

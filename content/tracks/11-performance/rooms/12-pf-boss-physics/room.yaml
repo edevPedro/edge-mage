@@ -1,0 +1,50 @@
+id: pf-boss-physics
+title: Boss · Physics Simulation
+summary: 'Performance Boss: simulação (heat/Jacobi) — 2 versões, Roofline, golden
+  físico.'
+xp_reward: 28
+unlock_xp: 0
+phase: F3-hpc
+pillar: numerical
+course: performance
+order: 12
+boss: true
+resources:
+- title: SPEC — Performance Boss
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+- title: Roofline paper
+  url: https://doi.org/10.1145/1497561.1497565
+  kind: paper
+animation: null
+tasks:
+- id: boss-phys
+  type: mcq
+  prompt: 'Boss Physics exige:'
+  xp: 12
+  answer: 0
+  choices:
+  - 2 versões + medida + Roofline/explicação + golden
+  - Só screenshot do Activity Monitor
+  - Só CUDA
+  - Remover tolerâncias
+- id: artifact-phys
+  type: fill
+  prompt: 'Artefato: study-log/artifacts/___.md'
+  xp: 10
+  answers:
+  - perf-physics
+  - perf-physics.md
+- id: correctness
+  type: mcq
+  prompt: 'Se a versão rápida diverge além da tolerância:'
+  xp: 10
+  answer: 1
+  choices:
+  - Aceitar se for 2× mais rápida
+  - Boss falha — correção é parte do ritual
+  - Ignorar IEEE
+  - Publicar sem nota
+requires_rooms:
+- pf-gemm-jacobi
+elite_skill: perf-physics

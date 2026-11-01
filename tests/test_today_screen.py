@@ -50,6 +50,15 @@ async def test_leader_g_o_opens_today(isolated_home: Path) -> None:
 
 
 @pytest.mark.asyncio
+async def test_open_today_flag_boots_to_hoje(isolated_home: Path) -> None:
+    # `mage --today` deve abrir direto na tela Hoje (usado pelo widget Wave)
+    app = EdgeMageApp(course="edge", show_launcher=False, open_today=True)
+    async with app.run_test() as pilot:
+        await pilot.pause()
+        assert isinstance(app.screen, TodayScreen)
+
+
+@pytest.mark.asyncio
 async def test_colon_today_opens_screen(isolated_home: Path) -> None:
     app = EdgeMageApp(course="edge", show_launcher=False)
     async with app.run_test() as pilot:

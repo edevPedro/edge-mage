@@ -1,0 +1,79 @@
+id: nt-kv-cache
+title: KV Cache e o working set da atenção
+summary: >-
+  Reaproveitar K/V do prefill no decode, contabilidade de memória do cache
+  e por que ele domina a RAM em longas conversas.
+xp_reward: 40
+unlock_xp: 0
+order: 84
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-llm-generate
+course: neurotech
+resources:
+- title: 'KV cache as the memory bottleneck ("Transformer Inference Arithmetic", Kipply)'
+  url: https://kipp.ly/transformer-inference-arithmetic/
+  kind: blog
+- title: "PagedAttention / vLLM paper (Kwon et al., 2023)"
+  url: https://arxiv.org/abs/2309.06180
+  kind: paper
+- title: vLLM — docs sobre KV cache / PagedAttention
+  url: https://docs.vllm.ai/en/latest/design.html
+  kind: docs
+- title: "Efficient Memory Management for LLMs (John the Data Scientist)"
+  url: https://www.anyscale.com/blog/continuous-batching-llm-inference
+  kind: blog
+tasks:
+- id: why-cache
+  type: mcq
+  prompt: 'Guardar K/V no cache evita:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'recomputar cada atenção do contexto a cada novo token'
+  - 'usar softmax'
+  - 'layouts de memória'
+  - 'a necessidade de treinar'
+- id: cache-bytes
+  type: mcq
+  prompt: 'O tamanho do KV cache por conversa cresce:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'linearmente com número de tensores de peso'
+  - 'com o número de tokens (contexto e gerados) — e por camada/cabeça'
+  - 'quadraticamente com a GPU'
+  - 'com a temperatura do núcleo'
+- id: paged
+  type: mcq
+  prompt: 'PagedAttention (vLLM) faz com o KV cache o que a memória virtual faz com RAM:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'transpila o modelo'
+  - 'zerar os gaps de atenção'
+  - 'pagin/a loca blocos não contiguos, eliminando fragmentação'
+  - 'dobra a largura do cache'
+- id: code-kv-append
+  type: code
+  prompt: 'Implemente `kv_cache_append(cache, K, V)` → `[cache[0]+K, cache[1]+V]` (concatena listas), `cached_scores(Q_last, K_cache, scale)` (produto escalar da última query vs todas as keys, vezes scale) e `kv_cache_bytes(seq_len, n_layers, n_heads, head_dim, dtype_bytes=2)` = `seq_len * n_layers * n_heads * head_dim * dtype_bytes * 2` (2 = K e V).'
+  xp: 14
+  code_template: "def kv_cache_append(cache, K, V):\n    ...\n\ndef cached_scores(Q_last, K_cache, scale):\n    ...\n\ndef kv_cache_bytes(seq_len, n_layers, n_heads, head_dim, dtype_bytes=2):\n    ...\n"
+  code_tests: '
+
+    c0 = mod.kv_cache_append([[], []], [[1.0, 2.0]], [[5.0, 6.0]])
+
+        assert c0[0] == [[1.0, 2.0]] and c0[1] == [[5.0, 6.0]]
+
+        assert abs(mod.cached_scores([1.0, 1.0], [[1.0, 2.0], [2.0, 1.0]], 1.0)[1] - 3.0) < 1e-9
+
+        assert abs(mod.cached_scores([1.0, 1.0], [[1.0, 2.0], [2.0, 1.0]], 0.5)[0] - 1.5) < 1e-9
+
+        assert mod.kv_cache_bytes(2048, 32, 32, 64) == 2048*32*32*64*2*2
+
+        assert mod.kv_cache_bytes(4096, 1, 1, 1) == 4096*1*1*1*2*2
+
+    '

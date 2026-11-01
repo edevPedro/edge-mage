@@ -1,0 +1,91 @@
+id: nt-transformer-attn
+title: Transformer e atenção
+summary: >-
+  Q/K/V, atenção escalada, softmax por linha e o bloco transformer: como cada
+  token "olha" os outros com custo quadrático.
+xp_reward: 42
+unlock_xp: 0
+order: 82
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-tokens-seq
+course: neurotech
+resources:
+- title: Attention is All You Need (Vaswani et al., 2017)
+  url: https://arxiv.org/abs/1706.03762
+  kind: paper
+- title: The Illustrated Transformer (Jay Alammar)
+  url: https://jalammar.github.io/illustrated-transformer/
+  kind: docs
+- title: "ThreeBlueOneBrown — Deep Learning, atenção"
+  url: https://www.youtube.com/watch?v=eMlx5fFNoYc
+  kind: video
+- title: Karpathy — Let's build GPT (vídeo + notebook)
+  url: https://www.youtube.com/watch?v=kCc8FmEb1nY
+  kind: video
+tasks:
+- id: qkv-role
+  type: mcq
+  prompt: 'Na atenção, "Query" de um token serve para:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'perguntar ao contexto "o que eu preciso?"'
+  - 'definir a posição do token no 10-20'
+  - 'guardar a loss do treino'
+  - 'substituir o bias do ADC'
+- id: quadratic
+  type: mcq
+  prompt: 'Atenção plena tem custo ___ no comprimento de contexto L:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'O(1)'
+  - 'O(L)'
+  - 'O(L²) em memória/tempo (toda posição vs toda posição)'
+  - 'O(L³)'
+- id: scale
+  type: mcq
+  prompt: 'Dividir Q·Kᵀ por sqrt(d_k) estabiliza:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'a fonte de corrente do DRL'
+  - 'o softmax (evita saturação com dimensões grandes)'
+  - 'o clock do firmware'
+  - 'a impedância média'
+- id: code-attn
+  type: code
+  prompt: 'Implemente `attention_scores(Q, K, scale)` → Q·Kᵀ·scale (matmul de listas), `softmax_rows(M)` (softmax em cada linha) e `attention_out(Q, K, V, scale)` → `softmax_rows(attention_scores(Q,K,scale)) @ V`.'
+  xp: 14
+  code_template: "def attention_scores(Q, K, scale):\n    ...\n\ndef softmax_rows(M):\n    ...\n\ndef attention_out(Q, K, V, scale):\n    ...\n"
+  code_tests: '
+
+    Q = [[1.0, 0.0], [0.0, 1.0]]
+
+        K = [[1.0, 0.0], [0.0, 1.0]]
+
+        V = [[1.0, 2.0], [3.0, 4.0]]
+
+        S = mod.attention_scores(Q, K, 1.0)
+
+        assert len(S) == 2 and len(S[0]) == 2
+
+        P = mod.softmax_rows(S)
+
+        assert abs(sum(P[0]) - 1.0) < 1e-9
+
+        A = mod.attention_out(Q, K, V, 1.0)
+
+        assert len(A) == 2 and len(A[0]) == 2
+
+        assert abs(A[0][0] - 1.5378828427) < 1e-6
+
+        # identical Q=K identity: row1 atende mais V[1]
+
+        assert abs(A[1][1] - 3.4621171573) < 1e-6
+
+    '

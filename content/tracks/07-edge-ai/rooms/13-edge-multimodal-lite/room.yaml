@@ -1,0 +1,45 @@
+id: multimodal-lite
+title: Multimodal lite no edge (eletiva)
+summary: >-
+  Embeddings compartilhados, similaridade de cosseno e lite multimodais
+  (vision/audio/BCI) dentro de budget de memória/latência — eletiva do bloco
+  DL-inference.
+xp_reward: 66
+unlock_xp: 3400
+requires_skills:
+  - on-device
+  - dl-pipeline
+animation: softmax_bars
+resources:
+  - title: CLIP — arXiv 2103.00020 (contrastive embeddings)
+    url: https://arxiv.org/abs/2103.00020
+    kind: paper
+  - title: MobileViT / MobileNetV3 — lite models
+    url: https://arxiv.org/abs/1905.02244
+    kind: paper
+  - title: ONNX Runtime — mobile
+    url: https://onnxruntime.ai/docs/tutorials/mobile/
+    kind: docs
+tasks:
+  - id: shared-emb
+    type: mcq
+    prompt: 'Em modelos multimodais lite, a ideia central é:'
+    xp: 16
+    answer: 1
+    choices:
+      - one hot por modalidade
+      - embeddings no mesmo espaço (contrastivos) + similarity
+      - usar só texto
+      - aumentar a latência
+  - id: emb-dim
+    type: numeric
+    prompt: 'Embedding dim 128 em int8, batch 64. Memória (bytes) dos embeddings puros?'
+    xp: 16
+    answer: 8192
+    tolerance: 0
+  - id: code-mm
+    type: code
+    prompt: 'Implemente `embedding_bytes(dim, count, dtype_bytes)`; `cosine_sim(a, b)` (float, retorne 0 se zero-norm; else dot/(|a||b|), clamp a [-1, 1]); `top_k_scores(k, sims)` = índices dos k maiores de sims.'
+    xp: 24
+    code_template: "def embedding_bytes(dim, count, dtype_bytes):\n    # TODO\n    ...\n\ndef cosine_sim(a, b):\n    # TODO\n    ...\n\ndef top_k_scores(k, sims):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.embedding_bytes(128, 64, 1)==8192\nassert abs(mod.cosine_sim([1,0],[0,1])-0.0)<1e-9\nassert abs(mod.cosine_sim([1,0],[1,0])-1.0)<1e-9\nassert mod.top_k_scores(2, [0.1, 0.9, 0.5])==[1, 2]\nassert mod.top_k_scores(1, [0.1, 0.9])==[1]\n"

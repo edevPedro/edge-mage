@@ -1,0 +1,51 @@
+id: pf-pipeline
+title: Pipeline · hazards & ILP
+summary: Pipeline clássico, hazards, forwarding, ILP vs throughput — base para medir
+  CPI.
+xp_reward: 22
+unlock_xp: 0
+phase: F1-arch
+pillar: architecture
+course: performance
+order: 2
+boss: false
+resources:
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+- title: Hennessy & Patterson — Computer Architecture (classic)
+  url: https://www.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1
+  kind: book
+animation: null
+tasks:
+- id: hazard-raw
+  type: mcq
+  prompt: 'Dependência que exige o resultado de uma instrução anterior (read after
+    write) é:'
+  xp: 10
+  answer: 0
+  choices:
+  - RAW
+  - WAR apenas
+  - Structural sempre
+  - TLB miss
+- id: forwarding
+  type: mcq
+  prompt: 'Forwarding/bypassing principalmente reduz stalls de:'
+  xp: 10
+  answer: 1
+  choices:
+  - I/O disk
+  - Data hazards (quando o resultado já está no pipeline)
+  - Page faults
+  - GPU occupancy
+- id: ilp-limit
+  type: fill
+  prompt: Quando poucas instruções independentes cabem na janela, o limite se chama
+    falta de ___ (sigla de 3 letras).
+  xp: 8
+  answers:
+  - ILP
+  - ilp
+requires_rooms:
+- pf-portal

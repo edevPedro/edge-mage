@@ -1,0 +1,50 @@
+id: pf-boss-arm-math
+title: Boss · ARM Math Library
+summary: 'Performance Boss: 2 versões (scalar+NEON/autovec), medir, explicar, provar
+  correção.'
+xp_reward: 28
+unlock_xp: 0
+phase: F2-arm
+pillar: neon
+course: performance
+order: 8
+boss: true
+resources:
+- title: SPEC — Performance Boss ritual
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+- title: Arm Neon Intrinsics
+  url: https://developer.arm.com/documentation/102581/latest
+  kind: docs
+animation: null
+tasks:
+- id: ritual-steps
+  type: mcq
+  prompt: 'Ordem do Performance Boss:'
+  xp: 12
+  answer: 0
+  choices:
+  - 2 versões → medir → explicar → provar correção
+  - Só explicar sem código
+  - Só CUDA no M4
+  - Pular golden se for mais rápido
+- id: artifact
+  type: fill
+  prompt: 'Artefato sugerido do boss ARM Math: study-log/artifacts/___.md'
+  xp: 10
+  answers:
+  - perf-arm-math
+  - perf-arm-math.md
+- id: ack-boss
+  type: mcq
+  prompt: 'Sem prova numérica (golden/tolerância), o boss:'
+  xp: 10
+  answer: 1
+  choices:
+  - Está completo
+  - Está incompleto — velocidade sem correção não fecha
+  - Vale Mago Supremo sozinho
+  - Substitui Edge on-device
+requires_rooms:
+- pf-counters
+elite_skill: perf-arm-math

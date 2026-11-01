@@ -1,0 +1,75 @@
+id: nt-tokens-seq
+title: Tokens e sequências
+summary: >-
+  De janelas contínuas a tokens discretos: vocabulário, subword, padding/
+  truncation e a ponte para geração autoregressiva.
+xp_reward: 38
+unlock_xp: 0
+order: 81
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-dl-training
+course: neurotech
+resources:
+- title: Hugging Face — tokenizer summary (subword)
+  url: https://huggingface.co/docs/tokenizers/en/
+  kind: docs
+- title: BERT WordPiece paper (Devlin et al., 2018)
+  url: https://arxiv.org/abs/1810.04805
+  kind: paper
+- title: "BPE — Sennrich et al. (2016)"
+  url: https://arxiv.org/abs/1508.07909
+  kind: paper
+- title: "Karpathy — minbpe (BPE do zero)"
+  url: https://github.com/karpathy/minbpe
+  kind: docs
+tasks:
+- id: token-def
+  type: mcq
+  prompt: 'Um "token" para modelos de linguagem é:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'um canal de EEG sempre'
+  - 'um parâmetro treinável por token'
+  - 'uma unidade discreta do vocabulário (palavra/subword/piece)'
+  - 'a loss do primeiro batch'
+- id: subword-why
+  type: mcq
+  prompt: 'Segmentação subword (WordPiece/BPE) resolve:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'a impedância do eletrodo'
+  - 'palavras raras/fora do vocabulário sem explodir o vocab'
+  - 'o ruído de linha de 60 Hz'
+  - 'a calibração do LDA'
+- id: padding
+  type: mcq
+  prompt: 'Padding/truncation num batch existe para:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'tornar as sequências do batch com formato igual (tensor)'
+  - 'aumentar a acurácia do kappa'
+  - 'substituir o notch filter'
+  - 'reduzir o custo de cada token'
+- id: code-tokenizer
+  type: code
+  prompt: 'Implemente `encode(text, vocab)` (mapeia cada caractere para id do vocab; levanta KeyError em char desconhecido) e `decode(ids, vocab)` (inverso). `vocab` mapeia str→int. Teste com chars ASCII.'
+  xp: 14
+  code_template: "def encode(text, vocab):\n    ...\n\ndef decode(ids, vocab):\n    ...\n"
+  code_tests: '
+
+    vocab = {"a": 0, "b": 1, "c": 2}
+
+        assert mod.encode("abca", vocab) == [0, 1, 2, 0]
+
+        assert mod.decode([0, 1, 2], vocab) == "abc"
+
+        assert mod.decode(mod.encode("abcabc", vocab), vocab) == "abcabc"
+
+    '

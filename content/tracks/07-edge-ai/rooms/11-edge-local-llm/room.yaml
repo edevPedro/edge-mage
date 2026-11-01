@@ -1,0 +1,47 @@
+id: local-llm
+title: LLM local no edge
+summary: >-
+  LLMs pequenas (GGUF/TinyLlama) em RAM de MCU: quantização em 4–8 bits,
+  orçamento de cache KV e tokens/s dentro de um orçamento de memória.
+xp_reward: 62
+unlock_xp: 3200
+requires_skills:
+  - on-device
+  - benchmark
+animation: memory_grid
+resources:
+  - title: GGML / GGUF — format docs
+    url: https://github.com/ggerganov/ggml
+    kind: docs
+  - title: EdgeBERT — arXiv 2102.11927 (90% compressão, pequenos LLMs em MCU)
+    url: https://arxiv.org/abs/2102.11927
+    kind: paper
+  - title: TinyLlama / SmolLM on-device notes
+    url: https://git.e.lnf.it/smollm/
+    kind: blog
+  - title: K/V cache quantization survey — arXiv 2407.09056
+    url: https://arxiv.org/abs/2407.09056
+    kind: paper
+tasks:
+  - id: budget-stress
+    type: mcq
+    prompt: 'Antes de rodar um LLM no MCU, o orçamento que DEFINE o tamanho viável é:'
+    xp: 14
+    answer: 0
+    choices:
+      - RAM principal: pesos + cache KV + arena de ativações ≤ RAM disponível
+      - o número de parâmetros "impressionantes"
+      - somente o .gguf do disco
+      - a quantidade de threads
+  - id: kv-dtype
+    type: numeric
+    prompt: 'NV-emb 17M no edge com cabeçalho de hidden_size 512 como F32: 2*n_layers*n_heads*head_dim, cave as ativações. Se n_layers=6, n_heads=8, n_kv_heads=2, head_dim=64, dtype_bytes=1: KV cache por token (bytes)?'
+    xp: 18
+    answer: 1536
+    tolerance: 0
+  - id: code-kv
+    type: code
+    prompt: 'Implemente `kv_cache_bytes(n_layers, n_kv_heads, head_dim, dtype_bytes)` = 2*n_layers*n_kv_heads*head_dim*dtype_bytes por token; `context_fits(seq_len, kv_per_token, ram_mb, model_mb)` = True se kv_total+model <= ram_mb*1e6; `tokens_per_sec(n, ms)`.'
+    xp: 28
+    code_template: "def kv_cache_bytes(n_layers, n_kv_heads, head_dim, dtype_bytes):\n    # TODO\n    ...\n\ndef context_fits(seq_len, kv_per_token, ram_mb, model_mb):\n    # TODO\n    ...\n\ndef tokens_per_sec(n, ms):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.kv_cache_bytes(6, 2, 64, 1)==1536\nassert mod.kv_cache_bytes(1, 1, 64, 1)==128\nassert mod.context_fits(512, 1536, 16, 30)==False\nassert mod.context_fits(512, 1536, 84, 30)==True\nassert abs(mod.tokens_per_sec(40, 2000)-20.0)<1e-9\n"

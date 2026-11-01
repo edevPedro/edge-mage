@@ -1,0 +1,37 @@
+id: pf-boss-accelerator
+title: Boss · Hardware Accelerator
+summary: 'Performance Boss: especifique/simule acelerador pedagógico (RTL ou HLS lite)
+  + evidência.'
+xp_reward: 28
+unlock_xp: 0
+phase: F6-hw
+pillar: codesign
+course: performance
+order: 20
+boss: true
+resources:
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: boss-acc
+  type: mcq
+  prompt: 'Boss Accelerator considera completo quando há:'
+  xp: 12
+  answer: 0
+  choices:
+  - Baseline SW + modelo/RTL/HLS + evidência + testes funcionais
+  - Só um diagrama sem testes
+  - Só marketing FLOPS
+  - Hard gate forçando Edge a esperar
+- id: artifact-acc
+  type: fill
+  prompt: 'Artefato: study-log/artifacts/___.md'
+  xp: 10
+  answers:
+  - perf-accelerator
+  - perf-accelerator.md
+requires_rooms:
+- pf-hls-lite
+elite_skill: perf-accelerator

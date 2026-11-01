@@ -1,0 +1,53 @@
+id: pf-inference-bridge
+title: Ponte · Inference Engineering → Edge
+summary: Literacy ORT/CoreML/llama.cpp/CMSIS-NN; soft dep — Edge permanece soberano.
+xp_reward: 22
+unlock_xp: 0
+phase: F5-inf
+pillar: inference
+course: performance
+order: 17
+boss: false
+resources:
+- title: ONNX Runtime
+  url: https://onnxruntime.ai/docs/
+  kind: docs
+- title: Edge ML track (e-mage)
+  url: https://github.com/edevPedro/edge-mage/tree/main/content/tracks/07-edge-ai
+  kind: docs
+- title: Apple Core ML
+  url: https://developer.apple.com/documentation/coreml
+  kind: docs
+animation: null
+tasks:
+- id: not-gate
+  type: mcq
+  prompt: 'Para completar Edge ML / Mago Supremo on-device, Performance Mage:'
+  xp: 10
+  answer: 2
+  choices:
+  - É hard gate total
+  - Substitui on-device
+  - Não é obrigatório (soft/modular)
+  - Remove CMSIS-NN do Edge
+- id: runtimes
+  type: mcq
+  prompt: 'Exemplos de literacy desta ponte:'
+  xp: 8
+  answer: 0
+  choices:
+  - ORT / Core ML / llama.cpp / CMSIS-NN
+  - Somente Hadoop
+  - Somente SVE host
+  - Apenas Verilog
+- id: pointer
+  type: fill
+  prompt: 'Curso onde o ritual on-device completo vive: ___ (edge).'
+  xp: 8
+  answers:
+  - edge
+  - Edge
+  - Edge ML
+  - edge ml
+requires_rooms:
+- pf-boss-metal

@@ -1,4 +1,4 @@
-"""Course catalog for e-mage launcher (fundamentals / systems / edge / neurotech)."""
+"""Course catalog for e-mage launcher (fundamentals / systems / edge / performance / neurotech)."""
 
 from __future__ import annotations
 
@@ -8,10 +8,14 @@ from dataclasses import dataclass
 COURSE_FUNDAMENTALS = "fundamentals"
 COURSE_SYSTEMS = "systems"
 COURSE_EDGE = "edge"
+COURSE_PERFORMANCE = "performance"
 COURSE_NEUROTECH = "neurotech"
 
-# Soft gate: Systems + Edge + Neurotech prefer Mago base; preview allowed with warning.
-GATED_COURSES = frozenset({COURSE_SYSTEMS, COURSE_EDGE, COURSE_NEUROTECH})
+# Soft gate: specialization courses prefer Mago base; preview allowed with warning.
+# Performance is NOT a hard gate for Edge ML / Mago Supremo.
+GATED_COURSES = frozenset(
+    {COURSE_SYSTEMS, COURSE_EDGE, COURSE_PERFORMANCE, COURSE_NEUROTECH}
+)
 
 
 @dataclass(frozen=True)
@@ -43,6 +47,13 @@ COURSES: tuple[CourseInfo, ...] = (
         "Edge ML Mage",
         "Edge ML Mage",
         "Current TUI tracks: math → on-device Edge AI.",
+        requires_mago_base=True,
+    ),
+    CourseInfo(
+        COURSE_PERFORMANCE,
+        "Performance Mage",
+        "Performance Mage",
+        "NEON/Roofline/Metal/co-design — specialization; soft deps for Edge only.",
         requires_mago_base=True,
     ),
     CourseInfo(

@@ -1,0 +1,77 @@
+id: nt-quantization
+title: Quantização — pesos em baixa precisão
+summary: >-
+  Representar pesos com int8/bits baixos: escala simétrica PTQ, erro de
+  quantização, e o impacto em tamanho, latência e cache.
+xp_reward: 42
+unlock_xp: 0
+order: 85
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-kv-cache
+course: neurotech
+resources:
+- title: "PTQ/QAT — quantização (PyTorch docs)"
+  url: https://pytorch.org/docs/stable/quantization.html
+  kind: docs
+- title: "The LLM.int8() / timm int8 (Dettmers et al., 2022)"
+  url: https://arxiv.org/abs/2208.07339
+  kind: paper
+- title: "GGUF / llama.cpp quant formats"
+  url: https://github.com/ggml-org/llama.cpp
+  kind: docs
+- title: "Killed: Quantizing neural networks (NVIDIA QAT tutorial)"
+  url: https://developer.nvidia.com/blog/training-optimal-non-standard-quantization-strategies/
+  kind: blog
+tasks:
+- id: quant-why
+  type: mcq
+  prompt: 'Principal ganho de quantizar pesos para int8:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'memória 4× menor (e cache mais eficiente) com perda controlada'
+  - 'aumentar a precisão matemática'
+  - 'subir o offload do ADC'
+  - 'garantir treino convergente'
+- id: pqt-vs-qat
+  type: mcq
+  prompt: 'Diferença PTQ vs QAT:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'PTQ usa GPU, QAT usa CPU'
+  - 'são sinônimos'
+  - 'PTQ quantiza após o treino; QAT simula quantização durante o treino'
+  - 'PTQ é off-line, QAT é online em produção'
+- id: quant-error
+  type: mcq
+  prompt: 'Erro de quantização cresce quando:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'a escala é exatamente um divisor de int'
+  - 'o range é grande e há poucos bits (outliers comem o intervalo)'
+  - 'o modelo é pequeno'
+  - 'usamos bfloat16'
+- id: code-ptq
+  type: code
+  prompt: 'Implemente quantização simétrica: `q8_scale(min_val, max_val)` → `max(abs(min_val), abs(max_val)) / 127.0`; `quantize_q8(x, scale)` → `[round(v/scale) clamped a 127 minimum -127]`; `dequantize(q, scale)` → `[q_i * scale]`; e `quantization_error(x, scale)` usando `dequantize(quantize_q8(x, scale), scale)`.'
+  xp: 14
+  code_template: "def q8_scale(min_val, max_val):\n    ...\n\ndef quantize_q8(x, scale):\n    ...\n\ndef dequantize(q, scale):\n    ...\n\ndef quantization_error(x, scale):\n    ...\n"
+  code_tests: '
+
+    assert mod.q8_scale(-2.54, 2.54) == 2.54/127.0
+
+        assert mod.quantize_q8([0.0, 1.27, -1.27], 0.01) == [0, 127, -127]
+
+        assert mod.dequantize([0, 100, -100], 0.01) == [0.0, 1.0, -1.0]
+
+        err = mod.quantization_error([1.0, 2.0, 3.0], 0.03)
+
+        assert len(err) == 3 and abs(err[1]) <= 0.0101 and err[2] < 1e-12
+
+    '

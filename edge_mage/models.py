@@ -67,7 +67,7 @@ class Room:
     unlocks_track: str = ""  # ex.: edge-ai após Softmax Estável
     resources: list[Resource] = field(default_factory=list)
     shared: bool = False  # shared-core room (single room_id credit)
-    course: str = ""  # optional course tag: fundamentals|systems|edge|neurotech
+    course: str = ""  # optional: fundamentals|systems|edge|performance|neurotech
     # Emulator id from room.yaml; empty/None = none or conceptual stub (e.g. spd_toy honesty)
     emulator: str = ""
 

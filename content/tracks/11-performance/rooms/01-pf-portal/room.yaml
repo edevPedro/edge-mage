@@ -1,0 +1,51 @@
+id: pf-portal
+title: Portal · Performance Mage
+summary: 'Especialização modular: pilares, Performance Boss, caveats M4; Estuda→Sala.'
+xp_reward: 22
+unlock_xp: 0
+phase: F0
+pillar: portal
+course: performance
+order: 1
+boss: false
+resources:
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+- title: Arm Architecture Reference Manual (DDI0487)
+  url: https://developer.arm.com/documentation/ddi0487/latest
+  kind: docs
+animation: null
+tasks:
+- id: estuda-sala
+  type: mcq
+  prompt: 'Ordem pedagógica correta neste curso:'
+  xp: 8
+  answer: 0
+  choices:
+  - Estuda → Sala → (projetos/boss com medida)
+  - Só quiz sem Estuda
+  - Edge on-device antes de tudo
+  - Pular bosses se tiver XP de Systems
+- id: edge-modular
+  type: mcq
+  prompt: 'Performance Mage em relação a Edge ML / Mago Supremo:'
+  xp: 8
+  answer: 1
+  choices:
+  - Hard gate obrigatório para todo Edge
+  - Especialização modular; soft deps só onde avançado
+  - Substitui Systems Mage
+  - Substitui Neurotech
+- id: m4-sve
+  type: fill
+  prompt: No Apple Silicon M4, a extensão vetorial profunda nativa de lab é ___ (não
+    SVE).
+  xp: 8
+  answers:
+  - NEON
+  - neon
+  - ASIMD
+  - asimd
+  - Advanced SIMD
+requires_rooms: []

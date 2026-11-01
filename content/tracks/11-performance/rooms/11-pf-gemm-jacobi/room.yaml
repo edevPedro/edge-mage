@@ -1,0 +1,50 @@
+id: pf-gemm-jacobi
+title: GEMM · Jacobi · difusão
+summary: Blocos de matmul e iterações Jacobi/heat — ponte ao boss de física.
+xp_reward: 22
+unlock_xp: 0
+phase: F3-hpc
+pillar: numerical
+course: performance
+order: 11
+boss: false
+resources:
+- title: BLIS / GEMM pedagogy (goto-style intuition)
+  url: https://github.com/flame/blis
+  kind: docs
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: gemm
+  type: mcq
+  prompt: 'GEMM bem tiled tende a ter intensidade aritmética:'
+  xp: 8
+  answer: 0
+  choices:
+  - Alta (relativa a saxpy)
+  - Sempre zero
+  - Só definida em CUDA
+  - Independente de N
+- id: stencil
+  type: mcq
+  prompt: 'Heat diffusion 2D clássico é tipicamente:'
+  xp: 8
+  answer: 1
+  choices:
+  - Só compute-bound puro
+  - Frequentemente memory/stencil-bound
+  - Independente de cache
+  - Impossível em f32
+- id: jacobi
+  type: fill
+  prompt: 'Método iterativo de relaxação em grade citado nesta sala: ___.'
+  xp: 8
+  answers:
+  - Jacobi
+  - jacobi
+  - Gauss-Seidel
+  - gauss-seidel
+requires_rooms:
+- pf-roofline

@@ -17,8 +17,8 @@ from edge_mage.models import Task, Track
 from edge_mage.progress import ProgressStore
 from edge_mage.validators import validate_task
 
-# Full pedagogical chain (74 required + 3 electives = 77).
-# Foundation→advanced pillars: +physics electrostatics, +5 EE, +neuro systems, +CS RT, +FW RT.
+# Full pedagogical chain (85 required + 4 electives = 89; módulo F15-dl-inf anexado no fim).
+# Foundation→advanced pillars: +physics electrostatics, +5 EE, +neuro systems, +CS RT, +FW RT, +DL/Inference.
 PEDAGOGICAL_IDS = [
     "nt-portal",
     "nt-dipole-scalp",
@@ -96,10 +96,23 @@ PEDAGOGICAL_IDS = [
     "nt-neuro-systems-bci",
     "nt-cs-realtime-testing",
     "nt-fw-rt-constraints",
+    "nt-dl-portal",
+    "nt-ml-mlp",
+    "nt-cnn-eeg",
+    "nt-dl-training",
+    "nt-tokens-seq",
+    "nt-transformer-attn",
+    "nt-llm-generate",
+    "nt-kv-cache",
+    "nt-quantization",
+    "nt-inf-metrics",
+    "nt-model-formats",
+    "nt-serving-batching",
+    "nt-dl-multimodal",
 ]
 
-REQUIRED_IDS = PEDAGOGICAL_IDS[:73]
-ELECTIVE_IDS = PEDAGOGICAL_IDS[73:]
+REQUIRED_IDS = PEDAGOGICAL_IDS[:85]
+ELECTIVE_IDS = PEDAGOGICAL_IDS[85:]
 
 
 def _neuro_track() -> Track:
@@ -116,9 +129,9 @@ def test_neurotech_pedagogical_order_locked() -> None:
     track = _neuro_track()
     ids = [r.id for r in track.rooms]
     assert ids == PEDAGOGICAL_IDS
-    assert [r.order for r in track.rooms] == list(range(1, 77))
-    assert len(REQUIRED_IDS) == 73
-    assert len(ELECTIVE_IDS) == 3
+    assert [r.order for r in track.rooms] == list(range(1, 90))
+    assert len(REQUIRED_IDS) == 85
+    assert len(ELECTIVE_IDS) == 4
 
 
 def test_msc_path_length_and_pillars() -> None:
@@ -224,6 +237,7 @@ def test_supremo_boss_requires_research_rune(tmp_path) -> None:
 def test_edge_excludes_neurotech_track() -> None:
     edge = load_tracks_for_course(COURSE_EDGE)
     assert all(t.id != "neurotech" for t in edge)
+    assert all(t.id != "performance" for t in edge)
     assert all(t.course != COURSE_NEUROTECH for t in edge)
 
 

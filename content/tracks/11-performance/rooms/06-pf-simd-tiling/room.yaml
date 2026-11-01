@@ -1,0 +1,50 @@
+id: pf-simd-tiling
+title: Tiling · prefetch · layout
+summary: Bloqueio de loops, prefetch software/hardware, AoS vs SoA para alimentar
+  SIMD.
+xp_reward: 22
+unlock_xp: 0
+phase: F2-arm
+pillar: neon
+course: performance
+order: 6
+boss: false
+resources:
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+- title: Drepper — Memory (tiling intuition)
+  url: https://www.akkadia.org/drepper/cpumemory.pdf
+  kind: paper
+animation: null
+tasks:
+- id: soa
+  type: mcq
+  prompt: 'Para carregar N floats contíguos em um vetor NEON, costuma ajudar:'
+  xp: 8
+  answer: 0
+  choices:
+  - SoA / arrays paralelos
+  - AoS sempre obrigatório
+  - Páginas de 1 byte
+  - Desligar o cache
+- id: tile
+  type: mcq
+  prompt: 'Tiling existe principalmente para:'
+  xp: 8
+  answer: 1
+  choices:
+  - Aumentar o tamanho do binário
+  - Melhorar localidade na hierarquia de cache
+  - Remover a necessidade de correção numérica
+  - Substituir o linker
+- id: prefetch
+  type: fill
+  prompt: Trazer dados à cache antes do uso chama-se ___.
+  xp: 8
+  answers:
+  - prefetch
+  - Prefetch
+  - software prefetch
+requires_rooms:
+- pf-neon-intro

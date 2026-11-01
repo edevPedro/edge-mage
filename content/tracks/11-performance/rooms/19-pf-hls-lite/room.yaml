@@ -1,0 +1,38 @@
+id: pf-hls-lite
+title: HLS lite · do C ao hardware
+summary: 'Intuição HLS: pragmas, pipelines, limites — ponte ao acelerador.'
+xp_reward: 22
+unlock_xp: 0
+phase: F6-hw
+pillar: codesign
+course: performance
+order: 19
+boss: false
+resources:
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: ii
+  type: mcq
+  prompt: 'II (initiation interval) relaciona-se a:'
+  xp: 8
+  answer: 0
+  choices:
+  - Com que frequência novas iterações entram no pipeline
+  - Tamanho do SSD
+  - Número de issues no GitHub
+  - Somente ray tracing
+- id: hls-limit
+  type: mcq
+  prompt: 'HLS lite neste curso:'
+  xp: 8
+  answer: 1
+  choices:
+  - Garante tapeout
+  - Alfabetização + intuição para o projeto acelerador
+  - Substitui Metal
+  - É hard gate do Edge
+requires_rooms:
+- pf-rtl-intro

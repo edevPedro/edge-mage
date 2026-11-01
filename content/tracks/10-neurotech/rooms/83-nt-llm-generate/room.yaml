@@ -1,0 +1,75 @@
+id: nt-llm-generate
+title: Geração LLM — prefill e decode
+summary: >-
+  Autoregressive decoding: prefill do contexto (paralelo), decode token a
+  token (sequencial), greedy/top-k e métricas TTFT/ITL/tokens/s.
+xp_reward: 40
+unlock_xp: 0
+order: 83
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-transformer-attn
+course: neurotech
+resources:
+- title: vLLM — prefill/decode & scheduler
+  url: https://docs.vllm.ai/en/latest/design/automatic_prefix_caching.html
+  kind: docs
+- title: "Hugging Face — generation strategies"
+  url: https://huggingface.co/docs/transformers/en/generation_strategies
+  kind: docs
+- title: NVIDIA — LLM inference guide (prefill/decode trade-offs)
+  url: https://docs.nvidia.com/deeplearning/frameworks/llm-inference-guide/
+  kind: docs
+- title: macrocosm-coder — Fast Inference for LLMs (Gonzalez)
+  url: https://blog.kellyanthony.eu/post/fast-inference/
+  kind: blog
+tasks:
+- id: prefill-vs-decode
+  type: mcq
+  prompt: 'Prefill (processar o prompt) é:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'paralelo sobre todos os tokens do contexto de uma vez'
+  - 'necessariamente sequencial, token a token'
+  - 'mais lento que decode na prática sempre'
+  - 'etapa que não aloca memória'
+- id: autoregressive
+  type: mcq
+  prompt: 'Geração autoregressiva significa:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'o modelo re-sintetiza pesos a cada token'
+  - 'não precisa atenção'
+  - 'cada token novo depende dos anteriores (loop de decoding)'
+  - 'só funciona com GPU'
+- id: temp-topk
+  type: mcq
+  prompt: 'Mudar temperature (T) na amostragem altera:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'o tamanho do contexto máximo'
+  - 'a distribuição do próximo token (aleatoriedade/peaking)'
+  - 'a resolução do ADC'
+  - 'o protocolo de envio'
+- id: code-generate
+  type: code
+  prompt: 'Implemente `greedy_argmax(logits)` → índice do maior valor, e `tokens_per_second(n_tokens, elapsed_s)` e `inter_token_latency_s(n_new_tokens, elapsed_s)` (tempo médio entre tokens gerados).'
+  xp: 14
+  code_template: "def greedy_argmax(logits):\n    ...\n\ndef tokens_per_second(n_tokens, elapsed_s):\n    ...\n\ndef inter_token_latency_s(n_new_tokens, elapsed_s):\n    ...\n"
+  code_tests: '
+
+    assert mod.greedy_argmax([0.1, 9.9, 0.05]) == 1
+
+        assert mod.greedy_argmax([5.0, 5.0, 6.0]) == 2
+
+        assert abs(mod.tokens_per_second(10, 2.0) - 5.0) < 1e-9
+
+        assert abs(mod.inter_token_latency_s(10, 2.0) - 0.2) < 1e-9
+
+    '

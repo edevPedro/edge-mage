@@ -236,6 +236,49 @@ skills:
     unlock_room: on-device
     unlock_track: edge-ai
 
+  # --- Edge DL-inference (pós-boss; F15-dl-inf) ---
+  - id: dl-forward
+    name: Forward Int8
+    description: "Matmul int8 int32-accumulate + escala dupla (kernels edge)."
+    glyph: "×"
+    unlock_room: edge-dl-forward
+    unlock_track: edge-ai
+
+  - id: int8-kernel
+    name: Requantização
+    description: "int32→int8 com scale, clamp e per-channel."
+    glyph: "ℤ"
+    unlock_room: int8-detail
+    unlock_track: edge-ai
+
+  - id: benchmark
+    name: Profiler Edge
+    description: "Ciclos, token/s e energia — medir antes de otimizar."
+    glyph: "⏱"
+    unlock_room: benchmark
+    unlock_track: edge-ai
+
+  - id: local-llm
+    name: LLM Local
+    description: "LLMs pequenos em MCU — GGUF, KV cache e orçamento de RAM."
+    glyph: "▤"
+    unlock_room: local-llm
+    unlock_track: edge-ai
+
+  - id: dl-pipeline
+    name: Pipeline dl-ok
+    description: "Export→arena→delegate com golden test e orçamento de latência."
+    glyph: "⇄"
+    unlock_room: dl-pipeline
+    unlock_track: edge-ai
+
+  - id: multimodal-lite
+    name: Multimodal Lite
+    description: "Embeddings contrastivos e cosine-sim em budget edge (eletiva)."
+    glyph: "◒"
+    unlock_room: multimodal-lite
+    unlock_track: edge-ai
+
   # --- Neurotech (MSc-prep; climax can mint Mago Supremo) ---
   - id: neuro-portal
     name: Portal Neural
@@ -307,6 +350,60 @@ skills:
     glyph: "♛"
     unlock_room: nt-mago-supremo
     unlock_track: neurotech
+    elite: true
+
+  # --- Performance Mage (specialization; NOT a Mago Supremo gate) ---
+  - id: perf-portal
+    name: Portal Performance
+    description: "Especialização modular · Estuda→Sala · caveats M4."
+    glyph: "⚡"
+    unlock_room: pf-portal
+    unlock_track: performance
+
+  - id: perf-neon
+    name: NEON Mage
+    description: "ASIMD/NEON + tiling literacy."
+    glyph: "▦"
+    unlock_room: pf-neon-intro
+    unlock_track: performance
+
+  - id: perf-roofline
+    name: Roofline
+    description: "Classificar memory vs compute bound com evidência."
+    glyph: "⌂"
+    unlock_room: pf-roofline
+    unlock_track: performance
+
+  - id: perf-arm-math
+    name: ARM Math Library
+    description: "Boss — 2 versões + medida + correção numérica."
+    glyph: "∑"
+    unlock_room: pf-boss-arm-math
+    unlock_track: performance
+    elite: true
+
+  - id: perf-physics
+    name: Physics Simulation
+    description: "Boss — heat/Jacobi com Roofline + golden."
+    glyph: "♨"
+    unlock_room: pf-boss-physics
+    unlock_track: performance
+    elite: true
+
+  - id: perf-metal
+    name: Metal Compute Engine
+    description: "Boss — kernel Metal + golden vs CPU."
+    glyph: "◈"
+    unlock_room: pf-boss-metal
+    unlock_track: performance
+    elite: true
+
+  - id: perf-accelerator
+    name: Hardware Accelerator
+    description: "Boss — RTL/HLS lite pedagógico + evidência."
+    glyph: "▣"
+    unlock_room: pf-boss-accelerator
+    unlock_track: performance
     elite: true
 
   - id: elite-codex

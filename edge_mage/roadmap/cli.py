@@ -28,6 +28,8 @@ _USAGE = """uso: mage <comando>
   chart [--challenge <id>] [--metric <m>] [--stat p99]
                      gera SVG da curva da métrica no tempo (~/.mage/charts/)
   init [<challenge>] cria o diretório de trabalho a partir do scaffold
+  workdir [<challenge>]
+                     imprime o work dir do desafio ativo (cria se faltar)
 """
 
 
@@ -285,6 +287,27 @@ def cmd_init(argv: list[str]) -> int:
     return 0
 
 
+def cmd_workdir(argv: list[str]) -> int:
+    """Printa o work dir do desafio ativo (cria se faltar). Útil p/ widgets e scripting."""
+    try:
+        roadmap, state, records = _load()
+    except RoadmapError as exc:
+        print(f"erro: {exc}", file=sys.stderr)
+        return 1
+    cid = argv[0] if argv else state.active_challenge
+    if not cid:
+        ctx = daily_mod.today_context(roadmap, state, records)
+        cid = ctx.challenge.id if ctx else ""
+    ch: Challenge | None = roadmap.challenge(cid) if cid else None
+    if ch is None:
+        print("nenhum desafio ativo — rode `mage init <desafio>`.", file=sys.stderr)
+        return 2
+    wd = ch.resolved_work_dir(practice_dir())
+    wd.mkdir(parents=True, exist_ok=True)
+    print(wd)
+    return 0
+
+
 def cmd_branch(argv: list[str]) -> int:
     try:
         roadmap, state, records = _load()
@@ -378,6 +401,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_close(rest)
     if cmd == "init":
         return cmd_init(rest)
+    if cmd == "workdir":
+        return cmd_workdir(rest)
     if cmd == "branch":
         return cmd_branch(rest)
     if cmd == "chart":

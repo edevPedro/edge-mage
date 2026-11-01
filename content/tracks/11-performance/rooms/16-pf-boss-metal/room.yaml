@@ -1,0 +1,40 @@
+id: pf-boss-metal
+title: Boss · Metal Compute Engine
+summary: 'Performance Boss: engine mini (ex. saxpy/conv) em Metal — 2 caminhos, medida,
+  golden.'
+xp_reward: 28
+unlock_xp: 0
+phase: F4-gpu
+pillar: gpu
+course: performance
+order: 16
+boss: true
+resources:
+- title: Metal calculations guide
+  url: https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu
+  kind: docs
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: boss-metal
+  type: mcq
+  prompt: 'Boss Metal Compute Engine:'
+  xp: 12
+  answer: 0
+  choices:
+  - CPU ref + Metal + medida + golden
+  - Só CUDA
+  - Sem artefato
+  - Sem tolerância
+- id: artifact-metal
+  type: fill
+  prompt: 'Artefato: study-log/artifacts/___.md'
+  xp: 10
+  answers:
+  - perf-metal-engine
+  - perf-metal-engine.md
+requires_rooms:
+- pf-gpu-kernels
+elite_skill: perf-metal

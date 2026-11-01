@@ -74,7 +74,9 @@ Edge AI Low-Level  ← ARM profundo (edge / BCI)
 | 5 | Robótica | 800 | transforms-2d, cinematica-robo, sensores | Portal 2D → Percepção |
 | 6 | Otimização | 1100 | derivadas, gradiente, loss-lr, batch-epoch, **autograd** | Tangente → Tape Autograd |
 | 7 | ML Math | 1650 | probabilidade, softmax-ce, matmul-flops, quantizacao | Oráculo → Int8 |
-| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, aarch64-abi, **export-runtime**, **cmsis-nn**, on-device | Layout → Export → CMSIS → **Edge Mage** |
+| 8 | Edge AI | 2300 | memory-layout, flops-bandwidth, simd-latency, aarch64-abi, **export-runtime**, **cmsis-nn**, on-device, **edge-dl-forward**, **int8-detail**, **benchmark**, **local-llm**, **dl-pipeline**, *multimodal-lite* | Layout → Export → CMSIS → **Edge Mage** → **DL-inference (F15)** |
+
+Bloco **F15-dl-inf** (pós-boss, 08–13): forward int8, requantização/per-channel, benchmark, LLM local em MCU, pipeline até o device e multimodal lite (eletiva) — habilidades `dl-forward` → `int8-kernel` → `benchmark` → `local-llm` → `dl-pipeline` → *`multimodal-lite`*.
 
 XP total disponível ≈ **3300+** (bosses). Rank **Edge Mage** = **2900 XP + ritual on-device** (artefato em `study-log/artifacts/on-device.md`). Skills no grimório crescem com as salas novas.
 
@@ -114,12 +116,38 @@ Ver [`SPEC-edge-mage-loop.md`](../SPEC-edge-mage-loop.md).
 
 Siga a ordem da tabela (ou a gulosa por menor `unlock_xp`). O título **Edge Mage** / skill final `on-device` exige competência real de inferência embarcada — **treino → export → quant → runtime → golden** — não só XP acumulado cedo.
 
+## Mapa da academia (núcleo + especializações)
+
+```text
+Fundamentals ──► Systems Mage ──► Edge ML Mage  ──► Mago Supremo (rota Edge)
+                      │                 ▲
+                      │                 │ soft deps (opcional)
+                      ├──────────► Performance Mage   (NEON · Roofline · Metal · co-design)
+                      │
+                      └──────────► Neurotech          (círculo paralelo · rota Suprema alt.)
+```
+
+**Performance não gateia Edge.** Neurotech não substitui on-device.
+
+## Performance Mage (especialização)
+
+Curso id **`performance`** — especialização universitária em engenharia de performance sobre a base Systems/AArch64.
+
+- SPEC: [`docs/SPEC-performance-mage.md`](../docs/SPEC-performance-mage.md)
+- Trilha: `content/tracks/11-performance/` — 20 salas F0→F6 (Estuda → Sala + **Performance Boss**)
+- TUI: `mage --course performance`
+- Web: edevs `/estudo/cursos/performance`
+- Pilares: arquitetura/memória · ARM/NEON · numerical/Roofline · Metal(+CUDA eletiva) · ponte inference → Edge · RTL/HLS
+- Bosses: ARM Math Library · Physics Simulation · Metal Compute Engine · Hardware Accelerator
+- Horas: scaffold ~200–280 h; faixa aspiracional README **~310–415 h** (densificar labs com o tempo)
+- Caveats M4: µarch ≠ Cortex-A; sem SVE; Metal ≠ CUDA
+
 ## Neurotech (círculo paralelo — rota alternativa a Mago Supremo)
 
 Curso id **`neurotech`** — sibling do Edge ML Mage, oferecendo uma **rota alternativa honesta e rigorosa ao Mago Supremo** via clímax MSc (F13–F14), preservando integralmente o caminho Edge on-device.
 
 - SPEC: [`docs/SPEC-neurotech-course.md`](../docs/SPEC-neurotech-course.md)
-- Trilha: `content/tracks/10-neurotech/` — 77 salas (74 obrigatórias + 3 eletivas), F0→F14 (Estuda → Sala), ~180–300 h guiadas
+- Trilha: `content/tracks/10-neurotech/` — catálogo denso F0→F14 (+ F15-dl-inf), Estuda → Sala
 - TUI: `mage --course neurotech` · emuladores: `mage emu all`
 - Web: edevs `/estudo/cursos/neurotech`
 - Domínios: BCI · EEG · física · elétrica · neurociência · math · CS · firmware/embedded · pesquisa

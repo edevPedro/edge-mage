@@ -1,0 +1,85 @@
+id: nt-serving-batching
+title: Serving e batching contínuo
+summary: >-
+  O problema do servidor: maximizar tokens/s no agregado com TTFT justo.
+  Static vs dynamic/continuous batching e o modelo de fila.
+xp_reward: 42
+unlock_xp: 0
+order: 88
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-model-formats
+course: neurotech
+resources:
+- title: "Continuous batching (Anyscale, 2023)"
+  url: https://www.anyscale.com/blog/continuous-batching-llm-inference
+  kind: blog
+- title: vLLM docs — scheduler (continuous batching)
+  url: https://docs.vllm.ai/en/latest/design.html
+  kind: docs
+- title: "Orca: A Distributed Serving System (Yu et al., 2022)"
+  url: https://www.usenix.org/system/files/osdi22-yu.pdf
+  kind: paper
+- title: "Sarathi/Serve (batch scheduling) — arXiv"
+  url: https://arxiv.org/abs/2308.16343
+  kind: paper
+tasks:
+- id: static-batch
+  type: mcq
+  prompt: 'Static (token-level) batching perde eficiência porque:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'ocupa menos VRAM sempre'
+  - 'não usa KV cache'
+  - 'para todos do batch no token mais lento (pedras de espera)'
+  - 'elimina a atenção'
+- id: continuous
+  type: mcq
+  prompt: 'Batching contínuo resolve a espera do static porque:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'aumenta o cache por requisição'
+  - 'paraleliza o prefill com o decode'
+  - 'devolve requisições que terminaram ao scheduler entre tokens, repreenchando o batch'
+  - 'substitui a atenção por aproximação linear'
+- id: sla-ttft
+  type: mcq
+  prompt: 'A admissão de requisições num servidor deve sacar:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'TTFT prometido e fatia do cache disponível (ou recusa/prioriza)'
+  - 'a temperatura da sala do servidor'
+  - 'o ranking do usuário no chat'
+  - 'o tamanho do prompt do vizinho'
+- id: code-batch
+  type: code
+  prompt: 'Implemente `continuous_batching_sim(requests, slots)` → `(finished, total_tokens)` para o scheduler em ticks discretos: cada `request = (arrival_tick, n_tokens_to_generate)`; a cada tick, requisições que chegaram entram na fila, slots livres pegam a próxima em FIFO de chegada e geram 1 token por tick; requisição termina ao gerar os `n_tokens_to_generate`. Continue até todas terminarem. E `batch_tokens_per_sec(requests, slots, max_tokens_each)` → `total_tokens / makespan_ticks`, onde `makespan_ticks` é o tick do último token gerado (primeiro token gerado no tick 0).'
+  xp: 14
+  code_template: "def continuous_batching_sim(requests, slots):\n    ...\n\ndef batch_tokens_per_sec(requests, slots, max_tokens_each):\n    ...\n"
+  code_tests: '
+
+    # 3 requisições chegam no tick 0; 2 slots; 3 tokens cada
+
+        comp, tot = mod.continuous_batching_sim([(0, 3), (0, 3), (0, 3)], 2)
+
+        assert comp == 3 and tot == 9
+
+        # requisição atrasada (tick 5) ainda termina
+
+        comp2, tot2 = mod.continuous_batching_sim([(0, 3), (0, 3), (5, 3)], 1)
+
+        assert comp2 == 3 and tot2 == 9
+
+        # vazão típica: 2 slots, 2 req, 4 tokens each, tick=1s -> 8 tokens em 4s
+
+        r = [(0, 4), (0, 4)]
+
+        assert abs(mod.batch_tokens_per_sec(r, 2, 4) - 8.0 / 4.0) < 1e-9
+
+    '

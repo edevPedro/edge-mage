@@ -9,7 +9,7 @@ import sys
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="mage",
-        description="e-mage — TUI academy (Fundamentals · Systems · Edge ML · Neurotech).",
+        description="e-mage — TUI academy (Fundamentals · Systems · Edge · Performance · Neurotech).",
     )
     parser.add_argument(
         "-V",
@@ -22,15 +22,20 @@ def main(argv: list[str] | None = None) -> None:
         nargs="?",
         choices=[
             "sync", "courses", "emu", "publish", "lab",
-            "today", "verify", "close", "week", "roadmap", "init", "branch", "chart",
+            "today", "verify", "close", "week", "roadmap", "init", "workdir", "branch", "chart",
         ],
-        help="Optional: sync | courses | emu | publish <boss> | lab … | today | verify | close | week | roadmap | init | branch | chart",
+        help="Optional: sync | courses | emu | publish <boss> | lab … | today | verify | close | week | roadmap | init | workdir | branch | chart",
     )
     parser.add_argument(
         "--course",
-        choices=["fundamentals", "systems", "edge", "neurotech"],
+        choices=["fundamentals", "systems", "edge", "performance", "neurotech"],
         default=None,
         help="Skip launcher and open a course directly",
+    )
+    parser.add_argument(
+        "--today",
+        action="store_true",
+        help="Open the TUI directly on the Hoje (today) screen",
     )
     parser.add_argument(
         "arg",
@@ -59,7 +64,7 @@ def main(argv: list[str] | None = None) -> None:
 
         sys.exit(lab_main(args.arg))
 
-    if args.command in ("today", "verify", "close", "week", "roadmap", "init", "branch", "chart"):
+    if args.command in ("today", "verify", "close", "week", "roadmap", "init", "workdir", "branch", "chart"):
         from edge_mage.roadmap.cli import main as daily_main
 
         sys.exit(daily_main([args.command, *args.arg]))
@@ -88,7 +93,7 @@ def main(argv: list[str] | None = None) -> None:
     else:
         course = args.course
         show_launcher = course is None
-    run(course=course, show_launcher=show_launcher)
+    run(course=course, show_launcher=show_launcher, open_today=args.today)
 
 
 if __name__ == "__main__":

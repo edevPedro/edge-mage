@@ -1,0 +1,44 @@
+id: benchmark
+title: Benchmark & profiling edge
+summary: >-
+  Contadores de ciclo, latência vs frequência, tokens/s e energia — a disciplina
+  de medir antes de otimizar no hardware real.
+xp_reward: 56
+unlock_xp: 3100
+requires_skills:
+  - on-device
+  - int8-kernel
+animation: memory_grid
+resources:
+  - title: LiteRT Micro — benchmark tool
+    url: https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/README.md
+    kind: docs
+  - title: ML Performance Engineer Guide — metrics
+    url: https://tma.insightlab.ufc.br/
+    kind: blog
+  - title: Energy in the MCU — Arm whitepaper
+    url: https://developer.arm.com/documentation/109267/latest/
+    kind: docs
+tasks:
+  - id: cycles
+    type: mcq
+    prompt: 'No MCU embarcado, o "minuto de verdade" para comparar kernels é:'
+    xp: 14
+    answer: 1
+    choices:
+      - likes no repositório
+      - ciclos de clock e bytes (arena RAM), não apenas segundos de parede
+      - o número de linhas do paper
+      - a cor do board
+  - id: p99
+    type: numeric
+    prompt: 'Latências [1, 2, 3, 4, 5] ms. P95 (n=5, índice round(0.95*4)=3, 0-based)?'
+    xp: 14
+    answer: 5
+    tolerance: 0
+  - id: code-bench
+    type: code
+    prompt: 'Implemente `cycles_to_ms(c, freq_mhz)`; `tokens_per_second(n, ms)`; `energy_mj(power_w, s)` e `p95(xs)` (indice round(0.95*(len-1)), retorne o valor; caso len=1 retorna xs[0]).'
+    xp: 26
+    code_template: "def cycles_to_ms(c, freq_mhz):\n    # TODO\n    ...\n\ndef tokens_per_second(n, ms):\n    # TODO\n    ...\n\ndef energy_mj(power_w, s):\n    # TODO\n    ...\n\ndef p95(xs):\n    # TODO\n    ...\n"
+    code_tests: "assert abs(mod.cycles_to_ms(100000, 100)-1.0)<1e-9\nassert abs(mod.tokens_per_second(64, 2000)-32.0)<1e-9\nassert abs(mod.energy_mj(0.05, 2)-100.0)<1e-9\nassert mod.p95([1,2,3,4,5])==5\nassert mod.p95([7])==7\n"

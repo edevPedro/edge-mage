@@ -1,4 +1,4 @@
-"""Carrega trilhas YAML + lições Markdown + cursos (fundamentals/systems/edge/neurotech)."""
+"""Carrega trilhas YAML + lições Markdown + cursos (fundamentals/systems/edge/performance/neurotech)."""
 
 from __future__ import annotations
 
@@ -10,12 +10,15 @@ from edge_mage.courses import (
     COURSE_EDGE,
     COURSE_FUNDAMENTALS,
     COURSE_NEUROTECH,
+    COURSE_PERFORMANCE,
     COURSE_SYSTEMS,
 )
 from edge_mage.models import Resource, Room, Task, Track
 
-# Track folder ids that belong to the parallel Neurotech course (not Edge).
+# Sibling courses that must not appear inside the Edge track list.
 _NEUROTECH_TRACK_IDS = frozenset({"neurotech"})
+_PERFORMANCE_TRACK_IDS = frozenset({"performance"})
+_SIBLING_COURSE_IDS = frozenset({COURSE_NEUROTECH, COURSE_PERFORMANCE})
 
 
 def content_root() -> Path:
@@ -148,8 +151,15 @@ def load_track(track_dir: Path) -> Track:
     )
 
 
-def load_all_tracks(root: Path | None = None, *, exclude_neurotech: bool = True) -> list[Track]:
-    """Edge course: content/tracks (current TUI content). Neurotech is a sibling course."""
+def load_all_tracks(
+    root: Path | None = None,
+    *,
+    exclude_siblings: bool = True,
+    exclude_neurotech: bool | None = None,
+) -> list[Track]:
+    """Edge course: content/tracks. Neurotech + Performance are sibling courses."""
+    if exclude_neurotech is not None:
+        exclude_siblings = exclude_neurotech
     base = root or content_root()
     tracks_dir = base / "tracks"
     tracks: list[Track] = []
@@ -159,8 +169,10 @@ def load_all_tracks(root: Path | None = None, *, exclude_neurotech: bool = True)
         if not (track_dir / "track.yaml").exists():
             continue
         track = load_track(track_dir)
-        if exclude_neurotech and (
-            track.id in _NEUROTECH_TRACK_IDS or track.course == COURSE_NEUROTECH
+        if exclude_siblings and (
+            track.id in _NEUROTECH_TRACK_IDS
+            or track.id in _PERFORMANCE_TRACK_IDS
+            or track.course in _SIBLING_COURSE_IDS
         ):
             continue
         tracks.append(track)
@@ -181,6 +193,24 @@ def load_neurotech_tracks(root: Path | None = None) -> list[Track]:
         track = load_track(track_dir)
         if track.id in _NEUROTECH_TRACK_IDS or track.course == COURSE_NEUROTECH:
             track.course = COURSE_NEUROTECH
+            tracks.append(track)
+    tracks.sort(key=lambda t: t.order)
+    return tracks
+
+
+def load_performance_tracks(root: Path | None = None) -> list[Track]:
+    """Performance Mage specialization: content/tracks/11-performance (course=performance)."""
+    base = root or content_root()
+    tracks_dir = base / "tracks"
+    tracks: list[Track] = []
+    if not tracks_dir.exists():
+        return tracks
+    for track_dir in sorted(p for p in tracks_dir.iterdir() if p.is_dir()):
+        if not (track_dir / "track.yaml").exists():
+            continue
+        track = load_track(track_dir)
+        if track.id in _PERFORMANCE_TRACK_IDS or track.course == COURSE_PERFORMANCE:
+            track.course = COURSE_PERFORMANCE
             tracks.append(track)
     tracks.sort(key=lambda t: t.order)
     return tracks
@@ -404,18 +434,20 @@ def load_fundamentals_tracks() -> list[Track]:
 
 def load_tracks_for_course(course_id: str, root: Path | None = None) -> list[Track]:
     if course_id == COURSE_EDGE:
-        tracks = load_all_tracks(root, exclude_neurotech=True)
+        tracks = load_all_tracks(root, exclude_siblings=True)
         for t in tracks:
             if not t.course:
                 t.course = COURSE_EDGE
         return tracks
     if course_id == COURSE_NEUROTECH:
         return load_neurotech_tracks(root)
+    if course_id == COURSE_PERFORMANCE:
+        return load_performance_tracks(root)
     if course_id == COURSE_SYSTEMS:
         return load_systems_from_pack()
     if course_id == COURSE_FUNDAMENTALS:
         return load_fundamentals_tracks()
-    return load_all_tracks(root, exclude_neurotech=True)
+    return load_all_tracks(root, exclude_siblings=True)
 
 
 def find_track(tracks: list[Track], track_id: str) -> Track | None:

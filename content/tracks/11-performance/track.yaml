@@ -1,0 +1,14 @@
+id: performance
+title: Performance Mage · specialization
+summary: >-
+  ARM/NEON → Numerical/Roofline → Metal(+CUDA elective) → HW/SW co-design.
+  Performance Boss ritual. Soft deps to Edge only — not a Mago Supremo gate.
+order: 11
+unlock_xp: 0
+icon: '⚡'
+scaffold: false
+course: performance
+curriculum_note: >-
+  SPEC: docs/SPEC-performance-mage.md. ~310–415 h aspirational specialization band
+  at 6–8 h/week (honest: scaffold densifies over time). TUI: mage --course performance.
+  M4 caveats: µarch≠Cortex-A; no SVE; Metal≠CUDA.

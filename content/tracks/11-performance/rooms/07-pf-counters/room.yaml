@@ -1,0 +1,49 @@
+id: pf-counters
+title: Contadores · profiling · evidência
+summary: PMU/contadores, time, Instruments — medir sem autoengano (caveat µarch).
+xp_reward: 22
+unlock_xp: 0
+phase: F2-arm
+pillar: neon
+course: performance
+order: 7
+boss: false
+resources:
+- title: Arm PMU guide (overview)
+  url: https://developer.arm.com/documentation/102614/latest
+  kind: docs
+- title: Apple Instruments
+  url: https://developer.apple.com/instruments/
+  kind: tool
+animation: null
+tasks:
+- id: protocol
+  type: mcq
+  prompt: 'Protocolo mínimo honesto inclui:'
+  xp: 8
+  answer: 0
+  choices:
+  - Input fixo + várias corridas + reportar máquina/flags
+  - Uma corrida sem warm-up basta
+  - Comparar M4≡Cortex-A sem nota
+  - Ignorar correção numérica
+- id: uarch
+  type: mcq
+  prompt: Contadores no M4 transferem 1:1 para Cortex-A?
+  xp: 8
+  answer: 2
+  choices:
+  - Sempre sim
+  - Só se usar SVE
+  - Não — µarch difere; documente a máquina
+  - Só se Metal estiver off
+- id: median
+  type: fill
+  prompt: 'Estatística robusta comum para tempo em benches: ___ (mediana).'
+  xp: 6
+  answers:
+  - mediana
+  - median
+  - Mediana
+requires_rooms:
+- pf-simd-tiling

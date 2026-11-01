@@ -1,6 +1,6 @@
 # e-mage
 
-Academia no terminal (TUI Textual) com três cursos: **Fundamentos** → **Systems Mage** → **Edge ML Mage**.  
+Academia no terminal (TUI Textual): **Fundamentos** → **Systems Mage** → **Edge ML Mage**, mais especializações **Performance Mage** e **Neurotech**.  
 Nome do produto: **e-mage**. Repositório GitHub (por enquanto): [edevPedro/edge-mage](https://github.com/edevPedro/edge-mage).  
 CLIs: `mage` · `emage` · `edge-mage`.
 
@@ -36,6 +36,8 @@ Isso **não** te transforma automaticamente em sênior de compilador ou red team
 | **Fundamentos** → *Mago base* | Perder medo do PC/terminal; ordem, erro, math útil; primeira página/craft | Consegue seguir um lab, capturar FLAG, publicar 1 artefato simples |
 | **Systems Mage** | Máquina nua → IR → AArch64 → DIY/RE | Consegue contribuir em discussões/PRs de systems/LLVM e caçar bugs de memória/ABI |
 | **Edge ML Mage** | Math → sinal → modelo → **on-device** | Consegue um ritual edge (latência/RAM reais) e falar trade-offs de deploy no device |
+| **Performance Mage** | NEON → Roofline → Metal → co-design | Entrega bosses Performance (2 impls + medir + provar) |
+| **Neurotech** | Círculo paralelo BCI/EEG | Literacia de neuroengenharia não-clínica (rota Suprema alternativa) |
 
 ### O que *não* prometer
 
@@ -74,10 +76,15 @@ Números **aproximados** da grade de hoje (~100+ salas web/TUI + bosses craft). 
 | **Fundamentos** → Mago base | 25–40 h | 5–10 semanas |
 | **Systems Mage** (systems + LLVM + bosses) | 50–90 h | 3–5 meses |
 | **Edge ML Mage** (math → on-device) | 30–50 h | 2–3 meses |
-| **Neurotech** (círculo paralelo, scaffold) | 35–55 h | 2–4 meses |
-| **Formação completa** → Mago Supremo | **~110–180 h** | **~6–10 meses** |
+| **Performance Mage** (especialização) | **~200–280 h** scaffold · faixa aspiracional **~310–415 h** | ~10–14 meses a 6–8 h/sem |
+| **Neurotech** (círculo paralelo) | ver SPEC Neurotech (MSc-prep denso) | multi-mês |
+| **Núcleo** → Mago Supremo (Fund+Systems+Edge) | **~110–180 h** | **~6–10 meses** |
 
-**Neurotech** (`neurotech`) é círculo **paralelo** (BCI / EEG / física / firmware). Não substitui o on-device do Edge nem muda os gates do **Mago Supremo**. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · trilha: `content/tracks/10-neurotech/` (22 salas F0→F6). Pedagogia: **Estuda → Sala**. TUI: `mage --course neurotech` · emuladores: `mage emu all`.
+**Academia vs especialização:** Fundamentos + Systems + Edge = formação núcleo (Mago Supremo). **Performance** e **Neurotech** aprofundam a academia; não a substituem.
+
+**Performance** (`performance`) **não** é hard gate do Edge ML / Mago Supremo (só soft deps). SPEC: [`docs/SPEC-performance-mage.md`](docs/SPEC-performance-mage.md) · trilha: `content/tracks/11-performance/` · TUI: `mage --course performance`. **Caveats M4:** µarch Apple ≠ Cortex-A; sem SVE no M4; Metal ≠ CUDA.
+
+**Neurotech** (`neurotech`) é círculo **paralelo** (BCI / EEG / física / firmware). Não substitui o on-device do Edge. SPEC: [`docs/SPEC-neurotech-course.md`](docs/SPEC-neurotech-course.md) · trilha: `content/tracks/10-neurotech/`. Pedagogia: **Estuda → Sala**. TUI: `mage --course neurotech` · emuladores: `mage emu all`.
 
 Mais rápido se você já programa; mais lento se for o primeiro contato com terminal/C.
 
@@ -90,9 +97,10 @@ Mais rápido se você já programa; mais lento se for o primeiro contato com ter
 | `fundamentals` | Fundamentos | Caminho até **Mago base** (núcleo compartilhado + clearance) |
 | `systems` | Systems Mage | **Catálogo FLAG completo** no TUI: systems + llvm + math (mesmo escopo do núcleo Systems na web) |
 | `edge` | Edge ML Mage | Trilhas atuais math → Edge AI on-device (UX TUI completa) — **ARM-first** inalterado |
-| `neurotech` | Neurotech | Círculo paralelo BCI/EEG — `mage --course neurotech` · `mage emu all` (não gateia Mago Supremo) |
+| `performance` | Performance Mage | NEON / Roofline / Metal / co-design — especialização; **não** hard gate do Edge |
+| `neurotech` | Neurotech | Círculo paralelo BCI/EEG — `mage --course neurotech` · `mage emu all` (rota Suprema alternativa) |
 
-`mage` abre o **seletor de cursos** primeiro (e stub de GitHub). Systems/Edge têm soft gate atrás de Mago base (preview com aviso).
+`mage` abre o **seletor de cursos** primeiro (e stub de GitHub). Systems/Edge/Performance/Neurotech têm soft gate atrás de Mago base (preview com aviso).
 
 ### Systems Mage no TUI
 

@@ -1,0 +1,50 @@
+id: pf-roofline
+title: Modelo Roofline
+summary: Arithmetic intensity, tetos de bandwidth/compute — linguagem do Performance
+  Boss.
+xp_reward: 22
+unlock_xp: 0
+phase: F3-hpc
+pillar: numerical
+course: performance
+order: 10
+boss: false
+resources:
+- title: Williams et al. — Roofline (CACM / DOI)
+  url: https://doi.org/10.1145/1497561.1497565
+  kind: paper
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: axes
+  type: mcq
+  prompt: 'No Roofline clássico, o eixo X é:'
+  xp: 8
+  answer: 0
+  choices:
+  - Intensidade aritmética (flops/byte)
+  - Temperatura do SoC
+  - Número de GPUs
+  - Tamanho do repositório
+- id: bound
+  type: mcq
+  prompt: 'Kernel sob a diagonal de bandwidth tipicamente é:'
+  xp: 10
+  answer: 1
+  choices:
+  - Só limitados por branch mispredict
+  - Memory-bound (relativo ao modelo)
+  - Sempre compute-bound
+  - Independente de dados
+- id: flopsbyte
+  type: fill
+  prompt: 'Unidade da intensidade aritmética: flops/___.'
+  xp: 8
+  answers:
+  - byte
+  - bytes
+  - Byte
+requires_rooms:
+- pf-nla-ieee

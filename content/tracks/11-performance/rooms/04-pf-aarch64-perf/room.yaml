@@ -1,0 +1,51 @@
+id: pf-aarch64-perf
+title: AArch64 sob o olhar de performance
+summary: ABI/AAPCS64, load/store, alinhamento, o que Systems ensina vs o que Perf
+  aprofunda.
+xp_reward: 22
+unlock_xp: 0
+phase: F1-arch
+pillar: architecture
+course: performance
+order: 4
+boss: false
+resources:
+- title: AAPCS64
+  url: https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
+  kind: docs
+- title: DDI0487
+  url: https://developer.arm.com/documentation/ddi0487/latest
+  kind: docs
+animation: null
+tasks:
+- id: args
+  type: mcq
+  prompt: 'Em AAPCS64, argumentos inteiros/ponteiros iniciais tipicamente passam por:'
+  xp: 8
+  answer: 0
+  choices:
+  - x0–x7
+  - Somente na stack
+  - Registros SVE obrigatórios
+  - xmm0–xmm7
+- id: shared-systems
+  type: mcq
+  prompt: 'Esta sala em relação a Systems Mage:'
+  xp: 8
+  answer: 1
+  choices:
+  - Substitui todo o catálogo Systems
+  - Aprofunda performance sobre a base Systems/AArch64
+  - É pré-requisito duro de Neurotech
+  - Ensina SVE obrigatório no M4
+- id: intensity
+  type: fill
+  prompt: Razão flops/byte que o Roofline usa chama-se intensidade ___.
+  xp: 8
+  answers:
+  - aritmética
+  - arithmetic
+  - operacional
+  - operational
+requires_rooms:
+- pf-cache-vm

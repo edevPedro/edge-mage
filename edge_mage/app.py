@@ -9,7 +9,12 @@ from textual.widgets import Input, TextArea
 
 from edge_mage.commands import parse_command
 from edge_mage.content import find_room, load_tracks_for_course
-from edge_mage.courses import COURSE_EDGE, COURSE_NEUROTECH, COURSE_SYSTEMS
+from edge_mage.courses import (
+    COURSE_EDGE,
+    COURSE_NEUROTECH,
+    COURSE_PERFORMANCE,
+    COURSE_SYSTEMS,
+)
 from edge_mage.git_journal import sync_study_journal
 from edge_mage.grimoire import load_skills
 from edge_mage.models import Track
@@ -49,11 +54,13 @@ class EdgeMageApp(App[None]):
         course: str | None = None,
         *,
         show_launcher: bool = True,
+        open_today: bool = False,
     ) -> None:
         super().__init__()
         self.store = ProgressStore()
         self.course: str | None = course
         self.show_launcher = show_launcher and course is None
+        self.open_today = open_today
         self.preview_mode = False
         self.tracks: list[Track] = (
             load_tracks_for_course(course) if course else load_tracks_for_course(COURSE_EDGE)
@@ -66,7 +73,11 @@ class EdgeMageApp(App[None]):
 
     def on_mount(self) -> None:
         self.store.touch_streak()
-        if self.show_launcher:
+        if self.open_today:
+            from edge_mage.screens.today import TodayScreen
+
+            self.push_screen(TodayScreen())
+        elif self.show_launcher:
             from edge_mage.screens.launcher import LauncherScreen
 
             self.push_screen(LauncherScreen())
@@ -88,6 +99,9 @@ class EdgeMageApp(App[None]):
         if course_id == COURSE_EDGE:
             self.TITLE = "Edge ML Mage"
             self.SUB_TITLE = "Academia · Math → Edge AI"
+        elif course_id == COURSE_PERFORMANCE:
+            self.TITLE = "Performance Mage"
+            self.SUB_TITLE = "NEON · Roofline · Metal · Co-design · Estuda → Sala"
         elif course_id == COURSE_NEUROTECH:
             self.TITLE = "Neurotech"
             self.SUB_TITLE = "Círculo Neural · Estuda → Sala · BCI educacional"
@@ -571,5 +585,5 @@ class EdgeMageApp(App[None]):
             self.push_screen(RoomScreen(track, room))
 
 
-def run(*, course: str | None = None, show_launcher: bool = True) -> None:
-    EdgeMageApp(course=course, show_launcher=show_launcher).run()
+def run(*, course: str | None = None, show_launcher: bool = True, open_today: bool = False) -> None:
+    EdgeMageApp(course=course, show_launcher=show_launcher, open_today=open_today).run()

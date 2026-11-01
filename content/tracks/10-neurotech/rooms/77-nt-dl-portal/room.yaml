@@ -1,0 +1,77 @@
+id: nt-dl-portal
+title: Portal Deep Learning & Inference
+summary: >-
+  Módulo F15: do ML clássico ao deep learning e inferência — quando DL ajuda em
+  dados neurais, vocabulário de inference engineering (mapa roadmap.sh).
+xp_reward: 36
+unlock_xp: 0
+order: 77
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-ml-neural
+course: neurotech
+resources:
+- title: Roadmap.sh — Inference Engineering (base deste módulo)
+  url: https://roadmap.sh/inference-engineering
+  kind: docs
+- title: Goodfellow et al. — Deep Learning book (cap. 1 e 6, free)
+  url: https://www.deeplearningbook.org/
+  kind: paper
+- title: Lotte et al. — classification of EEG-BCI (IOP)
+  url: https://doi.org/10.1088/1741-2560/4/2/R01
+  kind: paper
+- title: vLLM — docs (prefill/decode, batching)
+  url: https://docs.vllm.ai/
+  kind: docs
+- title: Karpathy — nanoGPT (forward pass mecânico)
+  url: https://github.com/karpathy/nanoGPT
+  kind: docs
+tasks:
+- id: why-dl
+  type: mcq
+  prompt: 'Com N≪D (poucos trials neurais), deep learning só vale se:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'trocar o rótulo manual por intuição'
+  - 'a arquitetura carregar forte indutivo (ex.: EEGNet) e N crescer com regularização'
+  - 'ignorar validação'
+  - 'usar sempre GPT grande'
+- id: vocab-inf
+  type: fill
+  prompt: 'Na inferência, a métrica de tempo do primeiro token gerado é ___ (sigla).'
+  xp: 10
+  answers:
+  - TTFT
+  - ttft
+  - time to first token
+  - tempo para o primeiro token
+- id: dl-vs-classic
+  type: mcq
+  prompt: 'Em BCI offline com 120 trials, a prática recomendada é:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'basear na baseline (CSP+LDA) e só subir para DL com pipeline sólido'
+  - 'pular para Transformer de milhões de parâmetros'
+  - 'medir só loss de treino'
+  - 'treinar no teste'
+- id: code-bottleneck-class
+  type: code
+  prompt: 'Implemente `suggest_approach(n_samples, n_dims, ratio_threshold=10.0)` retornando `"dl"` quando n_samples / n_dims >= ratio_threshold, senão `"classic"` (regra didática N≫D ⇒ DL viável; N≪D ⇒ clássico primeiro).'
+  xp: 12
+  code_template: "def suggest_approach(n_samples, n_dims, ratio_threshold=10.0):\n    ...\n"
+  code_tests: '
+
+
+    assert mod.suggest_approach(200000, 100) == "dl"
+
+    assert mod.suggest_approach(120, 48000) == "classic"
+
+    assert mod.suggest_approach(1000, 100, 5) == "dl"
+
+    '
+

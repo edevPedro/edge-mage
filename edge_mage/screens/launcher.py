@@ -11,6 +11,7 @@ from edge_mage.courses import (
     COURSE_EDGE,
     COURSE_FUNDAMENTALS,
     COURSE_NEUROTECH,
+    COURSE_PERFORMANCE,
     COURSE_SYSTEMS,
     COURSES,
 )
@@ -19,7 +20,7 @@ from edge_mage.screens.base import MageScreen
 BANNER = r"""
 ╔══════════════════════════════════════════════════╗
 ║         e - m a g e   ·   LAUNCHER               ║
-║   Fundamentals · Systems · Edge · Neurotech      ║
+║  Fundamentals · Systems · Edge · Perf · Neuro    ║
 ╚══════════════════════════════════════════════════╝
 """
 
@@ -46,7 +47,7 @@ class LauncherScreen(MageScreen):
                 classes="rank",
             )
             yield Static(
-                "Systems/Edge/Neurotech: soft gate — preview OK sem Mago base.",
+                "Systems/Edge/Perf/Neurotech: soft gate — preview OK sem Mago base.",
                 classes="muted",
             )
             yield Static("j/k · Enter  ·  q sair", classes="muted")
@@ -105,7 +106,13 @@ class LauncherScreen(MageScreen):
                 self.app.notify(result.warning[:120], severity="warning")
             return
 
-        if oid in {COURSE_FUNDAMENTALS, COURSE_SYSTEMS, COURSE_EDGE, COURSE_NEUROTECH}:
+        if oid in {
+            COURSE_FUNDAMENTALS,
+            COURSE_SYSTEMS,
+            COURSE_EDGE,
+            COURSE_PERFORMANCE,
+            COURSE_NEUROTECH,
+        }:
             preview = False
             if oid != COURSE_FUNDAMENTALS and not mago:
                 preview = True

@@ -1,0 +1,53 @@
+id: int8-detail
+title: Requantização e per-channel
+summary: >-
+  Do matmul int32 ao novo int8: requantização com escala, clamp, viés int32 e
+  escalas per-channel em kernels de inferência.
+xp_reward: 58
+unlock_xp: 3000
+requires_skills:
+  - on-device
+  - dl-forward
+animation: quantize_steps
+resources:
+  - title: LiteRT 8-bit quantization specification (requant/multiplier)
+    url: https://developers.google.com/edge/litert/conversion/tensorflow/quantization/quantization_spec
+    kind: docs
+  - title: CMSIS-NN — requantization helpers (arm_nn_requantize)
+    url: https://arm-software.github.io/CMSIS-NN/latest/globals_func.html
+    kind: docs
+  - title: Hugging Face — SmoothQuant / per-channel discount
+    url: https://huggingface.co/blog/smoothquant
+    kind: blog
+tasks:
+  - id: requant
+    type: mcq
+    prompt: 'Para voltar de int32 para int8, a op correta é:'
+    xp: 16
+    answer: 0
+    choices:
+      - requisitar pelo produto das escalas de entrada, arredondando e clampando em [−128,127]
+      - simplesmente truncar o int32 sem escala
+      - usar float64 sempre
+      - dividir por 8
+  - id: clamp-range
+    type: numeric
+    prompt: 'Intervalo de saída int8 assimétrico em [−128, 127]. Qual o clamp superior?'
+    xp: 12
+    answer: 127
+    tolerance: 0
+  - id: zero-point
+    type: fill
+    prompt: 'Asymmetric quantization usa ____ shift (offset) além de scale.'
+    xp: 12
+    answers:
+      - zero-point
+      - zeropoint
+      - zero point
+      - zero point de escala
+  - id: code-requant
+    type: code
+    prompt: 'Implemente `requantize(q_i32, out_scale)` = round(q_i32*out_scale); `clamp_q8(v)` limitando a [−128, 127]; `per_channel_scale(q, scales, ch)` = int(round(q[ch]*scales[ch])).'
+    xp: 26
+    code_template: "def requantize(q_i32, out_scale):\n    # TODO\n    ...\n\ndef clamp_q8(v):\n    # TODO\n    ...\n\ndef per_channel_scale(q, scales, ch):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.requantize(1000, 0.1)==100\nassert mod.requantize(250, 0.5)==125\nassert mod.clamp_q8(200)==127\nassert mod.clamp_q8(-300)==-128\nassert mod.clamp_q8(42)==42\nassert mod.per_channel_scale([100, 50], [0.5, 2.0], 1)==100\n"

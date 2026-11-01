@@ -1,0 +1,50 @@
+id: pf-metal-intro
+title: Metal · compute no Apple Silicon
+summary: Command buffers, pipelines, buffers — primeiro contato GPU no Mac.
+xp_reward: 22
+unlock_xp: 0
+phase: F4-gpu
+pillar: gpu
+course: performance
+order: 13
+boss: false
+resources:
+- title: Metal — Performing Calculations on a GPU
+  url: https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu
+  kind: docs
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+animation: null
+tasks:
+- id: metal-first
+  type: mcq
+  prompt: 'Neste curso, GPU no Mac começa por:'
+  xp: 8
+  answer: 0
+  choices:
+  - Metal
+  - Obrigatoriamente CUDA
+  - OpenCL only 2008
+  - SVE
+- id: metal-ne-cuda
+  type: mcq
+  prompt: 'Metal e CUDA:'
+  xp: 8
+  answer: 1
+  choices:
+  - São APIs idênticas bit a bit
+  - Modelos/tooling diferentes — CUDA é eletiva aqui
+  - Metal exige SVE
+  - CUDA roda nativo no M4 sem translation
+- id: threadgroup
+  type: fill
+  prompt: Agrupamento de threads no dispatch Metal costuma chamar-se ___.
+  xp: 8
+  answers:
+  - threadgroup
+  - threadgroups
+  - thread group
+  - thread groups
+requires_rooms:
+- pf-boss-physics

@@ -1,0 +1,81 @@
+id: nt-dl-training
+title: Treino DL — loss, gradiente, overfit
+summary: >-
+  Cross-entropy, softmax, gradiente descendente e o trio anti-overfit
+  (regularização, validação, mais dados) com N pequeno.
+xp_reward: 40
+unlock_xp: 0
+order: 80
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-cnn-eeg
+course: neurotech
+resources:
+- title: Deep Learning book — loss/backprop/regularização (caps. 5–7)
+  url: https://www.deeplearningbook.org/contents/optimization.html
+  kind: paper
+- title: CS231n — loss functions and optimization
+  url: https://cs231n.github.io/linear-classify/
+  kind: docs
+- title: "Combrisson & Jerbi — chance level EEG/MEG"
+  url: https://doi.org/10.1016/j.jneumeth.2015.03.034
+  kind: paper
+- title: "Varoquaux — CV pitfalls"
+  url: https://doi.org/10.1016/j.neuroimage.2016.10.038
+  kind: paper
+tasks:
+- id: ce-role
+  type: mcq
+  prompt: 'Cross-entropy penaliza sobretudo:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'a confiança errada (prob baixa na classe correta)'
+  - 'o tamanho físico dos pesos no flash'
+  - 'a ordem dos canais'
+  - 'o consumo da bateria'
+- id: overfit-smallN
+  type: mcq
+  prompt: 'Com N=120 trials e dropout ausente, o sintoma mais provável é:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'underfit total e loss travada'
+  - 'loss de treino baixa + validação ruim (memorização)'
+  - 'latência aumentando'
+  - 'o κ negativo por construção'
+- id: earlystop
+  type: mcq
+  prompt: 'Early stopping acompanha:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'a corrente do ADC'
+  - 'o aterramento do shield'
+  - 'a loss de validação e para quando ela degrada'
+  - 'o ranking do sujeito no dataset'
+- id: code-softmax-ce
+  type: code
+  prompt: 'Implemente `softmax(logits)` (estável, subtraindo o max) e `cross_entropy(logits, y_true)` onde `y_true` é lista one-hot — CE = -Σ y*log(p) (média sobre exemplos).'
+  xp: 14
+  code_template: "def softmax(logits):\n    ...\n\ndef cross_entropy(logits, y_true):\n    ...\n"
+  code_tests: '
+
+    import math
+
+    p = mod.softmax([1.0, 1.0])
+
+    assert abs(sum(p) - 1.0) < 1e-9
+
+    assert abs(p[0] - 0.5) < 1e-9
+
+    assert abs(mod.cross_entropy([20.0, 0.0], [1, 0])) < 1e-6
+
+    assert abs(mod.cross_entropy([0.0, 20.0], [0, 1])) < 1e-6
+
+    assert mod.cross_entropy([0.0, 20.0], [1, 0]) > 1.0
+
+    '

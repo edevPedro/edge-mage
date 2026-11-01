@@ -79,7 +79,7 @@ Emulators: **teach or omit**.
 
 ## 4. Phase map (MSc) + hours
 
-**Guided study estimate (required path):** **~230–380 h** (F0-found + foundation→advanced em todos os pilares + Estuda denso + labs + research rituals).  
+**Guided study estimate (required path):** **~230–380 h** base (F0-found + foundation→advanced em todos os pilares + Estuda denso + labs + research rituals) + **~30–48 h** módulo F15-dl-inf.  
 Calendar: **~12–16 months** at 5–8 h/week (multi-year band OK at lower weekly load). Electives extra (+10–18 h).
 
 **Honesty:** pisos antigos (50–60 h / 75–110 h / 120–200 h) **não** descrevem este catálogo. Com base matemática/física completa (trig→cálculo→complexos→Fourier), EE completa (circuitos→semicondutores→AFE→PCB/EMI→shield/PI), física eletrostática, neuro sistemas, CS/FW realtime e espinha BCI, o claim sobe. **Nunca** recalibrar para baixo. Média ponderada ≈ **2,4–4,0 h/sala** × 92 required.
@@ -102,10 +102,11 @@ Calendar: **~12–16 months** at 5–8 h/week (multi-year band OK at lower weekl
 | **F12-cases** | Emulated published cases | 2 | 8–12 | full | Berlin MI; BCI Competition IV walkthroughs |
 | **F13-research** | Thesis-prep | 6 | 20–32 | full/standard | IRB, critique, proposal, Methods, project, paper MSc |
 | **F14-supremo** | Climax | 1 | 4–8 | standard (ritual) | Boss **Mago Supremo** (rota Neural) |
-| **elective** | SSVEP / FBCSP / OpenBCI | 3 | +10–18 | standard (real Estuda) | Optional depth |
+| **F15-dl-inf** | DL & Inference Eng. (pós-supremo, base roadmap.sh) | 13 (12 + 1 eletiva) | 30–48 | full/standard | Portal→MLP→CNN EEG→treino→tokens→attention→LLM generate→KV cache→quantização→métricas→formatos→serving/batching→multimodal |
+| **elective** | SSVEP / FBCSP / OpenBCI / DL multimodal | 4 | +12–22 | standard (real Estuda) | Optional depth |
 
-**Catalog:** **109** rooms (**105** required + 4 electives), incluindo **18 salas F0-found de fundamentos pré-MSc** (com ampliação para invasivo, microarrays/Neuropixels, neuromodulação, neuropróteses, LM e modelos pré-clínicos).  
-**Required total (sum of phase bands):** roughly **~230–380 h** guided; electives on top.
+**Catalog:** **122** rooms (**117** required + 5 electives), incluindo **18 salas F0-found de fundamentos pré-MSc** e o módulo pós-supremo **F15-dl-inf (13 salas: DL + Inference Engineering, base roadmap.sh/inference-engineering)**.  
+**Required total (sum of phase bands):** roughly **~260–430 h** guided; electives on top.
 
 ### F0-found — Salas de fundamentos (18 salas novas)
 

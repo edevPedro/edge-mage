@@ -1,0 +1,61 @@
+id: edge-dl-forward
+title: Forward DL em int8
+summary: >-
+  Matmul int8 com acumulador int32 (FMA), escala dupla e o contrato de
+  kernels de inferência em py/int8 no edge.
+xp_reward: 56
+unlock_xp: 2900
+requires_skills:
+  - on-device
+  - flops-bandwidth
+animation: softmax_bars
+resources:
+  - title: Jacob et al. — Integer-Arithmetic-Only Quantization
+    url: https://arxiv.org/abs/1712.05877
+    kind: paper
+  - title: CMSIS-NN — arm_nn_mat_mult_s8 (int8 FMA path)
+    url: https://arm-software.github.io/CMSIS-NN/latest/
+    kind: docs
+  - title: LiteRT 8-bit quantization specification
+    url: https://developers.google.com/edge/litert/conversion/tensorflow/quantization/quantization_spec
+    kind: docs
+  - title: Smarty92 — Coletânea (int8 matmul & FMA)
+    url: https://samsonlow.github.io/coletanea/
+    kind: blog
+tasks:
+  - id: accumulator
+    type: mcq
+    prompt: 'Num matmul int8 (N=M=8), o acumulador DEVE ser:'
+    xp: 16
+    answer: 2
+    choices:
+      - int8 com clamp a cada passo
+      - float32 para nunca perder
+      - int32 (127×127×8 ≈ 129k dilata o intervalo) com escala na saída
+      - bfloat16
+  - id: qat
+    type: mcq
+    prompt: 'Escala dupla (input e peso) significa que o resultado:'
+    xp: 16
+    answer: 1
+    choices:
+      - nunca precisa de escala
+      - é o produto das duas escalas: s_out = s_in × s_w
+      - é a soma das escalas
+      - usa scale igual a 1 sempre
+  - id: output-scale
+    type: fill
+    prompt: 'Depois do matmul int32, o dado volta a int8/float via ____ (operação).'
+    xp: 16
+    answers:
+      - requantização
+      - requantizacao
+      - dequantização
+      - dequantizacao
+      - rescale
+  - id: code-fma-dot
+    type: code
+    prompt: Implemente `q8_fma_dot(a, b)` = soma de a[i]*b[i] com acumulador inteiro, `dual_scale(q_acc, s_in, s_w)` = q_acc*s_in*s_w e `dequant_scaled(q, s)` = q*s.
+    xp: 24
+    code_template: "def q8_fma_dot(a, b):\n    # TODO\n    ...\n\ndef dual_scale(q_acc, s_in, s_w):\n    # TODO\n    ...\n\ndef dequant_scaled(q, s):\n    # TODO\n    ...\n"
+    code_tests: "assert mod.q8_fma_dot([1,2,3],[4,5,6])==32\nassert mod.q8_fma_dot([-1,1],[127,-127])==-254\nassert abs(mod.dual_scale(16, 0.25, 0.5)-2.0)<1e-9\nassert abs(mod.dequant_scaled(127, 0.01)-1.27)<1e-9\nassert mod.q8_fma_dot([127],[127])==16129\n"

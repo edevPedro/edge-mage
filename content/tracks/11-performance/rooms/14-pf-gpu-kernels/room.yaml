@@ -1,0 +1,47 @@
+id: pf-gpu-kernels
+title: Kernels GPU · memória · ocupação
+summary: Shared/local memory patterns, coalescing analog, sync — desenhar kernels
+  úteis.
+xp_reward: 22
+unlock_xp: 0
+phase: F4-gpu
+pillar: gpu
+course: performance
+order: 14
+boss: false
+resources:
+- title: Metal Shading Language spec (Apple)
+  url: https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf
+  kind: docs
+animation: null
+tasks:
+- id: measure-gpu
+  type: mcq
+  prompt: 'Para evidência de kernel Metal, prefira:'
+  xp: 8
+  answer: 0
+  choices:
+  - Instruments / tempos de commit com harness
+  - Chute visual
+  - Comparar com SVE no M4
+  - Ignorar transfers
+- id: transfer
+  type: mcq
+  prompt: 'Copies grandes CPU↔GPU frequentemente:'
+  xp: 8
+  answer: 1
+  choices:
+  - São grátis
+  - Dominam o tempo se o kernel for pequeno
+  - Eliminam a necessidade de golden
+  - Só existem em CUDA
+- id: reduction
+  type: fill
+  prompt: 'Padrão de agregar N valores em paralelo: ___.'
+  xp: 8
+  answers:
+  - reduction
+  - redução
+  - reduce
+requires_rooms:
+- pf-metal-intro

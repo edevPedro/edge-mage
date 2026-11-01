@@ -1,0 +1,75 @@
+id: nt-cnn-eeg
+title: CNN temporal→espacial para EEG
+summary: >-
+  Convolução 1D compartilhada por tempo, divisão temporal×espacial (depthwise)
+  e receptive field — o inductive bias do EEGNet em profundidade.
+xp_reward: 40
+unlock_xp: 0
+order: 79
+owners:
+- bci
+- neuroeng
+phase: F15-dl-inf
+requires_rooms:
+- nt-ml-mlp
+course: neurotech
+resources:
+- title: Lawhern et al. — EEGNet (2018)
+  url: https://iopscience.iop.org/article/10.1088/1741-2560/aace8c
+  kind: paper
+- title: CS231n — CNNs (convolution in depth)
+  url: https://cs231n.github.io/convolutional-networks/
+  kind: docs
+- title: Szegedy et al. — depthwise separable convolutions (MobileNet)
+  url: https://arxiv.org/abs/1704.04861
+  kind: paper
+- title: "Dumitru/NeuroTechX — conv EEG notebooks"
+  url: https://github.com/NeuroTechX/awesome-bci
+  kind: docs
+tasks:
+- id: weight-sharing
+  type: mcq
+  prompt: 'Compartilhamento de pesos da convolução 1D implica:'
+  xp: 10
+  answer: 2
+  choices:
+  - 'mais parâmetros que uma camada densa'
+  - 'que todos os canais somem no mesmo filtro espacial'
+  - 'o mesmo filtro desliza no tempo — parâmetros sub-lineares em n_samples'
+  - 'remoção da não-linearidade'
+- id: depthwise
+  type: mcq
+  prompt: 'A convolução espacial depthwise (1 filtro por canal) mima:'
+  xp: 10
+  answer: 1
+  choices:
+  - 'o modelo de ruído de impedância'
+  - 'filtros espaciais por banda, como CSP'
+  - 'o protocolo 10-20'
+  - 'a PSD de Welch'
+- id: filter-bank-equiv
+  type: mcq
+  prompt: 'Convoluções temporais aprendidas equivalem, no limite, a:'
+  xp: 10
+  answer: 0
+  choices:
+  - 'um bank de filtros digitais aprendido (vs passa-banda fixo)'
+  - 'hardware DMA'
+  - 'mediana móvel do EOG'
+  - 'a IRB da pesquisa'
+- id: code-conv1d
+  type: code
+  prompt: 'Implemente `conv1d_out_len(n_samples, kernel_len, stride=1, pad=0)` (fórmula de comprimento de saída) e `conv1d_valid(x, kernel)` aplicando convolução 1D *valid* (sem padding, stride 1) — `y[n] = Σ_k kernel[k]*x[n+k]`.'
+  xp: 14
+  code_template: "def conv1d_out_len(n_samples, kernel_len, stride=1, pad=0):\n    ...\n\ndef conv1d_valid(x, kernel):\n    ...\n"
+  code_tests: '
+
+    assert mod.conv1d_out_len(750, 32) == 719
+
+        assert mod.conv1d_out_len(8, 3, stride=2) == 3
+
+        assert mod.conv1d_valid([1.0, 2.0, 3.0], [0.5, 0.5]) == [1.5, 2.5]
+
+        assert mod.conv1d_valid([1.0, 0.0, -1.0], [1.0, 0.0, -1.0]) == [2.0]
+
+    '

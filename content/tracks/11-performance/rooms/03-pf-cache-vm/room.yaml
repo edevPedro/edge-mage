@@ -1,0 +1,48 @@
+id: pf-cache-vm
+title: Cache · VM · TLB
+summary: Hierarquia L1/L2/LLC, locality, page walks, TLB — base de memory-bound.
+xp_reward: 22
+unlock_xp: 0
+phase: F1-arch
+pillar: architecture
+course: performance
+order: 3
+boss: false
+resources:
+- title: SPEC Performance Mage
+  url: https://github.com/edevPedro/edge-mage/blob/main/docs/SPEC-performance-mage.md
+  kind: docs
+- title: Ulrich Drepper — What Every Programmer Should Know About Memory
+  url: https://www.akkadia.org/drepper/cpumemory.pdf
+  kind: paper
+animation: null
+tasks:
+- id: line-size
+  type: mcq
+  prompt: 'Unidade típica de transferência CPU↔cache em PCs/SoCs modernos:'
+  xp: 8
+  answer: 1
+  choices:
+  - 1 bit
+  - 64 bytes (cache line comum)
+  - 1 GiB página sempre
+  - Somente registradores NEON
+- id: tlb
+  type: mcq
+  prompt: 'O TLB armazena principalmente:'
+  xp: 10
+  answer: 0
+  choices:
+  - Traduções de endereço virtual→físico
+  - Pesos de rede neural
+  - Opcodes x86
+  - Framebuffers Metal
+- id: locality
+  type: fill
+  prompt: Reusar o mesmo dado em pouco tempo é localidade ___.
+  xp: 8
+  answers:
+  - temporal
+  - Temporal
+requires_rooms:
+- pf-pipeline
